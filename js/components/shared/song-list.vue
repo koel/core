@@ -500,12 +500,11 @@ export default {
   .song-list-header {
     position: absolute;
     top: 0;
-    left: 24px;
-    right: 24px;
-    padding: 0 24px;
+    left: 0;
+    right: 0;
     background: #1b1b1b;
     z-index: 1;
-    width: calc(100% - 48px);
+    width: 100%;
   }
 
   table {
@@ -527,12 +526,14 @@ export default {
     white-space: nowrap;
 
     &.time {
-      width: 72px;
+      width: 96px;
+      padding-right: 24px;
       text-align: right;
     }
 
     &.track-number {
-      width: 42px;
+      width: 66px;
+      padding-left: 24px;
     }
 
     &.artist {
@@ -586,8 +587,8 @@ export default {
 
     .item-container {
       position: absolute;
-      left: 24px;
-      right: 24px;
+      left: 0;
+      right: 0;
     }
 
     .item {

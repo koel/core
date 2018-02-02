@@ -264,7 +264,7 @@ export default {
         display: inline-block;
         position: absolute;
         right: 8px;
-        top: 3px;
+        top: 6px;
         pointer-events: none;
       }
     }
