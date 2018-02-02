@@ -76,5 +76,13 @@ export default {
       width: 100%;
     }
   }
+
+  .desktop & {
+    justify-content: flex-end;
+
+    input[type="search"] {
+      width: 160px;
+    }
+  }
 }
 </style>

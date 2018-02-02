@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{ desktop: isDesktopApp }">
     <div id="main" tabindex="0" v-if="authenticated"
       @keydown.space="togglePlayback"
       @keydown.j = "playNext"
@@ -49,7 +49,8 @@ export default {
 
   data () {
     return {
-      authenticated: false
+      authenticated: false,
+      isDesktopApp: KOEL_ENV === 'app'
     }
   },
 
