@@ -3,8 +3,8 @@
     <div class="logo">
       <img src="~#/../img/logo.svg" width="156" height="auto">
     </div>
-    <input v-model="url" type="url" placeholder="Koel's Host" autofocus required>
-    <input v-model="email" type="email" placeholder="Email Address" required>
+    <input v-if="inApp" v-model="url" type="url" placeholder="Koel's Host" autofocus required>
+    <input v-model="email" type="email" placeholder="Email Address" autofocus required>
     <input v-model="password" type="password" placeholder="Password" required>
     <button type="submit">Log In</button>
   </form>
@@ -21,13 +21,16 @@ export default {
       url: '',
       email: '',
       password: '',
-      failed: false
+      failed: false,
+      inApp: KOEL_ENV === 'app'
     }
   },
 
   methods: {
     async login () {
-      axios.defaults.baseURL = `${this.url}/api`
+      if (this.inApp) {
+        axios.defaults.baseURL = `${this.url}/api`
+      }
 
       try {
         await userStore.login(this.email, this.password)
@@ -35,8 +38,12 @@ export default {
 
         // Reset the password so that the next login will have this field empty.
         this.password = ''
-        ls.set('koelHost', this.url)
-        ls.set('lastLoginEmail', this.email)
+
+        if (this.inApp) {
+          ls.set('koelHost', this.url)
+          ls.set('lastLoginEmail', this.email)
+        }
+
         this.$emit('loggedin')
       } catch (err) {
         this.failed = true
@@ -45,6 +52,10 @@ export default {
   },
 
   mounted () {
+    if (!this.inApp) {
+      return
+    }
+
     this.url = ls.get('koelHost')
     this.email = ls.get('lastLoginEmail')
   }

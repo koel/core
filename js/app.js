@@ -5,7 +5,10 @@ import { http } from './services'
 import { VirtualScroller } from 'vue-virtual-scroller/dist/vue-virtual-scroller'
 Vue.component('virtual-scroller', VirtualScroller)
 
-process.env.IS_WEB || Vue.use(require('vue-electron'))
+if (KOEL_ENV === 'app') {
+  Vue.use(require('vue-electron'))
+}
+
 Vue.config.productionTip = false
 
 /**
