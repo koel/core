@@ -380,7 +380,7 @@ export const playback = {
    */
   queueAndPlay (songs = null, shuffled = false) {
     if (!songs) {
-      songs = songStore.all
+      songs = shuffle(songStore.all)
     }
 
     if (!songs.length) {
