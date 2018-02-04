@@ -14,7 +14,10 @@ describe('components/shared/home-song-item', () => {
       playbackState: 'stopped'
     })
 
-    propsData = { song }
+    propsData = { 
+      song,
+      topPlayCount: 42
+    }
   })
 
   it('renders properly', () => {
