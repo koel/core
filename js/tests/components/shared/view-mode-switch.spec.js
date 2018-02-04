@@ -2,7 +2,7 @@ import Component from '@/components/shared/view-mode-switch.vue'
 
 describe('components/shared/view-mode-switch', () => {
   it('changes the view mode', () => {
-    const wrapper = shallow(Component, { propsData: { 
+    const wrapper = shallow(Component, { propsData: {
       mode: 'list',
       for: 'albums'
     }})

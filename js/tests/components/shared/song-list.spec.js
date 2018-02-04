@@ -12,21 +12,14 @@ describe('components/shared/song-list', () => {
     songs = factory('song', 20)
   })
 
-  it('renders properly', () => {
-    const wrapper = mount(Component, { propsData: {
-      items: songs,
-      type: 'allSongs'
-    }})
-  })
-
   it('informs parent to update meta data', () => {
     const emitStub = sinon.stub(event, 'emit')
     const getLengthStub = sinon.stub(songStore, 'getFormattedLength').callsFake(() => '12:34:56')
-    const wrapper = mount(Component, { propsData: {
+    mount(Component, { propsData: {
       items: songs,
       type: 'allSongs'
     }})
-    
+
     getLengthStub.calledWith(songs).should.be.true
     emitStub.calledWith('updateMeta', {
       songCount: songs.length,
@@ -42,7 +35,7 @@ describe('components/shared/song-list', () => {
       items: songs,
       type: 'allSongs'
     }})
-    const sortStub = sinon.stub(wrapper.vm, 'sort') 
+    const sortStub = sinon.stub(wrapper.vm, 'sort')
     const provider = {
       '.track-number': 'song.track',
       '.title': 'song.title',
@@ -50,7 +43,7 @@ describe('components/shared/song-list', () => {
       '.album': ['song.album.name', 'song.track'],
       '.time': 'song.length'
     }
-    for (let selector in provider) {
+    for (const selector in provider) {
       wrapper.click(`.song-list-header ${selector}`)
       sortStub.calledWith(provider[selector]).should.be.true
     }
@@ -76,7 +69,7 @@ describe('components/shared/song-list', () => {
     }
 
     const wrapper = shallow(Component)
-    for (let q in provider) {
+    for (const q in provider) {
       wrapper.vm.extractSearchData(q).should.eql(provider[q])
     }
   })
@@ -86,7 +79,7 @@ describe('components/shared/song-list', () => {
       items: songs,
       type: 'allSongs'
     }})
-    // select one row 
+    // select one row
     wrapper.vm.filteredItems[0].selected = true
 
     const playStub = sinon.stub(playback, 'play')
@@ -115,7 +108,7 @@ describe('components/shared/song-list', () => {
       type: 'playlist'
     }})
     const queueStub = sinon.stub(queueStore, 'queue')
-    const goStub = sinon.stub(router, 'go')  
+    const goStub = sinon.stub(router, 'go')
     const playStub = sinon.stub(playback, 'play')
 
     // select 2 rows

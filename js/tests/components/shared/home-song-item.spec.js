@@ -4,10 +4,10 @@ import { queueStore } from '@/stores'
 import { playback } from '@/services'
 
 describe('components/shared/home-song-item', () => {
-  let propsData 
-  let song 
+  let propsData
+  let song
 
-  beforeEach(() => { 
+  beforeEach(() => {
     song = factory('song', {
       artist: factory('artist', { name: 'Foo Fighter' }),
       playCount: 10,
@@ -18,7 +18,7 @@ describe('components/shared/home-song-item', () => {
   })
 
   it('renders properly', () => {
-    const wrapper = shallow(Component, { propsData }) 
+    const wrapper = shallow(Component, { propsData })
     wrapper.hasAll('span.cover', 'span.details').should.be.true
     wrapper.html().should.contain('Foo Fighter')
     wrapper.html().should.contain('10 plays')

@@ -9,7 +9,7 @@ describe('components/shared/song-item', () => {
   beforeEach(() => {
     artist = factory('artist')
     album = factory('album', {
-      artist, 
+      artist,
       artist_id: artist.id
     })
 
@@ -65,20 +65,20 @@ describe('components/shared/song-item', () => {
 
   it('handles playback correctly', () => {
     const playStub = sinon.stub(playback, 'play')
-    const resumeStub = sinon.stub(playback, 'resume') 
+    const resumeStub = sinon.stub(playback, 'resume')
     const pauseStub = sinon.stub(playback, 'pause')
     const playControl = shallow(Component, { propsData: { item }}).find('.play')
 
     playControl.click()
-    playStub.called.should.be.true 
+    playStub.called.should.be.true
 
     song.playbackState = 'playing'
     playControl.click()
-    pauseStub.called.should.be.true 
+    pauseStub.called.should.be.true
 
     song.playbackState = 'paused'
     playControl.click()
-    resumeStub.called.should.be.true 
+    resumeStub.called.should.be.true
 
     playStub.restore()
     resumeStub.restore()

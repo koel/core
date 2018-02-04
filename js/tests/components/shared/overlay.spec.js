@@ -1,5 +1,5 @@
 import Component from '@/components/shared/overlay.vue'
-import SoundBar from '@/components/shared/sound-bar.vue' 
+import SoundBar from '@/components/shared/sound-bar.vue'
 
 describe('components/shared/overlay', () => {
   it('shows with default options', async done => {
@@ -12,8 +12,8 @@ describe('components/shared/overlay', () => {
 
   it('allows option overriding', async done => {
     const wrapper = mount(Component)
-    await wrapper.vm.show({ 
-      dismissable: true, 
+    await wrapper.vm.show({
+      dismissable: true,
       type: 'warning',
       message: 'Foo'
     })
@@ -22,7 +22,7 @@ describe('components/shared/overlay', () => {
     wrapper.find('span.message').html().should.contain('Foo')
     done()
   })
-  
+
   it('hides', async done => {
     const wrapper = mount(Component)
     await wrapper.vm.show()

@@ -4,24 +4,24 @@ import data from '../blobs/data'
 const { users } = data
 
 describe('stores/user', () => {
-  beforeEach(() => userStore.init(data.users, data.currentUser))
+  beforeEach(() => userStore.init(users, data.currentUser))
 
   describe('#init', () => {
     it('correctly sets data state', () => {
-      userStore.state.users.should.equal(data.users)
+      userStore.state.users.should.equal(users)
       userStore.state.current.should.equal(data.currentUser)
     })
   })
 
   describe('#all', () => {
     it('correctly returns all users', () => {
-      userStore.all.should.equal(data.users)
+      userStore.all.should.equal(users)
     })
   })
 
   describe('#byId', () => {
     it('correctly gets a user by ID', () => {
-      userStore.byId(1).should.equal(data.users[0])
+      userStore.byId(1).should.equal(users[0])
     })
   })
 
@@ -31,7 +31,7 @@ describe('stores/user', () => {
     })
 
     it('correctly sets the current user', () => {
-      userStore.current = data.users[1]
+      userStore.current = users[1]
       userStore.current.id.should.equal(2)
     })
   })
@@ -43,8 +43,8 @@ describe('stores/user', () => {
     })
 
     it('correctly sets a user’s avatar', () => {
-      userStore.setAvatar(data.users[1])
-      data.users[1].avatar.should.equal('https://www.gravatar.com/avatar/5024672cfe53f113b746e1923e373058?s=256')
+      userStore.setAvatar(users[1])
+      users[1].avatar.should.equal('https://www.gravatar.com/avatar/5024672cfe53f113b746e1923e373058?s=256')
     })
   })
 })

@@ -7,11 +7,11 @@ describe('components/shared/song-list-controls-toggler', () => {
   })
 
   it('renders properly', () => {
-    shallow(Component, { propsData: { 
+    shallow(Component, { propsData: {
       showingControls: true
     }}).has('.toggler.fa-angle-up').should.be.true
 
-    shallow(Component, { propsData: { 
+    shallow(Component, { propsData: {
       showingControls: false
     }}).has('.toggler.fa-angle-up').should.be.false
   })

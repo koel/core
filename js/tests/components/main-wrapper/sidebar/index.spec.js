@@ -6,7 +6,7 @@ import factory from '@/tests/factory'
 describe('compoponents/main-wrapper/sidebar/index', () => {
   it('renders properly', () => {
     shallow(Component).hasAll(
-      Playlists, 
+      Playlists,
       ...(['home', 'queue', 'songs', 'albums', 'artists'].map(item => `.menu a.${item}`))
     ).should.be.true
   })

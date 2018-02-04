@@ -1,5 +1,5 @@
 {
-  "rules": {
-    "camelcase": "off"
+  rules: {
+    camelcase: 0
   }
 }

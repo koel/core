@@ -2,7 +2,7 @@ import ArtistInfo from '@/components/main-wrapper/extra/artist-info.vue'
 import factory from '@/tests/factory'
 
 describe('components/main-wrapper/extra/artist-info', () => {
-    it('displays the info as a sidebar by default', () => {
+  it('displays the info as a sidebar by default', () => {
     const wrapper = shallow(ArtistInfo, {
       propsData: {
         artist: factory('artist')

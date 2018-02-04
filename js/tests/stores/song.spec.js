@@ -15,7 +15,7 @@ describe('stores/song', () => {
       songStore.state.songs.length.should.equal(14)
     })
 
-    it ('coverts lengths to formatted lengths', () => {
+    it('coverts lengths to formatted lengths', () => {
       songStore.state.songs[0].fmtLength.should.be.a.string
     })
 

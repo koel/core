@@ -6,11 +6,11 @@ describe('components/site-footer/volume', () => {
     const wrapper = shallow(Component)
     wrapper.hasAll('i.mute', '#volumeRange').should.be.true
   })
-  
+
   it('mutes', () => {
     const muteStub = sinon.stub(playback, 'mute')
     shallow(Component).click('i.mute')
-    muteStub.called.should.be.true 
+    muteStub.called.should.be.true
     muteStub.restore()
   })
 
@@ -19,7 +19,7 @@ describe('components/site-footer/volume', () => {
     shallow(Component, { data: {
       muted: true
     }}).click('i.unmute')
-    unmuteStub.called.should.be.true 
+    unmuteStub.called.should.be.true
     unmuteStub.restore()
   })
 

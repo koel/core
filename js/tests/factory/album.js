@@ -17,7 +17,7 @@ export default faker => {
       },
       tracks: [
         { title: faker.lorem.sentence(), fmtLength: '3:42' },
-        { title: faker.lorem.sentence(), fmtLength: '2:37' },
+        { title: faker.lorem.sentence(), fmtLength: '2:37' }
       ],
       url: faker.internet.url()
     },

@@ -4,7 +4,9 @@ const artists = data.artists
 
 describe('stores/artist', () => {
   beforeEach(() => artistStore.init(_.cloneDeep(artists)))
-  afterEach(() => artistStore.state.artists = [])
+  afterEach(() => {
+    artistStore.state.artists = []
+  })
 
   describe('#init', () => {
     it('correctly gathers artists', () => {

@@ -6,7 +6,7 @@ import router from '@/router'
 
 describe('components/shared/user-item', () => {
   let user
-  
+
   beforeEach(() => {
     user = factory('user')
     // fake the user avatar
@@ -41,8 +41,8 @@ describe('components/shared/user-item', () => {
   })
 
   it('edits user', () => {
-    shallow(Component, { propsData: { 
-      user 
+    shallow(Component, { propsData: {
+      user
     }}).click('.btn-edit').hasEmitted('editUser', user).should.be.true
   })
 

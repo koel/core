@@ -1,0 +1,14 @@
+{
+  parser: "babel-eslint",
+  extends: "vue",
+  rules: {
+    "no-multi-str": 0
+  },
+  env: {
+    mocha: true
+  },
+  globals: {
+    KOEL_ENV: true
+  }
+}
+

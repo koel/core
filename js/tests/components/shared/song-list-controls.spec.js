@@ -28,7 +28,7 @@ describe('components/shared/song-list-controls', () => {
     shallow(Component, {
       data: {
         fullConfig: {
-          clearQueue: true 
+          clearQueue: true
         }
       }
     }).click('.btn-clear-queue').hasEmitted('clearQueue').should.be.true
@@ -38,7 +38,7 @@ describe('components/shared/song-list-controls', () => {
     shallow(Component, {
       data: {
         fullConfig: {
-          deletePlaylist: true 
+          deletePlaylist: true
         }
       }
     }).click('.btn-delete-playlist').hasEmitted('deletePlaylist').should.be.true

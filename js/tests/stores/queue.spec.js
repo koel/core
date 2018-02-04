@@ -30,7 +30,9 @@ describe('stores/queue', () => {
   })
 
   describe('#queue', () => {
-    beforeEach(() => queueStore.state.songs = songs)
+    beforeEach(() => {
+      queueStore.state.songs = songs
+    })
 
     const song = allSongs[0]
 
@@ -52,11 +54,13 @@ describe('stores/queue', () => {
   })
 
   describe('#unqueue', () => {
-    beforeEach(() => queueStore.state.songs = songs)
+    beforeEach(() => {
+      queueStore.state.songs = songs
+    })
 
     it('correctly removes a song from queue', () => {
       queueStore.unqueue(queueStore.state.songs[0])
-      queueStore.first.title.should.equal('So long, Jimmy'); // Oh the irony.
+      queueStore.first.title.should.equal('So long, Jimmy') // Oh the irony.
     })
 
     it('correctly removes mutiple songs from queue', () => {

@@ -12,7 +12,7 @@ describe('components/main-wrapper/main-content/artist', () => {
     artist = factory('artist')
     const album = factory('album', {
       artist,
-      artist_id: artist.id,
+      artist_id: artist.id
     })
     artist.albums = [album]
     artist.songs = factory('song', 5, {

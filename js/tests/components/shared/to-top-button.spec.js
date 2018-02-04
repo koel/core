@@ -1,4 +1,4 @@
-import Component from '@/components/shared/to-top-button.vue' 
+import Component from '@/components/shared/to-top-button.vue'
 import { $ } from '@/utils'
 
 describe('components/shared/to-top-button', () => {
