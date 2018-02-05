@@ -22,7 +22,7 @@ export default {
       email: '',
       password: '',
       failed: false,
-      inApp: KOEL_ENV === 'app'
+      isDesktopApp: KOEL_ENV === 'app'
     }
   },
 
@@ -52,7 +52,7 @@ export default {
   },
 
   mounted () {
-    if (!this.inApp) {
+    if (!this.isDesktopApp) {
       return
     }
 

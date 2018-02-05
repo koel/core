@@ -1,5 +1,5 @@
 <template>
-  <header id="mainHeader">
+  <header id="mainHeader" @dblclick="triggerMaximize">
     <h1 class="brand" v-once>{{ appTitle }}</h1>
     <span class="hamburger" @click="toggleSidebar">
       <i class="fa fa-bars"></i>
@@ -15,7 +15,7 @@
 
 <script>
 import config from '@/config'
-import { event } from '@/utils'
+import { event, app } from '@/utils'
 import searchForm from './search-form.vue'
 import userBadge from './user-badge.vue'
 
@@ -41,6 +41,10 @@ export default {
      */
     toggleSearchForm () {
       event.emit('search:toggle')
+    },
+
+    triggerMaximize () {
+      app.triggerMaximize()
     }
   }
 }
@@ -55,6 +59,11 @@ export default {
   background: $color2ndBgr;
   display: flex;
   border-bottom: 1px solid $colorMainBgr;
+  -webkit-app-region: drag;
+
+  input, a {
+    -webkit-app-region: no-drag;
+  }
 
   h1.brand {
     flex: 1;

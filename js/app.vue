@@ -16,10 +16,11 @@
       <edit-songs-form ref="editSongsForm"/>
     </div>
 
-    <div class="login-wrapper" v-else>
-      <div style="-webkit-app-region: drag; height: 32px"></div>
-      <login-form @loggedin="onUserLoggedIn"/>
-    </div>
+    <template v-else>
+      <div class="login-wrapper" @dblclick.self="triggerMaximize">
+        <login-form @loggedin="onUserLoggedIn"/>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -33,7 +34,7 @@ import overlay from './components/shared/overlay.vue'
 import loginForm from './components/auth/login-form.vue'
 import editSongsForm from './components/modals/edit-songs-form.vue'
 
-import { event, showOverlay, hideOverlay, forceReloadWindow, $ } from './utils'
+import { event, showOverlay, hideOverlay, forceReloadWindow, $, app as appUtils } from './utils'
 import { sharedStore, userStore, favoriteStore, queueStore, preferenceStore as preferences } from './stores'
 import { playback, ls, socket } from './services'
 import { focusDirective, clickawayDirective } from './directives'
@@ -221,7 +222,9 @@ export default {
             break
         }
       })
-    }
+    },
+
+    triggerMaximize: () => appUtils.triggerMaximize()
   },
 
   created () {
@@ -315,6 +318,12 @@ Vue.directive('koel-clickaway', clickawayDirective)
 
 .login-wrapper {
   @include vertical-center();
+  -webkit-app-region: drag;
+  user-select: none;
+
+  input, button {
+    -webkit-app-region: no-drag;
+  }
 
   padding-bottom: 0;
 }
