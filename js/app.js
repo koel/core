@@ -3,7 +3,10 @@ import Vue from 'vue'
 import App from './app.vue'
 import { http } from './services'
 import { VirtualScroller } from 'vue-virtual-scroller/dist/vue-virtual-scroller'
+import GlobalEvents from 'vue-global-events'
+
 Vue.component('virtual-scroller', VirtualScroller)
+Vue.component('global-events', GlobalEvents)
 
 if (KOEL_ENV === 'app') {
   Vue.use(require('vue-electron'))

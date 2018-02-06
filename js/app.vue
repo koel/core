@@ -1,14 +1,15 @@
 <template>
   <div id="app" :class="{ desktop: isDesktopApp }">
-    <div id="main" tabindex="0" v-if="authenticated"
-      @keydown.space="togglePlayback"
-      @keydown.j = "playNext"
-      @keydown.k = "playPrev"
-      @keydown.f = "search"
-      @keydown.mediaPrev = "playPrev"
-      @keydown.mediaNext = "playNext"
-      @keydown.mediaToggle = "togglePlayback"
-    >
+    <div id="main" tabindex="0" v-if="authenticated">
+      <global-events
+        @keydown.space="togglePlayback"
+        @keydown.j = "playNext"
+        @keydown.k = "playPrev"
+        @keydown.f = "search"
+        @keydown.mediaPrev = "playPrev"
+        @keydown.mediaNext = "playNext"
+        @keydown.mediaToggle = "togglePlayback"
+      />
       <site-header/>
       <main-wrapper/>
       <site-footer/>
