@@ -3,7 +3,7 @@
     <div class="logo">
       <img src="~#/../img/logo.svg" width="156" height="auto">
     </div>
-    <input v-if="inApp" v-model="url" type="url" placeholder="Koel's Host" autofocus required>
+    <input v-if="isDesktopApp" v-model="url" type="url" placeholder="Koel's Host" autofocus required>
     <input v-model="email" type="email" placeholder="Email Address" autofocus required>
     <input v-model="password" type="password" placeholder="Password" required>
     <button type="submit">Log In</button>
@@ -28,7 +28,7 @@ export default {
 
   methods: {
     async login () {
-      if (this.inApp) {
+      if (this.isDesktopApp) {
         axios.defaults.baseURL = `${this.url}/api`
       }
 
@@ -39,7 +39,7 @@ export default {
         // Reset the password so that the next login will have this field empty.
         this.password = ''
 
-        if (this.inApp) {
+        if (this.isDesktopApp) {
           ls.set('koelHost', this.url)
           ls.set('lastLoginEmail', this.email)
         }
