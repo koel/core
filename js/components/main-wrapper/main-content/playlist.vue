@@ -78,7 +78,7 @@ export default {
         return
       }
 
-      if (typeof this.playlist.populated === 'undefined') {
+      if (typeof playlist.populated === 'undefined') {
         this.populate(playlist)
       } else {
         this.playlist = playlist
