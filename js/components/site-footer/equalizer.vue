@@ -356,7 +356,8 @@ export default {
         position: absolute;
         width: 2px;
         height: 100%;
-        background: #fff;
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAEACAIAAAAbdUCLAAAA6klEQVR4AWL8z6DJAAOA6soYt2EgiIHkWgby/wdr0+4VA9BaJEHcHYYcnhtdafwuqU/Ch//QCQVXZ4dbDSQ+LG8AtqATjPZSsI8ZSaSWPMh7kq95eIti1xRck7wwdpCiTr88Y9yZao6xrTJB/Y5A/lzQrDaSdcdGWyWdLhS4wtEfi/mv1X0S/Kiavki3exIhOW240+sbcIwIqvk65475ZcpiSHjnlpNYansg2MfsrYDfn0ggO+vgjpkYR8WEbUhYwKOeJBSMjlFt08NvY0cmsu8YiMUxodrRjh5cB3cEJO+woMK7PSD18V/4Bvrlh63sYZe+AAAAAElFTkSuQmCC');
+        background-size: 2px;
         top: 0;
         left: 7px;
       }
