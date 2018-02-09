@@ -1,11 +1,11 @@
 <template>
   <div
     id="vizContainer"
-    :class="{ 'app-full-screen': isAppFullScreen }"
+    :class="{ 'fullscreen': isFullscreen }"
     ref="visualizerContainer"
-    @dblclick="toggleFullScreen"
+    @dblclick="toggleFullscreen"
   >
-    <global-events @keyup.esc="exitFullScreen"/>
+    <global-events @keyup.esc="exitFullscreen"/>
   </div>
 </template>
 
@@ -16,40 +16,34 @@ import { event } from '@/utils'
 export default {
   data () {
     return {
-      isFullScreen: false,
-      isAppFullScreen: false
+      isFullscreen: false
     }
   },
 
   methods: {
-    toggleFullScreen () {
-      if (KOEL_ENV === 'app') {
-        // since Electron doesn't support HTML5 fullscreen API, we do a faux version
-        this.isAppFullScreen = !this.isAppFullScreen
-        this.isFullScreen = !this.isFullScreen
-        return
-      }
-
-      let func
-      if (this.isFullScreen) {
-        func =
-          this.$refs.visualizerContainer.exitFullScreen ||
-          this.$refs.visualizerContainer.webkitExitFullScreen ||
-          this.$refs.visualizerContainer.mozExitFullScreen ||
-          this.$refs.visualizerContainer.msExitFullscreen
+    toggleFullscreen () {
+      if (this.isFullscreen) {
+        const func =
+          document.exitFullscreen ||
+          document.webkitExitFullscreen ||
+          document.mozExitFullScreen || // notice the uppercase S
+          document.mozExitFullscreen ||
+          document.msExitFullscreen
+        func && func.apply(document)
       } else {
-        func =
-          this.$refs.visualizerContainer.requestFullScreen ||
-          this.$refs.visualizerContainer.webkitRequestFullScreen ||
+        const func =
+          this.$refs.visualizerContainer.requestFullscreen ||
+          this.$refs.visualizerContainer.webkitRequestFullscreen ||
           this.$refs.visualizerContainer.mozRequestFullScreen ||
+          this.$refs.visualizerContainer.mozRequestFullscreen ||
           this.$refs.visualizerContainer.msRequestFullscreen
+        func && func.apply(this.$refs.visualizerContainer)
       }
-      func && func()
-      this.isFullScreen = !this.isFullScreen
+      this.isFullscreen = !this.isFullscreen
     },
 
     exitFullScreen () {
-      this.isFullScreen && this.toggleFullScreen()
+      this.isFullscreen && this.toggleFullscreen()
     }
   },
 
@@ -64,13 +58,8 @@ export default {
 <style lang="scss">
 @import "~#/partials/_vars.scss";
 
-.app-full-screen {
+// :fullscreen pseudo support is kind of buggy, so we use a class instead.
+#vizContainer.fullscreen {
   background: $colorMainBgr;
-  height: 100%;
-  width: 100%;
-  z-index: 9998;
-  position: fixed;
-  top: 0;
-  left: 0;
 }
 </style>
