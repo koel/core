@@ -1,5 +1,4 @@
 import isMobile from 'ismobilejs'
-import { each } from 'lodash'
 
 import { loadMainView } from './utils'
 import { artistStore, albumStore, songStore, queueStore, playlistStore, userStore } from './stores'
@@ -83,6 +82,10 @@ export default {
 
     '/youtube' () {
       loadMainView('youtubePlayer')
+    },
+
+    '/visualizer' () {
+      loadMainView('visualizer')
     }
   },
 
@@ -96,7 +99,7 @@ export default {
       return this.go('home')
     }
 
-    each(Object.keys(this.routes), route => {
+    Object.keys(this.routes).forEach(route => {
       const matches = window.location.hash.match(new RegExp(`^#!${route}$`))
       if (matches) {
         const [, ...params] = matches

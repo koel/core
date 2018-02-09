@@ -31,8 +31,9 @@
 import { cloneDeep } from 'lodash'
 import nouislider from 'nouislider'
 
-import { isAudioContextSupported, event, $ } from '@/utils'
+import { event, $ } from '@/utils'
 import { equalizerStore, preferenceStore as preferences } from '@/stores'
+import { audio as audioService } from '@/services'
 
 let context
 
@@ -75,23 +76,15 @@ export default {
   methods: {
     /**
      * Init the equalizer.
-     * @param  {Element} player The audio player's node.
      */
-    init (player) {
+    init () {
       const settings = equalizerStore.get()
 
-      const AudioContext = window.AudioContext ||
-        window.webkitAudioContext ||
-        window.mozAudioContext ||
-        window.oAudioContext ||
-        window.msAudioContext
-
-      context = new AudioContext()
-
+      context = audioService.getContext()
       this.preampGainNode = context.createGain()
       this.changePreampGain(settings.preamp)
 
-      const source = context.createMediaElementSource(player)
+      const source = audioService.getSource()
       source.connect(this.preampGainNode)
 
       let prevFilter = null
@@ -125,6 +118,9 @@ export default {
       prevFilter.connect(context.destination)
 
       this.$nextTick(this.createSliders)
+
+      document.audioSource = source
+      document.audioContext = context
     },
 
     /**
@@ -217,7 +213,7 @@ export default {
   },
 
   mounted () {
-    event.on('equalizer:init', player => isAudioContextSupported() && this.init(player))
+    event.on('equalizer:init', () => this.init())
   }
 }
 </script>

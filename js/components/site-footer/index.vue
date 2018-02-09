@@ -33,7 +33,9 @@
       <div class="other-controls" :class="{ 'with-gradient': prefs.showExtraPanel }">
         <div class="wrapper" v-koel-clickaway="closeEqualizer">
           <equalizer v-if="useEqualizer" v-show="showEqualizer"/>
-          <sound-bar v-show="song.playbackState === 'playing'"/>
+          <a href="#!/visualizer" title="Click for a marvelous visualizer!">
+            <sound-bar v-show="song.playbackState === 'playing'"/>
+          </a>
           <i v-if="song.id"
             class="like control fa fa-heart"
             :class="{ liked: song.liked }"

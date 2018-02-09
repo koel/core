@@ -5,7 +5,7 @@ import isMobile from 'ismobilejs'
 
 import { event, isMediaSessionSupported } from '@/utils'
 import { queueStore, sharedStore, userStore, songStore, preferenceStore as preferences } from '@/stores'
-import { socket } from '@/services'
+import { socket, audio as audioService } from '.'
 import config from '@/config'
 import router from '@/router'
 
@@ -84,8 +84,9 @@ export const playback = {
     // On init, set the volume to the value found in the local storage.
     this.setVolume(preferences.volume)
 
-    // Init the equalizer if supported.
-    event.emit('equalizer:init', this.player.media)
+    audioService.init(this.player.media)
+    event.emit('equalizer:init')
+    event.emit('visualizer:init')
 
     if (isMediaSessionSupported()) {
       navigator.mediaSession.setActionHandler('play', () => this.resume())

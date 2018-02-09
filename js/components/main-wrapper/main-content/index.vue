@@ -14,6 +14,7 @@
     <favorites v-show="view === 'favorites'"/>
     <profile v-show="view === 'profile'"/>
     <youtube-player v-if="sharedState.useYouTube" v-show="view === 'youtubePlayer'"/>
+    <visualizer v-show="view === 'visualizer'"/>
   </section>
 </template>
 
@@ -34,9 +35,11 @@ import playlist from './playlist.vue'
 import favorites from './favorites.vue'
 import profile from './profile.vue'
 import youtubePlayer from './youtube-player.vue'
+import visualizer from './visualizer.vue'
 
 export default {
-  components: { albums,
+  components: {
+    albums,
     album,
     artists,
     artist,
@@ -48,7 +51,9 @@ export default {
     playlist,
     favorites,
     profile,
-    youtubePlayer },
+    youtubePlayer,
+    visualizer
+  },
 
   data () {
     return {
