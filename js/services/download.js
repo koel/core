@@ -1,5 +1,11 @@
 import { playlistStore, favoriteStore } from '@/stores'
 import { ls } from '.'
+import { alerts } from '@/utils'
+
+let events
+if (KOEL_ENV === 'app') {
+  events = require('&/events').default
+}
 
 export const download = {
   /**
@@ -57,9 +63,15 @@ export const download = {
    */
   trigger (uri) {
     const sep = uri.includes('?') ? '&' : '?'
-    const iframe = document.createElement('iframe')
-    iframe.style.display = 'none'
-    iframe.setAttribute('src', `${window.BASE_URL}api/download/${uri}${sep}jwt-token=${ls.get('jwt-token')}`)
-    document.body.appendChild(iframe)
+    const url = `${window.BASE_URL}api/download/${uri}${sep}jwt-token=${ls.get('jwt-token')}`
+    if (KOEL_ENV === 'app') {
+      require('electron').ipcRenderer.send(events.DOWNLOAD, url)
+      alerts.success('Download started!')
+    } else {
+      const iframe = document.createElement('iframe')
+      iframe.style.display = 'none'
+      iframe.setAttribute('src', url)
+      document.body.appendChild(iframe)
+    }
   }
 }

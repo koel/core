@@ -40,7 +40,7 @@ export default {
         this.password = ''
 
         if (this.isDesktopApp) {
-          ls.set('koelHost', this.url)
+          ls.set('koelHost', this.url.endsWith('/') ? this.url : `${this.url}/`)
           ls.set('lastLoginEmail', this.email)
         }
 
@@ -56,7 +56,7 @@ export default {
       return
     }
 
-    this.url = ls.get('koelHost')
+    this.url = window.BASE_URL = ls.get('koelHost')
     this.email = ls.get('lastLoginEmail')
   }
 }
