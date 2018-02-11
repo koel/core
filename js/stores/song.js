@@ -287,7 +287,8 @@ export const songStore = {
    * @return {string}
    */
   getShareableUrl (song) {
-    return `${window.BASE_URL}#!/song/${song.id}`
+    const baseUrl = KOEL_ENV === 'app' ? ls.get('koelHost') : window.BASE_URL
+    return `${baseUrl}#!/song/${song.id}`
   },
 
   /**
