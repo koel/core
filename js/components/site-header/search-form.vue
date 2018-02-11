@@ -31,7 +31,7 @@ export default {
      * Limit the filter's execution rate using lodash's debounce.
      */
     filter: debounce(function () {
-      event.emit('filter:changed', this.q)
+      event.emit('filter:changed', this.q.trim())
     }, 200)
   },
 

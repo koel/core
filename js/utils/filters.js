@@ -58,21 +58,13 @@ export function filterBy (arr, search, ...keys) {
     return arr
   }
 
-  // cast to lowercase string
-  search = (`${search}`).toLowerCase()
+  search = `${search}`.toLowerCase()
 
-  const res = []
-
-  arr.forEach(item => {
-    keys.forEach(key => {
-      if (`${get(item, key)}`.toLowerCase().includes(search)) {
-        res.push(item)
-        return false
-      }
-    })
-  })
-
-  return res
+  return arr.reduce((res, item) => {
+    // use .some() because it will stop at a truthy value (res.push(item) will be truthy)
+    keys.some(key => `${get(item, key)}`.toLowerCase().includes(search) && res.push(item))
+    return res
+  }, [])
 }
 
 export function pluralize () {
