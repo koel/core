@@ -42,8 +42,10 @@ import { focusDirective, clickawayDirective } from './directives'
 import router from './router'
 
 let ipc
+let events
 if (KOEL_ENV === 'app') {
   ipc = require('electron').ipcRenderer
+  events = require('&/events').default
 }
 
 export default {
@@ -206,7 +208,7 @@ export default {
     },
 
     listenToGlobalShortcuts () {
-      ipc.on('shortcut', (e, msg) => {
+      ipc.on(events.GLOBAL_SHORTCUT, (e, msg) => {
         switch (msg) {
           case 'MediaNextTrack':
             playback.playNext()
