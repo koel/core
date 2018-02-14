@@ -1,6 +1,7 @@
 <template>
   <div class="side search" id="searchForm" :class="{ showing: showing }">
     <input type="search"
+      ref="input"
       :class="{ dirty: q }"
       @input="filter"
       placeholder="Search"
@@ -36,8 +37,14 @@ export default {
   },
 
   created () {
-    event.on('search:toggle', () => {
-      this.showing = !this.showing
+    event.on({
+      'search:toggle': () => {
+        this.showing = !this.showing
+      },
+      'search:focus': () => {
+        this.$refs.input.focus()
+        this.$refs.input.select()
+      }
     })
   }
 }

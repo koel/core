@@ -1,15 +1,7 @@
 <template>
   <div id="app" :class="{ desktop: isDesktopApp }">
     <div id="main" tabindex="0" v-if="authenticated">
-      <global-events
-        @keydown.space="togglePlayback"
-        @keydown.j = "playNext"
-        @keydown.k = "playPrev"
-        @keydown.f = "search"
-        @keydown.mediaPrev = "playPrev"
-        @keydown.mediaNext = "playNext"
-        @keydown.mediaToggle = "togglePlayback"
-      />
+      <hotkeys/>
       <site-header/>
       <main-wrapper/>
       <site-footer/>
@@ -28,28 +20,22 @@
 <script>
 import Vue from 'vue'
 
-import siteHeader from './components/site-header/index.vue'
-import siteFooter from './components/site-footer/index.vue'
-import mainWrapper from './components/main-wrapper/index.vue'
-import overlay from './components/shared/overlay.vue'
-import loginForm from './components/auth/login-form.vue'
-import editSongsForm from './components/modals/edit-songs-form.vue'
+import siteHeader from '@/components/site-header/index.vue'
+import siteFooter from '@/components/site-footer/index.vue'
+import mainWrapper from '@/components/main-wrapper/index.vue'
+import overlay from '@/components/shared/overlay.vue'
+import loginForm from '@/components/auth/login-form.vue'
+import editSongsForm from '@/components/modals/edit-songs-form.vue'
+import hotkeys from '@/components/hotkeys.vue'
 
-import { event, showOverlay, hideOverlay, forceReloadWindow, $, app as appUtils } from './utils'
-import { sharedStore, userStore, favoriteStore, queueStore, preferenceStore as preferences } from './stores'
-import { playback, ls, socket } from './services'
-import { focusDirective, clickawayDirective } from './directives'
-import router from './router'
-
-let ipc
-let events
-if (KOEL_ENV === 'app') {
-  ipc = require('electron').ipcRenderer
-  events = require('&/events').default
-}
+import { event, showOverlay, hideOverlay, forceReloadWindow, $, app as appUtils } from '@/utils'
+import { sharedStore, userStore, favoriteStore, queueStore, preferenceStore as preferences } from '@/stores'
+import { playback, ls, socket } from '@/services'
+import { focusDirective, clickawayDirective } from '@/directives'
+import router from '@/router'
 
 export default {
-  components: { siteHeader, siteFooter, mainWrapper, overlay, loginForm, editSongsForm },
+  components: { hotkeys, siteHeader, siteFooter, mainWrapper, overlay, loginForm, editSongsForm },
 
   data () {
     return {
@@ -117,67 +103,6 @@ export default {
     },
 
     /**
-     * Toggle playback when user presses Space key.
-     *
-     * @param {Object} e The keydown event
-     */
-    togglePlayback (e) {
-      if (e && $.is(e.target, 'input,textarea,button,select')) {
-        return true
-      }
-
-      // Whatever play/pause control is there, we blindly click it.
-      const play = document.querySelector('#mainFooter .play')
-      play ? play.click() : document.querySelector('#mainFooter .pause').click()
-
-      e && e.preventDefault()
-    },
-
-    /**
-     * Play the previous song when user presses K.
-     *
-     * @param {Object} e The keydown event
-     */
-    playPrev (e) {
-      if ($.is(e.target, 'input,textarea')) {
-        return true
-      }
-
-      playback.playPrev()
-      e.preventDefault()
-    },
-
-    /**
-     * Play the next song when user presses J.
-     *
-     * @param {Object} e The keydown event
-     */
-    playNext (e) {
-      if ($.is(e.target, 'input,textarea')) {
-        return true
-      }
-
-      playback.playNext()
-      e.preventDefault()
-    },
-
-    /**
-     * Put focus into the search field when user presses F.
-     *
-     * @param {Object} e The keydown event
-     */
-    search (e) {
-      if ($.is(e.target, 'input,textarea') || e.metaKey || e.ctrlKey) {
-        return true
-      }
-
-      const selectBox = document.querySelector('#searchForm input[type="search"]')
-      selectBox.focus()
-      selectBox.select()
-      e.preventDefault()
-    },
-
-    /**
      * Request for notification permission if it's not provided and the user is OK with notifs.
      */
     requestNotifPermission () {
@@ -207,26 +132,6 @@ export default {
       })
     },
 
-    listenToGlobalShortcuts () {
-      ipc.on(events.GLOBAL_SHORTCUT, (e, msg) => {
-        switch (msg) {
-          case 'MediaNextTrack':
-            playback.playNext()
-            break
-          case 'MediaPreviousTrack':
-            playback.playPrev()
-            break
-          case 'MediaStop':
-            playback.stop()
-            break
-          case 'MediaPlayPause':
-            const play = document.querySelector('#mainFooter .play')
-            play ? play.click() : document.querySelector('#mainFooter .pause').click()
-            break
-        }
-      })
-    },
-
     triggerMaximize: () => appUtils.triggerMaximize()
   },
 
@@ -250,21 +155,9 @@ export default {
 
       'koel:ready': () => {
         router.init()
-        KOEL_ENV === 'app' && this.listenToGlobalShortcuts()
       }
     })
   }
-}
-
-// Register our custom key codes
-Vue.config.keyCodes = {
-  a: 65,
-  j: 74,
-  k: 75,
-  f: 70,
-  mediaNext: 176,
-  mediaPrev: 177,
-  mediaToggle: 179
 }
 
 // …and the global directives

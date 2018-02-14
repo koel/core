@@ -9,6 +9,11 @@ import { socket, audio as audioService } from '.'
 import config from '@/config'
 import router from '@/router'
 
+let mainWin
+if (KOEL_ENV === 'app') {
+  mainWin = require('electron').remote.getCurrentWindow()
+}
+
 export const playback = {
   player: null,
   volumeInput: null,
@@ -168,7 +173,9 @@ export const playback = {
         body: `${song.album.name} – ${song.artist.name}`
       })
 
-      notif.onclick = () => window.focus()
+      notif.onclick = () => {
+        KOEL_ENV === 'app' ? mainWin.focus() : window.focus()
+      }
 
       // Close the notif after 5 secs.
       window.setTimeout(() => notif.close(), 5000)
