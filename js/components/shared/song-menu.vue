@@ -17,7 +17,11 @@
         <li class="separator"></li>
         <li class="favorite" @click="addSongsToFavorite">Favorites</li>
         <li class="separator" v-if="playlistState.playlists.length"></li>
-        <li class="playlist" v-for="p in playlistState.playlists" @click="addSongsToExistingPlaylist(p)">{{ p.name }}</li>
+        <li
+          class="playlist"
+          v-for="p in playlistState.playlists"
+          :key="p.id"
+          @click="addSongsToExistingPlaylist(p)">{{ p.name }}</li>
       </ul>
     </li>
     <li class="open-edit-form" v-if="isAdmin" @click="openEditForm">Edit</li>

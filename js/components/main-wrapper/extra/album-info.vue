@@ -26,6 +26,7 @@
             :album="album"
             :track="track"
             :index="idx"
+            :key="idx"
           />
         </ul>
       </section>

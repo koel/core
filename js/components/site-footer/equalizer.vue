@@ -3,7 +3,7 @@
     <div class="presets">
       <label class="select-wrapper">
         <select v-model="selectedPresetIndex">
-          <option v-for="p in presets" :value="p.id" v-once>{{ p.name }}</option>
+          <option v-for="p in presets" :value="p.id" :key="p.id" v-once>{{ p.name }}</option>
         </select>
       </label>
     </div>
@@ -19,7 +19,7 @@
         <span>-20</span>
       </span>
 
-      <span class="band amp" v-for="band in bands">
+      <span class="band amp" v-for="band in bands" :key="band.label">
         <span class="slider"></span>
         <label>{{ band.label }}</label>
       </span>

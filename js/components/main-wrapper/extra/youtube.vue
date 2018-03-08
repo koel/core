@@ -1,7 +1,10 @@
 <template>
   <div id="youtube-extra-wrapper">
     <template v-if="videos && videos.length">
-      <a class="video" v-for="video in videos" :href="`https://youtu.be/${video.id.videoId}`"
+      <a class="video"
+        v-for="video in videos"
+        :href="`https://youtu.be/${video.id.videoId}`"
+        :key="video.id.videoId"
         @click.prevent="play(video)">
         <div class="thumb">
           <img :src="video.snippet.thumbnails.default.url" width="90">

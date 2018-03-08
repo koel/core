@@ -10,7 +10,9 @@
       </template>
       <li class="favorites" v-if="config.favorites" @click="addSongsToFavorite">Favorites</li>
       <template v-if="config.playlists">
-        <li class="playlist" v-for="playlist in playlistState.playlists"
+        <li class="playlist"
+          v-for="playlist in playlistState.playlists"
+          :key="playlist.id"
           @click="addSongsToExistingPlaylist(playlist)">{{ playlist.name }}</li>
       </template>
     </ul>

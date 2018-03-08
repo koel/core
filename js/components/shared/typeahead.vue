@@ -13,7 +13,10 @@
       v-koel-clickaway="hideResults"
     >
     <ul class="result" v-show="showingResult">
-      <li v-for="item in displayedItems" @click.prevent="resultClick($event)">
+      <li
+        v-for="item in displayedItems"
+        :key="item"
+        @click.prevent="resultClick($event)">
         {{ item[options.displayKey] }}
       </li>
     </ul>
