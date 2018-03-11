@@ -91,9 +91,7 @@ export default {
      *
      * @param  {Object} e The dragleave event.
      */
-    removeDroppableState (e) {
-      $.removeClass(e.target, 'droppable')
-    },
+    removeDroppableState: e => $.removeClass(e.target, 'droppable'),
 
     /**
      * Add a "droppable" class and set the drop effect when an item is dragged over "Queue" menu.
@@ -134,22 +132,17 @@ export default {
   },
 
   created () {
-    event.on('main-content-view:load', view => {
+    event.on(event.$names.LOAD_MAIN_CONTENT, view => {
       this.currentView = view
-
       // Hide the sidebar if on mobile
-      if (isMobile.phone) {
-        this.showing = false
-      }
+      isMobile.phone && (this.showing = false)
     })
 
     /**
      * Listen to sidebar:toggle event to show or hide the sidebar.
      * This should only be triggered on a mobile device.
      */
-    event.on('sidebar:toggle', () => {
-      this.showing = !this.showing
-    })
+    event.on(event.$names.TOGGLE_SIDEBAR, () => (this.showing = !this.showing))
   }
 }
 </script>

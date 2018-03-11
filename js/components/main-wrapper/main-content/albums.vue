@@ -7,7 +7,7 @@
 
     <div ref="scroller" class="albums main-scroll-wrap" :class="`as-${viewMode}`" @scroll="scrolling">
       <album-item v-for="item in displayedItems" :album="item" :key="item.id"/>
-      <span class="item filler" v-for="n in 6" :key="n"/>
+      <span class="item filler" v-for="n in 6"></span>
       <to-top-button/>
     </div>
   </section>
@@ -51,12 +51,9 @@ export default {
   },
 
   created () {
-    event.on('koel:ready', () => {
-      this.albums = albumStore.all
-    })
-
-    event.on('filter:changed', q => {
-      this.q = q
+    event.on({
+      [event.$names.KOEL_READY]: () => (this.albums = albumStore.all),
+      [event.$names.FILTER_CHANGED]: q => (this.q = q)
     })
   }
 }

@@ -22,9 +22,7 @@ export default {
      * Close all submenus.
      */
     close () {
-      Array.from(this.$el.querySelectorAll('.submenu')).forEach(el => {
-        el.style.display = 'none'
-      })
+      Array.from(this.$el.querySelectorAll('.submenu')).forEach(el => (el.style.display = 'none'))
       this.shown = false
     },
 

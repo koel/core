@@ -1,6 +1,6 @@
 <template>
   <header id="mainHeader" @dblclick="triggerMaximize">
-    <h1 class="brand" v-once>{{ appTitle }}</h1>
+    <h1 class="brand" v-once>{{ appName }}</h1>
     <span class="hamburger" @click="toggleSidebar">
       <i class="fa fa-bars"></i>
     </span>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import config from '@/config'
+import { app as appConfig } from '@/config'
 import { event, app } from '@/utils'
 import searchForm from './search-form.vue'
 import userBadge from './user-badge.vue'
@@ -24,28 +24,14 @@ export default {
 
   data () {
     return {
-      appTitle: config.appTitle
+      appName: appConfig.name
     }
   },
 
   methods: {
-    /**
-     * No I'm not documenting this.
-     */
-    toggleSidebar () {
-      event.emit('sidebar:toggle')
-    },
-
-    /**
-     * or this.
-     */
-    toggleSearchForm () {
-      event.emit('search:toggle')
-    },
-
-    triggerMaximize () {
-      app.triggerMaximize()
-    }
+    toggleSidebar: () => event.emit(event.$names.TOGGLE_SIDEBAR),
+    toggleSearchForm: () => event.emit(event.$names.TOGGLE_SEARCH_FORM),
+    triggerMaximize: () => app.triggerMaximize()
   }
 }
 </script>

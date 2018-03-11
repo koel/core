@@ -61,7 +61,7 @@ export const download = {
    * @param  {string} uri The uri segment, corresponding to the song(s),
    *            artist, playlist, or album.
    */
-  trigger (uri) {
+  trigger: uri => {
     const sep = uri.includes('?') ? '&' : '?'
     const url = `${window.BASE_URL}api/download/${uri}${sep}jwt-token=${ls.get('jwt-token')}`
     if (KOEL_ENV === 'app') {

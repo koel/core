@@ -8,7 +8,7 @@ import { ls } from '@/services'
  * Responsible for all HTTP requests.
  */
 export const http = {
-  request (method, url, data, successCb = null, errorCb = null) {
+  request: (method, url, data, successCb = null, errorCb = null) => {
     axios.request({ url, data, method: method.toLowerCase() }).then(successCb).catch(errorCb)
   },
 
@@ -31,7 +31,7 @@ export const http = {
   /**
    * Init the service.
    */
-  init () {
+  init: () => {
     axios.defaults.baseURL = KOEL_ENV === 'app' ? `${ls.get('koelHost')}/api` : `${window.BASE_URL}api`
 
     // Intercept the request to make sure the token is injected into the header.
@@ -56,7 +56,7 @@ export const http = {
         // and we're not trying to login
         if (!(error.config.method === 'post' && /\/api\/me\/?$/.test(error.config.url))) {
           // the token must have expired. Log out.
-          event.emit('logout')
+          event.emit(event.$names.LOG_OUT)
         }
       }
 

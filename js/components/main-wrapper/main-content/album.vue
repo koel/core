@@ -90,9 +90,7 @@ export default {
      * and move all of them into another album.
      * We should then go back to the album list.
      */
-    'album.songs.length' (newSongCount) {
-      newSongCount || router.go('albums')
-    }
+    'album.songs.length': newSongCount => newSongCount || router.go('albums')
   },
 
   created () {
@@ -103,7 +101,7 @@ export default {
      * @param {String} view   The view name
      * @param {Object} album  The album object
      */
-    event.on('main-content-view:load', (view, album) => {
+    event.on(event.$names.LOAD_MAIN_CONTENT, (view, album) => {
       if (view === 'album') {
         this.info.showing = false
         this.album = album

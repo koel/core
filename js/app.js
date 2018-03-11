@@ -23,7 +23,5 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   render: h => h(App),
-  created () {
-    http.init()
-  }
+  created: () => http.init()
 })

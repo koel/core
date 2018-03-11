@@ -2,8 +2,8 @@
   <section id="usersWrapper">
     <h1 class="heading">
       <span>Users
-        <i class="fa fa-angle-down toggler" v-show="isPhone && !showingControls" @click="showingControls = true"/>
-        <i class="fa fa-angle-up toggler" v-show="isPhone && showingControls" @click.prevent="showingControls = false"/>
+        <i class="fa fa-angle-down toggler" v-show="isPhone && !showingControls" @click="showingControls = true"></i>
+        <i class="fa fa-angle-up toggler" v-show="isPhone && showingControls" @click.prevent="showingControls = false"></i>
       </span>
 
       <div class="buttons" v-show="!isPhone || showingControls">
@@ -16,7 +16,7 @@
     <div class="main-scroll-wrap">
       <div class="users">
         <user-item v-for="user in state.users" :user="user" @editUser="editUser" :key="user.id"/>
-        <article class="user-item" v-for="n in 6" :key="n"/>
+        <article class="user-item" v-for="n in 6"></article>
       </div>
     </div>
 

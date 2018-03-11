@@ -25,7 +25,7 @@ describe('components/main-wrapper/main-content/artist', () => {
 
   it('renders upon receiving event', () => {
     const wrapper = shallow(Component)
-    event.emit('main-content-view:load', 'artist', artist)
+    event.emit('LOAD_MAIN_CONTENT', 'artist', artist)
     Vue.nextTick(() => {
       const html = wrapper.html()
       html.should.contain(artist.name)

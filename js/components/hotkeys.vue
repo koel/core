@@ -36,6 +36,30 @@ Vue.config.keyCodes = {
   mediaToggle: 179
 }
 
+/**
+ * Listen to the global shortcuts (media keys).
+ * Only works in the app.
+ */
+const listenToGlobalShortcuts = () => {
+  ipc.on(events.GLOBAL_SHORTCUT, (e, msg) => {
+    switch (msg) {
+      case 'MediaNextTrack':
+        playback.playNext()
+        break
+      case 'MediaPreviousTrack':
+        playback.playPrev()
+        break
+      case 'MediaStop':
+        playback.stop()
+        break
+      case 'MediaPlayPause':
+        const play = document.querySelector('#mainFooter .play')
+        play ? play.click() : document.querySelector('#mainFooter .pause').click()
+        break
+    }
+  })
+}
+
 export default {
   methods: {
     /**
@@ -43,7 +67,7 @@ export default {
      *
      * @param {Object} e The keydown event
      */
-    togglePlayback (e) {
+    togglePlayback: e => {
       if (e && $.is(e.target, 'input,textarea,button,select')) {
         return true
       }
@@ -60,7 +84,7 @@ export default {
      *
      * @param {Object} e The keydown event
      */
-    playPrev (e) {
+    playPrev: e => {
       if ($.is(e.target, 'input,textarea')) {
         return true
       }
@@ -74,7 +98,7 @@ export default {
      *
      * @param {Object} e The keydown event
      */
-    playNext (e) {
+    playNext: e => {
       if ($.is(e.target, 'input,textarea')) {
         return true
       }
@@ -88,19 +112,19 @@ export default {
      *
      * @param {Object} e The keydown event
      */
-    search (e) {
+    search: e => {
       if ($.is(e.target, 'input,textarea') || e.metaKey || e.ctrlKey) {
         return true
       }
 
       e.preventDefault()
-      event.emit('search:focus')
+      event.emit(event.$names.FOCUS_SEARCH_FIELD)
     },
 
     /**
      * Like/unlike the current song when use presses L.
      */
-    toggleLike (e) {
+    toggleLike: e => {
       if ($.is(e.target, 'input,textarea')) {
         return true
       }
@@ -110,36 +134,10 @@ export default {
       }
 
       favoriteStore.toggleOne(queueStore.current)
-      socket.broadcast('song', songStore.generateDataToBroadcast(queueStore.current))
-    },
-
-    /**
-     * Listen to the global shortcuts (media keys).
-     * Only works in the app.
-     */
-    listenToGlobalShortcuts () {
-      ipc.on(events.GLOBAL_SHORTCUT, (e, msg) => {
-        switch (msg) {
-          case 'MediaNextTrack':
-            playback.playNext()
-            break
-          case 'MediaPreviousTrack':
-            playback.playPrev()
-            break
-          case 'MediaStop':
-            playback.stop()
-            break
-          case 'MediaPlayPause':
-            const play = document.querySelector('#mainFooter .play')
-            play ? play.click() : document.querySelector('#mainFooter .pause').click()
-            break
-        }
-      })
+      socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current))
     }
   },
 
-  created () {
-    KOEL_ENV === 'app' && this.listenToGlobalShortcuts()
-  }
+  created: () => KOEL_ENV === 'app' && listenToGlobalShortcuts()
 }
 </script>

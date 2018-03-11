@@ -98,7 +98,7 @@ export const userStore = {
    * @param  {String}   email
    * @param  {String}   password
    */
-  login (email, password) {
+  login: (email, password) => {
     NProgress.start()
 
     return new Promise((resolve, reject) => {
@@ -111,7 +111,7 @@ export const userStore = {
   /**
    * Log the current user out.
    */
-  logout () {
+  logout: () => {
     return new Promise((resolve, reject) => {
       http.delete('me', {}, ({ data }) => {
         resolve(data)
@@ -122,7 +122,7 @@ export const userStore = {
   /**
    * Get the current user's profile.
    */
-  getProfile () {
+  getProfile: () => {
     return new Promise((resolve, reject) => {
       http.get('me', ({ data }) => {
         resolve(data)

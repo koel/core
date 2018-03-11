@@ -1,15 +1,10 @@
 import alertify from 'alertify.js'
 
 const alerts = {
-  alert (msg) {
-    alertify.alert(msg)
-  },
+  alert: msg => alertify.alert(msg),
+  confirm: (msg, okFunc, cancelFunc = null) => alertify.confirm(msg, okFunc, cancelFunc),
 
-  confirm (msg, okFunc, cancelFunc = null) {
-    alertify.confirm(msg, okFunc, cancelFunc)
-  },
-
-  log (msg, type, cb = null) {
+  log: (msg, type, cb = null) => {
     alertify.logPosition('top right')
     alertify.closeLogOnClick(true)
     switch (type) {

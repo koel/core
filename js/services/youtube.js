@@ -26,10 +26,10 @@ export const youtube = {
   /**
    * Play a YouTube video.
    *
-   * @param  {Object} vide The video object
+   * @param  {Object} video The video object
    */
-  play (video) {
-    event.emit('youtube:play', {
+  play: video => {
+    event.emit(event.$names.PLAY_YOUTUBE_VIDEO, {
       id: video.id.videoId,
       title: video.snippet.title
     })

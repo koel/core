@@ -8,7 +8,7 @@ export const songInfo = {
    *
    * @param  {Object}   song
    */
-  fetch (song) {
+  fetch: song => {
     return new Promise((resolve, reject) => {
       if (song.infoRetrieved) {
         resolve(song)

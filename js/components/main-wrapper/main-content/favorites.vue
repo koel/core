@@ -58,9 +58,7 @@ export default {
     /**
      * Download all favorite songs.
      */
-    download () {
-      download.fromFavorites()
-    }
+    download: () => download.fromFavorites()
   }
 }
 </script>

@@ -65,9 +65,7 @@ export default {
 
   created () {
     event.on({
-      'main-content-view:load': view => {
-        this.view = view
-      },
+      [event.$names.LOAD_MAIN_CONTENT]: view => (this.view = view),
 
       /**
        * When a new song is played, find its cover for the translucent effect.
@@ -76,7 +74,7 @@ export default {
        *
        * @return {Boolean}
        */
-      'song:played': song => {
+      [event.$names.SONG_PLAYED]: song => {
         this.albumCover = song.album.cover === albumStore.stub.cover ? null : song.album.cover
       }
     })

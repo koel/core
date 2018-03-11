@@ -16,7 +16,7 @@ describe('components/main-wrapper/main-content/playlist', () => {
     const playlist = factory('playlist', { songs: [] })
     shallow(Component)
     const fetchSongsStub = sinon.stub(playlistStore, 'fetchSongs')
-    event.emit('main-content-view:load', 'playlist', playlist)
+    event.emit('LOAD_MAIN_CONTENT', 'playlist', playlist)
     fetchSongsStub.calledWith(playlist).should.be.true
     fetchSongsStub.restore()
   })

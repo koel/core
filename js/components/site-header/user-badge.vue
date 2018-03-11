@@ -23,9 +23,7 @@ export default {
   },
 
   methods: {
-    logout () {
-      event.emit('logout')
-    }
+    logout: () => event.emit(event.$names.LOG_OUT)
   }
 }
 </script>

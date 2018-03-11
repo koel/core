@@ -10,24 +10,24 @@
       <thead>
         <tr>
           <th @click="sort('song.track')" class="track-number">#
-            <i class="fa fa-angle-down" v-show="sortKey === 'song.track' && order > 0"/>
-            <i class="fa fa-angle-up" v-show="sortKey === 'song.track' && order < 0"/>
+            <i class="fa fa-angle-down" v-show="sortKey === 'song.track' && order > 0"></i>
+            <i class="fa fa-angle-up" v-show="sortKey === 'song.track' && order < 0"></i>
           </th>
           <th @click="sort('song.title')" class="title">Title
-            <i class="fa fa-angle-down" v-show="sortKey === 'song.title' && order > 0"/>
-            <i class="fa fa-angle-up" v-show="sortKey === 'song.title' && order < 0"/>
+            <i class="fa fa-angle-down" v-show="sortKey === 'song.title' && order > 0"></i>
+            <i class="fa fa-angle-up" v-show="sortKey === 'song.title' && order < 0"></i>
           </th>
           <th @click="sort(['song.album.artist.name', 'song.album.name', 'song.track'])" class="artist">Artist
-            <i class="fa fa-angle-down" v-show="sortingByArtist && order > 0"/>
-            <i class="fa fa-angle-up" v-show="sortingByArtist && order < 0"/>
+            <i class="fa fa-angle-down" v-show="sortingByArtist && order > 0"></i>
+            <i class="fa fa-angle-up" v-show="sortingByArtist && order < 0"></i>
           </th>
           <th @click="sort(['song.album.name', 'song.track'])" class="album">Album
-            <i class="fa fa-angle-down" v-show="sortingByAlbum && order > 0"/>
-            <i class="fa fa-angle-up" v-show="sortingByAlbum && order < 0"/>
+            <i class="fa fa-angle-down" v-show="sortingByAlbum && order > 0"></i>
+            <i class="fa fa-angle-up" v-show="sortingByAlbum && order < 0"></i>
           </th>
           <th @click="sort('song.length')" class="time">Time
-            <i class="fa fa-angle-down" v-show="sortKey === 'song.length' && order > 0"/>
-            <i class="fa fa-angle-up" v-show="sortKey === 'song.length' && order < 0"/>
+            <i class="fa fa-angle-down" v-show="sortKey === 'song.length' && order > 0"></i>
+            <i class="fa fa-angle-up" v-show="sortKey === 'song.length' && order < 0"></i>
           </th>
           <th class="play"></th>
         </tr>
@@ -104,7 +104,7 @@ export default {
     },
 
     selectedSongs (val) {
-      event.emit('setSelectedSongs', val, this.$parent)
+      event.emit(event.$names.SET_SELECTED_SONGS, val, this.$parent)
     }
   },
 
@@ -138,7 +138,7 @@ export default {
       }
 
       // Update the song count and duration status on parent.
-      event.emit('updateMeta', {
+      event.emit(event.$names.UPDATE_META, {
         songCount: this.items.length,
         totalLength: songStore.getFormattedLength(this.items)
       }, this.$parent)
@@ -479,11 +479,9 @@ export default {
   created () {
     event.on({
       /**
-       * Listen to 'filter:changed' event to filter the current list.
+       * Listen to "filter changed" event to filter the current list.
        */
-      'filter:changed': q => {
-        this.q = q
-      }
+      [event.$names.FILTER_CHANGED]: q => (this.q = q)
     })
   }
 }

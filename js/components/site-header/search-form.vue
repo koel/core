@@ -32,16 +32,14 @@ export default {
      * Limit the filter's execution rate using lodash's debounce.
      */
     filter: debounce(function () {
-      event.emit('filter:changed', this.q.trim())
+      event.emit(event.$names.FILTER_CHANGED, this.q.trim())
     }, 200)
   },
 
   created () {
     event.on({
-      'search:toggle': () => {
-        this.showing = !this.showing
-      },
-      'search:focus': () => {
+      [event.$names.TOGGLE_SEARCH_FORM]: () => (this.showing = !this.showing),
+      [event.$names.FOCUS_SEARCH_FIELD]: () => {
         this.$refs.input.focus()
         this.$refs.input.select()
       }

@@ -178,11 +178,9 @@ export default {
      * Change the gain value for a band/filter.
      *
      * @param  {Object} filter The filter object
-     * @param  {Object} value  Value of the gain, in dB.
+     * @param  {Number} value  Value of the gain, in dB.
      */
-    changeFilterGain (filter, value) {
-      filter.gain.setTargetAtTime(value, context.currentTime, 0.01)
-    },
+    changeFilterGain: (filter, value) => filter.gain.setTargetAtTime(value, context.currentTime, 0.01),
 
     /**
      * Load a preset when the user select it from the dropdown.
@@ -213,7 +211,7 @@ export default {
   },
 
   mounted () {
-    event.on('equalizer:init', () => this.init())
+    event.on(event.$names.INIT_EQUALIZER, () => this.init())
   }
 }
 </script>

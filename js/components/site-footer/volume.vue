@@ -1,8 +1,8 @@
 <template>
   <span class="volume control" id="volume">
-    <i class="fa fa-volume-off unmute" @click.prevent="unmute" v-if="muted"/>
-    <i class="fa fa-volume-up mute" @click.prevent="mute" v-else/>
-    <input type="range" id="volumeRange" max="10" step="0.1"
+    <i class="fa fa-volume-off unmute" @click.prevent="unmute" v-if="muted"></i>
+    <i class="fa fa-volume-up mute" @click.prevent="mute" v-else></i>
+    <input title="Volume" type="range" id="volumeRange" max="10" step="0.1"
       @change="broadcastVolume" class="plyr__volume"
       @input="setVolume"
     >
@@ -11,6 +11,7 @@
 
 <script>
 import { playback, socket } from '@/services'
+import { event } from '@/utils'
 
 export default {
   data () {
@@ -52,9 +53,7 @@ export default {
      *
      * @param  {Event} e
      */
-    broadcastVolume (e) {
-      socket.broadcast('volume:changed', parseFloat(e.target.value))
-    }
+    broadcastVolume: e => socket.broadcast(event.$names.SOCKET_VOLUME_CHANGED, parseFloat(e.target.value))
   }
 }
 </script>

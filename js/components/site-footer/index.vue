@@ -1,7 +1,7 @@
 <template>
   <footer id="mainFooter">
     <div class="side player-controls" id="playerControls">
-      <i class="prev fa fa-step-backward control" @click.prevent="playPrev"/>
+      <i class="prev fa fa-step-backward control" @click.prevent="playPrev"></i>
 
       <span class="play control" v-if="song.playbackState !== 'playing'" @click.prevent="resume">
         <i class="fa fa-play"></i>
@@ -10,12 +10,12 @@
         <i class="fa fa-pause"></i>
       </span>
 
-      <i class="next fa fa-step-forward control" @click.prevent="playNext"/>
+      <i class="next fa fa-step-forward control" @click.prevent="playNext"></i>
     </div>
 
     <div class="media-info-wrap">
       <div class="middle-pane">
-        <span class="album-thumb" v-if="cover" :style="{ backgroundImage: 'url('+cover+')' }"/>
+        <span class="album-thumb" v-if="cover" :style="{ backgroundImage: 'url('+cover+')' }"></span>
 
         <div class="progress" id="progressPane">
           <h3 class="title">{{ song.title }}</h3>
@@ -39,14 +39,14 @@
           <i v-if="song.id"
             class="like control fa fa-heart"
             :class="{ liked: song.liked }"
-            @click.prevent="like"/>
+            @click.prevent="like"></i>
           <span class="control info"
             @click.prevent="toggleExtraPanel"
             :class="{ active: prefs.showExtraPanel }">Info</span>
           <i class="fa fa-sliders control equalizer"
             v-if="useEqualizer"
             @click="showEqualizer = !showEqualizer"
-            :class="{ active: showEqualizer }"/>
+            :class="{ active: showEqualizer }"></i>
           <a v-else class="queue control" :class="{ active: viewingQueue }" href="#!/queue">
             <i class="fa fa-list-ol"></i>
           </a>
@@ -90,40 +90,16 @@ export default {
 
   components: { soundBar, equalizer, volume },
 
-  computed: {
-    /**
-     * Get the previous song in queue.
-     *
-     * @return {?Object}
-     */
-    prev () {
-      return playback.previous
-    },
-
-    /**
-     * Get the next song in queue.
-     *
-     * @return {?Object}
-     */
-    next () {
-      return playback.next
-    }
-  },
-
   methods: {
     /**
      * Play the previous song in queue.
      */
-    playPrev () {
-      return playback.playPrev()
-    },
+    playPrev: () => playback.playPrev(),
 
     /**
      * Play the next song in queue.
      */
-    playNext () {
-      return playback.playNext()
-    },
+    playNext: () => playback.playNext(),
 
     /**
      * Resume the current song.
@@ -136,16 +112,12 @@ export default {
     /**
      * Pause the playback.
      */
-    pause () {
-      playback.pause()
-    },
+    pause: () => playback.pause(),
 
     /**
      * Change the repeat mode.
      */
-    changeRepeatMode () {
-      return playback.changeRepeatMode()
-    },
+    changeRepeatMode: () => playback.changeRepeatMode(),
 
     /**
      * Like the current song.
@@ -153,7 +125,7 @@ export default {
     like () {
       if (this.song.id) {
         favoriteStore.toggleOne(this.song)
-        socket.broadcast('song', songStore.generateDataToBroadcast(this.song))
+        socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(this.song))
       }
     },
 
@@ -178,7 +150,7 @@ export default {
        *
        * @return {Boolean}
        */
-      'song:played': song => {
+      [event.$names.SONG_PLAYED]: song => {
         this.song = song
         this.cover = this.song.album.cover
       },
@@ -187,9 +159,7 @@ export default {
        * Listen to main-content-view:load event and highlight the Queue icon if
        * the Queue screen is being loaded.
        */
-      'main-content-view:load': view => {
-        this.viewingQueue = view === 'queue'
-      }
+      [event.$names.LOAD_MAIN_CONTENT]: view => (this.viewingQueue = view === 'queue')
     })
   }
 }

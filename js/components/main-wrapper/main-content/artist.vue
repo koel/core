@@ -82,11 +82,7 @@ export default {
      * and move all of them to another artist (thus delete this artist entirely).
      * We should then go back to the artist list.
      */
-    'artist.albums.length' (newVal) {
-      if (!newVal) {
-        router.go('artists')
-      }
-    }
+    'artist.albums.length': newAlbumCount => newAlbumCount || router.go('artists')
   },
 
   created () {
@@ -97,7 +93,7 @@ export default {
      * @param {String} view   The view's name
      * @param {Object} artist
      */
-    event.on('main-content-view:load', (view, artist) => {
+    event.on(event.$names.LOAD_MAIN_CONTENT, (view, artist) => {
       if (view === 'artist') {
         this.info.showing = false
         this.artist = artist

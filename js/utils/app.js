@@ -6,9 +6,7 @@ if (KOEL_ENV === 'app') {
 }
 
 const app = {
-  triggerMaximize () {
-    mainWindow && (mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize())
-  }
+  triggerMaximize: () => mainWindow && (mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize())
 }
 
 export { app }

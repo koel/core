@@ -96,7 +96,7 @@ export default {
         this.subscribeToBroadcastedEvents()
 
         // Let all other components know we're ready.
-        event.emit('koel:ready')
+        event.emit(event.$names.KOEL_READY)
       } catch (err) {
         this.authenticated = false
       }
@@ -107,11 +107,7 @@ export default {
      */
     requestNotifPermission () {
       if (window.Notification && preferences.notify && window.Notification.permission !== 'granted') {
-        window.Notification.requestPermission(result => {
-          if (result === 'denied') {
-            preferences.notify = false
-          }
-        })
+        window.Notification.requestPermission(result => (result === 'denied' && (preferences.notify = false)))
       }
     },
 
@@ -127,7 +123,7 @@ export default {
      * Subscribes to the events broadcasted e.g. from the remote controller.
      */
     subscribeToBroadcastedEvents () {
-      socket.listen('favorite:toggle', () => {
+      socket.listen(event.$names.SOCKET_TOGGLE_FAVORITE, () => {
         queueStore.current && favoriteStore.toggleOne(queueStore.current)
       })
     },
@@ -142,20 +138,18 @@ export default {
        *
        * @param {Array.<Object>} An array of songs to edit
        */
-      'songs:edit': songs => this.$refs.editSongsForm.open(songs),
+      [event.$names.EDIT_SONGS]: songs => this.$refs.editSongsForm.open(songs),
 
       /**
        * Log the current user out and reset the application state.
        */
-      async logout () {
+      async [event.$names.LOG_OUT] () {
         await userStore.logout()
         ls.remove('jwt-token')
         forceReloadWindow()
       },
 
-      'koel:ready': () => {
-        router.init()
-      }
+      [event.$names.KOEL_READY]: () => router.init()
     })
   }
 }

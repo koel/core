@@ -105,9 +105,7 @@ export default {
      *
      * @param {Object} e The dragleave event.
      */
-    removeDroppableState (e) {
-      $.removeClass(e.target, 'droppable')
-    },
+    removeDroppableState: e => $.removeClass(e.target, 'droppable'),
 
     /**
      * Add a "droppable" class and set the drop effect when an item is dragged over the playlist's
@@ -153,7 +151,7 @@ export default {
   },
 
   created () {
-    event.on('main-content-view:load', (view, playlist) => {
+    event.on(event.$names.LOAD_MAIN_CONTENT, (view, playlist) => {
       if (view === 'favorites') {
         this.active = this.isFavorites
       } else if (view === 'playlist') {

@@ -73,16 +73,12 @@ export default {
      * @param {String} view   The view's name.
      * @param {Object} playlist
      */
-    event.on('main-content-view:load', (view, playlist) => {
+    event.on(event.$names.LOAD_MAIN_CONTENT, (view, playlist) => {
       if (view !== 'playlist') {
         return
       }
 
-      if (typeof playlist.populated === 'undefined') {
-        this.populate(playlist)
-      } else {
-        this.playlist = playlist
-      }
+      typeof playlist.populated === 'undefined' ? this.populate(playlist) : (this.playlist = playlist)
     })
   },
 

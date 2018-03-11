@@ -74,7 +74,7 @@ export default {
     /**
      * Navigate up the result list.
      */
-    up (e) {
+    up () {
       const selected = this.$el.querySelector('.result li.selected')
 
       if (!selected || !selected.previousElementSibling) {

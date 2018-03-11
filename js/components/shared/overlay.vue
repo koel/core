@@ -2,12 +2,12 @@
   <div id="overlay" v-if="state.showing" class="overlay" :class="state.type">
     <div class="display">
       <sound-bar v-if="state.type === 'loading'"/>
-      <i class="fa fa-exclamation-circle" v-show="state.type === 'error'"/>
-      <i class="fa fa-exclamation-triangle" v-show="state.type === 'warning'"/>
-      <i class="fa fa-info-circle" v-show="state.type === 'info'"/>
-      <i class="fa fa-check-circle" v-show="state.type === 'success'"/>
+      <i class="fa fa-exclamation-circle" v-show="state.type === 'error'"></i>
+      <i class="fa fa-exclamation-triangle" v-show="state.type === 'warning'"></i>
+      <i class="fa fa-info-circle" v-show="state.type === 'info'"></i>
+      <i class="fa fa-check-circle" v-show="state.type === 'success'"></i>
 
-      <span class="message" v-html="state.message"/>
+      <span class="message" v-html="state.message"></span>
     </div>
 
     <button class="btn-dismiss" v-if="state.dismissable" @click.prevent="state.showing = false">Close</button>
@@ -44,9 +44,7 @@ export default {
     /**
      * Shows the overlay.
      *
-     * @param {String}  message   The message to display.
-     * @param {String}  type    (loading|success|info|warning|error)
-     * @param {Boolean} dismissable Whether to show the Close button
+     * @param {Object} options Options for the overlay
      */
     show (options) {
       assign(this.state, options)
@@ -63,8 +61,8 @@ export default {
 
   created () {
     event.on({
-      'overlay:show': options => this.show(options),
-      'overlay:hide': () => this.hide()
+      [event.$names.SHOW_OVERLAY]: options => this.show(options),
+      [event.$names.HIDE_OVERLAY]: () => this.hide()
     })
   }
 }

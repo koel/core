@@ -47,7 +47,7 @@ describe('components/main-wrapper/extra/index', () => {
     shallow(ExtraSidebar)
     const song = factory('song')
     const fetchSongInfoStub = sinon.stub(songInfo, 'fetch').callsFake(() => song)
-    event.emit('song:played', song)
+    event.emit('SONG_PLAYED', song)
     fetchSongInfoStub.calledWith(song).should.be.true
     fetchSongInfoStub.restore()
   })

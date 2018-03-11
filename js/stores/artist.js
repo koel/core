@@ -109,9 +109,7 @@ export const artistStore = {
    *
    * @return {Boolean}
    */
-  isVariousArtists (artist) {
-    return artist.id === VARIOUS_ARTISTS_ID
-  },
+  isVariousArtists: artist => artist.id === VARIOUS_ARTISTS_ID,
 
   /**
    * Determine if the artist is the special "Unknown Artist".
@@ -120,9 +118,7 @@ export const artistStore = {
    *
    * @return {Boolean}
    */
-  isUnknownArtist (artist) {
-    return artist.id === UNKNOWN_ARTIST_ID
-  },
+  isUnknownArtist: artist => artist.id === UNKNOWN_ARTIST_ID,
 
   /**
    * Get all songs performed by an artist.
@@ -131,9 +127,7 @@ export const artistStore = {
    *
    * @return {Array.<Object>}
    */
-  getSongsByArtist (artist) {
-    return artist.songs
-  },
+  getSongsByArtist: artist => artist.songs,
 
   /**
    * Get top n most-played artists.

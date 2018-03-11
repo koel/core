@@ -1,4 +1,4 @@
-import config from '@/config'
+import { app } from '@/config'
 import artist from './artist'
 
 export default {
@@ -6,7 +6,7 @@ export default {
   id: 0,
   artist_id: 0,
   name: '',
-  cover: config.unknownCover,
+  cover: app.unknownCover,
   playCount: 0,
   length: 0,
   fmtLength: '00:00',

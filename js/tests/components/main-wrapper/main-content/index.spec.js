@@ -10,7 +10,7 @@ describe('components/main-wrapper/main-content/index', () => {
         cover: 'http://foo/bar.jpg'
       })
     })
-    event.emit('song:played', song)
+    event.emit('SONG_PLAYED', song)
     wrapper.vm.albumCover.should.equal(song.album.cover)
   })
 })

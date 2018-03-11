@@ -54,7 +54,7 @@ export default {
   },
 
   created () {
-    event.on('koel:ready', () => {
+    event.on(event.$names.KOEL_READY, () => {
       this.mutatedMode = preferences[this.preferenceKey]
 
       // If the value is empty, we set a default mode.

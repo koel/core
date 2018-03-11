@@ -2,7 +2,7 @@
   <transition name="fade">
     <div class="to-top-btn-wrapper" v-show="showing">
       <button @click="scrollToTop">
-        <i class="fa fa-arrow-circle-up"/> Top
+        <i class="fa fa-arrow-circle-up"></i> Top
       </button>
     </div>
   </transition>
@@ -20,9 +20,7 @@ export default {
 
   methods: {
     scrollToTop () {
-      $.scrollTo(this.$el.parentNode, 0, 500, () => {
-        this.showing = false
-      })
+      $.scrollTo(this.$el.parentNode, 0, 500, () => (this.showing = false))
     }
   },
 

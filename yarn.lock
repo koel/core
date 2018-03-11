@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@phanan/vuebus@phanan/vuebus":
+  version "1.0.0"
+  resolved "https://codeload.github.com/phanan/vuebus/tar.gz/8a6a4836a4e2a2b6737d7402d087cdde59e253f3"
+
 "@vue/test-utils@^1.0.0-beta.10":
   version "1.0.0-beta.11"
   resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-1.0.0-beta.11.tgz#adc18a69d3785da039e60fb77cbc8e968f34ecdd"
@@ -6472,6 +6476,9 @@ vue-virtual-scroller@^0.5.0:
 vue@^2.1.6, vue@^2.5.0:
   version "2.5.13"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.13.tgz#95bd31e20efcf7a7f39239c9aa6787ce8cf578e1"
+
+"vuebus@file:../../../../vuebus":
+  version "1.0.0"
 
 vuequery@^1.0.0:
   version "1.0.0"

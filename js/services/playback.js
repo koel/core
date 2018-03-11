@@ -6,7 +6,7 @@ import isMobile from 'ismobilejs'
 import { event, isMediaSessionSupported } from '@/utils'
 import { queueStore, sharedStore, userStore, songStore, preferenceStore as preferences } from '@/stores'
 import { socket, audio as audioService } from '.'
-import config from '@/config'
+import { app } from '@/config'
 import router from '@/router'
 
 let mainWin
@@ -90,8 +90,8 @@ export const playback = {
     this.setVolume(preferences.volume)
 
     audioService.init(this.player.media)
-    event.emit('equalizer:init')
-    event.emit('visualizer:init')
+    event.emit(event.$names.INIT_EQUALIZER)
+    event.emit(event.$names.INIT_VISUALIZER)
 
     if (isMediaSessionSupported()) {
       navigator.mediaSession.setActionHandler('play', () => this.resume())
@@ -100,23 +100,23 @@ export const playback = {
       navigator.mediaSession.setActionHandler('nexttrack', () => this.playNext())
     }
 
-    socket.listen('playback:toggle', () => this.toggle())
-      .listen('playback:next', () => this.playNext())
-      .listen('playback:prev', () => this.playPrev())
-      .listen('status:get', () => {
+    socket.listen(event.$names.SOCKET_TOGGLE_PLAYBACK, () => this.toggle())
+      .listen(event.$names.SOCKET_PLAY_NEXT, () => this.playNext())
+      .listen(event.$names.SOCKET_PLAY_PREV, () => this.playPrev())
+      .listen(event.$names.SOCKET_GET_STATUS, () => {
         const data = queueStore.current ? songStore.generateDataToBroadcast(queueStore.current) : {}
         data.volume = this.volumeInput.value
-        socket.broadcast('status', data)
+        socket.broadcast(event.$names.SOCKET_STATUS, data)
       })
-      .listen('song:getcurrent', () => {
+      .listen(event.$names.SOCKET_GET_CURRENT_SONG, () => {
         socket.broadcast(
-          'song',
+          event.$names.SOCKET_SONG,
           queueStore.current
             ? songStore.generateDataToBroadcast(queueStore.current)
             : { song: null }
         )
       })
-      .listen('volume:set', ({ volume }) => this.setVolume(volume))
+      .listen(event.$names.SOCKET_SET_VOLUME, ({ volume }) => this.setVolume(volume))
 
     this.initialized = true
   },
@@ -149,7 +149,7 @@ export const playback = {
     // the audio media object and cause our equalizer to malfunction.
     this.player.media.src = songStore.getSourceUrl(song)
 
-    document.title = `${song.title} ♫ ${config.appTitle}`
+    document.title = `${song.title} ♫ ${app.name}`
     document.querySelector('.plyr audio').setAttribute('title', `${song.artist.name} - ${song.title}`)
 
     // We'll just "restart" playing the song, which will handle notification, scrobbling etc.
@@ -173,9 +173,7 @@ export const playback = {
         body: `${song.album.name} – ${song.artist.name}`
       })
 
-      notif.onclick = () => {
-        KOEL_ENV === 'app' ? mainWin.focus() : window.focus()
-      }
+      notif.onclick = () => KOEL_ENV === 'app' ? mainWin.focus() : window.focus()
 
       // Close the notif after 5 secs.
       window.setTimeout(() => notif.close(), 5000)
@@ -210,9 +208,9 @@ export const playback = {
 
     song.registeredPlayCount = false
 
-    event.emit('song:played', song)
+    event.emit(event.$names.SONG_PLAYED, song)
 
-    socket.broadcast('song', songStore.generateDataToBroadcast(song))
+    socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(song))
 
     this.player.restart()
     this.player.play()
@@ -333,7 +331,7 @@ export const playback = {
    * Completely stop playback.
    */
   stop () {
-    document.title = config.appTitle
+    document.title = app.name
     this.player.pause()
     this.player.seek(0)
 
@@ -341,7 +339,7 @@ export const playback = {
       queueStore.current.playbackState = 'stopped'
     }
 
-    socket.broadcast('playback:stopped')
+    socket.broadcast(event.$names.SOCKET_PLAYBACK_STOPPED)
   },
 
   /**
@@ -350,7 +348,7 @@ export const playback = {
   pause () {
     this.player.pause()
     queueStore.current.playbackState = 'paused'
-    socket.broadcast('song', songStore.generateDataToBroadcast(queueStore.current))
+    socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current))
   },
 
   /**
@@ -359,8 +357,8 @@ export const playback = {
   resume () {
     this.player.play()
     queueStore.current.playbackState = 'playing'
-    event.emit('song:played', queueStore.current)
-    socket.broadcast('song', songStore.generateDataToBroadcast(queueStore.current))
+    event.emit(event.$names.SONG_PLAYED, queueStore.current)
+    socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current))
   },
 
   /**

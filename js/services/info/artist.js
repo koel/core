@@ -26,7 +26,7 @@ export const artistInfo = {
    * @param  {Object} artist
    * @param  {Object} info
    */
-  merge (artist, info) {
+  merge: (artist, info) => {
     // If the artist image is not in a nice form, discard.
     if (typeof info.image !== 'string') {
       info.image = null

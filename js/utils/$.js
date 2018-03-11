@@ -3,7 +3,7 @@
  * @type {Object}
  */
 export const $ = {
-  is (el, selector) {
+  is: (el, selector) => {
     return (el.matches ||
       el.matchesSelector ||
       el.msMatchesSelector ||
@@ -12,7 +12,7 @@ export const $ = {
       el.oMatchesSelector).call(el, selector)
   },
 
-  addClass (el, className) {
+  addClass: (el, className) => {
     if (!el) {
       return
     }
@@ -24,7 +24,7 @@ export const $ = {
     }
   },
 
-  removeClass (el, className) {
+  removeClass: (el, className) => {
     if (!el) {
       return
     }

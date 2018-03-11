@@ -6,7 +6,7 @@
       <div class="right">
         <div>
           <h1>{{ user.name }}
-            <i v-if="isCurrentUser" class="you fa fa-check-circle"/>
+            <i v-if="isCurrentUser" class="you fa fa-check-circle"></i>
           </h1>
           <p>{{ user.email }}</p>
         </div>
@@ -78,7 +78,3 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
-</style>

@@ -9,11 +9,11 @@
       <div>
         <div class="form-row">
           <label>Name</label>
-          <input type="text" name="name" v-model="copiedUser.name" required v-koel-focus>
+          <input title="Name" type="text" name="name" v-model="copiedUser.name" required v-koel-focus>
         </div>
         <div class="form-row">
           <label>Email</label>
-          <input type="email" name="email" v-model="copiedUser.email" required>
+          <input title="Email" type="email" name="email" v-model="copiedUser.email" required>
         </div>
         <div class="form-row">
           <label>Password</label>

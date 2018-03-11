@@ -48,7 +48,7 @@
             <div class="signal"></div>
           </div>
           <div v-else>
-            <p>No active Koel instance found. 
+            <p>No active Koel instance found.
               <a @click.prevent="rescan" class="rescan">Rescan</a>
             </p>
           </div>
@@ -66,6 +66,7 @@
   import nouislider from 'nouislider'
   import { socket, ls } from '@/services'
   import { userStore } from '@/stores'
+  import { event } from '@/utils'
   import loginForm from '@/components/auth/login-form.vue'
 
   let volumeSlider
@@ -101,14 +102,12 @@
           volumeSlider.noUiSlider.on('change', (values, handle) => {
             const volume = parseFloat(values[handle])
             this.muted = !volume
-            socket.broadcast('volume:set', { volume })
+            socket.broadcast(event.$names.SOCKET_SET_VOLUME, { volume })
           })
         })
       },
 
-      volume (value) {
-        volumeSlider.noUiSlider.set(value)
-      }
+      volume: value => volumeSlider.noUiSlider.set(value)
     },
 
     methods: {
@@ -124,19 +123,15 @@
 
           await socket.init()
 
-          socket.listen('song', ({ song }) => {
-            this.song = song
-          }).listen('playback:stopped', () => {
-            if (this.song) {
-              this.song.playbackState = 'stopped'
-            }
-          }).listen('status', ({ song, volume }) => {
-            this.song = song
-            this.volume = volume
-            this.connected = true
-          }).listen('volume:changed', volume => {
-            volumeSlider.noUiSlider.set(volume)
-          })
+          socket
+            .listen(event.$names.SOCKET_SONG, ({ song }) => (this.song = song))
+            .listen(event.$names.SOCKET_PLAYBACK_STOPPED, () => this.song && (this.song.playbackState = 'stopped'))
+            .listen(event.$names.SOCKET_VOLUME_CHANGED, volume => volumeSlider.noUiSlider.set(volume))
+            .listen(event.$names.SOCKET_STATUS, ({ song, volume }) => {
+              this.song = song
+              this.volume = volume
+              this.connected = true
+            })
 
           this.scan()
         } catch (e) {
@@ -154,7 +149,7 @@
         }
 
         this.song.liked = !this.song.liked
-        socket.broadcast('favorite:toggle')
+        socket.broadcast(event.$names.SOCKET_TOGGLE_FAVORITE)
       },
 
       togglePlayback () {
@@ -162,20 +157,12 @@
           this.song.playbackState = this.song.playbackState === 'playing' ? 'paused' : 'playing'
         }
 
-        socket.broadcast('playback:toggle')
+        socket.broadcast(event.$names.SOCKET_TOGGLE_PLAYBACK)
       },
 
-      playNext () {
-        socket.broadcast('playback:next')
-      },
-
-      playPrev () {
-        socket.broadcast('playback:prev')
-      },
-
-      getStatus () {
-        socket.broadcast('status:get')
-      },
+      playNext: () => socket.broadcast(event.$names.SOCKET_PLAY_NEXT),
+      playPrev: () => socket.broadcast(event.$names.SOCKET_PLAY_PREV),
+      getStatus: () => socket.broadcast(event.$names.SOCKET_GET_STATUS),
 
       /**
        * As iOS will put a web app into standby/sleep mode (and halt all JS execution),
@@ -237,9 +224,9 @@
 </script>
 
 <style lang="scss">
-  @import "resources/assets/sass/partials/_vars.scss";
-  @import "resources/assets/sass/partials/_mixins.scss";
-  @import "resources/assets/sass/partials/_shared.scss";
+  @import "~#/partials/_vars.scss";
+  @import "~#/partials/_mixins.scss";
+  @import "~#/partials/_shared.scss";
 
   #app {
     height: 100%;
@@ -261,7 +248,7 @@
       bottom: -20px;
       filter: blur(20px);
       opacity: .3;
-      z-index: 0; 
+      z-index: 0;
       overflow: hidden;
       background-size: cover;
       background-position: center;

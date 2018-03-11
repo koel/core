@@ -74,9 +74,7 @@ export default {
     /**
      * Clear the queue.
      */
-    clearQueue () {
-      queueStore.clear()
-    }
+    clearQueue: () => queueStore.clear()
   }
 }
 </script>

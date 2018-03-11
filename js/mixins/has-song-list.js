@@ -44,15 +44,8 @@ export default {
 
   created () {
     event.on({
-      updateMeta: (meta, target) => {
-        target === this && assignIn(this.meta, meta)
-      },
-
-      setSelectedSongs: (songs, target) => {
-        if (target === this) {
-          this.selectedSongs = songs
-        }
-      }
+      [event.$names.UPDATE_META]: (meta, target) => target === this && assignIn(this.meta, meta),
+      [event.$names.SET_SELECTED_SONGS]: (songs, target) => target === this && (this.selectedSongs = songs)
     })
   }
 }

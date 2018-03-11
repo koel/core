@@ -160,7 +160,7 @@ export const songStore = {
    *
    * @return {Object|false}
    */
-  guess (title, album) {
+  guess: (title, album) => {
     title = slugify(title.toLowerCase())
     let found = false
     album.songs.forEach(song => {
@@ -177,7 +177,7 @@ export const songStore = {
    *
    * @param {Object} song
    */
-  registerPlay (song) {
+  registerPlay: song => {
     return new Promise((resolve, reject) => {
       const oldCount = song.playCount
 
@@ -213,7 +213,7 @@ export const songStore = {
    *
    * @param  {Object}   song
    */
-  scrobble (song) {
+  scrobble: song => {
     return new Promise((resolve, reject) => {
       http.post(`${song.id}/scrobble/${song.playStartTime}`, {}, ({ data }) => {
         resolve(data)
@@ -271,7 +271,7 @@ export const songStore = {
    *
    * @return {string} The source URL, with JWT token appended.
    */
-  getSourceUrl (song) {
+  getSourceUrl: song => {
     if (isMobile.any && preferenceStore.transcodeOnMobile) {
       return `${sharedStore.state.cdnUrl}api/${song.id}/play/1/128?jwt-token=${ls.get('jwt-token')}`
     }
@@ -286,7 +286,7 @@ export const songStore = {
    *
    * @return {string}
    */
-  getShareableUrl (song) {
+  getShareableUrl: song => {
     const baseUrl = KOEL_ENV === 'app' ? ls.get('koelHost') : window.BASE_URL
     return `${baseUrl}#!/song/${song.id}`
   },

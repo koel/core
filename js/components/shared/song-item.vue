@@ -19,8 +19,8 @@
     <td class="album">{{ song.album.name }}</td>
     <td class="time">{{ song.fmtLength }}</td>
     <td class="play" @click.stop="doPlayback">
-      <i class="fa fa-pause-circle" v-if="song.playbackState === 'playing'"/>
-      <i class="fa fa-play-circle" v-else/>
+      <i class="fa fa-pause-circle" v-if="song.playbackState === 'playing'"></i>
+      <i class="fa fa-play-circle" v-else></i>
     </td>
   </tr>
 </template>

@@ -12,7 +12,7 @@ describe('components/main-wrapper/main-content/album', () => {
     // on non-existing $refs.songList
     const nextTickStub = sinon.stub(wrapper.vm, '$nextTick')
     const album = factory('album')
-    event.emit('main-content-view:load', 'album', album)
+    event.emit(event.$names.LOAD_MAIN_CONTENT, 'album', album)
     Vue.nextTick(() => {
       const html = wrapper.html()
       html.should.contain(album.name)

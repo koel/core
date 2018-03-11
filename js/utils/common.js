@@ -11,7 +11,7 @@ import { event } from '@/utils'
  * @param {...*}      Extra data to attach to the view.
  */
 export function loadMainView (view, ...args) {
-  event.emit('main-content-view:load', view, ...args)
+  event.emit(event.$names.LOAD_MAIN_CONTENT, view, ...args)
 }
 
 /**
@@ -35,14 +35,14 @@ export function forceReloadWindow () {
  * @param  {Boolean} dismissable
  */
 export function showOverlay (message = 'Just a little patience…', type = 'loading', dismissable = false) {
-  event.emit('overlay:show', { message, type, dismissable })
+  event.emit(event.$names.SHOW_OVERLAY, { message, type, dismissable })
 }
 
 /**
  * Hide the overlay.
  */
 export function hideOverlay () {
-  event.emit('overlay:hide')
+  event.emit(event.$names.HIDE_OVERLAY)
 }
 
 /**

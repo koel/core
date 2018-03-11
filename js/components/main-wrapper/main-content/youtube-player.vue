@@ -37,17 +37,15 @@ export default {
           height: '100%'
         })
 
-        player.on('stateChange', event => {
-          // Pause song playback when video is played
-          event.data === 1 && playback.pause()
-        })
+        // Pause song playback when video is played
+        player.on('stateChange', event => event.data === 1 && playback.pause())
       }
     }
   },
 
   created () {
     event.on({
-      'youtube:play': ({ id, title }) => {
+      [event.$names.PLAY_YOUTUBE_VIDEO]: ({ id, title }) => {
         this.title = title
         this.initPlayer()
         player.loadVideoById(id)
@@ -57,7 +55,7 @@ export default {
       /**
        * Stop video playback when a song is played/resumed.
        */
-      'song:played': () => player && player.pauseVideo()
+      [event.$names.SONG_PLAYED]: () => player && player.pauseVideo()
     })
   }
 }

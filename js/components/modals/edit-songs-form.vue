@@ -1,6 +1,6 @@
 <template>
   <div id="editSongsOverlay" v-if="shown" class="overlay">
-    <sound-bar v-if="loading"></sound-bar>
+    <sound-bar v-if="loading"/>
     <form v-else @submit.prevent="submit">
       <header>
         <img :src="coverUrl" width="96" height="96">
@@ -31,7 +31,7 @@
             <div v-show="currentView === 'details'">
               <div class="form-row" v-if="editSingle">
                 <label>Title</label>
-                <input name="title" type="text" v-model="formData.title">
+                <input title="Title" name="title" type="text" v-model="formData.title">
               </div>
               <div class="form-row">
                 <label>Artist</label>
@@ -61,7 +61,7 @@
             </div>
             <div v-if="editSingle" v-show="currentView === 'lyrics'">
               <div class="form-row">
-                <textarea name="lyrics" v-model="formData.lyrics"/>
+                <textarea title="Lyrics" name="lyrics" v-model="formData.lyrics"></textarea>
               </div>
             </div>
           </div>
@@ -82,7 +82,7 @@ import { every, filter, union } from 'lodash'
 import { br2nl } from '@/utils'
 import { songInfo } from '@/services/info'
 import { artistStore, albumStore, songStore } from '@/stores'
-import config from '@/config'
+import { app } from '@/config'
 
 import soundBar from '@/components/shared/sound-bar.vue'
 import typeahead from '@/components/shared/typeahead.vue'
@@ -168,7 +168,7 @@ export default {
      * @return {string}
      */
     coverUrl () {
-      return this.inSameAlbum ? this.songs[0].album.cover : config.unknownCover
+      return this.inSameAlbum ? this.songs[0].album.cover : app.unknownCover
     },
 
     /**
@@ -177,10 +177,7 @@ export default {
      * @return {Number}
      */
     compilationState () {
-      const albums = this.songs.reduce((acc, song) => {
-        return union(acc, [song.album])
-      }, [])
-
+      const albums = this.songs.reduce((acc, song) => union(acc, [song.album]), [])
       const compiledAlbums = filter(albums, album => album.is_compilation)
 
       if (!compiledAlbums.length) {

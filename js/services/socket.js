@@ -8,7 +8,7 @@ export const socket = {
   channel: null,
 
   async init () {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (!window.PUSHER_APP_KEY) {
         return resolve()
       }
@@ -37,7 +37,6 @@ export const socket = {
    */
   broadcast (eventName, data = {}) {
     this.channel && this.channel.trigger(`client-${eventName}.${userStore.current.id}`, data)
-
     return this
   },
 
@@ -48,7 +47,6 @@ export const socket = {
    */
   listen (eventName, cb) {
     this.channel && this.channel.bind(`client-${eventName}.${userStore.current.id}`, data => cb(data))
-
     return this
   }
 }

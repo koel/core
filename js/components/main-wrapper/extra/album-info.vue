@@ -10,8 +10,8 @@
       <img v-if="album.info.image" :src="album.info.image" class="cover">
 
       <div class="wiki" v-if="album.info.wiki && album.info.wiki.summary">
-        <div class="summary" v-show="showSummary" v-html="album.info.wiki.summary"/>
-        <div class="full" v-show="showFull" v-html="album.info.wiki.full"/>
+        <div class="summary" v-show="showSummary" v-html="album.info.wiki.summary"></div>
+        <div class="full" v-show="showFull" v-html="album.info.wiki.full"></div>
 
         <button class="more" v-if="showSummary" @click.prevent="showingFullWiki = true">
           Full Wiki
@@ -27,7 +27,7 @@
             :track="track"
             :index="idx"
             :key="idx"
-          />
+          ></li>
         </ul>
       </section>
 

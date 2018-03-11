@@ -9,15 +9,15 @@
       <div>
         <div class="form-row">
           <label>Name</label>
-          <input type="text" name="name" v-model="newUser.name" required v-koel-focus>
+          <input title="Name" type="text" name="name" v-model="newUser.name" required v-koel-focus>
         </div>
         <div class="form-row">
           <label>Email</label>
-          <input type="email" name="email" v-model="newUser.email" required>
+          <input title="Email" type="email" name="email" v-model="newUser.email" required>
         </div>
         <div class="form-row">
           <label>Password</label>
-          <input type="password" name="password" v-model="newUser.password">
+          <input title="Password" type="password" name="password" v-model="newUser.password">
         </div>
       </div>
 

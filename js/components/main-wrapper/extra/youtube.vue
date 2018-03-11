@@ -47,9 +47,7 @@ export default {
   },
 
   methods: {
-    play (video) {
-      youtubeService.play(video)
-    },
+    play: video => youtubeService.play(video),
 
     /**
      * Load more videos.
@@ -59,7 +57,6 @@ export default {
       try {
         await youtubeService.searchVideosRelatedToSong(this.song)
         this.videos = this.song.youtube.items
-      } catch (e) {
       } finally {
         this.loading = false
       }

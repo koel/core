@@ -12,8 +12,8 @@
         class="cool-guys-posing cover">
 
       <div class="bio" v-if="artist.info.bio.summary">
-        <div class="summary" v-show="showSummary" v-html="artist.info.bio.summary"/>
-        <div class="full" v-show="showFull" v-html="artist.info.bio.full"/>
+        <div class="summary" v-show="showSummary" v-html="artist.info.bio.summary"></div>
+        <div class="full" v-show="showFull" v-html="artist.info.bio.full"></div>
 
         <button class="more" v-show="showSummary" @click.prevent="showingFullBio = true">
           Full Bio

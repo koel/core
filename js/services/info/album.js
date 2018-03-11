@@ -27,11 +27,9 @@ export const albumInfo = {
    * @param  {Object} album
    * @param  {Object} info
    */
-  merge (album, info) {
+  merge: (album, info) => {
     // Convert the duration into i:s
-    info.tracks && info.tracks.forEach(track => {
-      track.fmtLength = secondsToHis(track.length)
-    })
+    info.tracks && info.tracks.forEach(track => (track.fmtLength = secondsToHis(track.length)))
 
     // If the album cover is not in a nice form, discard.
     if (typeof info.image !== 'string') {

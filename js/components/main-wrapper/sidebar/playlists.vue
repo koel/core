@@ -1,7 +1,7 @@
 <template>
   <section id="playlists">
     <h1>Playlists
-      <i class="fa fa-plus-circle control create" :class="{ creating: creating }" @click="creating = !creating"/>
+      <i class="fa fa-plus-circle control create" :class="{ creating: creating }" @click="creating = !creating"></i>
     </h1>
 
     <form v-if="creating" @submit.prevent="store" class="create">

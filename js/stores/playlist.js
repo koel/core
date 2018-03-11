@@ -40,7 +40,7 @@ export const playlistStore = {
    *
    * @param  {Object} playlist
    */
-  fetchSongs (playlist) {
+  fetchSongs: playlist => {
     NProgress.start()
 
     return new Promise((resolve, reject) => {
@@ -68,20 +68,16 @@ export const playlistStore = {
    *
    * @param  {Object} playlist
    */
-  populateContent (playlist) {
-    playlist.songs = songStore.byIds(playlist.songs)
-  },
+  populateContent: playlist => (playlist.songs = songStore.byIds(playlist.songs)),
 
   /**
    * Get all songs in a playlist.
    *
-   * @param {Object}
+   * @param {Object} playlist
    *
    * return {Array.<Object>}
    */
-  getSongs (playlist) {
-    return playlist.songs
-  },
+  getSongs: playlist => playlist.songs,
 
   /**
    * Add a playlist/playlists into the store.
@@ -95,7 +91,7 @@ export const playlistStore = {
   /**
    * Remove a playlist/playlists from the store.
    *
-   * @param  {Array.<Object>|Object} playlist
+   * @param  {Array.<Object>|Object} playlists
    */
   remove (playlists) {
     this.all = difference(this.all, [].concat(playlists))
@@ -174,7 +170,7 @@ export const playlistStore = {
    * @param  {Object}     playlist
    * @param  {Array.<Object>} songs
    */
-  removeSongs (playlist, songs) {
+  removeSongs: (playlist, songs) => {
     NProgress.start()
 
     playlist.songs = difference(playlist.songs, songs)
@@ -192,7 +188,7 @@ export const playlistStore = {
    *
    * @param  {Object}   playlist
    */
-  update (playlist) {
+  update: playlist => {
     NProgress.start()
 
     return new Promise((resolve, reject) => {
