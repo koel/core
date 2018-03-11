@@ -11,7 +11,7 @@ describe('components/site-header/search-form', () => {
     const wrapper = shallow(Component)
     wrapper.find('[type=search]').setValue('foo').input()
     setTimeout(() => {
-      emitStub.calledWith('filter:changed', 'foo').should.be.true
+      emitStub.calledWith('FILTER_CHANGED', 'foo').should.be.true
       emitStub.restore()
       done()
     }, 200)

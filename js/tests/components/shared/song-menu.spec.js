@@ -70,7 +70,7 @@ describe('components/shared/song-menu', () => {
     userStore.current.is_admin = true
     const wrapper = shallow(Component, { propsData: { songs }})
     wrapper.click('.open-edit-form')
-    emitStub.calledWith('songs:edit', songs).should.be.true
+    emitStub.calledWith('EDIT_SONGS', songs).should.be.true
     emitStub.restore()
   })
 

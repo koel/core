@@ -21,7 +21,7 @@ describe('components/shared/song-list', () => {
     }})
 
     getLengthStub.calledWith(songs).should.be.true
-    emitStub.calledWith('updateMeta', {
+    emitStub.calledWith('UPDATE_META', {
       songCount: songs.length,
       totalLength: '12:34:56'
     }, undefined).should.be.true

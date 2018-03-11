@@ -33,7 +33,7 @@ describe('components/site-footer/volume', () => {
   it('broadcasts the volume value', () => {
     const broadcastStub = sinon.stub(socket, 'broadcast')
     shallow(Component).find('#volumeRange').setValue(4.2).change()
-    broadcastStub.calledWith('volume:changed', 4.2).should.be.true
+    broadcastStub.calledWith('SOCKET_VOLUME_CHANGED', 4.2).should.be.true
     broadcastStub.restore()
   })
 })

@@ -6,7 +6,7 @@ describe('components/site-header/search-form.vue', () => {
     const emitStub = sinon.stub(event, 'emit')
     shallow(Component).find('input[type=search]').setValue('foo').input()
     setTimeout(() => {
-      emitStub.calledWith('filter:changed', 'foo').should.be.true
+      emitStub.calledWith('FILTER_CHANGED', 'foo').should.be.true
     }, 200)
   })
 })
