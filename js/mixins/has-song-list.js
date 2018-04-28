@@ -30,11 +30,11 @@ export default {
 
   methods: {
     shuffleAll () {
-      playback.queueAndPlay(this.state.songs, true)
+      playback.queueAndPlay(this.state.songs, true /* shuffled */)
     },
 
     shuffleSelected () {
-      playback.queueAndPlay(this.selectedSongs, true)
+      playback.queueAndPlay(this.selectedSongs, true /* shuffled */)
     },
 
     toggleControls () {

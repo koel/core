@@ -88,7 +88,7 @@ export default {
      * Overriding the mixin.
      */
     shuffleAll () {
-      playback.queueAndPlay(this.playlist.songs, true)
+      playback.queueAndPlay(this.playlist.songs, true /* shuffled */)
     },
 
     /**

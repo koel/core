@@ -397,7 +397,7 @@ export const playback = {
       songs = shuffle(songs)
     }
 
-    queueStore.queue(songs, true)
+    queueStore.queue(songs, true /* shuffled */)
 
     // Wrap this inside a nextTick() to wait for the DOM to complete updating
     // and then play the first song in the queue.
@@ -423,7 +423,7 @@ export const playback = {
    */
   playAllByArtist ({ songs }, shuffled = true) {
     shuffled
-      ? this.queueAndPlay(songs, true)
+      ? this.queueAndPlay(songs, true /* shuffled */)
       : this.queueAndPlay(orderBy(songs, ['album_id', 'disc', 'track']))
   },
 
@@ -435,7 +435,7 @@ export const playback = {
    */
   playAllInAlbum ({ songs }, shuffled = true) {
     shuffled
-      ? this.queueAndPlay(songs, true)
+      ? this.queueAndPlay(songs, true /* shuffled */)
       : this.queueAndPlay(orderBy(songs, ['disc', 'track']))
   }
 }

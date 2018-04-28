@@ -79,7 +79,6 @@ export default {
         playback.init()
         hideOverlay()
 
-        // Ask for user's notification permission.
         this.requestNotifPermission()
 
         // To confirm or not to confirm closing, it's a question.

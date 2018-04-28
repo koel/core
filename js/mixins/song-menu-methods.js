@@ -46,7 +46,7 @@ export default {
      * Queue selected songs to top of queue.
      */
     queueSongsToTop () {
-      queueStore.queue(this.songs, false, true)
+      queueStore.queue(this.songs, false /* replace */, true /* toTop */)
       this.close()
     },
 

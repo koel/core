@@ -83,7 +83,7 @@ export default {
      * Shuffle all songs in album.
      */
     shuffle () {
-      playback.playAllInAlbum(this.album, true)
+      playback.playAllInAlbum(this.album, true /* shuffled */)
     },
 
     /**

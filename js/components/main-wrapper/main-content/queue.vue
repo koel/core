@@ -1,7 +1,7 @@
 <template>
   <section id="queueWrapper">
     <h1 class="heading">
-      <span title="That's a freaking lot of U's and E's">Current Queue
+      <span title="That's a lot of U's and E's">Current Queue
         <controls-toggler :showing-controls="showingControls" @toggleControls="toggleControls"/>
 
         <span class="meta" v-show="meta.songCount">
@@ -68,7 +68,10 @@ export default {
      * Overriding the mixin.
      */
     shuffleAll () {
-      playback.queueAndPlay(this.state.songs.length ? this.state.songs : songStore.all, true)
+      playback.queueAndPlay(
+        this.state.songs.length ? this.state.songs : songStore.all,
+        true /* shuffled */
+      )
     },
 
     /**

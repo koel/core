@@ -108,7 +108,7 @@ export const songStore = {
   },
 
   getFormattedLength (songs) {
-    return this.getLength(songs, true)
+    return this.getLength(songs, true /* toHis */)
   },
 
   /**

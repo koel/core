@@ -82,7 +82,7 @@ export default {
      * Shuffle all songs by the artist.
      */
     shuffle () {
-      playback.playAllByArtist(this.artist, true)
+      playback.playAllByArtist(this.artist, true /* shuffled */)
     },
 
     /**
