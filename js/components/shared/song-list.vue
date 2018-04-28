@@ -566,13 +566,6 @@ export default {
     }
   }
 
-  /**
-   * Since the Queue screen doesn't allow sorting, we reset the cursor style.
-   */
-  &.queue th {
-    cursor: default;
-  }
-
   .scroller {
     overflow: auto;
     position: absolute;

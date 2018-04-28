@@ -21,7 +21,7 @@
       />
     </h1>
 
-    <song-list v-show="state.songs.length" :items="state.songs" :sortable="false" type="queue"/>
+    <song-list v-show="state.songs.length" :items="state.songs" type="queue"/>
 
     <div v-show="!state.songs.length" class="none">
       <p>Empty spaces. Abandoned places.</p>
