@@ -30,7 +30,7 @@ import hotkeys from '@/components/hotkeys.vue'
 
 import { event, showOverlay, hideOverlay, forceReloadWindow, $, app as appUtils } from '@/utils'
 import { sharedStore, userStore, favoriteStore, queueStore, preferenceStore as preferences } from '@/stores'
-import { playback, ls, socket } from '@/services'
+import { playback, ls, socket, http } from '@/services'
 import { focusDirective, clickawayDirective } from '@/directives'
 import router from '@/router'
 
@@ -91,6 +91,10 @@ export default {
           // starting from Chrome 51.
           return 'You asked Koel to confirm before closing, so here it is.'
         }
+
+        // Ping the server everytime the window is focused, so that we don't have those
+        // "suddent" logout.
+        window.addEventListener('focus', () => http.get('/'))
 
         this.subscribeToBroadcastedEvents()
 
