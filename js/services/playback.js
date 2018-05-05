@@ -9,6 +9,11 @@ import { socket, audio as audioService } from '.'
 import { app } from '@/config'
 import router from '@/router'
 
+/**
+ * The number of seconds before the current song ends to start preload the next one.
+ */
+const PRELOAD_BUFFER = 30
+
 let mainWin
 if (KOEL_ENV === 'app') {
   mainWin = require('electron').remote.getCurrentWindow()
@@ -38,14 +43,8 @@ export const playback = {
 
     const player = document.querySelector('.plyr')
 
-    /**
-     * Listen to 'error' event on the audio player and play the next song if any.
-     */
     player.addEventListener('error', () => this.playNext(), true)
 
-    /**
-     * Listen to 'ended' event on the audio player and play the next song in the queue.
-     */
     player.addEventListener('ended', e => {
       if (sharedStore.state.useLastfm && userStore.current.preferences.lastfm_session_key) {
         songStore.scrobble(queueStore.current)
@@ -54,35 +53,29 @@ export const playback = {
       preferences.repeatMode === 'REPEAT_ONE' ? this.restart() : this.playNext()
     })
 
-    /**
-     * Attempt to preload the next song.
-     */
-    player.addEventListener('canplaythrough', e => {
-      const nextSong = queueStore.next
-      if (!nextSong || nextSong.preloaded || (isMobile.any && preferences.transcodeOnMobile)) {
-        // Don't preload if
-        // - there's no next song
-        // - next song has already been preloaded
-        // - we're on mobile and "transcode" option is checked
-        return
-      }
-
-      const audio = document.createElement('audio')
-      audio.setAttribute('src', songStore.getSourceUrl(nextSong))
-      audio.setAttribute('preload', 'auto')
-      audio.load()
-      nextSong.preloaded = true
-    })
-
     player.addEventListener('timeupdate', e => {
       const song = queueStore.current
 
       if (this.player.media.currentTime > 10 && !song.registeredPlayCount) {
-        // After 10 seconds, register a play count and add it into "recently played" list
         songStore.addRecentlyPlayed(song)
         songStore.registerPlay(song)
-
         song.registeredPlayCount = true
+      } else if (
+        this.player.media.duration &&
+        this.player.media.currentTime + PRELOAD_BUFFER > this.player.media.duration
+      ) {
+        // Try preloading the next song
+        const nextSong = queueStore.next
+
+        if (!nextSong || nextSong.preloaded || (isMobile.any && preferences.transcodeOnMobile)) {
+          return
+        }
+
+        const audio = document.createElement('audio')
+        audio.setAttribute('src', songStore.getSourceUrl(nextSong))
+        audio.setAttribute('preload', 'auto')
+        audio.load()
+        nextSong.preloaded = true
       }
     })
 
@@ -141,8 +134,6 @@ export const playback = {
     }
 
     song.playbackState = 'playing'
-
-    // Set the song as the current song
     queueStore.current = song
 
     // Manually set the `src` attribute of the audio to prevent plyr from resetting
