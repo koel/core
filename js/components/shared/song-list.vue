@@ -25,6 +25,10 @@
             <i class="fa fa-angle-down" v-show="sortingByAlbum && order > 0"></i>
             <i class="fa fa-angle-up" v-show="sortingByAlbum && order < 0"></i>
           </th>
+          <th @click="sort('song.album.year')" class="year">Year
+            <i class="fa fa-angle-down" v-show="sortKey === 'song.album.year' && order > 0"></i>
+            <i class="fa fa-angle-up" v-show="sortKey === 'song.album.year' && order < 0"></i>
+          </th>
           <th @click="sort('song.length')" class="time">Time
             <i class="fa fa-angle-down" v-show="sortKey === 'song.length' && order > 0"></i>
             <i class="fa fa-angle-up" v-show="sortKey === 'song.length' && order < 0"></i>
@@ -523,7 +527,7 @@ export default {
     overflow: hidden;
     white-space: nowrap;
 
-    &.time {
+    &.time, &.year {
       width: 96px;
       padding-right: 24px;
       text-align: right;
