@@ -11,6 +11,7 @@
           <a class="artist" v-if="isNormalArtist" :href="`#!/artist/${album.artist.id}`">{{ album.artist.name }}</a>
           <span class="nope" v-else>{{ album.artist.name }}</span>
           •
+          <template v-if="album.year > 0"><span>{{ album.year }}</span>•</template>
           {{ album.songs.length | pluralize('song') }}
           •
           {{ fmtLength }}

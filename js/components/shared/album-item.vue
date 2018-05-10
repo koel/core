@@ -14,6 +14,7 @@
       </div>
       <p class="meta">
         <span class="left">
+          <template v-if="album.year > 0">{{ album.year }} •</template>
           {{ album.songs.length | pluralize('song') }}
           •
           {{ fmtLength }}
