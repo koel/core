@@ -4,6 +4,15 @@
   justify-content: center;
 }
 
+@mixin control($playBtnWidth, $fontSize, $textIndent) {
+  width: $playBtnWidth;
+  height: $playBtnWidth;
+  line-height: $playBtnWidth;
+  font-size: $fontSize;
+  text-indent: $textIndent;
+  left: calc(50% - #{$playBtnWidth/2});
+}
+
 @mixin artist-album-wrapper() {
   justify-content: space-between;
   flex-wrap: wrap;
@@ -75,15 +84,6 @@
       width: 100%;
       padding-top: 100%;
       position: relative;
-
-      @mixin control($playBtnWidth, $fontSize, $textIndent) {
-        width: $playBtnWidth;
-        height: $playBtnWidth;
-        line-height: $playBtnWidth;
-        font-size: $fontSize;
-        text-indent: $textIndent;
-        left: calc(50% - #{$playBtnWidth/2});
-      }
 
       .control {
         .as-list & {
