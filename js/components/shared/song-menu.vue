@@ -201,7 +201,7 @@ export default {
     }
 
     &.separator {
-      pointer-event: none;
+      pointer-events: none;
       padding: 1px 0;
       background: #ccc;
     }
