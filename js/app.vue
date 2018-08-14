@@ -164,9 +164,6 @@ Vue.directive('koel-clickaway', clickawayDirective)
 
 <style lang="scss">
 @import "~#/app.scss";
-@import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
-@import "~#/partials/_shared.scss";
 
 #dragGhost {
   position: absolute;
