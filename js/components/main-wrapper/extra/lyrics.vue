@@ -1,10 +1,10 @@
 <template>
   <article id="lyrics">
     <div class="content">
-      <template v-show="song.lyrics">
+      <div v-show="song.lyrics">
         <div ref="lyricsContainer" v-html="song.lyrics"></div>
         <text-zoomer :target="textZoomTarget"/>
-      </template>
+      </div>
       <p class="none" v-if="song.id && !song.lyrics">No lyrics found. Are you not listening to Bach?</p>
     </div>
   </article>
