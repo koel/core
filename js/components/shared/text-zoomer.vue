@@ -9,7 +9,6 @@
 export default {
   props: {
     target: {
-      type: Object,
       required: true
     }
   },
