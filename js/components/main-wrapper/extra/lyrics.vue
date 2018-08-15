@@ -1,7 +1,7 @@
 <template>
   <article id="lyrics">
     <div class="content">
-      <template v-if="song.lyrics">
+      <template v-show="song.lyrics">
         <div ref="lyricsContainer" v-html="song.lyrics"></div>
         <text-zoomer :target="textZoomTarget"/>
       </template>

@@ -9,12 +9,16 @@
 export default {
   props: {
     target: {
-      required: true
+      type: HTMLElement
     }
   },
 
   methods: {
     zoom (multiplier) {
+      if (!this.target) {
+        return
+      }
+
       const style = this.target.style
 
       if (style.fontSize === '') {
