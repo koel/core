@@ -8,7 +8,8 @@
     mocha: true
   },
   globals: {
-    KOEL_ENV: true
+    KOEL_ENV: true,
+    HTMLElement: true
   }
 }
 
