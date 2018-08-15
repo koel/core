@@ -6,6 +6,7 @@
     @dblclick="toggleFullscreen"
   >
     <global-events @keyup.esc="exitFullscreen"/>
+    <a @click="hide" class="close"><i class="fa fa-times"></i></a>
   </div>
 </template>
 
@@ -44,6 +45,10 @@ export default {
 
     exitFullScreen () {
       this.isFullscreen && this.toggleFullscreen()
+    },
+
+    hide () {
+      event.emit(event.$names.TOGGLE_VISUALIZER)
     }
   },
 
@@ -55,9 +60,25 @@ export default {
 
 <style lang="scss">
 @import "~#/partials/_vars.scss";
+@import "~#/partials/_mixins.scss";
 
-// :fullscreen pseudo support is kind of buggy, so we use a class instead.
-#vizContainer.fullscreen {
-  background: $colorMainBgr;
+#vizContainer {
+  position: relative;
+
+  &.fullscreen {
+    // :fullscreen pseudo support is kind of buggy, so we use a class instead.
+    background: $colorMainBgr;
+  }
+
+  .close {
+    @include close-modal-button();
+    opacity: 0;
+  }
+
+  &:hover {
+    .close {
+      opacity: 1;
+    }
+  }
 }
 </style>

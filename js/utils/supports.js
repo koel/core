@@ -1,6 +1,4 @@
 import isMobile from 'ismobilejs'
-import event from '@phanan/vuebus'
-import { events as eventNames } from '@/config'
 
 /**
  * Check if AudioContext is supported by the current browser.
@@ -47,7 +45,3 @@ export function isClipboardSupported () {
 export function isMediaSessionSupported () {
   return 'mediaSession' in navigator
 }
-
-event.$names = eventNames
-
-export { event }

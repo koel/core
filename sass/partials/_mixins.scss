@@ -196,6 +196,19 @@
   }
 }
 
+@mixin close-modal-button() {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #c34848;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  color: #fff;
+  transition: opacity .3s;
+}
+
 @mixin artist-album-info-wrapper() {
   .loading {
     @include vertical-center();
@@ -213,17 +226,9 @@
     z-index: 2;
 
     .close {
-      position: absolute;
-      right: 0;
-      top: 0;
-      background: $colorRed;
-      width: 24px;
-      height: 24px;
-      line-height: 24px;
-      text-align: center;
-      color: #fff;
+      @include close-modal-button();
+
       opacity: 0;
-      transition: opacity .3s;
 
       html.touchevents & {
         opacity: 1;

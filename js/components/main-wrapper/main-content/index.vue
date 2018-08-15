@@ -1,5 +1,6 @@
 <template>
   <section id="mainContent">
+    <visualizer v-show="showingVisualizer"/>
     <div class="translucent" :style="{ backgroundImage: albumCover ? `url(${albumCover})` : 'none' }"></div>
     <home v-show="view === 'home'"/>
     <queue v-show="view === 'queue'"/>
@@ -14,7 +15,6 @@
     <favorites v-show="view === 'favorites'"/>
     <profile v-show="view === 'profile'"/>
     <youtube-player v-if="sharedState.useYouTube" v-show="view === 'youtubePlayer'"/>
-    <visualizer v-show="view === 'visualizer'"/>
   </section>
 </template>
 
@@ -59,7 +59,8 @@ export default {
     return {
       view: 'home',
       albumCover: null,
-      sharedState: sharedStore.state
+      sharedState: sharedStore.state,
+      showingVisualizer: false
     }
   },
 
@@ -76,6 +77,10 @@ export default {
        */
       [event.$names.SONG_PLAYED]: song => {
         this.albumCover = song.album.cover === albumStore.stub.cover ? null : song.album.cover
+      },
+
+      [event.$names.TOGGLE_VISUALIZER]: () => {
+        this.showingVisualizer = !this.showingVisualizer
       }
     })
   }

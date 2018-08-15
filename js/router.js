@@ -112,10 +112,18 @@ export default {
   /**
    * Navigate to a (relative, hashed) path.
    *
-   * @param  {String} path
+   * @param  {String|Number} path
    */
   go (path) {
     if (window.__UNIT_TESTING__) {
+      return
+    }
+
+    console.log(path)
+
+    if (path instanceof Number) {
+      console.log(path)
+      window.history.go(path)
       return
     }
 

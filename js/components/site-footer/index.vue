@@ -33,7 +33,7 @@
       <div class="other-controls" :class="{ 'with-gradient': prefs.showExtraPanel }">
         <div class="wrapper" v-koel-clickaway="closeEqualizer">
           <equalizer v-if="useEqualizer" v-show="showEqualizer"/>
-          <a href="#!/visualizer" title="Click for a marvelous visualizer!">
+          <a @click.prevent="toggleVisualizer" title="Click for a marvelous visualizer!">
             <sound-bar v-show="song.playbackState === 'playing'"/>
           </a>
           <i v-if="song.id"
@@ -84,7 +84,8 @@ export default {
        *
        * @type {Boolean}
        */
-      useEqualizer: isAudioContextSupported()
+      useEqualizer: isAudioContextSupported(),
+      visualizerActivated: false
     }
   },
 
@@ -138,6 +139,10 @@ export default {
 
     closeEqualizer () {
       this.showEqualizer = false
+    },
+
+    toggleVisualizer () {
+      event.emit(event.$names.TOGGLE_VISUALIZER)
     }
   },
 
