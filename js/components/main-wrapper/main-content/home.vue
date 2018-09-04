@@ -82,13 +82,15 @@ import { event } from '@/utils'
 import { songStore, albumStore, artistStore, userStore, preferenceStore } from '@/stores'
 import infiniteScroll from '@/mixins/infinite-scroll'
 
-import albumItem from '@/components/shared/album-item.vue'
-import artistItem from '@/components/shared/artist-item.vue'
-import songItem from '@/components/shared/home-song-item.vue'
-
 export default {
   name: 'main-wrapper--main-content--home',
-  components: { albumItem, artistItem, songItem },
+
+  components: {
+    albumItem: () => import('@/components/shared/album-item.vue'),
+    artistItem: () => import('@/components/shared/artist-item.vue'),
+    songItem: () => import('@/components/shared/home-song-item.vue')
+  },
+
   /**
    * Note: We're not really using infinite scrolling here,
    * but only the handy "Back to Top" button.

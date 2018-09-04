@@ -16,12 +16,12 @@
 
 <script>
 import { assign } from 'lodash'
-
 import { event } from '@/utils'
-import soundBar from './sound-bar.vue'
 
 export default {
-  components: { soundBar },
+  components: {
+    soundBar: () => import('./sound-bar.vue')
+  },
 
   data () {
     return {

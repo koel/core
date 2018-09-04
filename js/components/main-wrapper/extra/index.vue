@@ -45,14 +45,14 @@ import { event, $ } from '@/utils'
 import { sharedStore, songStore, preferenceStore as preferences } from '@/stores'
 import { songInfo } from '@/services'
 
-import lyrics from './lyrics.vue'
-import artistInfo from './artist-info.vue'
-import albumInfo from './album-info.vue'
-import youtube from './youtube.vue'
-
 export default {
   name: 'main-wrapper--extra--index',
-  components: { lyrics, artistInfo, albumInfo, youtube },
+  components: {
+    lyrics: () => import('./lyrics.vue'),
+    artistInfo: () => import('./artist-info.vue'),
+    albumInfo: () => import('./album-info.vue'),
+    youtube: () => import('./youtube.vue')
+  },
 
   data () {
     return {

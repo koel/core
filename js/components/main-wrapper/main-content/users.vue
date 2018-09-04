@@ -29,13 +29,14 @@
 import isMobile from 'ismobilejs'
 
 import { userStore } from '@/stores'
-import userItem from '@/components/shared/user-item.vue'
-import editUserForm from '@/components/modals/edit-user-form.vue'
-import addUserForm from '@/components/modals/add-user-form.vue'
 
 export default {
   name: 'main-wrapper--main-content--users',
-  components: { userItem, editUserForm, addUserForm },
+  components: {
+    userItem: () => import('@/components/shared/user-item.vue'),
+    editUserForm: () => import('@/components/modals/edit-user-form.vue'),
+    addUserForm: () => import('@/components/modals/add-user-form.vue')
+  },
 
   data () {
     return {

@@ -29,11 +29,11 @@
 import { playlistStore, favoriteStore } from '../../../stores'
 import router from '../../../router'
 
-import playlistItem from './playlist-item.vue'
-
 export default {
   name: 'sidebar--playlists',
-  components: { playlistItem },
+  components: {
+    playlistItem: () => import('./playlist-item.vue')
+  },
 
   data () {
     return {

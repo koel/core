@@ -41,7 +41,6 @@
 <script>
 import { sharedStore } from '@/stores'
 import { playback, ls } from '@/services'
-import trackListItem from '@/components/shared/track-list-item.vue'
 
 export default {
   props: {
@@ -52,7 +51,9 @@ export default {
       validator: value => ['sidebar', 'full'].includes(value)
     }
   },
-  components: { trackListItem },
+  components: {
+    trackListItem: () => import('@/components/shared/track-list-item.vue')
+  },
 
   data () {
     return {

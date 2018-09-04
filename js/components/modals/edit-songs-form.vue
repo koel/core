@@ -84,9 +84,6 @@ import { songInfo } from '@/services/info'
 import { artistStore, albumStore, songStore } from '@/stores'
 import { app } from '@/config'
 
-import soundBar from '@/components/shared/sound-bar.vue'
-import typeahead from '@/components/shared/typeahead.vue'
-
 const COMPILATION_STATES = {
   NONE: 0, // No songs belong to a compilation album
   ALL: 1, // All songs belong to compilation album(s)
@@ -94,7 +91,10 @@ const COMPILATION_STATES = {
 }
 
 export default {
-  components: { soundBar, typeahead },
+  components: {
+    soundBar: () => import('@/components/shared/sound-bar.vue'),
+    typeahead: () => import('@/components/shared/typeahead.vue')
+  },
 
   data () {
     return {

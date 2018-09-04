@@ -22,37 +22,22 @@
 import { event } from '@/utils'
 import { albumStore, sharedStore } from '@/stores'
 
-import albums from './albums.vue'
-import album from './album.vue'
-import artists from './artists.vue'
-import artist from './artist.vue'
-import songs from './songs.vue'
-import settings from './settings.vue'
-import users from './users.vue'
-import queue from './queue.vue'
-import home from './home.vue'
-import playlist from './playlist.vue'
-import favorites from './favorites.vue'
-import profile from './profile.vue'
-import youtubePlayer from './youtube-player.vue'
-import visualizer from './visualizer.vue'
-
 export default {
   components: {
-    albums,
-    album,
-    artists,
-    artist,
-    songs,
-    settings,
-    users,
-    home,
-    queue,
-    playlist,
-    favorites,
-    profile,
-    youtubePlayer,
-    visualizer
+    albums: () => import('./albums.vue'),
+    album: () => import('./album.vue'),
+    artists: () => import('./artists.vue'),
+    artist: () => import('./artist.vue'),
+    songs: () => import('./songs.vue'),
+    settings: () => import('./settings.vue'),
+    users: () => import('./users.vue'),
+    home: () => import('./home.vue'),
+    queue: () => import('./queue.vue'),
+    playlist: () => import('./playlist.vue'),
+    favorites: () => import('./favorites.vue'),
+    profile: () => import('./profile.vue'),
+    youtubePlayer: () => import('./youtube-player.vue'),
+    visualizer: () => import('./visualizer.vue')
   },
 
   data () {

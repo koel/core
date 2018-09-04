@@ -11,8 +11,6 @@
 </template>
 
 <script>
-import TextZoomer from '@/components/shared/text-zoomer.vue'
-
 export default {
   props: {
     song: {
@@ -21,7 +19,9 @@ export default {
     }
   },
 
-  components: { TextZoomer },
+  components: {
+    TextZoomer: () => import('@/components/shared/text-zoomer.vue')
+  },
 
   data: () => ({
     textZoomTarget: null

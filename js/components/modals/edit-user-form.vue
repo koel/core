@@ -31,12 +31,13 @@
 
 <script>
 import { clone } from 'lodash'
-import soundBar from '@/components/shared/sound-bar.vue'
 import { userStore } from '@/stores'
 
 export default {
   name: 'modals--edit-user-form',
-  components: { soundBar },
+  components: {
+    soundBar: () => import('@/components/shared/sound-bar.vue')
+  },
 
   data () {
     return {

@@ -54,8 +54,8 @@ import { filterBy, orderBy, event, pluralize, $ } from '@/utils'
 import { playlistStore, queueStore, songStore, favoriteStore } from '@/stores'
 import { playback } from '@/services'
 import router from '@/router'
-import songItem from './song-item.vue'
-import songMenu from './song-menu.vue'
+
+const songItem = () => import('./song-item.vue')
 
 export default {
   name: 'song-list',
@@ -78,7 +78,10 @@ export default {
     }
   },
 
-  components: { songItem, songMenu },
+  components: {
+    songItem,
+    songMenu: () => import('./song-menu.vue')
+  },
 
   data () {
     return {

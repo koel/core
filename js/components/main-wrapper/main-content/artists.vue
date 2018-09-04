@@ -17,14 +17,15 @@
 import { filterBy, limitBy, event } from '@/utils'
 import { artistStore } from '@/stores'
 
-import artistItem from '@/components/shared/artist-item.vue'
-import viewModeSwitch from '@/components/shared/view-mode-switch.vue'
 import infiniteScroll from '@/mixins/infinite-scroll'
 
 export default {
   name: 'main-wrapper--main-content--artists',
   mixins: [infiniteScroll],
-  components: { artistItem, viewModeSwitch },
+  components: {
+    artistItem: () => import('@/components/shared/artist-item.vue'),
+    viewModeSwitch: () => import('@/components/shared/view-mode-switch.vue')
+  },
 
   data () {
     return {

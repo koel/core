@@ -16,14 +16,16 @@
 <script>
 import { filterBy, limitBy, event } from '@/utils'
 import { albumStore } from '@/stores'
-import albumItem from '@/components/shared/album-item.vue'
-import viewModeSwitch from '@/components/shared/view-mode-switch.vue'
 import infiniteScroll from '@/mixins/infinite-scroll'
 
 export default {
   name: 'main-wrapper--main-content--albums',
   mixins: [infiniteScroll],
-  components: { albumItem, viewModeSwitch },
+
+  components: {
+    albumItem: () => import('@/components/shared/album-item.vue'),
+    viewModeSwitch: () => import('@/components/shared/view-mode-switch.vue')
+  },
 
   data () {
     return {

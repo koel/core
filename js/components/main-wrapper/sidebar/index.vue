@@ -60,10 +60,11 @@ import isMobile from 'ismobilejs'
 
 import { event, $ } from '@/utils'
 import { sharedStore, userStore, songStore, queueStore } from '@/stores'
-import playlists from './playlists.vue'
 
 export default {
-  components: { playlists },
+  components: {
+    playlists: () => import('./playlists.vue')
+  },
 
   data () {
     return {

@@ -55,13 +55,16 @@ import { playback, download, artistInfo as artistInfoService } from '@/services'
 import router from '@/router'
 import hasSongList from '@/mixins/has-song-list'
 import artistAttributes from '@/mixins/artist-attributes'
-import artistInfo from '@/components/main-wrapper/extra/artist-info.vue'
-import soundBar from '@/components/shared/sound-bar.vue'
 
 export default {
   name: 'main-wrapper--main-content--artist',
   mixins: [hasSongList, artistAttributes],
-  components: { artistInfo, soundBar },
+
+  components: {
+    artistInfo: () => import('@/components/main-wrapper/extra/artist-info.vue'),
+    soundBar: () => import('@/components/shared/sound-bar.vue')
+  },
+
   filters: { pluralize },
 
   data () {

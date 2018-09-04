@@ -16,11 +16,12 @@
 <script>
 import { app as appConfig } from '@/config'
 import { event, app } from '@/utils'
-import searchForm from './search-form.vue'
-import userBadge from './user-badge.vue'
 
 export default {
-  components: { searchForm, userBadge },
+  components: {
+    searchForm: () => import('./search-form.vue'),
+    userBadge: () => import('./user-badge.vue')
+  },
 
   data () {
     return {

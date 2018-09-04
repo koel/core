@@ -39,8 +39,6 @@
 </template>
 
 <script>
-import addToMenu from './add-to-menu.vue'
-
 export default {
   name: 'shared--song-list-controls',
   props: {
@@ -51,7 +49,9 @@ export default {
     }
   },
 
-  components: { addToMenu },
+  components: {
+    addToMenu: () => import('./add-to-menu.vue')
+  },
 
   data () {
     return {

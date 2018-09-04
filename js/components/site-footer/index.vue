@@ -65,10 +65,6 @@ import { playback, socket } from '@/services'
 import { isAudioContextSupported, event } from '@/utils'
 import { songStore, favoriteStore, preferenceStore } from '@/stores'
 
-import soundBar from '../shared/sound-bar.vue'
-import equalizer from './equalizer.vue'
-import volume from './volume.vue'
-
 export default {
   data () {
     return {
@@ -89,7 +85,11 @@ export default {
     }
   },
 
-  components: { soundBar, equalizer, volume },
+  components: {
+    soundBar: () => import('../shared/sound-bar.vue'),
+    equalizer: () => import('./equalizer.vue'),
+    volume: () => import('./volume.vue')
+  },
 
   methods: {
     /**

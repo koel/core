@@ -56,13 +56,16 @@ import { playback, download, albumInfo as albumInfoService } from '@/services'
 import router from '@/router'
 import hasSongList from '@/mixins/has-song-list'
 import albumAttributes from '@/mixins/album-attributes'
-import albumInfo from '@/components/main-wrapper/extra/album-info.vue'
-import soundBar from '@/components/shared/sound-bar.vue'
 
 export default {
   name: 'main-wrapper--main-content--album',
   mixins: [hasSongList, albumAttributes],
-  components: { albumInfo, soundBar },
+
+  components: {
+    albumInfo: () => '@/components/main-wrapper/extra/album-info.vue',
+    soundBar: () => '@/components/shared/sound-bar.vue'
+  },
+
   filters: { pluralize },
 
   data () {
