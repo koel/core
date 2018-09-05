@@ -33,13 +33,17 @@ describe('components/main-wrapper/extra/album-info', () => {
     wrapper.html().should.contain(album.info.wiki.full)
   })
 
-  it('lists the correct number of tracks', () => {
-    const wrapper = mount(AlbumInfo, {
+  it('lists the correct number of tracks', async (done) => {
+    const wrapper = await mount(AlbumInfo, {
       propsData: {
         album: factory('album')
       }
     })
-    wrapper.findAll(TrackListItem).should.have.lengthOf(2)
+
+    wrapper.vm.$nextTick(() => {
+      wrapper.findAll(TrackListItem).should.have.lengthOf(2)
+      done()
+    })
   })
 
   it('displays a message if the album has no info', () => {
