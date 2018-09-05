@@ -1,19 +1,26 @@
 <template>
   <section id="mainContent">
-    <visualizer v-show="showingVisualizer"/>
+    <!--
+      Most of the views are render-expensive and have their own UI states (viewport/scroll position), e.g. the song
+      lists), so we use v-show.
+      For those that don't need to maintain their own UI state, we use v-if and enjoy some codesplitting juice.
+    -->
+    <visualizer v-if="showingVisualizer"/>
+
     <div class="translucent" :style="{ backgroundImage: albumCover ? `url(${albumCover})` : 'none' }"></div>
     <home v-show="view === 'home'"/>
     <queue v-show="view === 'queue'"/>
     <songs v-show="view === 'songs'"/>
     <albums v-show="view === 'albums'"/>
-    <album v-show="view === 'album'"/>
     <artists v-show="view === 'artists'"/>
-    <artist v-show="view === 'artist'"/>
-    <users v-show="view === 'users'"/>
-    <settings v-show="view === 'settings'"/>
     <playlist v-show="view === 'playlist'"/>
     <favorites v-show="view === 'favorites'"/>
-    <profile v-show="view === 'profile'"/>
+
+    <album v-if="view === 'album'" :album="shownAlbum"/>
+    <artist v-if="view === 'artist'" :artist="shownArtist"/>
+    <users v-if="view === 'users'"/>
+    <settings v-if="view === 'settings'"/>
+    <profile v-if="view === 'profile'"/>
     <youtube-player v-if="sharedState.useYouTube" v-show="view === 'youtubePlayer'"/>
   </section>
 </template>
@@ -45,13 +52,26 @@ export default {
       view: 'home',
       albumCover: null,
       sharedState: sharedStore.state,
-      showingVisualizer: false
+      showingVisualizer: false,
+      shownArtist: null,
+      shownAlbum: null
     }
   },
 
   created () {
     event.on({
-      [event.$names.LOAD_MAIN_CONTENT]: view => (this.view = view),
+      [event.$names.LOAD_MAIN_CONTENT]: (view, data) => {
+        switch (view) {
+          case 'album':
+            this.shownAlbum = data
+            break
+          case 'artist':
+            this.shownArtist = data
+            break
+        }
+
+        this.view = view
+      },
 
       /**
        * When a new song is played, find its cover for the translucent effect.

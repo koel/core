@@ -50,8 +50,8 @@
 </template>
 
 <script>
-import { pluralize, event } from '@/utils'
-import { albumStore, artistStore, sharedStore } from '@/stores'
+import { pluralize } from '@/utils'
+import { artistStore, sharedStore } from '@/stores'
 import { playback, download, albumInfo as albumInfoService } from '@/services'
 import router from '@/router'
 import hasSongList from '@/mixins/has-song-list'
@@ -60,6 +60,13 @@ import albumAttributes from '@/mixins/album-attributes'
 export default {
   name: 'main-wrapper--main-content--album',
   mixins: [hasSongList, albumAttributes],
+
+  props: {
+    album: {
+      type: Object,
+      required: true
+    }
+  },
 
   components: {
     albumInfo: () => '@/components/main-wrapper/extra/album-info.vue',
@@ -71,7 +78,6 @@ export default {
   data () {
     return {
       sharedState: sharedStore.state,
-      album: albumStore.stub,
       info: {
         showing: false,
         loading: true
@@ -93,25 +99,13 @@ export default {
      * and move all of them into another album.
      * We should then go back to the album list.
      */
-    'album.songs.length': newSongCount => newSongCount || router.go('albums')
-  },
+    'album.songs.length': newSongCount => newSongCount || router.go('albums'),
 
-  created () {
-    /**
-     * Listen to 'main-content-view:load' event to load the requested album
-     * into view if applicable.
-     *
-     * @param {String} view   The view name
-     * @param {Object} album  The album object
-     */
-    event.on(event.$names.LOAD_MAIN_CONTENT, (view, album) => {
-      if (view === 'album') {
-        this.info.showing = false
-        this.album = album
-        // #530
-        this.$nextTick(() => this.$refs.songList && this.$refs.songList.sort())
-      }
-    })
+    album () {
+      this.info.showing = false
+      // #530
+      this.$refs.songList && this.$refs.songList.sort()
+    }
   },
 
   methods: {

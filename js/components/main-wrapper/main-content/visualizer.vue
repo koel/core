@@ -52,8 +52,8 @@ export default {
     }
   },
 
-  created () {
-    event.on(event.$names.INIT_VISUALIZER, () => initVisualizer(this.$refs.visualizerContainer))
+  mounted () {
+    initVisualizer(this.$refs.visualizerContainer)
   }
 }
 </script>

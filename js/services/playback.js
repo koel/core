@@ -84,7 +84,6 @@ export const playback = {
 
     audioService.init(this.player.media)
     event.emit(event.$names.INIT_EQUALIZER)
-    event.emit(event.$names.INIT_VISUALIZER)
 
     if (isMediaSessionSupported()) {
       navigator.mediaSession.setActionHandler('play', () => this.resume())

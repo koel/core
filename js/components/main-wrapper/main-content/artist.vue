@@ -49,8 +49,8 @@
 </template>
 
 <script>
-import { pluralize, event } from '@/utils'
-import { sharedStore, artistStore } from '@/stores'
+import { pluralize } from '@/utils'
+import { sharedStore } from '@/stores'
 import { playback, download, artistInfo as artistInfoService } from '@/services'
 import router from '@/router'
 import hasSongList from '@/mixins/has-song-list'
@@ -59,6 +59,13 @@ import artistAttributes from '@/mixins/artist-attributes'
 export default {
   name: 'main-wrapper--main-content--artist',
   mixins: [hasSongList, artistAttributes],
+
+  props: {
+    artist: {
+      type: Object,
+      required: true
+    }
+  },
 
   components: {
     artistInfo: () => import('@/components/main-wrapper/extra/artist-info.vue'),
@@ -70,7 +77,6 @@ export default {
   data () {
     return {
       sharedState: sharedStore.state,
-      artist: artistStore.stub,
       info: {
         showing: false,
         loading: true
@@ -85,25 +91,13 @@ export default {
      * and move all of them to another artist (thus delete this artist entirely).
      * We should then go back to the artist list.
      */
-    'artist.albums.length': newAlbumCount => newAlbumCount || router.go('artists')
-  },
+    'artist.albums.length': newAlbumCount => newAlbumCount || router.go('artists'),
 
-  created () {
-    /**
-     * Listen to 'main-content-view:load' event to load the requested artist
-     * into view if applicable.
-     *
-     * @param {String} view   The view's name
-     * @param {Object} artist
-     */
-    event.on(event.$names.LOAD_MAIN_CONTENT, (view, artist) => {
-      if (view === 'artist') {
-        this.info.showing = false
-        this.artist = artist
-        // #530
-        this.$nextTick(() => this.$refs.songList && this.$refs.songList.sort())
-      }
-    })
+    artist () {
+      this.info.showing = false
+      // #530
+      this.$refs.songList && this.$refs.songList.sort()
+    }
   },
 
   methods: {

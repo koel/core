@@ -78,7 +78,6 @@ export default {
   display: flex;
   flex: 0 0 64px;
   border: 1px solid rgba(255, 255, 255, .2);
-  height: 2rem;
   border-radius: 5px;
   overflow: hidden;
 
