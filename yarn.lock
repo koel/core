@@ -6,9 +6,9 @@
   version "1.0.0"
   resolved "https://codeload.github.com/phanan/vuebus/tar.gz/8a6a4836a4e2a2b6737d7402d087cdde59e253f3"
 
-"@vue/test-utils@^1.0.0-beta.10":
-  version "1.0.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-1.0.0-beta.11.tgz#adc18a69d3785da039e60fb77cbc8e968f34ecdd"
+"@vue/test-utils@^1.0.0-beta.20":
+  version "1.0.0-beta.24"
+  resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-1.0.0-beta.24.tgz#da7c3165f49f57f23fdb98caccba0f511effb76f"
   dependencies:
     lodash "^4.17.4"
 
@@ -6460,9 +6460,9 @@ vue-template-es2015-compiler@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.6.0.tgz#dc42697133302ce3017524356a6c61b7b69b4a18"
 
-vue-test-helpers@^1.0.9:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/vue-test-helpers/-/vue-test-helpers-1.0.10.tgz#981c540d71b4a0b4a0b7ff360d0ac567fecd8a12"
+vue-test-helpers@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/vue-test-helpers/-/vue-test-helpers-2.0.0.tgz#861b330400c542f3f9e91654e275223312b1c0c4"
   dependencies:
     np "^2.18.3"
 
