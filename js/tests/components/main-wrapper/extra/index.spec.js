@@ -12,14 +12,26 @@ describe('components/main-wrapper/extra/index', () => {
     shallow(ExtraSidebar).findAll('#extra.showing').should.have.lengthOf(1)
   })
 
-  it('has a YouTube tab if using YouTube', () => {
-    const wrapper = shallow(ExtraSidebar)
-    wrapper.findAll('.header .youtube').should.have.lengthOf(0)
-    wrapper.setData({
-      sharedState: { useYouTube: true }
+  it('does not have a YouTube tab if not using YouTube', async (done) => {
+    const wrapper = await mount(ExtraSidebar)
+    wrapper.vm.$nextTick(() => {
+      wrapper.findAll('.header .youtube').should.have.lengthOf(0)
+      done()
     })
-    wrapper.findAll('.header .youtube').should.have.lengthOf(1)
-    wrapper.has(YouTube).should.be.true
+  })
+
+  it('has a YouTube tab if using YouTube', async (done) => {
+    const wrapper = await mount(ExtraSidebar, {
+      data: () => ({
+        sharedState: { useYouTube: true }
+      })
+    })
+
+    wrapper.vm.$nextTick(() => {
+      wrapper.findAll('.header .youtube').should.have.lengthOf(1)
+      wrapper.has(YouTube).should.be.true
+      done()
+    })
   })
 
   it('switches pane properly', () => {
@@ -31,15 +43,19 @@ describe('components/main-wrapper/extra/index', () => {
     })
   })
 
-  it('has proper child components', () => {
-    const wrapper = shallow(ExtraSidebar, {
-      data: {
+  it('has proper child components', async (done) => {
+    const wrapper = await mount(ExtraSidebar, {
+      data: () => ({
         song: factory('song'),
         sharedState: { useYouTube: true }
-      }
+      })
     })
-    ;[ArtistInfo, AlbumInfo, Lyrics, YouTube].forEach(component => {
-      wrapper.has(component).should.be.true
+
+    wrapper.vm.$nextTick(() => {
+      ;[ArtistInfo, AlbumInfo, Lyrics, YouTube].forEach(component => {
+        wrapper.has(component).should.be.true
+      })
+      done()
     })
   })
 
@@ -48,6 +64,7 @@ describe('components/main-wrapper/extra/index', () => {
     const song = factory('song')
     const fetchSongInfoStub = sinon.stub(songInfo, 'fetch').callsFake(() => song)
     event.emit('SONG_PLAYED', song)
+
     fetchSongInfoStub.calledWith(song).should.be.true
     fetchSongInfoStub.restore()
   })
