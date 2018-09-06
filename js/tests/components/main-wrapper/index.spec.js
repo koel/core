@@ -4,7 +4,11 @@ import MainContent from '@/components/main-wrapper/main-content/index.vue'
 import Extra from '@/components/main-wrapper/extra/index.vue'
 
 describe('component/main-wrapper/index', () => {
-  it('renders properly', () => {
-    mount(Component).hasAll(Sidebar, MainContent, Extra).should.be.true
+  it('renders properly', async (done) => {
+    const wrapper = await mount(Component)
+    Vue.nextTick(() => {
+      wrapper.hasAll(Sidebar, MainContent, Extra).should.be.true
+      done()
+    })
   })
 })
