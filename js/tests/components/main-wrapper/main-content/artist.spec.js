@@ -1,10 +1,8 @@
 import Component from '@/components/main-wrapper/main-content/artist.vue'
 import SongList from '@/components/shared/song-list.vue'
 import SongListControls from '@/components/shared/song-list-controls.vue'
-import { event } from '@/utils'
 import { download, artistInfo as artistInfoService } from '@/services'
 import factory from '@/tests/factory'
-import Vue from 'vue'
 
 describe('components/main-wrapper/main-content/artist', () => {
   let artist
@@ -24,22 +22,23 @@ describe('components/main-wrapper/main-content/artist', () => {
   })
 
   it('renders upon receiving event', () => {
-    const wrapper = shallow(Component)
-    event.emit('LOAD_MAIN_CONTENT', 'artist', artist)
-    Vue.nextTick(() => {
-      const html = wrapper.html()
-      html.should.contain(artist.name)
-      html.should.contain('1 album')
-      wrapper.hasAll(SongList, SongListControls).should.be.true
+    const wrapper = shallow(Component, {
+      propsData: { artist }
     })
+    const html = wrapper.html()
+    html.should.contain(artist.name)
+    html.should.contain('1 album')
+    wrapper.hasAll(SongList, SongListControls).should.be.true
   })
 
   it('loads info from Last.fm', () => {
     artist.info = null
-    const wrapper = shallow(Component, { data: {
-      artist,
-      sharedState: { useLastfm: true }
-    }})
+    const wrapper = shallow(Component, {
+      propsData: { artist },
+      data: () => ({
+        sharedState: { useLastfm: true }
+      })
+    })
     const stub = sinon.stub(artistInfoService, 'fetch')
     wrapper.click('a.info')
     stub.calledWith(artist).should.be.true
@@ -47,10 +46,12 @@ describe('components/main-wrapper/main-content/artist', () => {
   })
 
   it('allows downloading', () => {
-    const wrapper = shallow(Component, { data: {
-      artist,
-      sharedState: { allowDownload: true }
-    }})
+    const wrapper = shallow(Component, {
+      propsData: { artist },
+      data: () => ({
+        sharedState: { allowDownload: true }
+      })
+    })
     const downloadStub = sinon.stub(download, 'fromArtist')
     wrapper.click('a.download')
     downloadStub.calledWith(artist).should.be.true
