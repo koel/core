@@ -14,27 +14,23 @@
 }
 
 @mixin artist-album-wrapper() {
-  justify-content: space-between;
-  flex-wrap: wrap;
-  display: flex;
-  align-content: flex-start;
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
 
-  .item {
-    align-self: flex-start;
+  &.as-list {
+    grid-gap: 8px;
   }
 }
 
 @mixin artist-album-card() {
   .item {
-    flex-direction: column;
-    margin-bottom: 16px;
-    width: 23.5%;
     position: relative;
 
     .as-list & {
-      flex-direction: row;
+      grid-column: 1;
       display: flex;
-      width: 100% !important;
+      flex-direction: row;
 
       .cover {
         flex: 0 0 80px;
@@ -49,30 +45,6 @@
 
     .as-list &.filler {
       display: none;
-    }
-
-    @media only screen and (max-width: 1200px) {
-      width: 32%;
-    }
-
-    @media only screen and (max-width: 960px) {
-      width: 48%;
-    }
-
-    @media only screen and (max-width: 320px) {
-      width: 100%;
-    }
-
-    html.with-extra-panel & {
-      width: 32%;
-
-      @media only screen and (max-width: 1200px) {
-        width: 48%;
-      }
-
-      @media only screen and (max-width: 960px) {
-        width: 100%;
-      }
     }
 
     .cover {

@@ -27,26 +27,32 @@ describe('components/main-wrapper/main-content/home', () => {
     }
   })
 
-  it('displays all sections', () => {
-    const wrapper = mount(Home, { data })
+  it('displays all sections', async (done) => {
+    const wrapper = await mount(Home, { data: () => data })
 
-    wrapper.find('h1.heading span').text().should.not.be.empty
-    wrapper.find('.top-song-list').findAll(HomeSongItem).should.have.lengthOf(4)
-    wrapper.find('.recent-song-list').findAll(HomeSongItem).should.have.lengthOf(7)
+    Vue.nextTick(() => {
+      wrapper.find('h1.heading span').text().should.not.be.empty
+      wrapper.find('.top-song-list').findAll(HomeSongItem).should.have.lengthOf(4)
+      wrapper.find('.recent-song-list').findAll(HomeSongItem).should.have.lengthOf(7)
 
-    const recentlyAddedSection = wrapper.find('.recently-added')
-    recentlyAddedSection.findAll(AlbumItem).should.have.lengthOf(3)
-    recentlyAddedSection.findAll(HomeSongItem).should.have.lengthOf(10)
+      const recentlyAddedSection = wrapper.find('.recently-added')
+      recentlyAddedSection.findAll(AlbumItem).should.have.lengthOf(3)
+      recentlyAddedSection.findAll(HomeSongItem).should.have.lengthOf(10)
 
-    wrapper.find('.top-artists').findAll(ArtistItem).should.have.lengthOf(5)
-    wrapper.find('.top-albums').findAll(AlbumItem).should.have.lengthOf(6)
+      wrapper.find('.top-artists').findAll(ArtistItem).should.have.lengthOf(5)
+      wrapper.find('.top-albums').findAll(AlbumItem).should.have.lengthOf(6)
+      done()
+    })
   })
 
-  it('refreshes when a new song is played', () => {
-    const wrapper = shallow(Home)
-    const refreshDashboardStub = sinon.stub(wrapper.vm, 'refreshDashboard')
-    event.emit('SONG_PLAYED', factory('song'))
-    refreshDashboardStub.called.should.be.true
-    refreshDashboardStub.restore()
+  it('refreshes when a new song is played', async (done) => {
+    const wrapper = await mount(Home)
+    wrapper.vm.$nextTick(() => {
+      const refreshDashboardStub = sinon.stub(wrapper.vm, 'refreshDashboard')
+      event.emit('SONG_PLAYED', factory('song'))
+      refreshDashboardStub.called.should.be.true
+      refreshDashboardStub.restore()
+      done()
+    })
   })
 })

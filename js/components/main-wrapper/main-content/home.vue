@@ -42,7 +42,6 @@
         <div class="two-cols">
           <div class="wrapper as-list">
             <album-item v-for="album in recentlyAdded.albums" :album="album" :key="album.id"/>
-            <span class="item filler" v-for="n in 3"></span>
           </div>
           <div>
             <ul class="recently-added-song-list" v-show="recentlyAdded.songs.length">
@@ -57,7 +56,6 @@
 
         <div class="wrapper" :class="`as-${preferences.artistsViewMode}`">
           <artist-item v-for="artist in top.artists" :artist="artist" :key="artist.id"/>
-          <span class="item filler" v-for="n in 3"></span>
         </div>
       </section>
 
@@ -66,7 +64,6 @@
 
         <div class="wrapper">
           <album-item v-for="album in top.albums" :album="album" :key="album.id"/>
-          <span class="item filler" v-for="n in 3"></span>
         </div>
       </section>
 
@@ -188,10 +185,6 @@ export default {
   .recently-added {
     .song-item-home .details {
       background: rgba(255, 255, 255, .02);
-    }
-
-    .item {
-      margin-bottom: 8px;
     }
   }
 
