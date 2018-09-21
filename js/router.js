@@ -119,10 +119,7 @@ export default {
       return
     }
 
-    console.log(path)
-
     if (path instanceof Number) {
-      console.log(path)
       window.history.go(path)
       return
     }
