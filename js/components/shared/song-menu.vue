@@ -66,9 +66,7 @@ export default {
       return this.songs[0] ? this.songs[0].playbackState === 'playing' : false
     },
 
-    isAdmin () {
-      return userStore.current.is_admin
-    }
+    isAdmin: () => userStore.current.is_admin
   },
 
   methods: {
@@ -95,9 +93,6 @@ export default {
       })
     },
 
-    /**
-     * Take the right playback action based on the current playback state.
-     */
     doPlayback () {
       switch (this.songs[0].playbackState) {
         case 'playing':
@@ -115,25 +110,16 @@ export default {
       this.close()
     },
 
-    /**
-     * Trigger opening the "Edit Song" form/overlay.
-     */
     openEditForm () {
       this.songs.length && event.emit(event.$names.EDIT_SONGS, this.songs)
       this.close()
     },
 
-    /**
-     * Load the album details screen.
-     */
     viewAlbumDetails (album) {
       router.go(`album/${album.id}`)
       this.close()
     },
 
-    /**
-     * Load the artist details screen.
-     */
     viewArtistDetails (artist) {
       router.go(`artist/${artist.id}`)
       this.close()

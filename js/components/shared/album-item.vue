@@ -1,7 +1,7 @@
 <template>
   <article class="item" v-if="album.songs.length" draggable="true" @dragstart="dragStart">
     <span class="cover" :style="{ backgroundImage: `url(${album.cover})` }">
-      <a class="control control-play" @click.prevent="play">
+      <a class="control control-play" @click.prevent="playOrQueue">
         <i class="fa fa-play"></i>
       </a>
     </span>
@@ -71,7 +71,7 @@ export default {
      * Play all songs in the current album in track order,
      * or queue them up if Ctrl/Cmd key is pressed.
      */
-    play (e) {
+    playOrQueue (e) {
       if (e.metaKey || e.ctrlKey) {
         queueStore.queue(orderBy(this.album.songs, ['disc', 'track']))
       } else {
@@ -79,23 +79,14 @@ export default {
       }
     },
 
-    /**
-     * Shuffle all songs in album.
-     */
     shuffle () {
       playback.playAllInAlbum(this.album, true /* shuffled */)
     },
 
-    /**
-     * Download all songs in album.
-     */
     download () {
       download.fromAlbum(this.album)
     },
 
-    /**
-     * Allow dragging the album (actually, its songs).
-     */
     dragStart (e) {
       const songIds = this.album.songs.map(song => song.id)
       e.dataTransfer.setData('application/x-koel.text+plain', songIds)

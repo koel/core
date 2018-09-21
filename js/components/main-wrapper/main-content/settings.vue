@@ -39,11 +39,6 @@ export default {
   },
 
   computed: {
-    /**
-     * Determine if we should warn the user upon saving.
-     *
-     * @return {boolean}
-     */
     shouldWarn () {
       // Warn the user if the media path is not empty and about to change.
       return this.sharedState.originalMediaPath &&
@@ -61,9 +56,6 @@ export default {
       }
     },
 
-    /**
-     * Save the settings.
-     */
     async save () {
       showOverlay()
 
@@ -89,7 +81,6 @@ export default {
 
 <style lang="scss">
 @import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 #settingsWrapper {
   input[type="text"] {

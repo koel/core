@@ -63,10 +63,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
-@import "~#/partials/_shared.scss";
-
 /**
  * I like to move it move it
  * I like to move it move it

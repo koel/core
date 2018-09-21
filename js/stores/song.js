@@ -14,26 +14,10 @@ export const songStore = {
   cache: {},
 
   state: {
-    /**
-     * All songs in the store
-     *
-     * @type {Array}
-     */
     songs: [stub],
-
-    /**
-     * The recently played songs **on the current machine**
-     *
-     * @type {Array}
-     */
     recentlyPlayed: []
   },
 
-  /**
-   * Init the store.
-   *
-   * @param  {Array.<Object>} songs The array of song objects
-   */
   init (songs) {
     this.all = songs
     this.all.forEach(song => this.setupSong(song))
@@ -111,42 +95,18 @@ export const songStore = {
     return this.getLength(songs, true /* toHis */)
   },
 
-  /**
-   * Get all songs.
-   *
-   * @return {Array.<Object>}
-   */
   get all () {
     return this.state.songs
   },
 
-  /**
-   * Set all songs.
-   *
-   * @param  {Array.<Object>} value
-   */
   set all (value) {
     this.state.songs = value
   },
 
-  /**
-   * Get a song by its ID.
-   *
-   * @param  {String} id
-   *
-   * @return {Object}
-   */
   byId (id) {
     return this.cache[id]
   },
 
-  /**
-   * Get songs by their IDs.
-   *
-   * @param  {Array.<String>} ids
-   *
-   * @return {Array.<Object>}
-   */
   byIds (ids) {
     return ids.map(id => this.byId(id))
   },
@@ -174,8 +134,6 @@ export const songStore = {
 
   /**
    * Increase a play count for a song.
-   *
-   * @param {Object} song
    */
   registerPlay: song => {
     return new Promise((resolve, reject) => {
@@ -192,11 +150,6 @@ export const songStore = {
     })
   },
 
-  /**
-   * Add a song into the "recently played" list.
-   *
-   * @param {Object} song
-   */
   addRecentlyPlayed (song) {
     remove(this.state.recentlyPlayed, s => s.id === song.id)
 
@@ -208,11 +161,6 @@ export const songStore = {
     preferenceStore.set('recent-songs', this.state.recentlyPlayed.map(song => song.id))
   },
 
-  /**
-   * Scrobble a song (using Last.fm).
-   *
-   * @param  {Object}   song
-   */
   scrobble: song => {
     return new Promise((resolve, reject) => {
       http.post(`${song.id}/scrobble/${song.playStartTime}`, {}, ({ data }) => {
@@ -221,12 +169,6 @@ export const songStore = {
     })
   },
 
-  /**
-   * Update song data.
-   *
-   * @param  {Array.<Object>} songs   An array of song
-   * @param  {Object}     data
-   */
   update (songs, data) {
     return new Promise((resolve, reject) => {
       http.put('songs', {
@@ -264,13 +206,6 @@ export const songStore = {
     })
   },
 
-  /**
-   * Get a song's playable source URL.
-   *
-   * @param  {Object} song
-   *
-   * @return {string} The source URL, with JWT token appended.
-   */
   getSourceUrl: song => {
     if (isMobile.any && preferenceStore.transcodeOnMobile) {
       return `${sharedStore.state.cdnUrl}api/${song.id}/play/1/128?jwt-token=${ls.get('jwt-token')}`
@@ -278,42 +213,19 @@ export const songStore = {
     return `${sharedStore.state.cdnUrl}api/${song.id}/play?jwt-token=${ls.get('jwt-token')}`
   },
 
-  /**
-   * Get a song's shareable URL.
-   * Visiting this URL will automatically queue the song and play it.
-   *
-   * @param  {Object} song
-   *
-   * @return {string}
-   */
   getShareableUrl: song => {
     const baseUrl = KOEL_ENV === 'app' ? ls.get('koelHost') : window.BASE_URL
     return `${baseUrl}#!/song/${song.id}`
   },
 
-  /**
-   * The recently played songs.
-   * @return {Array.<Object>}
-   */
   get recentlyPlayed () {
     return this.state.recentlyPlayed
   },
 
-  /**
-   * Gather the recently played songs from local storage.
-   * @return {Array.<Object>}
-   */
   gatherRecentlyPlayedFromLocalStorage () {
     return compact(this.byIds(preferenceStore.get('recent-songs') || []))
   },
 
-  /**
-   * Get top n most-played songs.
-   *
-   * @param  {Number} n
-   *
-   * @return {Array.<Object>}
-   */
   getMostPlayed (n = 10) {
     const songs = take(orderBy(this.all, 'playCount', 'desc'), n)
 
@@ -323,20 +235,10 @@ export const songStore = {
     return songs
   },
 
-  /**
-   * Get n most recently added songs.
-   * @param  {Number} n
-   * @return {Array.<Object>}
-   */
   getRecentlyAdded (n = 10) {
     return take(orderBy(this.all, 'created_at', 'desc'), n)
   },
 
-  /**
-   * Generate simplified song data to broadcast.
-   * @param  {Object} song
-   * @return {Object}
-   */
   generateDataToBroadcast (song) {
     return {
       song: {

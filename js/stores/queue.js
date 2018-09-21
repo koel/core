@@ -31,27 +31,15 @@ export const queueStore = {
     // Anything...
   },
 
-  /**
-   * Get all queued songs.
-   *
-   * @return {Array.<Object>}
-   */
   get all () {
     return this.state.songs
   },
 
-  /**
-   * Set all queued songs.
-   *
-   * @param {Array.<Object>}
-   */
   set all (songs) {
     this.state.songs = songs
   },
 
   /**
-   * The first song in the queue.
-   *
    * @return {?Object}
    */
   get first () {
@@ -59,21 +47,12 @@ export const queueStore = {
   },
 
   /**
-   * The last song in the queue.
-   *
    * @return {?Object}
    */
   get last () {
     return this.all[this.all.length - 1]
   },
 
-  /**
-   * Determine if the queue contains a song.
-   *
-   * @param  {Object} song
-   *
-   * @return {Boolean}
-   */
   contains (song) {
     return this.all.includes(song)
   },
@@ -97,8 +76,6 @@ export const queueStore = {
   },
 
   /**
-   * Queue song(s) to after the current song.
-   *
    * @param  {Array.<Object>|Object} songs
    */
   queueAfterCurrent (songs) {
@@ -116,8 +93,6 @@ export const queueStore = {
   },
 
   /**
-   * Unqueue a song, or several songs at once.
-   *
    * @param  {Object|String|Array.<Object>} songs The song(s) to unqueue
    */
   unqueue (songs) {
@@ -139,27 +114,15 @@ export const queueStore = {
     })
   },
 
-  /**
-   * Clear the current queue.
-   */
   clear () {
     this.all = []
   },
 
-  /**
-   * Get index of a song in the queue.
-   *
-   * @param  {Object} song
-   *
-   * @return {?Integer}
-   */
   indexOf (song) {
     return this.all.indexOf(song)
   },
 
   /**
-   * The next song in queue.
-   *
    * @return {?Object}
    */
   get next () {
@@ -173,8 +136,6 @@ export const queueStore = {
   },
 
   /**
-   * The previous song in queue.
-   *
    * @return {?Object}
    */
   get previous () {
@@ -187,32 +148,15 @@ export const queueStore = {
     return index < 0 ? null : this.all[index]
   },
 
-  /**
-   * The current song.
-   *
-   * @return {Object}
-   */
   get current () {
     return this.state.current
   },
 
-  /**
-   * Set a song as the current queued song.
-   *
-   * @param  {Object} song
-   *
-   * @return {Object} The queued song.
-   */
   set current (song) {
     this.state.current = song
     return this.state.current
   },
 
-  /**
-   * Shuffle the queue.
-   *
-   * @return {Array.<Object>} The shuffled array of song objects
-   */
   shuffle () {
     this.all = shuffle(this.all)
     return this.all

@@ -9,8 +9,6 @@ if (KOEL_ENV === 'app') {
 
 export const download = {
   /**
-   * Download individual song(s).
-   *
    * @param {Array.<Object>|Object} songs
    */
   fromSongs (songs) {
@@ -18,20 +16,10 @@ export const download = {
     return this.trigger(`songs?${query}`)
   },
 
-  /**
-   * Download all songs in an album.
-   *
-   * @param {Object} album
-   */
   fromAlbum (album) {
     return this.trigger(`album/${album.id}`)
   },
 
-  /**
-   * Download all songs performed by an artist.
-   *
-   * @param {Object} artist
-   */
   fromArtist (artist) {
     // It's safe to assume an artist always has songs.
     // After all, what's an artist without her songs?
@@ -39,18 +27,10 @@ export const download = {
     return this.trigger(`artist/${artist.id}`)
   },
 
-  /**
-   * Download all songs in a playlist.
-   *
-   * @param {Object} playlist
-   */
   fromPlaylist (playlist) {
     return playlistStore.getSongs(playlist).length ? this.trigger(`playlist/${playlist.id}`) : null
   },
 
-  /**
-   * Download all favorite songs.
-   */
   fromFavorites () {
     return favoriteStore.all.length ? this.trigger('favorites') : null
   },

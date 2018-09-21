@@ -29,6 +29,7 @@ export const sharedStore = {
     return new Promise((resolve, reject) => {
       http.get('data', ({ data }) => {
         this.state = Object.assign(this.state, data)
+
         // Don't allow downloading on mobile devices
         this.state.allowDownload &= !isMobile.any
 

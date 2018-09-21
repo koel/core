@@ -71,9 +71,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
-
 .view-modes {
   display: flex;
   flex: 0 0 64px;

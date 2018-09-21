@@ -133,9 +133,6 @@ export default {
   },
 
   methods: {
-    /**
-     * Refresh the dashboard with latest data.
-     */
     refreshDashboard () {
       this.top.songs = songStore.getMostPlayed(7)
       this.top.albums = albumStore.getMostPlayed(6)

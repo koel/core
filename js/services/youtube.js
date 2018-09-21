@@ -3,11 +3,6 @@ import { event } from '@/utils'
 import router from '@/router'
 
 export const youtube = {
-  /**
-   * Search for YouTube videos related to a song.
-   *
-   * @param  {Object}   song
-   */
   searchVideosRelatedToSong (song) {
     song.youtube = song.youtube || {}
     const pageToken = song.youtube.nextPageToken || ''
@@ -23,11 +18,6 @@ export const youtube = {
     })
   },
 
-  /**
-   * Play a YouTube video.
-   *
-   * @param  {Object} video The video object
-   */
   play: video => {
     event.emit(event.$names.PLAY_YOUTUBE_VIDEO, {
       id: video.id.videoId,

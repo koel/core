@@ -54,10 +54,6 @@ export default {
       return this.item.song
     },
 
-    /**
-     * Determine if the current song is being played (or paused).
-     * @return {Boolean}
-     */
     playing () {
       return this.song.playbackState === 'playing' || this.song.playbackState === 'paused'
     }
@@ -68,17 +64,11 @@ export default {
   },
 
   methods: {
-    /**
-     * Play the song right away.
-     */
     playRightAwayyyyyyy () {
       queueStore.contains(this.song) || queueStore.queueAfterCurrent(this.song)
       playback.play(this.song)
     },
 
-    /**
-     * Take the right playback action based on the current playback state.
-     */
     doPlayback () {
       switch (this.song.playbackState) {
         case 'playing':
@@ -93,50 +83,26 @@ export default {
       }
     },
 
-    /**
-     * Proxy the click event to the parent song list component.
-     * @param  {Event} event
-     */
     clicked (event) {
       this.parentSongList.rowClicked(this, event)
     },
 
-    /**
-     * Proxy the dragstart event to the parent song list component.
-     * @param  {Event} event
-     */
     dragStart (event) {
       this.parentSongList.dragStart(this, event)
     },
 
-    /**
-     * Proxy the dragleave event to the parent song list component.
-     * @param  {Event} event
-     */
     dragLeave (event) {
       this.parentSongList.removeDroppableState(event)
     },
 
-    /**
-     * Proxy the dragover event to the parent song list component.
-     * @param {Event} event The dragover event.
-     */
     dragEnter (event) {
       this.parentSongList.allowDrop(event)
     },
 
-    /**
-     * Proxy the dropstop event to the parent song list component.
-     * @param  {Event} event
-     */
     drop (event) {
       this.parentSongList.handleDrop(this, event)
     },
 
-    /**
-     * Proxy the contextmenu event to the parent song list component.
-     * @param  {Event} event
-     */
     contextMenu (event) {
       this.parentSongList.openContextMenu(this, event)
     }
@@ -146,7 +112,6 @@ export default {
 
 <style lang="scss">
 @import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 .song-item {
   border-bottom: 1px solid $color2ndBgr;

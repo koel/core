@@ -15,7 +15,7 @@
           <button class="btn btn-blue btn-edit" @click="edit">
             {{ isCurrentUser ? 'Update Profile' : 'Edit' }}
           </button>
-          <button v-if="!isCurrentUser" class="btn btn-red btn-delete" @click="del">Delete</button>
+          <button v-if="!isCurrentUser" class="btn btn-red btn-delete" @click="confirmDelete">Delete</button>
         </div>
       </div>
     </div>
@@ -44,11 +44,6 @@ export default {
   },
 
   computed: {
-    /**
-     * Determine if the current logged in user is the user bound to this component.
-     *
-     * @return {Boolean}
-     */
     isCurrentUser () {
       return this.user.id === userStore.current.id
     }
@@ -63,14 +58,11 @@ export default {
       this.isCurrentUser ? router.go('profile') : this.$emit('editUser', this.user)
     },
 
-    /**
-     * Kill off the freaking user.
-     */
-    del () {
-      alerts.confirm(`You’re about to unperson ${this.user.name}. Are you sure?`, this.doDelete)
+    confirmDelete () {
+      alerts.confirm(`You’re about to unperson ${this.user.name}. Are you sure?`, this.destroy)
     },
 
-    doDelete () {
+    destroy () {
       userStore.destroy(this.user)
       this.$destroy()
     }

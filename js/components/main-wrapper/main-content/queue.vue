@@ -26,7 +26,7 @@
     <div v-show="!state.songs.length" class="none">
       <p>Empty spaces. Abandoned places.</p>
 
-      <p v-if="showShufflingAllOption">How about
+      <p v-if="shouldShowShufflingAllLink">How about
         <a class="start" @click.prevent="shuffleAll">shuffling all songs</a>?
       </p>
     </div>
@@ -54,12 +54,7 @@ export default {
   },
 
   computed: {
-    /**
-     * Determine if we should display a "Shuffle All" link.
-     */
-    showShufflingAllOption () {
-      return songStore.all.length
-    }
+    shouldShowShufflingAllLink: () => songStore.all.length > 0
   },
 
   methods: {
@@ -74,9 +69,6 @@ export default {
       )
     },
 
-    /**
-     * Clear the queue.
-     */
     clearQueue: () => queueStore.clear()
   }
 }
@@ -84,7 +76,6 @@ export default {
 
 <style lang="scss">
 @import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 #queueWrapper {
   .none {

@@ -110,22 +110,14 @@ export default {
 
   computed: {
     filteredItems () {
-      const { keywords, fields } = this.extractSearchData(this.q)
+      const { keywords, fields } = this.extractSearchDataFromQuery(this.q)
       return keywords ? filterBy(this.songRows, keywords, ...fields) : this.songRows
     },
 
-    /**
-     * Determine if the songs in the current list can be reordered by drag-and-dropping.
-     * @return {Boolean}
-     */
     allowSongReordering () {
       return this.type === 'queue'
     },
 
-    /**
-     * Songs that are currently selected (their rows are highlighted).
-     * @return {Array.<Object>}
-     */
     selectedSongs () {
       return this.filteredItems.filter(row => row.selected).map(row => row.song)
     }
@@ -168,8 +160,6 @@ export default {
     },
 
     /**
-     * Handle sorting the song list.
-     *
      * @param  {String} key The sort key. Can be 'title', 'album', 'artist', or 'length'
      */
     sort (key = null) {
@@ -199,9 +189,6 @@ export default {
       this.songRows = orderBy(this.songRows, this.sortKey, this.order)
     },
 
-    /**
-     * Execute the corresponding reaction(s) when the user presses Delete.
-     */
     handleDelete () {
       if (!this.selectedSongs.length) {
         return
@@ -224,11 +211,6 @@ export default {
       this.clearSelection()
     },
 
-    /**
-     * Execute the corresponding reaction(s) when the user presses Enter.
-     *
-     * @param {Event} event The keydown event.
-     */
     handleEnter (event) {
       if (!this.selectedSongs.length) {
         return
@@ -268,11 +250,6 @@ export default {
       }
     },
 
-    /**
-     * Capture A keydown event and select all if applicable.
-     *
-     * @param {Event} event The keydown event.
-     */
     handleA (event) {
       if (!event.metaKey && !event.ctrlKey) {
         return
@@ -290,12 +267,6 @@ export default {
       })
     },
 
-    /**
-     * Handle the click event on a row to perform selection.
-     *
-     * @param  {VueComponent} rowVm
-     * @param  {Event} e
-     */
     rowClicked (rowVm, event) {
       // If we're on a touch device, or if Ctrl/Cmd key is pressed, just toggle selection.
       if (isMobile.any) {
@@ -319,22 +290,11 @@ export default {
       }
     },
 
-    /**
-     * Toggle select/unslect a row.
-     *
-     * @param  {VueComponent} rowVm The song-item component
-     */
     toggleRow (rowVm) {
       rowVm.item.selected = !rowVm.item.selected
       this.lastSelectedRow = rowVm
     },
 
-    /**
-     * Select all rows between two rows.
-     *
-     * @param  {VueComponent} firstRowVm  The first row's component
-     * @param  {VueComponent} secondRowVm The second row's component
-     */
     selectRowsBetween (firstRowVm, secondRowVm) {
       const indexes = [
         this.filteredItems.indexOf(firstRowVm.item),
@@ -347,9 +307,6 @@ export default {
       }
     },
 
-    /**
-     * Clear the current selection on this song list.
-     */
     clearSelection () {
       this.filteredItems.forEach(row => {
         row.selected = false
@@ -360,9 +317,6 @@ export default {
      * Enable dragging songs by capturing the dragstart event on a table row.
      * Even though the event is triggered on one row only, we'll collect other
      * selected rows, if any, as well.
-     *
-     * @param {VueComponent} The row's Vue component
-     * @param {Event} event The event
      */
     dragStart (rowVm, event) {
       // If the user is dragging an unselected row, clear the current selection.
@@ -383,8 +337,6 @@ export default {
 
     /**
      * Add a "droppable" class and set the drop effect when other songs are dragged over a row.
-     *
-     * @param {Event} event The dragover event.
      */
     allowDrop (event) {
       if (!this.allowSongReordering) {
@@ -399,9 +351,6 @@ export default {
 
     /**
      * Perform reordering songs upon dropping if the current song list is of type Queue.
-     *
-     * @param  {VueComponent} rowVm The row's Vue Component
-     * @param  {Event} event
      */
     handleDrop (rowVm, event) {
       if (
@@ -417,22 +366,11 @@ export default {
       return this.removeDroppableState(event)
     },
 
-    /**
-     * Remove the droppable state (and the styles) from a row.
-     *
-     * @param  {Event} event
-     */
     removeDroppableState (event) {
       $.removeClass(event.target.parentNode, 'droppable')
       return false
     },
 
-    /**
-     * Open the context menu.
-     *
-     * @param  {VueComponent} rowVm The right-clicked row's component
-     * @param  {Event} event
-     */
     openContextMenu (rowVm, event) {
       // If the user is right-clicking an unselected row,
       // clear the current selection and select it instead.
@@ -445,11 +383,9 @@ export default {
     },
 
     /**
-     * Extract the search data from a search query.
-     * @param {String} q
      * @return { Object } A { keywords, fields } object
      */
-    extractSearchData (q) {
+    extractSearchDataFromQuery (q) {
       const re = /in:(title|album|artist)/ig
       const fields = []
       const matches = q.match(re)
@@ -489,7 +425,6 @@ export default {
 
 <style lang="scss">
 @import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 .song-list-wrap {
   position: relative;

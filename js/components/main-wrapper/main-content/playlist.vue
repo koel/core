@@ -69,9 +69,6 @@ export default {
     /**
      * Listen to 'main-content-view:load' event to load the requested
      * playlist into view if applicable.
-     *
-     * @param {String} view   The view's name.
-     * @param {Object} playlist
      */
     event.on(event.$names.LOAD_MAIN_CONTENT, (view, playlist) => {
       if (view !== 'playlist') {
@@ -91,43 +88,30 @@ export default {
       playback.queueAndPlay(this.playlist.songs, true /* shuffled */)
     },
 
-    /**
-     * Confirm deleting the playlist.
-     */
     confirmDelete () {
-      // If the playlist is empty, just go ahead and delete it.
       if (!this.playlist.songs.length) {
         this.del()
         return
       }
 
-      alerts.confirm('Are you sure? This is a one-way street!', this.del)
+      alerts.confirm('Are you sure? This is a one-way street!', this.destroy)
     },
 
-    /**
-     * Delete the current playlist.
-     */
-    async del () {
+    async destroy () {
       await playlistStore.delete(this.playlist)
       // Reset the current playlist to our stub, so that we don't encounter
       // any property reference error.
       this.playlist = playlistStore.stub
 
-      // Switch back to Home screen
       router.go('home')
     },
 
-    /**
-     * Download all songs in the current playlist.
-     */
     download () {
       return download.fromPlaylist(this.playlist)
     },
 
     /**
      * Fetch a playlist's content from the server, populate it, and use it afterwards.
-     *
-     * @param {Object} playlist
      */
     async populate (playlist) {
       await playlistStore.fetchSongs(playlist)
@@ -141,7 +125,6 @@ export default {
 
 <style lang="scss">
 @import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 #playlistWrapper {
   button.play-shuffle, button.del {

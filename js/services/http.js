@@ -4,9 +4,6 @@ import NProgress from 'nprogress'
 import { event } from '@/utils'
 import { ls } from '@/services'
 
-/**
- * Responsible for all HTTP requests.
- */
 export const http = {
   request: (method, url, data, successCb = null, errorCb = null) => {
     axios.request({ url, data, method: method.toLowerCase() }).then(successCb).catch(errorCb)
@@ -28,9 +25,6 @@ export const http = {
     return this.request('delete', url, data, successCb, errorCb)
   },
 
-  /**
-   * Init the service.
-   */
   init: () => {
     axios.defaults.baseURL = KOEL_ENV === 'app' ? `${ls.get('koelHost')}/api` : `${window.BASE_URL}api`
 

@@ -1,5 +1,5 @@
 <template>
-  <div id="youtube-extra-wrapper">
+  <div class="youtube-extra-wrapper">
     <template v-if="videos && videos.length">
       <a class="video"
         v-for="video in videos"
@@ -64,7 +64,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#youtube-extra-wrapper {
+.youtube-extra-wrapper {
   overflow-x: hidden;
 
   .video {

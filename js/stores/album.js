@@ -15,8 +15,6 @@ export const albumStore = {
   },
 
   /**
-   * Init the store.
-   *
    * @param  {Array.<Object>} albums The array of album objects
    */
   init (albums) {
@@ -39,20 +37,10 @@ export const albumStore = {
     return album
   },
 
-  /**
-   * Get all albums in the store.
-   *
-   * @return {Array.<Object>}
-   */
   get all () {
     return this.state.albums
   },
 
-  /**
-   * Set all albums.
-   *
-   * @param  {Array.<Object>} value
-   */
   set all (value) {
     this.state.albums = value
   },
@@ -62,8 +50,6 @@ export const albumStore = {
   },
 
   /**
-   * Add new album/albums into the current collection.
-   *
    * @param  {Array.<Object>|Object} albums
    */
   add (albums) {
@@ -92,26 +78,12 @@ export const albumStore = {
     emptyAlbums.forEach(album => delete this.cache[album.id])
   },
 
-  /**
-   * Get top n most-played albums.
-   *
-   * @param  {Number} n
-   *
-   * @return {Array.<Object>}
-   */
   getMostPlayed (n = 6) {
     // Only non-unknown albums with actually play count are applicable.
     const applicable = this.all.filter(album => album.playCount && album.id !== 1)
     return take(orderBy(applicable, 'playCount', 'desc'), n)
   },
 
-  /**
-   * Get n most recently added albums.
-   *
-   * @param  {Number} n
-   *
-   * @return {Array.<Object>}
-   */
   getRecentlyAdded (n = 6) {
     const applicable = this.all.filter(album => album.id !== 1)
     return take(orderBy(applicable, 'created_at', 'desc'), n)

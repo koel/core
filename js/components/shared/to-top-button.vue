@@ -34,7 +34,6 @@ export default {
 
 <style lang="scss">
 @import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 .to-top-btn-wrapper {
   position: fixed;

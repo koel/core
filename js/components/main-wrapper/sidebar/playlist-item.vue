@@ -1,5 +1,5 @@
 <template>
-  <li @dblclick.prevent="edit" :class="['playlist', type, editing ? 'editing' : '']">
+  <li @dblclick.prevent="makeEditable" :class="['playlist', type, editing ? 'editing' : '']">
     <a :href="playlistUrl"
       @dragleave="removeDroppableState"
       @dragenter.prevent="allowDrop"
@@ -46,11 +46,6 @@ export default {
   },
 
   computed: {
-    /**
-     * Determine if the current menu item is the "Favorites" one.
-     *
-     * @return {Boolean}
-     */
     isFavorites () {
       return this.type === 'favorites'
     },
@@ -61,10 +56,7 @@ export default {
   },
 
   methods: {
-    /**
-     * Show the form to edit the playlist.
-     */
-    edit () {
+    makeEditable () {
       if (this.isFavorites) {
         return
       }
@@ -73,9 +65,6 @@ export default {
       this.editing = true
     },
 
-    /**
-     * Update the playlist's name.
-     */
     update () {
       if (this.isFavorites || !this.editing) {
         return
@@ -92,9 +81,6 @@ export default {
       playlistStore.update(this.playlist)
     },
 
-    /**
-     * Cancel editing.
-     */
     cancelEdit () {
       this.editing = false
       this.playlist.name = this.beforeEditCache
@@ -166,7 +152,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 .playlist {
   user-select: none;

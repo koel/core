@@ -5,13 +5,9 @@
       <header>
         <img :src="coverUrl" width="96" height="96">
         <hgroup class="meta">
-          <h1 :class="{ mixed: !editSingle }">{{ displayedTitle }}</h1>
-          <h2 :class="{ mixed: !bySameArtist &&  !formData.artistName }">
-            {{ bySameArtist || formData.artistName ? formData.artistName : 'Mixed Artists' }}
-          </h2>
-          <h2 :class="{ mixed: !inSameAlbum && !formData.albumName }">
-            {{ inSameAlbum || formData.albumName ? formData.albumName : 'Mixed Albums' }}
-          </h2>
+          <h1 :class="{ mixed: !editingOnlyOneSong }">{{ displayedTitle }}</h1>
+          <h2 :class="{ mixed: !allSongsAreFromSameArtist && !formData.artistName }">displayedArtistName</h2>
+          <h2 :class="{ mixed: !allSongsAreInSameAlbum && !formData.albumName }">displayedAlbumName</h2>
         </hgroup>
       </header>
 
@@ -22,14 +18,14 @@
               class="tab-details"
               :class="{ active: currentView === 'details' }">Details</a>
             <a @click.prevent="currentView = 'lyrics'"
-              v-if="editSingle"
+              v-if="editingOnlyOneSong"
               class="tab-lyrics"
               :class="{ active: currentView === 'lyrics' }">Lyrics</a>
           </div>
 
           <div class="panes">
             <div v-show="currentView === 'details'">
-              <div class="form-row" v-if="editSingle">
+              <div class="form-row" v-if="editingOnlyOneSong">
                 <label>Title</label>
                 <input title="Title" name="title" type="text" v-model="formData.title">
               </div>
@@ -53,13 +49,13 @@
                   Album is a compilation of songs by various artists
                 </label>
               </div>
-              <div class="form-row" v-show="editSingle">
+              <div class="form-row" v-show="editingOnlyOneSong">
                 <label>Track</label>
                 <input name="track" type="text" pattern="\d*" v-model="formData.track"
                 title="Empty or a number">
               </div>
             </div>
-            <div v-if="editSingle" v-show="currentView === 'lyrics'">
+            <div v-if="editingOnlyOneSong" v-show="currentView === 'lyrics'">
               <div class="form-row">
                 <textarea title="Lyrics" name="lyrics" v-model="formData.lyrics"></textarea>
               </div>
@@ -135,47 +131,22 @@ export default {
   },
 
   computed: {
-    /**
-     * Determine if we're editing but one song.
-     *
-     * @return {boolean}
-     */
-    editSingle () {
+    editingOnlyOneSong () {
       return this.songs.length === 1
     },
 
-    /**
-     * Determine if all songs we're editing are by the same artist.
-     *
-     * @return {boolean}
-     */
-    bySameArtist () {
+    allSongsAreFromSameArtist () {
       return every(this.songs, song => song.artist.id === this.songs[0].artist.id)
     },
 
-    /**
-     * Determine if all songs we're editing are from the same album.
-     *
-     * @return {boolean}
-     */
-    inSameAlbum () {
+    allSongsAreInSameAlbum () {
       return every(this.songs, song => song.album.id === this.songs[0].album.id)
     },
 
-    /**
-     * URL of the cover to display.
-     *
-     * @return {string}
-     */
     coverUrl () {
-      return this.inSameAlbum ? this.songs[0].album.cover : app.unknownCover
+      return this.allSongsAreallSongsAreInSameAlbum ? this.songs[0].album.cover : app.unknownCover
     },
 
-    /**
-     * Determine the compilation state of the songs.
-     *
-     * @return {Number}
-     */
     compilationState () {
       const albums = this.songs.reduce((acc, song) => union(acc, [song.album]), [])
       const compiledAlbums = filter(albums, album => album.is_compilation)
@@ -191,39 +162,20 @@ export default {
       return this.formData.compilationState
     },
 
-    /**
-     * The song title to be displayed.
-     *
-     * @return {string}
-     */
     displayedTitle () {
-      return this.editSingle ? this.formData.title : `${this.songs.length} songs selected`
+      return this.editingOnlyOneSong ? this.formData.title : `${this.songs.length} songs selected`
     },
 
-    /**
-     * The album name to be displayed.
-     *
-     * @return {string}
-     */
-    displayedAlbum () {
-      if (this.editSingle) {
-        return this.formData.albumName
-      } else {
-        return this.formData.albumName ? this.formData.albumName : 'Mixed Albums'
-      }
+    displayedArtistName () {
+      return this.allSongsAreFromSameArtist || this.formData.artistName
+        ? this.formData.artistName
+        : 'Mixed Artists'
     },
 
-    /**
-     * The artist name to be displayed.
-     *
-     * @return {string}
-     */
-    displayedArtist () {
-      if (this.editSingle) {
-        return this.formData.artistName
-      } else {
-        return this.formData.artistName ? this.formData.artistName : 'Mixed Artists'
-      }
+    displayedAlbumName () {
+      return this.allSongsAreInSameAlbum || this.formData.albumName
+        ? this.formData.albumName
+        : 'Mixed Albums'
     }
   },
 
@@ -233,7 +185,7 @@ export default {
       this.songs = [].concat(songs)
       this.currentView = 'details'
 
-      if (this.editSingle) {
+      if (this.editingOnlyOneSong) {
         this.formData.title = this.songs[0].title
         this.formData.albumName = this.songs[0].album.name
         this.formData.artistName = this.songs[0].artist.name
@@ -255,16 +207,13 @@ export default {
           this.initCompilationStateCheckbox()
         }
       } else {
-        this.formData.albumName = this.inSameAlbum ? this.songs[0].album.name : ''
-        this.formData.artistName = this.bySameArtist ? this.songs[0].artist.name : ''
+        this.formData.albumName = this.allSongsAreInSameAlbum ? this.songs[0].album.name : ''
+        this.formData.artistName = this.allSongsAreFromSameArtist ? this.songs[0].artist.name : ''
         this.loading = false
         this.initCompilationStateCheckbox()
       }
     },
 
-    /**
-     * Initialize the compilation state's checkbox of the editing songs' album(s).
-     */
     initCompilationStateCheckbox () {
       // This must be wrapped in a $nextTick callback, because the form is dynamically
       // attached into DOM in conjunction with `this.loading` data binding.
@@ -298,16 +247,10 @@ export default {
       this.formData.compilationState = e.target.checked ? COMPILATION_STATES.ALL : COMPILATION_STATES.NONE
     },
 
-    /**
-     * Close the modal.
-     */
     close () {
       this.shown = false
     },
 
-    /**
-     * Submit the form.
-     */
     async submit () {
       this.loading = true
 
@@ -323,9 +266,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
-
 #editSongsOverlay {
   form {
     > header {

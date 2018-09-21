@@ -11,30 +11,14 @@ export const favoriteStore = {
     fmtLength: ''
   },
 
-  /**
-   * All songs favorite'd by the current user.
-   *
-   * @return {Array.<Object>}
-   */
   get all () {
     return this.state.songs
   },
 
-  /**
-   * Set all favorite'd songs.
-   *
-   * @param  {Array.<Object>} value
-   */
   set all (value) {
     this.state.songs = value
   },
 
-  /**
-   * Toggle like/unlike a song.
-   * A request to the server will be made.
-   *
-   * @param {Object}   song
-   */
   toggleOne (song) {
     // Don't wait for the HTTP response to update the status, just toggle right away.
     // This may cause a minor problem if the request fails somehow, but do we care?
@@ -69,18 +53,10 @@ export const favoriteStore = {
     this.all = difference(this.all, [].concat(songs))
   },
 
-  /**
-   * Remove all favorites.
-   */
   clear () {
     this.all = []
   },
 
-  /**
-   * Like a bunch of songs.
-   *
-   * @param {Array.<Object>}  songs
-   */
   like (songs) {
     // Don't wait for the HTTP response to update the status, just set them to Liked right away.
     // This may cause a minor problem if the request fails somehow, but do we care?
@@ -97,11 +73,6 @@ export const favoriteStore = {
     })
   },
 
-  /**
-   * Unlike a bunch of songs.
-   *
-   * @param {Array.<Object>}  songs
-   */
   unlike (songs) {
     songs.forEach(song => { song.liked = false })
     this.remove(songs)

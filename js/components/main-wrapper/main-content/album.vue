@@ -115,9 +115,6 @@ export default {
       playback.queueAndPlay(this.album.songs, true /* shuffled */)
     },
 
-    /**
-     * Download all songs from the album.
-     */
     download () {
       download.fromAlbum(this.album)
     },

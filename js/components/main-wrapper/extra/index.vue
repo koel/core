@@ -118,7 +118,6 @@ export default {
 
 <style lang="scss">
 @import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 #extra {
   flex: 0 0 $extraPanelWidth;

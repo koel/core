@@ -55,9 +55,6 @@ export default {
   },
 
   methods: {
-    /**
-     * Download all favorite songs.
-     */
     download: () => download.fromFavorites()
   }
 }
@@ -65,7 +62,6 @@ export default {
 
 <style lang="scss">
 @import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 #favoritesWrapper {
   .none {

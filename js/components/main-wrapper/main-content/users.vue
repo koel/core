@@ -7,7 +7,7 @@
       </span>
 
       <div class="buttons" v-show="!isPhone || showingControls">
-        <button class="btn btn-green btn-add" @click="addUser">
+        <button class="btn btn-green btn-add" @click="showAddUserForm">
           <i class="fa fa-plus"></i>
           Add</button>
       </div>
@@ -15,7 +15,7 @@
 
     <div class="main-scroll-wrap">
       <div class="users">
-        <user-item v-for="user in state.users" :user="user" @editUser="editUser" :key="user.id"/>
+        <user-item v-for="user in state.users" :user="user" @editUser="showEditUserForm" :key="user.id"/>
         <article class="user-item" v-for="n in 6"></article>
       </div>
     </div>
@@ -47,19 +47,11 @@ export default {
   },
 
   methods: {
-    /**
-     * Open the "Add User" form.
-     */
-    addUser () {
+    showAddUserForm () {
       this.$refs.addUserForm.open()
     },
 
-    /**
-     * Open the "Edit User" form.
-     *
-     * @param  {Object} user
-     */
-    editUser (user) {
+    showEditUserForm (user) {
       this.$refs.editUserForm.open(user)
     }
   }
@@ -68,7 +60,6 @@ export default {
 
 <style lang="scss">
 @import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 #usersWrapper {
   .users {

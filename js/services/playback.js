@@ -25,9 +25,6 @@ export const playback = {
   repeatModes: ['NO_REPEAT', 'REPEAT_ALL', 'REPEAT_ONE'],
   initialized: false,
 
-  /**
-   * Initialize the playback service for this whole Koel app.
-   */
   init () {
     // We don't need to init this service twice, or the media events will be duplicated.
     if (this.initialized) {
@@ -146,13 +143,7 @@ export const playback = {
     this.restart()
   },
 
-  /**
-   * Show the "now playing" notification for a song.
-   *
-   * @param  {Object} song
-   */
   showNotification (song) {
-    // Show the notification if we're allowed to
     if (!window.Notification || !preferences.notify) {
       return
     }
@@ -165,7 +156,6 @@ export const playback = {
 
       notif.onclick = () => KOEL_ENV === 'app' ? mainWin.focus() : window.focus()
 
-      // Close the notif after 5 secs.
       window.setTimeout(() => notif.close(), 5000)
     } catch (e) {
       // Notification fails.
@@ -185,9 +175,6 @@ export const playback = {
     }
   },
 
-  /**
-   * Restart playing a song.
-   */
   restart () {
     const song = queueStore.current
 
@@ -283,8 +270,6 @@ export const playback = {
   },
 
   /**
-   * Set the volume level.
-   *
    * @param {Number}     volume   0-10
    * @param {Boolean=true}   persist  Whether the volume should be saved into local storage
    */
@@ -298,16 +283,10 @@ export const playback = {
     this.volumeInput.value = volume
   },
 
-  /**
-   * Mute playback.
-   */
   mute () {
     this.setVolume(0, false)
   },
 
-  /**
-   * Unmute playback.
-   */
   unmute () {
     // If the saved volume is 0, we unmute to the default level (7).
     if (preferences.volume === '0' || preferences.volume === 0) {
@@ -317,9 +296,6 @@ export const playback = {
     this.setVolume(preferences.volume)
   },
 
-  /**
-   * Completely stop playback.
-   */
   stop () {
     document.title = app.name
     this.player.pause()
@@ -332,18 +308,12 @@ export const playback = {
     socket.broadcast(event.$names.SOCKET_PLAYBACK_STOPPED)
   },
 
-  /**
-   * Pause playback.
-   */
   pause () {
     this.player.pause()
     queueStore.current.playbackState = 'paused'
     socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current))
   },
 
-  /**
-   * Resume playback.
-   */
   resume () {
     this.player.play()
     queueStore.current.playbackState = 'playing'
@@ -351,9 +321,6 @@ export const playback = {
     socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current))
   },
 
-  /**
-   * Toggle playback.
-   */
   toggle () {
     if (!queueStore.current) {
       this.playFirstInQueue()
@@ -405,24 +372,12 @@ export const playback = {
     queueStore.all.length ? this.play(queueStore.first) : this.queueAndPlay()
   },
 
-  /**
-   * Play all songs by an artist.
-   *
-   * @param  {Object}     artist   The artist object
-   * @param  {Boolean=true}   shuffled Whether to shuffle the songs
-   */
   playAllByArtist ({ songs }, shuffled = true) {
     shuffled
       ? this.queueAndPlay(songs, true /* shuffled */)
       : this.queueAndPlay(orderBy(songs, ['album_id', 'disc', 'track']))
   },
 
-  /**
-   * Play all songs in an album.
-   *
-   * @param  {Object}     album  The album object
-   * @param  {Boolean=true}   shuffled Whether to shuffle the songs
-   */
   playAllInAlbum ({ songs }, shuffled = true) {
     shuffled
       ? this.queueAndPlay(songs, true /* shuffled */)

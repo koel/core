@@ -20,11 +20,6 @@ export const preferenceStore = {
     transcodeOnMobile: false
   },
 
-  /**
-   * Init the store.
-   *
-   * @param  {Object} user The user whose preferences we are managing.
-   */
   init (user = null) {
     user = user || userStore.current
     this.storeKey = `preferences_${user.id}`

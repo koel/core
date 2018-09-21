@@ -16,11 +16,6 @@ export const artistStore = {
     artists: []
   },
 
-  /**
-   * Init the store.
-   *
-   * @param  {Array.<Object>} artists The array of artists we got from the server.
-   */
   init (artists) {
     this.all = artists
 
@@ -28,11 +23,6 @@ export const artistStore = {
     this.all.forEach(artist => this.setupArtist(artist))
   },
 
-  /**
-   * Set up the (reactive) properties of an artist.
-   *
-   * @param  {Object} artist
-   */
   setupArtist (artist) {
     Vue.set(artist, 'playCount', 0)
     Vue.set(artist, 'info', null)
@@ -44,29 +34,14 @@ export const artistStore = {
     return artist
   },
 
-  /**
-   * Get all artists.
-   *
-   * @return {Array.<Object>}
-   */
   get all () {
     return this.state.artists
   },
 
-  /**
-   * Set all artists.
-   *
-   * @param  {Array.<Object>} value
-   */
   set all (value) {
     this.state.artists = value
   },
 
-  /**
-   * Get an artist object by its ID.
-   *
-   * @param  {Number} id
-   */
   byId (id) {
     return this.cache[id]
   },
@@ -102,40 +77,12 @@ export const artistStore = {
     emptyArtists.forEach(artist => delete this.cache[artist.id])
   },
 
-  /**
-   * Determine if the artist is the special "Various Artists".
-   *
-   * @param  {Object}  artist
-   *
-   * @return {Boolean}
-   */
   isVariousArtists: artist => artist.id === VARIOUS_ARTISTS_ID,
 
-  /**
-   * Determine if the artist is the special "Unknown Artist".
-   *
-   * @param  {Object}  artist [description]
-   *
-   * @return {Boolean}
-   */
   isUnknownArtist: artist => artist.id === UNKNOWN_ARTIST_ID,
 
-  /**
-   * Get all songs performed by an artist.
-   *
-   * @param {Object} artist
-   *
-   * @return {Array.<Object>}
-   */
   getSongsByArtist: artist => artist.songs,
 
-  /**
-   * Get top n most-played artists.
-   *
-   * @param  {Number} n
-   *
-   * @return {Array.<Object>}
-   */
   getMostPlayed (n = 6) {
     // Only non-unknown artists with actually play count are applicable.
     // Also, "Various Artists" doesn't count.

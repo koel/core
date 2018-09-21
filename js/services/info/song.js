@@ -3,11 +3,6 @@
 import { http, albumInfo, artistInfo } from '..'
 
 export const songInfo = {
-  /**
-   * Get extra song information (lyrics, artist info, album info).
-   *
-   * @param  {Object}   song
-   */
   fetch: song => {
     return new Promise((resolve, reject) => {
       if (song.infoRetrieved) {

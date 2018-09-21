@@ -59,10 +59,6 @@ export default {
   },
 
   watch: {
-    /**
-     * Watch selectedPresetIndex and trigger our logic.
-     * @param {Number} val
-     */
     selectedPresetIndex (val) {
       // Save the selected preset (index) every time the value's changed.
       preferences.selectedPreset = val
@@ -74,9 +70,6 @@ export default {
   },
 
   methods: {
-    /**
-     * Init the equalizer.
-     */
     init () {
       const settings = equalizerStore.get()
 
@@ -123,9 +116,6 @@ export default {
       document.audioContext = context
     },
 
-    /**
-     * Create the UI sliders for both the preamp and the normal bands.
-     */
     createSliders () {
       const config = equalizerStore.get()
       Array.from(document.querySelectorAll('#equalizer .slider')).forEach((el, i) => {
@@ -138,9 +128,6 @@ export default {
           direction: 'rtl'
         })
 
-        /**
-         * Update the audio effect upon sliding / tapping.
-         */
         el.noUiSlider.on('slide', (values, handle) => {
           const value = values[handle]
           if (el.parentNode.matches('.preamp')) {
@@ -150,9 +137,6 @@ export default {
           }
         })
 
-        /**
-         * Save the equalizer values after the change is done.
-         */
         el.noUiSlider.on('change', () => {
           // User has customized the equalizer. No preset should be selected.
           this.selectedPresetIndex = -1
@@ -164,27 +148,13 @@ export default {
       this.selectedPresetIndex = preferences.selectedPreset
     },
 
-    /**
-     * Change the gain value for the preamp.
-     *
-     * @param  {Number} dbValue The value of the gain, in dB.
-     */
     changePreampGain (dbValue) {
       this.preampGainValue = dbValue
       this.preampGainNode.gain.setTargetAtTime(Math.pow(10, dbValue / 20), context.currentTime, 0.01)
     },
 
-    /**
-     * Change the gain value for a band/filter.
-     *
-     * @param  {Object} filter The filter object
-     * @param  {Number} value  Value of the gain, in dB.
-     */
     changeFilterGain: (filter, value) => filter.gain.setTargetAtTime(value, context.currentTime, 0.01),
 
-    /**
-     * Load a preset when the user select it from the dropdown.
-     */
     loadPreset (preset) {
       Array.from(document.querySelectorAll('#equalizer .slider')).forEach((el, i) => {
         // We treat our preamp slider differently.
@@ -202,9 +172,6 @@ export default {
       this.save()
     },
 
-    /**
-     * Save the current user's equalizer preferences into local storage.
-     */
     save () {
       equalizerStore.set(this.preampGainValue, this.bands.map(band => band.filter.gain.value))
     }
@@ -218,7 +185,6 @@ export default {
 
 <style lang="scss">
 @import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 #equalizer {
   user-select: none;

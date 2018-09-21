@@ -41,19 +41,11 @@ export default {
   },
 
   methods: {
-    /**
-     * Shows the overlay.
-     *
-     * @param {Object} options Options for the overlay
-     */
     show (options) {
       assign(this.state, options)
       this.state.showing = true
     },
 
-    /**
-     * Hide the overlay.
-     */
     hide () {
       this.state.showing = false
     }

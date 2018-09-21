@@ -1,7 +1,7 @@
 <template>
   <article class="item" v-if="showing" draggable="true" @dragstart="dragStart">
     <span class="cover" :style="{ backgroundImage: `url(${image})` }">
-      <a class="control control-play" @click.prevent="play">
+      <a class="control control-play" @click.prevent="playOrQueue">
         <i class="fa fa-play"></i>
       </a>
     </span>
@@ -67,10 +67,7 @@ export default {
   },
 
   methods: {
-    /**
-     * Play all songs by the current artist, or queue them up if Ctrl/Cmd key is pressed.
-     */
-    play (e) {
+    playOrQueue (e) {
       if (e.metaKey || e.ctrlKey) {
         queueStore.queue(orderBy(this.artist.songs, ['album_id', 'disc', 'track']))
       } else {
@@ -78,23 +75,14 @@ export default {
       }
     },
 
-    /**
-     * Shuffle all songs by the artist.
-     */
     shuffle () {
       playback.playAllByArtist(this.artist, true /* shuffled */)
     },
 
-    /**
-     * Download all songs by artist.
-     */
     download () {
       download.fromArtist(this.artist)
     },
 
-    /**
-     * Allow dragging the artist (actually, their songs).
-     */
     dragStart (e) {
       const songIds = this.artist.songs.map(song => song.id)
       e.dataTransfer.setData('application/x-koel.text+plain', songIds)

@@ -28,9 +28,6 @@ export default {
   },
 
   methods: {
-    /**
-     * Limit the filter's execution rate using lodash's debounce.
-     */
     filter: debounce(function () {
       event.emit(event.$names.FILTER_CHANGED, this.q.trim())
     }, 200)

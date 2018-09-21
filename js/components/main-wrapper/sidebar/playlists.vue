@@ -4,7 +4,7 @@
       <i class="fa fa-plus-circle control create" :class="{ creating: creating }" @click="creating = !creating"></i>
     </h1>
 
-    <form v-if="creating" @submit.prevent="store" class="create">
+    <form v-if="creating" @submit.prevent="createPlaylist" class="create">
       <input type="text"
         @keyup.esc.prevent="creating = false"
         v-model="newName"
@@ -45,10 +45,7 @@ export default {
   },
 
   methods: {
-    /**
-     * Store/create a new playlist.
-     */
-    async store () {
+    async createPlaylist () {
       this.creating = false
 
       const playlist = await playlistStore.store(this.newName)
@@ -61,9 +58,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
-
 #playlists {
   .control.create {
     margin-top: 2px;

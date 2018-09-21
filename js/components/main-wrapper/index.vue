@@ -17,9 +17,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
-
 #mainWrapper {
   display: flex;
   flex: 1;

@@ -1,11 +1,6 @@
 import { http } from '..'
 
 export const artistInfo = {
-  /**
-   * Get extra artist info (from Last.fm).
-   *
-   * @param  {Object}  artist
-   */
   fetch (artist) {
     return new Promise((resolve, reject) => {
       if (artist.info) {

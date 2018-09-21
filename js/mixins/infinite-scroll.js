@@ -10,8 +10,8 @@ export default {
 
   data () {
     return {
-      numOfItems: 30, // Number of currently loaded and displayed items
-      perPage: 30 // Number of items to be loaded per "page"
+      numOfItems: 30,
+      perPage: 30
     }
   },
 
@@ -24,9 +24,6 @@ export default {
       }
     },
 
-    /**
-     * Load and display more items into the scrollable area.
-     */
     displayMore () {
       this.numOfItems += this.perPage
     }

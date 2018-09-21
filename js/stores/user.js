@@ -15,12 +15,6 @@ export const userStore = {
     current: stub
   },
 
-  /**
-   * Init the store.
-   *
-   * @param {Array.<Object>}  users     The users in the system. Empty array if current user is not an admin.
-   * @param {Object}      currentUser The current user.
-   */
   init (users, currentUser) {
     this.all = users
     this.current = currentUser
@@ -32,51 +26,22 @@ export const userStore = {
     this.setAvatar()
   },
 
-  /**
-   * All users.
-   *
-   * @return {Array.<Object>}
-   */
   get all () {
     return this.state.users
   },
 
-  /**
-   * Set all users.
-   *
-   * @param  {Array.<Object>} value
-   */
   set all (value) {
     this.state.users = value
   },
 
-  /**
-   * Get a user by his ID
-   *
-   * @param  {Integer} id
-   *
-   * @return {Object}
-   */
   byId (id) {
     return this.all.find(user => user.id === id)
   },
 
-  /**
-   * The current user.
-   *
-   * @return {Object}
-   */
   get current () {
     return this.state.current
   },
 
-  /**
-   * Set the current user.
-   *
-   * @param  {Object} user
-   *
-   * @return {Object}
-   */
   set current (user) {
     this.state.current = user
     return this.state.current
@@ -92,12 +57,6 @@ export const userStore = {
     Vue.set(user, 'avatar', `https://www.gravatar.com/avatar/${md5(user.email)}?s=256`)
   },
 
-  /**
-   * Log a user in.
-   *
-   * @param  {String}   email
-   * @param  {String}   password
-   */
   login: (email, password) => {
     NProgress.start()
 
@@ -108,9 +67,6 @@ export const userStore = {
     })
   },
 
-  /**
-   * Log the current user out.
-   */
   logout: () => {
     return new Promise((resolve, reject) => {
       http.delete('me', {}, ({ data }) => {
@@ -119,9 +75,6 @@ export const userStore = {
     })
   },
 
-  /**
-   * Get the current user's profile.
-   */
   getProfile: () => {
     return new Promise((resolve, reject) => {
       http.get('me', ({ data }) => {
@@ -130,11 +83,6 @@ export const userStore = {
     })
   },
 
-  /**
-   * Update the current user's profile.
-   *
-   * @param  {string} password Can be an empty string if the user is not changing his password.
-   */
   updateProfile (password) {
     NProgress.start()
 
@@ -152,13 +100,6 @@ export const userStore = {
     })
   },
 
-  /**
-   * Stores a new user into the database.
-   *
-   * @param  {string}   name
-   * @param  {string}   email
-   * @param  {string}   password
-   */
   store (name, email, password) {
     NProgress.start()
 
@@ -172,14 +113,6 @@ export const userStore = {
     })
   },
 
-  /**
-   * Update a user's profile.
-   *
-   * @param  {Object}   user
-   * @param  {String}   name
-   * @param  {String}   email
-   * @param  {String}   password
-   */
   update (user, name, email, password) {
     NProgress.start()
 
@@ -193,11 +126,6 @@ export const userStore = {
     })
   },
 
-  /**
-   * Delete a user.
-   *
-   * @param  {Object}   user
-   */
   destroy (user) {
     NProgress.start()
 

@@ -150,7 +150,6 @@ export default {
 
 <style lang="scss">
 @import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 #sidebar {
   flex: 0 0 256px;

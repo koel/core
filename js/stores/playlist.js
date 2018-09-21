@@ -17,29 +17,14 @@ export const playlistStore = {
     this.all = playlists
   },
 
-  /**
-   * All playlists of the current user.
-   *
-   * @return {Array.<Object>}
-   */
   get all () {
     return this.state.playlists
   },
 
-  /**
-   * Set all playlists.
-   *
-   * @param  {Array.<Object>} value
-   */
   set all (value) {
     this.state.playlists = value
   },
 
-  /**
-   * Fetch the songs for a playlist.
-   *
-   * @param  {Object} playlist
-   */
   fetchSongs: playlist => {
     NProgress.start()
 
@@ -51,13 +36,6 @@ export const playlistStore = {
     })
   },
 
-  /**
-   * Find a playlist by its ID
-   *
-   * @param  {Number} id
-   *
-   * @return {Object}
-   */
   byId (id) {
     return this.all.find(song => song.id === id)
   },
@@ -70,13 +48,6 @@ export const playlistStore = {
    */
   populateContent: playlist => (playlist.songs = songStore.byIds(playlist.songs)),
 
-  /**
-   * Get all songs in a playlist.
-   *
-   * @param {Object} playlist
-   *
-   * return {Array.<Object>}
-   */
   getSongs: playlist => playlist.songs,
 
   /**
@@ -97,12 +68,6 @@ export const playlistStore = {
     this.all = difference(this.all, [].concat(playlists))
   },
 
-  /**
-   * Create a new playlist, optionally with its songs.
-   *
-   * @param  {String}     name  Name of the playlist
-   * @param  {Array.<Object>} songs An array of song objects
-   */
   store (name, songs = []) {
     if (songs.length) {
       // Extract the IDs from the song objects.
@@ -122,11 +87,6 @@ export const playlistStore = {
     })
   },
 
-  /**
-   * Delete a playlist.
-   *
-   * @param  {Object}   playlist
-   */
   delete (playlist) {
     NProgress.start()
 
@@ -139,12 +99,6 @@ export const playlistStore = {
     })
   },
 
-  /**
-   * Add songs into a playlist.
-   *
-   * @param {Object}      playlist
-   * @param {Array.<Object>}  songs
-   */
   addSongs (playlist, songs) {
     return new Promise((resolve, reject) => {
       const count = playlist.songs.length
@@ -164,12 +118,6 @@ export const playlistStore = {
     })
   },
 
-  /**
-   * Remove songs from a playlist.
-   *
-   * @param  {Object}     playlist
-   * @param  {Array.<Object>} songs
-   */
   removeSongs: (playlist, songs) => {
     NProgress.start()
 
@@ -183,11 +131,6 @@ export const playlistStore = {
     })
   },
 
-  /**
-   * Update a playlist (just change its name).
-   *
-   * @param  {Object}   playlist
-   */
   update: playlist => {
     NProgress.start()
 

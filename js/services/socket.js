@@ -30,21 +30,11 @@ export const socket = {
     })
   },
 
-  /**
-   * Broadcast an event with Pusher.
-   * @param  {string} eventName The event's name
-   * @param  {Object} data      The event's data
-   */
   broadcast (eventName, data = {}) {
     this.channel && this.channel.trigger(`client-${eventName}.${userStore.current.id}`, data)
     return this
   },
 
-  /**
-   * Listen to an event.
-   * @param  {string}   eventName The event's name
-   * @param  {Function} cb
-   */
   listen (eventName, cb) {
     this.channel && this.channel.bind(`client-${eventName}.${userStore.current.id}`, data => cb(data))
     return this

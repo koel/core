@@ -149,9 +149,6 @@ export default {
   },
 
   methods: {
-    /**
-     * Update the current user's profile.
-     */
     async update () {
       this.validation.error = (this.pwd || this.confirmPwd) && this.pwd !== this.confirmPwd
       if (this.validation.error) {
@@ -194,7 +191,6 @@ export default {
 
 <style lang="scss">
 @import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 #profileWrapper {
   input {

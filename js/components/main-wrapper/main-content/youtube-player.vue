@@ -63,7 +63,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 .none {
   color: $color2ndText;

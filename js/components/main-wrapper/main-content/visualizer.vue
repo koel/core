@@ -47,9 +47,7 @@ export default {
       this.isFullscreen && this.toggleFullscreen()
     },
 
-    hide () {
-      event.emit(event.$names.TOGGLE_VISUALIZER)
-    }
+    hide: () => event.emit(event.$names.TOGGLE_VISUALIZER)
   },
 
   mounted () {

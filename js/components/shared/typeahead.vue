@@ -51,9 +51,6 @@ export default {
   },
 
   methods: {
-    /**
-     * Navigate down the result list.
-     */
     down (e) {
       const selected = this.$el.querySelector('.result li.selected')
 
@@ -71,9 +68,6 @@ export default {
       this.apply()
     },
 
-    /**
-     * Navigate up the result list.
-     */
     up () {
       const selected = this.$el.querySelector('.result li.selected')
 
@@ -89,9 +83,6 @@ export default {
       this.apply()
     },
 
-    /**
-     * Handle ENTER or TAB keydown events.
-     */
     enter () {
       this.apply()
       this.hideResults()
@@ -141,8 +132,6 @@ export default {
     },
 
     /**
-     * Scroll the selected item into the view.
-     *
      * @param  {boolean} alignTop Whether the item should be aligned to top of its container.
      */
     scrollSelectedIntoView (alignTop) {
@@ -168,7 +157,6 @@ export default {
 
 <style lang="scss" scoped>
 @import   "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 .result {
   position: absolute;

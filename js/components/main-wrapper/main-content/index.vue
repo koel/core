@@ -75,18 +75,12 @@ export default {
 
       /**
        * When a new song is played, find its cover for the translucent effect.
-       *
-       * @param  {Object} song
-       *
-       * @return {Boolean}
        */
       [event.$names.SONG_PLAYED]: song => {
         this.albumCover = song.album.cover === albumStore.stub.cover ? null : song.album.cover
       },
 
-      [event.$names.TOGGLE_VISUALIZER]: () => {
-        this.showingVisualizer = !this.showingVisualizer
-      }
+      [event.$names.TOGGLE_VISUALIZER]: () => (this.showingVisualizer = !this.showingVisualizer)
     })
   }
 }

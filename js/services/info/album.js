@@ -2,11 +2,6 @@ import { secondsToHis } from '@/utils'
 import { http } from '..'
 
 export const albumInfo = {
-  /**
-   * Get extra album info (from Last.fm).
-   *
-   * @param  {Object}  album
-   */
   fetch (album) {
     return new Promise((resolve, reject) => {
       if (album.info) {

@@ -107,9 +107,6 @@ export default {
       playback.queueAndPlay(this.artist.songs, true /* shuffled */)
     },
 
-    /**
-     * Download all songs by the artist.
-     */
     download () {
       download.fromArtist(this.artist)
     },
