@@ -92,9 +92,6 @@ export default {
   },
 
   methods: {
-    /**
-     * Reset all self and applicable child components' states.
-     */
     resetState () {
       this.currentView = 'lyrics'
       this.song = songStore.stub

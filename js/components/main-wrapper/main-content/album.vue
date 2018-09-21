@@ -39,10 +39,10 @@
 
     <song-list :items="album.songs" type="album" ref="songList"/>
 
-    <section class="info-wrapper" v-if="sharedState.useLastfm && info.showing">
-      <a href class="close" @click.prevent="info.showing = false"><i class="fa fa-times"></i></a>
+    <section class="info-wrapper" v-if="sharedState.useLastfm && meta.showing">
+      <a href class="close" @click.prevent="meta.showing = false"><i class="fa fa-times"></i></a>
       <div class="inner">
-        <div class="loading" v-if="info.loading"><sound-bar/></div>
+        <div class="loading" v-if="meta.loading"><sound-bar/></div>
         <album-info :album="album" mode="full" v-else/>
       </div>
     </section>
@@ -69,21 +69,19 @@ export default {
   },
 
   components: {
-    albumInfo: () => '@/components/main-wrapper/extra/album-info.vue',
-    soundBar: () => '@/components/shared/sound-bar.vue'
+    albumInfo: () => import('@/components/main-wrapper/extra/album-info.vue'),
+    soundBar: () => import('@/components/shared/sound-bar.vue')
   },
 
   filters: { pluralize },
 
-  data () {
-    return {
-      sharedState: sharedStore.state,
-      info: {
-        showing: false,
-        loading: true
-      }
+  data: () => ({
+    sharedState: sharedStore.state,
+    meta: {
+      showing: false,
+      loading: true
     }
-  },
+  }),
 
   computed: {
     isNormalArtist () {
@@ -102,7 +100,7 @@ export default {
     'album.songs.length': newSongCount => newSongCount || router.go('albums'),
 
     album () {
-      this.info.showing = false
+      this.meta.showing = false
       // #530
       this.$refs.songList && this.$refs.songList.sort()
     }
@@ -125,17 +123,17 @@ export default {
     },
 
     async showInfo () {
-      this.info.showing = true
+      this.meta.showing = true
+
       if (!this.album.info) {
-        this.info.loading = true
         try {
           await albumInfoService.fetch(this.album)
         } catch (e) {
         } finally {
-          this.info.loading = false
+          this.meta.loading = false
         }
       } else {
-        this.info.loading = false
+        this.meta.loading = false
       }
     }
   }

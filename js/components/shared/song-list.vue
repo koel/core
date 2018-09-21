@@ -89,7 +89,7 @@ export default {
         song: songItem
       }),
       lastSelectedRow: null,
-      q: '', // The filter query
+      q: '',
       sortKey: '',
       order: -1,
       sortingByAlbum: false,
@@ -99,9 +99,6 @@ export default {
   },
 
   watch: {
-    /**
-     * Watch the items.
-     */
     items () {
       this.render()
     },

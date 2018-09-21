@@ -21,27 +21,16 @@ export default {
   },
 
   methods: {
-    /**
-     * Mute the volume.
-     */
     mute () {
       this.muted = true
       playback.mute()
     },
 
-    /**
-     * Unmute the volume.
-     */
     unmute () {
       this.muted = false
       playback.unmute()
     },
 
-    /**
-     * Set the volume.
-     *
-     * @param {Event} e
-     */
     setVolume (e) {
       const volume = parseFloat(e.target.value)
       playback.setVolume(volume)

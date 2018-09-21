@@ -49,11 +49,9 @@ export default {
   methods: {
     play: video => youtubeService.play(video),
 
-    /**
-     * Load more videos.
-     */
     async loadMore () {
       this.loading = true
+
       try {
         await youtubeService.searchVideosRelatedToSong(this.song)
         this.videos = this.song.youtube ? this.song.youtube.items : []

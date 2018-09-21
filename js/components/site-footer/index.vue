@@ -92,14 +92,8 @@ export default {
   },
 
   methods: {
-    /**
-     * Play the previous song in queue.
-     */
     playPrev: () => playback.playPrev(),
 
-    /**
-     * Play the next song in queue.
-     */
     playNext: () => playback.playNext(),
 
     /**
@@ -110,19 +104,10 @@ export default {
       this.song.id ? playback.resume() : playback.playFirstInQueue()
     },
 
-    /**
-     * Pause the playback.
-     */
     pause: () => playback.pause(),
 
-    /**
-     * Change the repeat mode.
-     */
     changeRepeatMode: () => playback.changeRepeatMode(),
 
-    /**
-     * Like the current song.
-     */
     like () {
       if (this.song.id) {
         favoriteStore.toggleOne(this.song)
@@ -130,9 +115,6 @@ export default {
       }
     },
 
-    /**
-     * Toggle hide or show the extra panel.
-     */
     toggleExtraPanel () {
       preferenceStore.set('showExtraPanel', !this.prefs.showExtraPanel)
     },
@@ -141,9 +123,7 @@ export default {
       this.showEqualizer = false
     },
 
-    toggleVisualizer () {
-      event.emit(event.$names.TOGGLE_VISUALIZER)
-    }
+    toggleVisualizer: () => event.emit(event.$names.TOGGLE_VISUALIZER)
   },
 
   created () {

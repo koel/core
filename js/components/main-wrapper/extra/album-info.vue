@@ -1,8 +1,7 @@
 <template>
-  <article id="albumInfo" :class="mode">
+  <article class="album-info" :class="mode">
     <h1 class="name">
       <span>{{ album.name }}</span>
-
       <a class="shuffle" @click.prevent="shuffleAll"><i class="fa fa-random"></i></a>
     </h1>
 
@@ -51,6 +50,7 @@ export default {
       validator: value => ['sidebar', 'full'].includes(value)
     }
   },
+
   components: {
     trackListItem: () => import('@/components/shared/track-list-item.vue')
   },
@@ -65,7 +65,6 @@ export default {
   watch: {
     /**
      * Whenever a new album is loaded into this component, we reset the "full wiki" state.
-     * @return {Boolean}
      */
     album () {
       this.showingFullWiki = false
@@ -87,9 +86,6 @@ export default {
   },
 
   methods: {
-    /**
-     * Shuffle all songs in the current album.
-     */
     shuffleAll () {
       playback.playAllInAlbum(this.album)
     }
@@ -97,11 +93,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
-#albumInfo {
+.album-info {
   @include artist-album-info();
 }
 </style>

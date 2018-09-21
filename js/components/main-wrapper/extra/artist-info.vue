@@ -1,8 +1,7 @@
 <template>
-  <article id="artistInfo" :class="mode">
+  <article class="artist-info" :class="mode">
     <h1 class="name">
       <span>{{ artist.name }}</span>
-
       <a class="shuffle" @click.prevent="shuffleAll"><i class="fa fa-random"></i></a>
     </h1>
 
@@ -50,7 +49,6 @@ export default {
   watch: {
     /**
      * Whenever a new artist is loaded into this component, we reset the "full bio" state.
-     * @return {Boolean}
      */
     artist () {
       this.showingFullBio = false
@@ -68,9 +66,6 @@ export default {
   },
 
   methods: {
-    /**
-     * Shuffle all songs performed by the current song's artist.
-     */
     shuffleAll () {
       playback.playAllByArtist(this.artist, false)
     }
@@ -78,11 +73,11 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
-#artistInfo {
+.artist-info {
   @include artist-album-info();
 }
 </style>
