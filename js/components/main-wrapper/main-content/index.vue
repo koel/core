@@ -161,14 +161,14 @@ export default {
   }
 
   .translucent {
-    position: absolute;
+    position: fixed;
     top: -20px;
     left: -20px;
     right: -20px;
     bottom: -20px;
     filter: blur(20px);
     opacity: .07;
-    z-index: 2;
+    z-index: 10000;
     overflow: hidden;
     background-size: cover;
     background-position: center;
