@@ -147,10 +147,15 @@ label {
 
 button, input[type="submit"], input[type="reset"], input[type="button"], .btn {
   background: $colorBtnBgr;
-  color: $colorBtnText;
+  color: $colorBtnText !important;
   font-size: 1rem;
   padding: .6rem 1rem;
   cursor: pointer;
+
+  &.btn-small {
+    font-size: .9rem;
+    padding: .3rem .9rem;
+  }
 
   @include inset-when-pressed();
 
@@ -201,6 +206,14 @@ button, input[type="submit"], input[type="reset"], input[type="button"], .btn {
     &:hover {
       background-color: darken($colorOrange, 10%);
     }
+  }
+
+  &.btn-transparent {
+    background-color: transparent;
+  }
+
+  &.btn-rounded {
+    border-radius: 999px;
   }
 }
 

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import slugify from 'slugify'
-import { without, take, remove, orderBy, unionBy, compact } from 'lodash'
+import { without, take, remove, orderBy, unionBy } from 'lodash'
 import isMobile from 'ismobilejs'
 
 import { secondsToHis, alerts, pluralize } from '@/utils'
@@ -14,14 +14,12 @@ export const songStore = {
   cache: {},
 
   state: {
-    songs: [stub],
-    recentlyPlayed: []
+    songs: [stub]
   },
 
   init (songs) {
     this.all = songs
     this.all.forEach(song => this.setupSong(song))
-    this.state.recentlyPlayed = this.gatherRecentlyPlayedFromLocalStorage()
   },
 
   setupSong (song) {
@@ -150,17 +148,6 @@ export const songStore = {
     })
   },
 
-  addRecentlyPlayed (song) {
-    remove(this.state.recentlyPlayed, s => s.id === song.id)
-
-    // Then we prepend the song into the list.
-    this.state.recentlyPlayed.unshift(song)
-    // Only take first 7 songs
-    this.state.recentlyPlayed.splice(7)
-    // Save to local storage as well
-    preferenceStore.set('recent-songs', this.state.recentlyPlayed.map(song => song.id))
-  },
-
   scrobble: song => {
     return new Promise((resolve, reject) => {
       http.post(`${song.id}/scrobble/${song.playStartTime}`, {}, ({ data }) => {
@@ -220,10 +207,6 @@ export const songStore = {
 
   get recentlyPlayed () {
     return this.state.recentlyPlayed
-  },
-
-  gatherRecentlyPlayedFromLocalStorage () {
-    return compact(this.byIds(preferenceStore.get('recent-songs') || []))
   },
 
   getMostPlayed (n = 10) {

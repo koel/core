@@ -47,12 +47,10 @@ export default {
   mixins: [hasSongList],
   filters: { pluralize },
 
-  data () {
-    return {
-      state: favoriteStore.state,
-      sharedState: sharedStore.state
-    }
-  },
+  data: () => ({
+    state: favoriteStore.state,
+    sharedState: sharedStore.state
+  }),
 
   methods: {
     download: () => download.fromFavorites()

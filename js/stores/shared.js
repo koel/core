@@ -1,7 +1,17 @@
 import isMobile from 'ismobilejs'
 
 import { http } from '@/services'
-import { userStore, preferenceStore, artistStore, albumStore, songStore, playlistStore, queueStore, settingStore } from '.'
+import {
+  userStore,
+  preferenceStore,
+  artistStore,
+  albumStore,
+  songStore,
+  playlistStore,
+  recentlyPlayedStore,
+  queueStore,
+  settingStore
+} from '.'
 
 export const sharedStore = {
   state: {
@@ -45,6 +55,7 @@ export const sharedStore = {
         albumStore.init(this.state.albums)
         songStore.init(this.state.songs)
         songStore.initInteractions(this.state.interactions)
+        recentlyPlayedStore.initExcerpt(this.state.recentlyPlayed)
         playlistStore.init(this.state.playlists)
         queueStore.init()
         settingStore.init(this.state.settings)

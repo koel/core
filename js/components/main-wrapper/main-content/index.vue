@@ -15,6 +15,7 @@
     <artists v-show="view === 'artists'"/>
     <playlist v-show="view === 'playlist'"/>
     <favorites v-show="view === 'favorites'"/>
+    <recently-played v-show="view === 'recently-played'"/>
 
     <album v-if="view === 'album'" :album="shownAlbum"/>
     <artist v-if="view === 'artist'" :artist="shownArtist"/>
@@ -42,21 +43,20 @@ export default {
     queue: () => import('./queue.vue'),
     playlist: () => import('./playlist.vue'),
     favorites: () => import('./favorites.vue'),
+    recentlyPlayed: () => import('./recently-played.vue'),
     profile: () => import('./profile.vue'),
     youtubePlayer: () => import('./youtube-player.vue'),
     visualizer: () => import('./visualizer.vue')
   },
 
-  data () {
-    return {
-      view: 'home',
-      albumCover: null,
-      sharedState: sharedStore.state,
-      showingVisualizer: false,
-      shownArtist: null,
-      shownAlbum: null
-    }
-  },
+  data: () => ({
+    view: 'home',
+    albumCover: null,
+    sharedState: sharedStore.state,
+    showingVisualizer: false,
+    shownArtist: null,
+    shownAlbum: null
+  }),
 
   created () {
     event.on({

@@ -19,7 +19,9 @@
         </section>
 
         <section class="recent">
-          <h1>Recently Played</h1>
+          <h1>Recently Played
+            <a class="btn btn-orange btn-small btn-rounded" href="#!/recently-played">View All</a>
+          </h1>
 
           <ol class="recent-song-list" v-show="recentSongs.length">
             <li v-for="song in recentSongs"
@@ -76,7 +78,7 @@
 import { sample } from 'lodash'
 
 import { event } from '@/utils'
-import { songStore, albumStore, artistStore, userStore, preferenceStore } from '@/stores'
+import { songStore, albumStore, artistStore, recentlyPlayedStore, userStore, preferenceStore } from '@/stores'
 import infiniteScroll from '@/mixins/infinite-scroll'
 
 export default {
@@ -139,7 +141,7 @@ export default {
       this.top.artists = artistStore.getMostPlayed(6)
       this.recentlyAdded.albums = albumStore.getRecentlyAdded(6)
       this.recentlyAdded.songs = songStore.getRecentlyAdded(10)
-      this.recentSongs = songStore.recentlyPlayed
+      this.recentSongs = recentlyPlayedStore.excerptState.songs
     }
   },
 
@@ -167,6 +169,12 @@ export default {
       &:first-of-type {
         margin-right: 8px;
       }
+    }
+  }
+
+  .recent {
+    h1 a {
+      float: right;
     }
   }
 

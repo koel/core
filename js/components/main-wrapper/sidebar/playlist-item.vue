@@ -1,6 +1,6 @@
 <template>
   <li @dblclick.prevent="makeEditable" :class="['playlist', type, editing ? 'editing' : '']">
-    <a :href="playlistUrl"
+    <a :href="url"
       @dragleave="removeDroppableState"
       @dragenter.prevent="allowDrop"
       @dragover.prevent
@@ -13,7 +13,7 @@
       @keyup.enter="update"
       @blur="update"
       v-model="playlist.name"
-      v-if="editing"
+      v-if="nameEditable && editing"
       v-koel-focus
       required
     >
@@ -23,6 +23,8 @@
 <script>
 import { event, $ } from '@/utils'
 import { songStore, playlistStore, favoriteStore } from '@/stores'
+
+const VALID_PLAYLIST_TYPES = ['playlist', 'favorites', 'recently-played']
 
 export default {
   name: 'sidebar--playlist-item',
@@ -34,7 +36,7 @@ export default {
     type: {
       type: String,
       default: 'playlist',
-      validator: value => ['playlist', 'favorites'].includes(value)
+      validator: value => VALID_PLAYLIST_TYPES.includes(value)
     }
   },
 
@@ -46,18 +48,31 @@ export default {
   },
 
   computed: {
-    isFavorites () {
-      return this.type === 'favorites'
+    url () {
+      switch (this.type) {
+        case 'playlist':
+          return `#!/playlist/${this.playlist.id}`
+        case 'favorites':
+          return '#!/favorites'
+        case 'recently-played':
+          return '#!/recently-played'
+        default:
+          throw Error('Invalid playlist type')
+      }
     },
 
-    playlistUrl () {
-      return this.isFavorites ? '#!/favorites' : `#!/playlist/${this.playlist.id}`
+    nameEditable () {
+      return this.type === 'playlist'
+    },
+
+    contentEditable () {
+      return this.type === 'playlist' || this.type === 'favorites'
     }
   },
 
   methods: {
     makeEditable () {
-      if (this.isFavorites) {
+      if (!this.nameEditable) {
         return
       }
 
@@ -66,7 +81,7 @@ export default {
     },
 
     update () {
-      if (this.isFavorites || !this.editing) {
+      if (!this.nameEditable || !this.editing) {
         return
       }
 
@@ -91,7 +106,11 @@ export default {
      *
      * @param {Object} e The dragleave event.
      */
-    removeDroppableState: e => $.removeClass(e.target, 'droppable'),
+    removeDroppableState (e) {
+      if (this.contentEditable) {
+        $.removeClass(e.target, 'droppable')
+      }
+    },
 
     /**
      * Add a "droppable" class and set the drop effect when an item is dragged over the playlist's
@@ -100,8 +119,10 @@ export default {
      * @param {Object} e The dragover event.
      */
     allowDrop (e) {
-      $.addClass(e.target, 'droppable')
-      e.dataTransfer.dropEffect = 'move'
+      if (this.contentEditable) {
+        $.addClass(e.target, 'droppable')
+        e.dataTransfer.dropEffect = 'move'
+      }
 
       return false
     },
@@ -114,6 +135,10 @@ export default {
      * @return {Boolean}
      */
     handleDrop (e) {
+      if (!this.contentEditable) {
+        return false
+      }
+
       this.removeDroppableState(e)
 
       if (!e.dataTransfer.getData('application/x-koel.text+plain')) {
@@ -128,7 +153,7 @@ export default {
 
       if (this.type === 'favorites') {
         favoriteStore.like(songs)
-      } else {
+      } else if (this.type === 'playlist') {
         playlistStore.addSongs(this.playlist, songs)
       }
 
@@ -138,12 +163,17 @@ export default {
 
   created () {
     event.on(event.$names.LOAD_MAIN_CONTENT, (view, playlist) => {
-      if (view === 'favorites') {
-        this.active = this.isFavorites
-      } else if (view === 'playlist') {
-        this.active = this.playlist === playlist
-      } else {
-        this.active = false
+      switch (view) {
+        case 'favorites':
+        case 'recently-played':
+          this.active = this.type === view
+          break
+        case 'playlist':
+          this.active = this.playlist === playlist
+          break
+        default:
+          this.active = false
+          break
       }
     })
   }
@@ -173,6 +203,11 @@ export default {
   &.favorites a::before {
     content: "\f004";
     color: $colorHeart;
+  }
+
+  &.recently-played a::before {
+    content: "\f1da";
+    color: $colorGreen;
   }
 
   input {

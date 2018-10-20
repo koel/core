@@ -4,7 +4,14 @@ import Vue from 'vue'
 import isMobile from 'ismobilejs'
 
 import { event, isMediaSessionSupported } from '@/utils'
-import { queueStore, sharedStore, userStore, songStore, preferenceStore as preferences } from '@/stores'
+import {
+  queueStore,
+  sharedStore,
+  userStore,
+  songStore,
+  recentlyPlayedStore,
+  preferenceStore as preferences
+} from '@/stores'
 import { socket, audio as audioService } from '.'
 import { app } from '@/config'
 import router from '@/router'
@@ -50,14 +57,15 @@ export const playback = {
       preferences.repeatMode === 'REPEAT_ONE' ? this.restart() : this.playNext()
     })
 
-    player.addEventListener('timeupdate', e => {
+    player.addEventListener('canplay', () => {
       const song = queueStore.current
+      recentlyPlayedStore.add(song)
+      songStore.registerPlay(song)
+      recentlyPlayedStore.fetchAll()
+    })
 
-      if (this.player.media.currentTime > 10 && !song.registeredPlayCount) {
-        songStore.addRecentlyPlayed(song)
-        songStore.registerPlay(song)
-        song.registeredPlayCount = true
-      } else if (
+    player.addEventListener('timeupdate', e => {
+      if (
         this.player.media.duration &&
         this.player.media.currentTime + PRELOAD_BUFFER > this.player.media.duration
       ) {

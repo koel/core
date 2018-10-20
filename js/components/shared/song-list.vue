@@ -6,7 +6,7 @@
     @keydown.enter.prevent.stop="handleEnter"
     @keydown.a.prevent="handleA"
   >
-    <table class="song-list-header">
+    <table class="song-list-header" :class="sortable ? 'sortable' : 'unsortable'">
       <thead>
         <tr>
           <th @click="sort('song.track')" class="track-number">#
@@ -67,7 +67,7 @@ export default {
     type: {
       type: String,
       default: 'allSongs',
-      validator: value => ['allSongs', 'queue', 'playlist', 'favorites', 'artist', 'album'].includes(value)
+      validator: value => ['allSongs', 'queue', 'playlist', 'favorites', 'recently-played', 'artist', 'album'].includes(value)
     },
     sortable: {
       type: Boolean,
@@ -362,7 +362,6 @@ export default {
       }
 
       queueStore.move(this.selectedSongs, rowVm.song)
-
       return this.removeDroppableState(event)
     },
 
@@ -499,6 +498,10 @@ export default {
       color: $colorHighlight;
       font-size: 1.2rem;
     }
+  }
+  
+  .unsortable th {
+    cursor: default;
   }
 
   .scroller {

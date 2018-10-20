@@ -16,6 +16,8 @@
 
     <ul class="menu">
       <playlist-item type="favorites" :playlist="{ name: 'Favorites', songs: favoriteState.songs }"/>
+      <playlist-item type="recently-played" :playlist="{ name: 'Recently Played', songs: [] }"/>
+
       <playlist-item
         v-for="playlist in playlistState.playlists"
         type="playlist"
@@ -26,7 +28,7 @@
 </template>
 
 <script>
-import { playlistStore, favoriteStore } from '../../../stores'
+import { playlistStore, favoriteStore, recentlyPlayedStore } from '../../../stores'
 import router from '../../../router'
 
 export default {
@@ -39,6 +41,7 @@ export default {
     return {
       playlistState: playlistStore.state,
       favoriteState: favoriteStore.state,
+      recentlyPlayedState: recentlyPlayedStore.state,
       creating: false,
       newName: ''
     }

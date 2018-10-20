@@ -44,6 +44,10 @@ export default {
       loadMainView('favorites')
     },
 
+    '/recently-played' () {
+      loadMainView('recently-played')
+    },
+
     '/playlist/(\\d+)' (id) {
       const playlist = playlistStore.byId(~~id)
       if (playlist) {
