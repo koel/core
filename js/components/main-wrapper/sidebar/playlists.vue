@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import { playlistStore, favoriteStore, recentlyPlayedStore } from '../../../stores'
-import router from '../../../router'
+import { playlistStore, favoriteStore, recentlyPlayedStore } from '@/stores'
+import router from '@/router'
 
 export default {
   name: 'sidebar--playlists',
