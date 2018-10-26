@@ -6,8 +6,8 @@
         <img :src="coverUrl" width="96" height="96">
         <hgroup class="meta">
           <h1 :class="{ mixed: !editingOnlyOneSong }">{{ displayedTitle }}</h1>
-          <h2 :class="{ mixed: !allSongsAreFromSameArtist && !formData.artistName }">displayedArtistName</h2>
-          <h2 :class="{ mixed: !allSongsAreInSameAlbum && !formData.albumName }">displayedAlbumName</h2>
+          <h2 :class="{ mixed: !allSongsAreFromSameArtist && !formData.artistName }">{{ displayedArtistName }}</h2>
+          <h2 :class="{ mixed: !allSongsAreInSameAlbum && !formData.albumName }">{{ displayedAlbumName }}</h2>
         </hgroup>
       </header>
 
