@@ -20,7 +20,9 @@
 
         <section class="recent">
           <h1>Recently Played
-            <a class="btn btn-orange btn-small btn-rounded" href="#!/recently-played">View All</a>
+            <button class="btn btn-orange btn-small btn-rounded" @click.prevent="goToRecentlyPlayedScreen">
+              View All
+            </button>
           </h1>
 
           <ol class="recent-song-list" v-show="recentSongs.length">
@@ -80,6 +82,7 @@ import { sample } from 'lodash'
 import { event } from '@/utils'
 import { songStore, albumStore, artistStore, recentlyPlayedStore, userStore, preferenceStore } from '@/stores'
 import infiniteScroll from '@/mixins/infinite-scroll'
+import router from '@/router'
 
 export default {
   components: {
@@ -140,6 +143,10 @@ export default {
       this.recentlyAdded.albums = albumStore.getRecentlyAdded(6)
       this.recentlyAdded.songs = songStore.getRecentlyAdded(10)
       this.recentSongs = recentlyPlayedStore.excerptState.songs
+    },
+
+    goToRecentlyPlayedScreen () {
+      router.go('recently-played')
     }
   },
 
@@ -171,8 +178,10 @@ export default {
   }
 
   .recent {
-    h1 a {
+    h1 button {
       float: right;
+      padding: 6px 10px;
+      margin-top: -3px;
     }
   }
 
