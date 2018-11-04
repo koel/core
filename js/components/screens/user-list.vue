@@ -16,7 +16,6 @@
     <div class="main-scroll-wrap">
       <div class="users">
         <user-card v-for="user in state.users" :user="user" @editUser="showEditUserForm" :key="user.id"/>
-        <article class="user-item" v-for="n in 6"></article>
       </div>
     </div>
 
@@ -62,9 +61,9 @@ export default {
 
 #usersWrapper {
   .users {
-    justify-content: space-between;
-    flex-wrap: wrap;
-    display: flex;
+    display: grid;
+    grid-gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(320px,1fr));
   }
 
   button {
@@ -73,8 +72,6 @@ export default {
 
   @media only screen and (max-width: 768px) {
     .users {
-      flex-direction: column;
-
       .buttons {
         margin-top: 12px;
         display: block;
@@ -84,8 +81,7 @@ export default {
 }
 
 .user-item {
-  width: 32%;
-  margin-bottom: 16px;
+  width: 100%;
 
   .info {
     display: flex;
@@ -123,10 +119,6 @@ export default {
         display: block;
       }
     }
-  }
-
-  html.with-extra-panel & {
-    width: 49%;
   }
 
   @media only screen and (max-width: 1024px) {

@@ -29,7 +29,7 @@ export const recentlyPlayedStore = {
         return
       }
 
-      http.get(`interaction/recently-played/`, ({ data }) => {
+      http.get(`interaction/recently-played`, ({ data }) => {
         this.state.songs = songStore.byIds(data)
         resolve(this.state.songs)
       }, error => reject(error))
