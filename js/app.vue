@@ -2,9 +2,9 @@
   <div id="app" :class="{ desktop: isDesktopApp }">
     <div id="main" tabindex="0" v-if="authenticated">
       <hotkeys/>
-      <site-header/>
+      <app-header/>
       <main-wrapper/>
-      <site-footer/>
+      <app-footer/>
       <overlay ref="overlay"/>
       <edit-songs-form ref="editSongsForm"/>
     </div>
@@ -20,13 +20,13 @@
 <script>
 import Vue from 'vue'
 
-import siteHeader from '@/components/site-header/index.vue'
-import siteFooter from '@/components/site-footer/index.vue'
-import mainWrapper from '@/components/main-wrapper/index.vue'
-import overlay from '@/components/shared/overlay.vue'
-import loginForm from '@/components/auth/login-form.vue'
-import editSongsForm from '@/components/modals/edit-songs-form.vue'
-import hotkeys from '@/components/hotkeys.vue'
+import AppHeader from '@/components/layout/app-header.vue'
+import AppFooter from '@/components/layout/app-footer.vue'
+import MainWrapper from '@/components/layout/main-wrapper/index.vue'
+import Overlay from '@/components/ui/overlay.vue'
+import LoginForm from '@/components/auth/login-form.vue'
+import EditSongsForm from '@/components/song/edit-form.vue'
+import Hotkeys from '@/components/hotkeys.vue'
 
 import { event, showOverlay, hideOverlay, forceReloadWindow, $, app as appUtils } from '@/utils'
 import { sharedStore, userStore, favoriteStore, queueStore, preferenceStore as preferences } from '@/stores'
@@ -35,7 +35,15 @@ import { focusDirective, clickawayDirective } from '@/directives'
 import router from '@/router'
 
 export default {
-  components: { hotkeys, siteHeader, siteFooter, mainWrapper, overlay, loginForm, editSongsForm },
+  components: {
+    Hotkeys,
+    AppHeader,
+    AppFooter,
+    MainWrapper,
+    Overlay,
+    LoginForm,
+    EditSongsForm
+  },
 
   data () {
     return {
