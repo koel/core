@@ -1,5 +1,5 @@
 import Component from '@/components/shared/overlay.vue'
-import SoundBar from '@/components/shared/sound-bar.vue'
+import SoundBar from '@/components/ui/sound-bar.vue'
 
 describe('components/shared/overlay', () => {
   it('shows with default options', async done => {
