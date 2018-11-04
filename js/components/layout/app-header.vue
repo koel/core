@@ -19,8 +19,8 @@ import { event, app } from '@/utils'
 
 export default {
   components: {
-    searchForm: () => import('@/components/ui/search-form.vue'),
-    userBadge: () => import('@/components/user/badge.vue')
+    SearchForm: () => import('@/components/ui/search-form.vue'),
+    UserBadge: () => import('@/components/user/badge.vue')
   },
 
   data () {
