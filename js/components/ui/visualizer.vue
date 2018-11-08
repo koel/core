@@ -15,11 +15,9 @@ import initVisualizer from '@/utils/visualizer'
 import { event } from '@/utils'
 
 export default {
-  data () {
-    return {
-      isFullscreen: false
-    }
-  },
+  data: () => ({
+    isFullscreen: false
+  }),
 
   methods: {
     toggleFullscreen () {

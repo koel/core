@@ -44,7 +44,7 @@ export default {
     config: Object,
     selectedSongs: {
       type: Array,
-      default: []
+      default: () => []
     }
   },
 
@@ -52,23 +52,21 @@ export default {
     addToMenu: () => import('./add-to-menu.vue')
   },
 
-  data () {
-    return {
-      fullConfig: {
-        shuffle: true,
-        addTo: {
-          queue: true,
-          favorites: true,
-          playlists: true,
-          newPlaylist: true
-        },
-        clearQueue: false,
-        deletePlaylist: false
+  data: () => ({
+    fullConfig: {
+      shuffle: true,
+      addTo: {
+        queue: true,
+        favorites: true,
+        playlists: true,
+        newPlaylist: true
       },
-      showingAddToMenu: false,
-      numberOfQueuedSongs: 0
-    }
-  },
+      clearQueue: false,
+      deletePlaylist: false
+    },
+    showingAddToMenu: false,
+    numberOfQueuedSongs: 0
+  }),
 
   computed: {
     showClearQueueButton () {
@@ -80,7 +78,7 @@ export default {
     }
   },
 
-  mounted () {
+  created () {
     this.fullConfig = Object.assign(this.fullConfig, this.config)
   },
 

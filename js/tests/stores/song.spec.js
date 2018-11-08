@@ -1,4 +1,4 @@
-import { songStore, albumStore, artistStore, preferenceStore } from '../../stores'
+import { songStore, albumStore, artistStore } from '../../stores'
 import data from '../blobs/data'
 
 const { songs, artists, albums, interactions } = data
@@ -51,18 +51,6 @@ describe('stores/song', () => {
       const song = songStore.byId('cb7edeac1f097143e65b1b2cde102482')
       song.liked.should.be.true
       song.playCount.should.equal(3)
-    })
-  })
-
-  describe('#addRecentlyPlayed', () => {
-    it('correctly adds a recently played song', () => {
-      songStore.addRecentlyPlayed(songStore.byId('cb7edeac1f097143e65b1b2cde102482'))
-      songStore.recentlyPlayed[0].id.should.equal('cb7edeac1f097143e65b1b2cde102482')
-      preferenceStore.get('recent-songs')[0].should.equal('cb7edeac1f097143e65b1b2cde102482')
-    })
-
-    it('correctly gathers the songs from local storage', () => {
-      songStore.gatherRecentlyPlayedFromLocalStorage()[0].id.should.equal('cb7edeac1f097143e65b1b2cde102482')
     })
   })
 

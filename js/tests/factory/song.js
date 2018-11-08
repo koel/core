@@ -1,5 +1,5 @@
 import factory from 'factoria'
-import crypto from 'crypto'
+import crypto from 'crypto-random-string'
 
 export default faker => {
   const artist = factory('artist')
@@ -13,7 +13,7 @@ export default faker => {
     album,
     artist_id: artist.id,
     album_id: album.id,
-    id: crypto.createHash('md5'),
+    id: crypto(32),
     title: faker.lorem.sentence(),
     length: faker.random.number(),
     track: faker.random.number(),

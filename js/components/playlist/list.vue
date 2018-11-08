@@ -33,18 +33,16 @@ import router from '@/router'
 
 export default {
   components: {
-    playlistItem: () => import('@/components/playlist/item.vue')
+    PlaylistItem: () => import('@/components/playlist/item.vue')
   },
 
-  data () {
-    return {
-      playlistState: playlistStore.state,
-      favoriteState: favoriteStore.state,
-      recentlyPlayedState: recentlyPlayedStore.state,
-      creating: false,
-      newName: ''
-    }
-  },
+  data: () => ({
+    playlistState: playlistStore.state,
+    favoriteState: favoriteStore.state,
+    recentlyPlayedState: recentlyPlayedStore.state,
+    creating: false,
+    newName: ''
+  }),
 
   methods: {
     async createPlaylist () {

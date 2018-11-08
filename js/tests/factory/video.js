@@ -1,6 +1,8 @@
+import crypto from 'crypto-random-string'
+
 export default faker => ({
   id: {
-    videoId: faker.random.alphaNumeric()
+    videoId: crypto(16)
   },
   snippet: {
     title: faker.lorem.sentence(),

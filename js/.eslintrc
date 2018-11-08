@@ -1,0 +1,16 @@
+{
+  globals: {
+    KOEL_ENV: true,
+    _: true,
+    sinon: true,
+    stub: true,
+    expect: true,
+    shallow: true,
+    mount: true,
+    Vue: true
+  },
+  rules: {
+    camelcase: 0,
+    quotes: 0
+  }
+}

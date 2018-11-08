@@ -38,13 +38,11 @@ import { audio as audioService } from '@/services'
 let context
 
 export default {
-  data () {
-    return {
-      bands: [],
-      preampGainValue: 0,
-      selectedPresetIndex: -1
-    }
-  },
+  data: () => ({
+    bands: [],
+    preampGainValue: 0,
+    selectedPresetIndex: -1
+  }),
 
   computed: {
     presets () {

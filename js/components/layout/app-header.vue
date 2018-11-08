@@ -23,11 +23,9 @@ export default {
     UserBadge: () => import('@/components/user/badge.vue')
   },
 
-  data () {
-    return {
-      appName: appConfig.name
-    }
-  },
+  data: () => ({
+    appName: appConfig.name
+  }),
 
   methods: {
     toggleSidebar: () => event.emit(event.$names.TOGGLE_SIDEBAR),

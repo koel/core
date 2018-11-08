@@ -66,14 +66,12 @@ export default {
     PlaylistList: () => import('@/components/playlist/list.vue')
   },
 
-  data () {
-    return {
-      currentView: 'home',
-      userState: userStore.state,
-      showing: !isMobile.phone,
-      sharedState: sharedStore.state
-    }
-  },
+  data: () => ({
+    currentView: 'home',
+    userState: userStore.state,
+    showing: !isMobile.phone,
+    sharedState: sharedStore.state
+  }),
 
   computed: {
     latestVersionUrl () {

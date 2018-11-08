@@ -14,8 +14,8 @@
     >
     <ul class="result" v-show="showingResult">
       <li
-        v-for="item in displayedItems"
-        :key="item"
+        v-for="(item, index) in displayedItems"
+        :key="index"
         @click.prevent="resultClick($event)">
         {{ item[options.displayKey] }}
       </li>

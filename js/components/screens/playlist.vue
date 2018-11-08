@@ -35,7 +35,7 @@
         ref="songList"
       />
 
-      <div v-show="!playlist.songs.length" class="none">
+      <div v-if="!playlist.songs.length" class="none">
         The playlist is currently empty. You can fill it up by dragging songs into its name in the sidebar,
         or use the &quot;Add To…&quot; button.
       </div>
@@ -54,15 +54,13 @@ export default {
   mixins: [hasSongList],
   filters: { pluralize },
 
-  data () {
-    return {
-      playlist: playlistStore.stub,
-      sharedState: sharedStore.state,
-      songListControlConfig: {
-        deletePlaylist: true
-      }
+  data: () => ({
+    playlist: playlistStore.stub,
+    sharedState: sharedStore.state,
+    songListControlConfig: {
+      deletePlaylist: true
     }
-  },
+  }),
 
   created () {
     /**
@@ -89,7 +87,7 @@ export default {
 
     confirmDelete () {
       if (!this.playlist.songs.length) {
-        this.del()
+        this.destroy()
         return
       }
 
