@@ -1,11 +1,12 @@
+import each from 'jest-each'
 import Component from '@/components/song/home-item.vue'
 import factory from '@/tests/factory'
 import { queueStore } from '@/stores'
 import { playback } from '@/services'
+import { mock } from '@/tests/__helpers__'
 
-describe.skip('components/song/home-item', () => {
-  let propsData
-  let song
+describe('components/song/home-item', () => {
+  let propsData, song, wrapper
 
   beforeEach(() => {
     song = factory('song', {
@@ -18,60 +19,43 @@ describe.skip('components/song/home-item', () => {
       song,
       topPlayCount: 42
     }
+
+    wrapper = shallow(Component, { propsData })
+  })
+
+  afterEach(() => {
+    jest.resetModules()
+    jest.clearAllMocks()
   })
 
   it('renders properly', () => {
-    const wrapper = shallow(Component, { propsData })
-    wrapper.hasAll('span.cover', 'span.details').should.be.true
-    wrapper.html().should.contain('Foo Fighter')
-    wrapper.html().should.contain('10 plays')
+    expect(wrapper.hasAll('span.cover', 'span.details')).toBe(true)
+    expect(wrapper.html()).toMatch('Foo Fighter')
+    expect(wrapper.html()).toMatch('10 plays')
   })
 
-  it('queues and plays if not queued', () => {
-    const containsStub = stub(queueStore, 'contains').callsFake(() => false)
-    const queueStub = stub(queueStore, 'queueAfterCurrent')
-    const playStub = stub(playback, 'play')
-    shallow(Component, { propsData }).dblclick('.song-item-home')
-    containsStub.calledWith(song).should.be.true
-    queueStub.calledWith(song).should.be.true
-    playStub.calledWith(song).should.be.true
-
-    containsStub.restore()
-    queueStub.restore()
-    playStub.restore()
+  each([[true, false], [false, true]]).test('queuing and playing behavior', (shouldQueue, queued) => {
+    const containsStub = mock(queueStore, 'contains', queued)
+    const queueStub = mock(queueStore, 'queueAfterCurrent')
+    const playStub = mock(playback, 'play')
+    wrapper.dblclick('.song-item-home')
+    expect(containsStub).toHaveBeenCalledWith(song)
+    if (queued) {
+      expect(queueStub).not.toHaveBeenCalled()
+    } else {
+      expect(queueStub).toHaveBeenCalledWith(song)
+    }
+    expect(playStub).toHaveBeenCalledWith(song)
   })
 
-  it('just plays if queued', () => {
-    const containsStub = stub(queueStore, 'contains').callsFake(() => true)
-    const queueStub = stub(queueStore, 'queueAfterCurrent')
-    const playStub = stub(playback, 'play')
-    shallow(Component, { propsData }).dblclick('.song-item-home')
-    containsStub.calledWith(song).should.be.true
-    queueStub.called.should.be.false
-    playStub.calledWith(song).should.be.true
-
-    containsStub.restore()
-    queueStub.restore()
-    playStub.restore()
-  })
-
-  it('changes state', () => {
-    const wrapper = shallow(Component, { propsData })
-    const playStub = stub(wrapper.vm, 'play')
-    const resumeStub = stub(playback, 'resume')
-    const pauseStub = stub(playback, 'pause')
-
+  each([
+    ['stopped', 'play'],
+    ['playing', 'pause'],
+    ['paused', 'resume']
+  ]).test('if state is currently "%s", %s', (state, action) => {
+    const m = mock(playback, action)
+    song.playbackState = state
     wrapper.click('.cover .control')
-    playStub.called.should.be.true
-    song.playbackState = 'paused'
-    wrapper.click('.cover .control')
-    resumeStub.called.should.be.true
-    song.playbackState = 'playing'
-    wrapper.click('.cover .control')
-    pauseStub.called.should.be.true
-
-    playStub.restore()
-    resumeStub.restore()
-    pauseStub.restore()
+    expect(m).toHaveBeenCalled()
   })
 })

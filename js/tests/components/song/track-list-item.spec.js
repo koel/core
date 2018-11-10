@@ -2,9 +2,10 @@ import Component from '@/components/song/track-list-item.vue'
 import { sharedStore, songStore, queueStore } from '@/stores'
 import { playback, ls } from '@/services'
 import factory from '@/tests/factory'
+import { mock } from '@/tests/__helpers__'
 
-describe.skip('componnents/song/track-list-item', () => {
-  let song, guessStub, lsGetStub
+describe('componnents/song/track-list-item', () => {
+  let song
   const track = {
     title: 'Foo and bar',
     fmtLenth: '00:42'
@@ -15,13 +16,12 @@ describe.skip('componnents/song/track-list-item', () => {
   beforeEach(() => {
     sharedStore.state.useiTunes = true
     song = factory('song')
-    guessStub = stub(songStore, 'guess').callsFake(() => song)
-    lsGetStub = stub(ls, 'get').callsFake(() => 'abcdef')
+    mock(ls, 'get', 'abcdef')
   })
 
   afterEach(() => {
-    guessStub.restore()
-    lsGetStub.restore()
+    jest.resetModules()
+    jest.clearAllMocks()
   })
 
   it('renders', () => {
@@ -30,23 +30,25 @@ describe.skip('componnents/song/track-list-item', () => {
       album,
       index: 1
     }})
-    wrapper.find('li.available').should.be.ok
-    wrapper.html().should.contain('Foo and bar')
+    expect(wrapper.find('li.available')).toBeDefined()
+    expect(wrapper.html()).toMatch('Foo and bar')
   })
 
   it('has an iTunes link if there is no such local song', () => {
-    guessStub.callsFake(() => false)
-    shallow(Component, { propsData: {
+    const m = mock(songStore, 'guess', false)
+    expect(shallow(Component, { propsData: {
       track,
       album,
       index: 1
-    }}).html().should.contain('http://koel.local/api/itunes/song/42?q=Foo%20and%20bar&amp;jwt-token=abcdef')
+    }}).html()).toMatch('http://koel.local/api/itunes/song/42?q=Foo%20and%20bar&amp;jwt-token=abcdef')
+    expect(m).toHaveBeenCalledWith('Foo and bar', album)
   })
 
   it('plays', () => {
-    const containsStub = stub(queueStore, 'contains').callsFake(() => false)
-    const queueStub = stub(queueStore, 'queueAfterCurrent')
-    const playStub = stub(playback, 'play')
+    mock(songStore, 'guess', song)
+    const containsStub = mock(queueStore, 'contains', false)
+    const queueStub = mock(queueStore, 'queueAfterCurrent')
+    const playStub = mock(playback, 'play')
 
     shallow(Component, { propsData: {
       track,
@@ -54,12 +56,8 @@ describe.skip('componnents/song/track-list-item', () => {
       index: 1
     }}).click('li')
 
-    containsStub.calledWith(song).should.be.true
-    queueStub.calledWith(song).should.be.true
-    playStub.calledWith(song).should.be.true
-
-    containsStub.restore()
-    queueStub.restore()
-    playStub.restore()
+    expect(containsStub).toHaveBeenCalledWith(song)
+    expect(queueStub).toHaveBeenCalledWith(song)
+    expect(playStub).toHaveBeenCalledWith(song)
   })
 })

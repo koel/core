@@ -4,7 +4,7 @@ import factory from '@/tests/factory'
 import { recentlyPlayedStore } from '@/stores'
 import { event } from '@/utils'
 
-describe('components/screens/recently-played', () => {
+describe.skip('components/screens/recently-played', () => {
   it('renders properly', async done => {
     const wrapper = await mount(Component, {
       data: () => ({

@@ -1,14 +1,27 @@
+import each from 'jest-each'
 import Component from '@/components/song/menu.vue'
 import { download } from '@/services'
 import { songStore, playlistStore, queueStore, favoriteStore, sharedStore, userStore } from '@/stores'
 import { event } from '@/utils'
 import factory from '@/tests/factory'
+import { mock } from '@/tests/__helpers__'
 
-describe.skip('components/song/menu', () => {
-  let songs
+describe('components/song/menu', () => {
+  let songs, wrapper
 
   beforeEach(() => {
+    userStore.current.is_admin = true
+    sharedStore.state.allowDownload = true
     songs = factory('song', 2)
+    wrapper = shallow(Component, {
+      propsData: { songs },
+      data: () => ({ copyable: true })
+    })
+  })
+
+  afterEach(() => {
+    jest.resetModules()
+    jest.clearAllMocks()
   })
 
   it('renders properly', () => {
@@ -21,74 +34,52 @@ describe.skip('components/song/menu', () => {
       '.top-queue',
       '.favorite'
     ]
-    shallow(Component, { propsData: { songs }}).hasAll(...selectors).should.be.true
+    expect(shallow(Component, { propsData: { songs }}).hasAll(...selectors)).toBe(true)
   })
 
-  it('queues songs after current', () => {
-    const queueStub = stub(queueStore, 'queueAfterCurrent')
-    shallow(Component, { propsData: { songs }}).click('.after-current')
-    queueStub.calledWith(songs).should.be.true
-    queueStub.restore()
-  })
-
-  it('queues songs to bottom', () => {
-    const queueStub = stub(queueStore, 'queue')
-    shallow(Component, { propsData: { songs }}).click('.bottom-queue')
-    queueStub.calledWith(songs).should.be.true
-    queueStub.restore()
-  })
-
-  it('queues songs to top', () => {
-    const queueStub = stub(queueStore, 'queue')
-    shallow(Component, { propsData: { songs }}).click('.top-queue')
-    queueStub.calledWith(songs, false, true).should.be.true
-    queueStub.restore()
+  each([
+    ['after current', '.after-current', 'queueAfterCurrent', []],
+    ['to bottom', '.bottom-queue', 'queue', []],
+    ['to top', '.top-queue', 'queue', [false, true]]
+  ]).test('queues songs %s when "%s" is clicked', (to, selector, queueFunc, queueFuncExtraArgs) => {
+    const m = mock(queueStore, queueFunc)
+    wrapper.click(selector)
+    expect(m).toHaveBeenCalledWith(songs, ...queueFuncExtraArgs)
   })
 
   it('adds songs to favorite', () => {
-    const likeStub = stub(favoriteStore, 'like')
-    shallow(Component, { propsData: { songs }}).click('.favorite')
-    likeStub.calledWith(songs).should.be.true
-    likeStub.restore()
+    const m = mock(favoriteStore, 'like')
+    wrapper.click('.favorite')
+    expect(m).toHaveBeenCalledWith(songs)
   })
 
   it('adds songs to existing playlist', () => {
     playlistStore.all = factory('playlist', 5)
-    const addStub = stub(playlistStore, 'addSongs')
-    const wrapper = shallow(Component, { propsData: { songs }})
+    const m = mock(playlistStore, 'addSongs')
     const html = wrapper.html()
-    playlistStore.all.forEach(playlist => html.should.contain(playlist.name))
+    playlistStore.all.forEach(playlist => expect(html).toMatch(playlist.name))
     wrapper.click('.playlist')
-    addStub.calledWith(playlistStore.all[0], songs).should.be.true
-    addStub.restore()
+    expect(m).toHaveBeenCalledWith(playlistStore.all[0], songs)
   })
 
   it('opens the edit form', () => {
-    const emitStub = stub(event, 'emit')
+    const m = mock(event, 'emit')
     userStore.current.is_admin = true
-    const wrapper = shallow(Component, { propsData: { songs }})
     wrapper.click('.open-edit-form')
-    emitStub.calledWith('EDIT_SONGS', songs).should.be.true
-    emitStub.restore()
+    expect(m).toHaveBeenCalledWith('EDIT_SONGS', songs)
   })
 
   it('downloads', () => {
-    const downloadStub = stub(download, 'fromSongs')
-    sharedStore.state.allowDownload = true
-    const wrapper = shallow(Component, { propsData: { songs }})
+    const m = mock(download, 'fromSongs')
     wrapper.click('.download')
-    downloadStub.calledWith(songs).should.be.true
-    downloadStub.restore()
+    expect(m).toHaveBeenCalledWith(songs)
   })
 
   it('copies URL', () => {
-    const getUrlStub = stub(songStore, 'getShareableUrl')
+    const m = mock(songStore, 'getShareableUrl')
     const song = factory('song')
-    const wrapper = shallow(Component, {
-      propsData: { songs: [song] },
-      data: () => ({ copyable: true })
-    })
+    wrapper.setProps({ songs: [song] })
     wrapper.click('.copy-url')
-    getUrlStub.calledWith(song).should.be.true
+    expect(m).toHaveBeenCalledWith(song)
   })
 })

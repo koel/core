@@ -1,7 +1,7 @@
 import Component from '@/components/user/edit-form.vue'
 import { userStore } from '@/stores'
 import factory from '@/tests/factory'
-import { mockAsNoop } from '@/tests/__helpers__'
+import { mock } from '@/tests/__helpers__'
 
 describe('components/user/edit-form', () => {
   afterEach(() => {
@@ -20,7 +20,7 @@ describe('components/user/edit-form', () => {
 
   it('saves', () => {
     const user = factory('user')
-    const updateStub = mockAsNoop(userStore, 'update')
+    const updateStub = mock(userStore, 'update')
     const wrapper = shallow(Component)
     wrapper.vm.open(user)
     wrapper.submit('form')
@@ -29,7 +29,7 @@ describe('components/user/edit-form', () => {
 
   it('cancels', () => {
     const user = factory('user')
-    const updateStub = mockAsNoop(userStore, 'update')
+    const updateStub = mock(userStore, 'update')
     const wrapper = shallow(Component)
     wrapper.vm.open(user)
     expect(wrapper.has('form.user-edit')).toBe(true)

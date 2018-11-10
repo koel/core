@@ -1,8 +1,9 @@
+import each from 'jest-each'
 import Component from '@/components/album/card.vue'
 import factory from '@/tests/factory'
 import { playback, download } from '@/services'
 import { queueStore, sharedStore } from '@/stores'
-import { mockAsNoop } from '@/tests/__helpers__'
+import { mock } from '@/tests/__helpers__'
 
 describe('components/album/card', () => {
   let album
@@ -29,28 +30,26 @@ describe('components/album/card', () => {
   })
 
   it('plays if clicked', () => {
-    const mock = mockAsNoop(playback, 'playAllInAlbum')
+    const m = mock(playback, 'playAllInAlbum')
     wrapper.click('.control-play')
-    expect(mock).toHaveBeenCalledWith(album, false)
+    expect(m).toHaveBeenCalledWith(album, false)
   })
 
-  it('queues if ctrl/meta clicked', () => {
-    const mock = mockAsNoop(queueStore, 'queue')
-    wrapper.click('.control-play', { metaKey: true })
-    expect(mock).toHaveBeenCalled()
-    wrapper.click('.control-play', { ctrlKey: true })
-    expect(mock).toHaveBeenCalled()
+  each([['metaKey'], ['ctrlKey']]).test('queues if %s is clicked', key => {
+    const m = mock(queueStore, 'queue')
+    wrapper.click('.control-play', { [key]: true })
+    expect(m).toHaveBeenCalled()
   })
 
   it('shuffles', () => {
-    const mock = mockAsNoop(playback, 'playAllInAlbum')
+    const m = mock(playback, 'playAllInAlbum')
     wrapper.click('.shuffle-album')
-    expect(mock).toHaveBeenCalledWith(album, true)
+    expect(m).toHaveBeenCalledWith(album, true)
   })
 
   it('downloads', () => {
-    const mock = mockAsNoop(download, 'fromAlbum')
+    const m = mock(download, 'fromAlbum')
     wrapper.click('.download-album')
-    expect(mock).toHaveBeenCalledWith(album)
+    expect(m).toHaveBeenCalledWith(album)
   })
 })

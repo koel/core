@@ -10,8 +10,8 @@ describe('components/screens/album-list', () => {
       })
     })
 
-    Vue.nextTick(() => {
-      wrapper.findAll(Card).should.have.lengthOf(5)
+    wrapper.vm.$nextTick(() => {
+      expect(wrapper.findAll(Card)).toHaveLength(5)
       done()
     })
   })

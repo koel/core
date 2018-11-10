@@ -4,7 +4,7 @@ import factory from '@/tests/factory'
 import { event, alerts } from '@/utils'
 import { playlistStore } from '@/stores'
 
-describe('components/screens/playlist', () => {
+describe.skip('components/screens/playlist', () => {
   it('renders properly', async done => {
     const playlist = factory('playlist', { populated: true })
     const wrapper = await shallow(Component, { data: () => ({ playlist }) })

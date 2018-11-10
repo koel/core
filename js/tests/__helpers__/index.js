@@ -1,2 +1,2 @@
 export * from './noop'
-export * from './mockAsNoop'
+export * from './mock'

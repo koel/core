@@ -2,7 +2,7 @@ import Profile from '@/components/screens/profile.vue'
 import factory from '@/tests/factory'
 import { userStore, preferenceStore } from '@/stores'
 
-describe('components/screens/profile', () => {
+describe.skip('components/screens/profile', () => {
   beforeEach(() => {
     userStore.state.current = factory('user')
   })

@@ -1,50 +1,50 @@
+import each from 'jest-each'
+import router from '@/router'
 import Component from '@/components/song/list.vue'
 import factory from '@/tests/factory'
 import { event } from '@/utils'
 import { songStore, queueStore } from '@/stores'
 import { playback } from '@/services'
-import router from '@/router'
+import { mock } from '@/tests/__helpers__'
 
-describe.skip('components/song/list', () => {
+describe('components/song/list', () => {
   let songs
 
   beforeEach(() => {
     songs = factory('song', 20)
   })
 
+  afterEach(() => {
+    jest.resetModules()
+    jest.clearAllMocks()
+  })
+
   it('informs parent to update meta data', () => {
-    // for some reason .emit is wrapped twice
-    const emitStub = event.emit.restore ? event.emit : stub(event, 'emit')
-    const getLengthStub = stub(songStore, 'getFormattedLength').callsFake(() => '12:34:56')
+    const emitStub = mock(event, 'emit')
+    const getLengthStub = mock(songStore, 'getFormattedLength', '12:34:56')
     mount(Component, { propsData: {
       items: songs,
       type: 'allSongs'
     }})
 
-    getLengthStub.calledWith(songs).should.be.true
-    emitStub.called.should.be.true
-
-    emitStub.restore()
-    getLengthStub.restore()
+    expect(getLengthStub).toHaveBeenCalledWith(songs)
+    expect(emitStub).toHaveBeenCalled()
   })
 
-  it('triggers sort', () => {
+  each([
+    ['.track-number', 'song.track'],
+    ['.title', 'song.title'],
+    ['.artist', ['song.album.artist.name', 'song.album.name', 'song.track']],
+    ['.album', ['song.album.name', 'song.track']],
+    ['.time', 'song.length']
+  ]).test('sorts when selector %s is clicked', (selector, criteria) => {
     const wrapper = mount(Component, { propsData: {
       items: songs,
       type: 'allSongs'
     }})
-    const sortStub = stub(wrapper.vm, 'sort')
-    const provider = {
-      '.track-number': 'song.track',
-      '.title': 'song.title',
-      '.artist': ['song.album.artist.name', 'song.album.name', 'song.track'],
-      '.album': ['song.album.name', 'song.track'],
-      '.time': 'song.length'
-    }
-    for (const selector in provider) {
-      wrapper.click(`.song-list-header ${selector}`)
-      sortStub.calledWith(provider[selector]).should.be.true
-    }
+    const m = mock(wrapper.vm, 'sort')
+    wrapper.click(`.song-list-header ${selector}`)
+    expect(m).toHaveBeenCalledWith(criteria)
   })
 
   it('takes disc into account when sort an album song list', () => {
@@ -54,26 +54,22 @@ describe.skip('components/song/list', () => {
     }})
 
     wrapper.vm.sort()
-    wrapper.vm.sortKey.includes('song.disc').should.be.true
+    expect(wrapper.vm.sortKey).toContain('song.disc')
   })
 
-  it('extracts search data from a search query', () => {
-    const provider = {
-      'foo': { keywords: 'foo', fields: ['song.title', 'song.album.name', 'song.artist.name'] },
-      'foo in:title': { keywords: 'foo', fields: ['song.title'] },
-      'in:album foo bar': { keywords: 'foo bar', fields: ['song.album.name'] },
-      'foo bar in:artist': { keywords: 'foo bar', fields: ['song.artist.name'] },
-      'foo in:album in:artist': { keywords: 'foo', fields: ['song.album.name', 'song.artist.name'] }
-    }
-
+  each([
+    ['foo', 'foo', ['song.title', 'song.album.name', 'song.artist.name']],
+    ['foo in:title', 'foo', ['song.title']],
+    ['in:album foo bar', 'foo bar', ['song.album.name']],
+    ['foo bar in:artist', 'foo bar', ['song.artist.name']],
+    ['foo in:album in:artist', 'foo', ['song.album.name', 'song.artist.name']]
+  ]).test('parses query "%s" into keyword "%s" and proper search fields', (q, keywords, fields) => {
     const wrapper = shallow(Component, { propsData: {
       items: songs,
       type: 'allSongs'
     }})
 
-    for (const q in provider) {
-      wrapper.vm.extractSearchDataFromQuery(q).should.eql(provider[q])
-    }
+    expect(wrapper.vm.extractSearchDataFromQuery(q)).toEqual({ keywords, fields })
   })
 
   it('plays when Enter is pressed with one selected song', () => {
@@ -84,10 +80,9 @@ describe.skip('components/song/list', () => {
     // select one row
     wrapper.vm.filteredItems[0].selected = true
 
-    const playStub = stub(playback, 'play')
+    const m = mock(playback, 'play')
     wrapper.find('.song-list-wrap').trigger('keydown.enter')
-    playStub.calledWith(songs[0]).should.be.true
-    playStub.restore()
+    expect(m).toHaveBeenCalledWith(songs[0])
   })
 
   it('plays when Enter is pressed in Queue screen', () => {
@@ -96,12 +91,11 @@ describe.skip('components/song/list', () => {
       type: 'queue'
     }})
 
-    const playStub = stub(playback, 'play')
+    const m = mock(playback, 'play')
     wrapper.vm.filteredItems[0].selected = true
     wrapper.vm.filteredItems[1].selected = true
     wrapper.find('.song-list-wrap').trigger('keydown.enter')
-    playStub.calledWith(songs[0]).should.be.true
-    playStub.restore()
+    expect(m).toHaveBeenCalledWith(songs[0])
   })
 
   it('queues when Enter is pressed in other screens', () => {
@@ -109,9 +103,9 @@ describe.skip('components/song/list', () => {
       items: songs,
       type: 'playlist'
     }})
-    const queueStub = stub(queueStore, 'queue')
-    const goStub = stub(router, 'go')
-    const playStub = stub(playback, 'play')
+    const queueStub = mock(queueStore, 'queue')
+    const goStub = mock(router, 'go')
+    const playStub = mock(playback, 'play')
 
     // select 2 rows
     wrapper.vm.filteredItems[0].selected = true
@@ -119,23 +113,18 @@ describe.skip('components/song/list', () => {
 
     // simple Enter adds selected songs to bottom
     wrapper.find('.song-list-wrap').trigger('keydown.enter')
-    queueStub.calledWith(wrapper.vm.selectedSongs, false, undefined).should.be.true
+    expect(queueStub).toHaveBeenCalledWith(wrapper.vm.selectedSongs, false, undefined)
     // the current screen should be switched to "Queue"
-    goStub.calledWith('queue').should.be.true
+    expect(goStub).toHaveBeenCalledWith('queue')
 
     // Shift+Enter queues to top
     wrapper.find('.song-list-wrap').trigger('keydown.enter', { shiftKey: true })
-    queueStub.calledWith(wrapper.vm.selectedSongs, false, true).should.be.true
-    goStub.calledWith('queue').should.be.true
+    expect(queueStub).toHaveBeenCalledWith(wrapper.vm.selectedSongs, false, true)
+    expect(goStub).toHaveBeenCalledWith('queue')
 
     // Ctrl[+Shift]+Enter queues and plays the first song
     wrapper.find('.song-list-wrap').trigger('keydown.enter', { ctrlKey: true })
-    playStub.calledWith(wrapper.vm.selectedSongs[0]).should.be.true
-    playStub.called.should.be.true
-
-    queueStub.restore()
-    goStub.restore()
-    playStub.restore()
+    expect(playStub).toHaveBeenCalledWith(wrapper.vm.selectedSongs[0])
   })
 
   it('selects all songs', () => {
@@ -144,6 +133,6 @@ describe.skip('components/song/list', () => {
       type: 'playlist'
     }})
     wrapper.find('.song-list-wrap').trigger('keydown.a', { ctrlKey: true })
-    wrapper.vm.filteredItems.forEach(item => item.selected.should.be.true)
+    wrapper.vm.filteredItems.forEach(item => expect(item.selected).toBe(true))
   })
 })

@@ -1,7 +1,7 @@
 import Component from '@/components/playlist/item.vue'
 import factory from '@/tests/factory'
 import { playlistStore } from '@/stores'
-import { mockAsNoop } from '@/tests/__helpers__'
+import { mock } from '@/tests/__helpers__'
 
 describe('component/playlist/item', () => {
   let playlist
@@ -37,7 +37,7 @@ describe('component/playlist/item', () => {
   })
 
   it('edits a playlist', () => {
-    const updateStub = mockAsNoop(playlistStore, 'update')
+    const updateStub = mock(playlistStore, 'update')
     const wrapper = shallow(Component, {
       propsData: { playlist }
     })

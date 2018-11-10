@@ -1,7 +1,7 @@
 import Component from '@/components/user/add-form.vue'
 import factory from '@/tests/factory'
 import { userStore } from '@/stores'
-import { mockAsNoop } from '@/tests/__helpers__'
+import { mock } from '@/tests/__helpers__'
 
 describe('components/user/add-form', () => {
   afterEach(() => {
@@ -17,7 +17,7 @@ describe('components/user/add-form', () => {
 
   it('adds a new user', () => {
     const newUser = factory('user')
-    const storeStub = mockAsNoop(userStore, 'store')
+    const storeStub = mock(userStore, 'store')
     const wrapper = shallow(Component)
     wrapper.vm.open()
     wrapper.setData({ newUser })

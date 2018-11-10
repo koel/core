@@ -8,8 +8,8 @@ describe('components/artist/info', () => {
         artist: factory('artist')
       }
     })
-    expect(wrapper.findAll('.artist-info.sidebar').length).toBe(1)
-    expect(wrapper.findAll('.artist-info.full').length).toBe(0)
+    expect(wrapper.findAll('.artist-info.sidebar')).toHaveLength(1)
+    expect(wrapper.findAll('.artist-info.full')).toHaveLength(0)
   })
 
   it('can display the info in full mode', () => {
@@ -19,8 +19,8 @@ describe('components/artist/info', () => {
         mode: 'full'
       }
     })
-    expect(wrapper.findAll('.artist-info.sidebar').length).toBe(0)
-    expect(wrapper.findAll('.artist-info.full').length).toBe(1)
+    expect(wrapper.findAll('.artist-info.sidebar')).toHaveLength(0)
+    expect(wrapper.findAll('.artist-info.full')).toHaveLength(1)
   })
 
   it('triggers showing full bio', () => {

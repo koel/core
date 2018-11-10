@@ -1,8 +1,9 @@
+import each from 'jest-each'
 import _ from 'lodash'
 import Component from '@/components/song/add-to-menu.vue'
 import factory from '@/tests/factory'
 import { playlistStore, queueStore, favoriteStore } from '@/stores'
-import { mockAsNoop } from '@/tests/__helpers__'
+import { mock } from '@/tests/__helpers__'
 
 describe('components/song/add-to-menu', () => {
   const config = {
@@ -39,7 +40,7 @@ describe('components/song/add-to-menu', () => {
       'li.favorites',
       'form.form-new-playlist'
     )).toBe(true)
-    expect(wrapper.findAll('li.playlist').length).toBe(10)
+    expect(wrapper.findAll('li.playlist')).toHaveLength(10)
   })
 
   it('supports different configurations', () => {
@@ -60,37 +61,23 @@ describe('components/song/add-to-menu', () => {
     expect(wrapper.has('form.form-new-playlist')).toBe(false)
   })
 
-  it('queue songs after current and closes itself', () => {
+  each([
+    ['after current', '.after-current', 'queueAfterCurrent', []],
+    ['to bottom', '.bottom-queue', 'queue', []],
+    ['to top', '.top-queue', 'queue', [false, true]]
+  ]).test('queues songs %s when "%s" is clicked', (to, selector, queueFunc, queueFuncExtraArgs) => {
     const wrapper = initComponent()
-    const queueStub = mockAsNoop(queueStore, 'queueAfterCurrent')
-    const closeStub = mockAsNoop(wrapper.vm, 'close')
-    wrapper.click('li.after-current')
-    expect(queueStub).toHaveBeenCalledWith(songs)
-    expect(closeStub).toHaveBeenCalled()
-  })
-
-  it('queue songs to bottom and closes itself', () => {
-    const wrapper = initComponent()
-    const queueStub = mockAsNoop(queueStore, 'queue')
-    const closeStub = mockAsNoop(wrapper.vm, 'close')
-    wrapper.click('li.bottom-queue')
-    expect(queueStub).toHaveBeenCalledWith(songs)
-    expect(closeStub).toHaveBeenCalled()
-  })
-
-  it('queue songs to top and closes itself', () => {
-    const wrapper = initComponent()
-    const queueStub = mockAsNoop(queueStore, 'queue')
-    const closeStub = mockAsNoop(wrapper.vm, 'close')
-    wrapper.click('li.top-queue')
-    expect(queueStub).toHaveBeenCalledWith(songs, false, true)
-    expect(closeStub).toHaveBeenCalled()
+    const queueMock = mock(queueStore, queueFunc)
+    const closeMock = mock(wrapper.vm, 'close')
+    wrapper.click(`li${selector}`)
+    expect(queueMock).toHaveBeenCalledWith(songs, ...queueFuncExtraArgs)
+    expect(closeMock).toHaveBeenCalled()
   })
 
   it('add songs to favorite', () => {
     const wrapper = initComponent()
-    const likeStub = mockAsNoop(favoriteStore, 'like')
-    const closeStub = mockAsNoop(wrapper.vm, 'close')
+    const likeStub = mock(favoriteStore, 'like')
+    const closeStub = mock(wrapper.vm, 'close')
     wrapper.click('li.favorites')
     expect(likeStub).toHaveBeenCalledWith(songs)
     expect(closeStub).toHaveBeenCalled()
@@ -100,18 +87,17 @@ describe('components/song/add-to-menu', () => {
     const playlists = factory('playlist', 3)
     playlistStore.all = playlists
     const wrapper = initComponent()
-    const addSongsStub = mockAsNoop(playlistStore, 'addSongs')
-    const closeStub = mockAsNoop(wrapper.vm, 'close')
+    const addSongsStub = mock(playlistStore, 'addSongs')
+    const closeStub = mock(wrapper.vm, 'close')
     wrapper.findAll('li.playlist').at(1).click()
     expect(addSongsStub).toHaveBeenCalledWith(playlists[1], songs)
     expect(closeStub).toHaveBeenCalled()
   })
 
   it('creates new playlist from songs', async done => {
-    const storeStub = jest.spyOn(playlistStore, 'store')
-    storeStub.mockReturnValueOnce(new Promise(resolve => resolve(factory('playlist'))))
+    const storeStub = mock(playlistStore, 'store', new Promise(resolve => resolve(factory('playlist'))))
     const wrapper = initComponent()
-    const closeStub = mockAsNoop(wrapper.vm, 'close')
+    const closeStub = mock(wrapper.vm, 'close')
     wrapper.setData({ newPlaylistName: 'Foo' })
     await wrapper.submit('form.form-new-playlist')
     expect(storeStub).toHaveBeenCalledWith('Foo', songs)

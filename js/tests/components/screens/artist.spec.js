@@ -4,7 +4,7 @@ import SongListControls from '@/components/song/list-controls.vue'
 import { download, artistInfo as artistInfoService } from '@/services'
 import factory from '@/tests/factory'
 
-describe('components/screens/artist', () => {
+describe.skip('components/screens/artist', () => {
   let artist
   beforeEach(() => {
     artist = factory('artist')

@@ -1,3 +1,4 @@
+import each from 'jest-each'
 import Component from '@/components/ui/overlay.vue'
 import SoundBar from '@/components/ui/sound-bar.vue'
 
@@ -29,12 +30,10 @@ describe('components/shared/overlay', () => {
     })
   })
 
-  it('hides', () => {
+  each([['show', true], ['hide', false]]).test('%ss', (methodName, visible) => {
     const wrapper = mount(Component)
-    wrapper.vm.show()
-    expect(wrapper.has('.display')).toBe(true)
-    wrapper.vm.hide()
-    expect(wrapper.has('.display')).toBe(false)
+    wrapper.vm[methodName]()
+    expect(wrapper.has('.display')).toBe(visible)
   })
 
   it('dismisses', () => {

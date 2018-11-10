@@ -2,7 +2,8 @@ import Component from '@/components/song/edit-form.vue'
 import Typeahead from '@/components/ui/typeahead.vue'
 import factory from '@/tests/factory'
 import { songStore } from '@/stores'
-import { mockAsNoop } from '@/tests/__helpers__'
+import { songInfo } from '@/services/info'
+import { mock } from '@/tests/__helpers__'
 
 describe('components/song/edit-form', () => {
   afterEach(() => {
@@ -17,34 +18,37 @@ describe('components/song/edit-form', () => {
   })
 
   it('supports editing a single song', async done => {
-    const song = factory('song')
+    const song = factory('song', { infoRetrieved: true })
     const wrapper = await mount(Component)
-    console.log(song.lyrics)
-    await wrapper.vm.open(song)
+    wrapper.vm.open(song)
 
-    Vue.nextTick(() => {
-      const metaHtml = wrapper.find('.meta').html()
-      expect(metaHtml).toMatch(song.title)
-      expect(metaHtml).toMatch(song.album.name)
-      expect(metaHtml).toMatch(song.artist.name)
+    const metaHtml = wrapper.find('.meta').html()
+    expect(metaHtml).toMatch(song.title)
+    expect(metaHtml).toMatch(song.album.name)
+    expect(metaHtml).toMatch(song.artist.name)
 
-      expect(wrapper.has(Typeahead)).toBe(true)
-      expect(wrapper.find('input[name=title]').value).toBe(song.title)
-      expect(wrapper.find('input[name=album]').value).toBe(song.album.name)
-      expect(wrapper.find('input[name=artist]').value).toBe(song.artist.name)
-      expect(wrapper.find('input[name=track]').value).toBe(song.track.toString())
+    expect(wrapper.has(Typeahead)).toBe(true)
+    expect(wrapper.find('input[name=title]').value).toBe(song.title)
+    expect(wrapper.find('input[name=album]').value).toBe(song.album.name)
+    expect(wrapper.find('input[name=artist]').value).toBe(song.artist.name)
+    expect(wrapper.find('input[name=track]').value).toBe(song.track.toString())
 
-      wrapper.click('.tabs .tab-lyrics')
-      console.log('looking', wrapper.find('textarea[name=lyrics]'))
-      console.log('AAAAAAAAAAAAAAAAAA', 'actual', wrapper.find('textarea[name=lyrics]').value, 'expected:', song.lyrics)
-      // expect(wrapper.find('textarea[name=lyrics]').value).toBe(song.lyrics)
-      done()
-    })
+    wrapper.click('.tabs .tab-lyrics')
+    expect(wrapper.find('textarea[name=lyrics]').value).toBe(song.lyrics)
+    done()
   })
 
-  it('supports editing multiple songs of multiple artists', async done => {
+  it('fetches song information on demand', () => {
+    const song = factory('song', { infoRetrieved: false })
+    const fetchMock = mock(songInfo, 'fetch')
     const wrapper = mount(Component)
-    await wrapper.vm.open(factory('song', 3))
+    wrapper.vm.open(song)
+    expect(fetchMock).toHaveBeenCalledWith(song)
+  })
+
+  it('supports editing multiple songs of multiple artists', () => {
+    const wrapper = mount(Component)
+    wrapper.vm.open(factory('song', 3))
 
     const metaHtml = wrapper.find('.meta').html()
     expect(metaHtml).toMatch('3 songs selected')
@@ -54,18 +58,16 @@ describe('components/song/edit-form', () => {
     expect(wrapper.find('input[name=artist]').value).toBe('')
     expect(wrapper.find('input[name=album]').value).toBe('')
     expect(wrapper.has('.tabs .tab-lyrics')).toBe(false)
-
-    done()
   })
 
-  it('supports editing multiple songs of same artist and different albums', async done => {
+  it('supports editing multiple songs of same artist and different albums', () => {
     const wrapper = mount(Component)
     const artist = factory('artist')
     const songs = factory('song', 5, {
       artist,
       artist_id: artist.id
     })
-    await wrapper.vm.open(songs)
+    wrapper.vm.open(songs)
 
     const metaHtml = wrapper.find('.meta').html()
     expect(metaHtml).toMatch('5 songs selected')
@@ -75,11 +77,9 @@ describe('components/song/edit-form', () => {
     expect(wrapper.find('input[name=artist]').value).toBe(artist.name)
     expect(wrapper.find('input[name=album]').value).toBe('')
     expect(wrapper.has('.tabs .tab-lyrics')).toBe(false)
-
-    done()
   })
 
-  it('supports editing multiple songs in same album', async done => {
+  it('supports editing multiple songs in same album', () => {
     const wrapper = mount(Component)
     const album = factory('album')
     const songs = factory('song', 4, {
@@ -88,7 +88,7 @@ describe('components/song/edit-form', () => {
       artist: album.artist,
       artist_id: album.artist.id
     })
-    await wrapper.vm.open(songs)
+    wrapper.vm.open(songs)
 
     const metaHtml = wrapper.find('.meta').html()
     expect(metaHtml).toMatch('4 songs selected')
@@ -98,12 +98,10 @@ describe('components/song/edit-form', () => {
     expect(wrapper.find('input[name=artist]').value).toBe(album.artist.name)
     expect(wrapper.find('input[name=album]').value).toBe(album.name)
     expect(wrapper.has('.tabs .tab-lyrics')).toBe(false)
-
-    done()
   })
 
   it('saves', async done => {
-    const updateStub = mockAsNoop(songStore, 'update')
+    const updateStub = mock(songStore, 'update')
     const songs = factory('song', 3)
     const formData = { foo: 'bar' }
     const wrapper = await mount(Component, {
@@ -118,6 +116,7 @@ describe('components/song/edit-form', () => {
   it('closes', async done => {
     const wrapper = shallow(Component)
     await wrapper.vm.open(factory('song', 3))
+    expect(wrapper.has('form')).toBe(true)
     await wrapper.vm.close()
     expect(wrapper.has('form')).toBe(false)
     done()

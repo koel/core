@@ -5,7 +5,7 @@ import EditUserForm from '@/components/user/edit-form.vue'
 import factory from '@/tests/factory'
 import { userStore } from '@/stores'
 
-describe('components/screens/user-list', () => {
+describe.skip('components/screens/user-list', () => {
   it('displays the users', async done => {
     userStore.all = factory('user', 10)
     const wrapper = await mount(Component)

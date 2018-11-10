@@ -1,6 +1,6 @@
 import Component from '@/components/ui/to-top-button.vue'
 import { $ } from '@/utils'
-import { mockAsNoop } from '@/tests/__helpers__'
+import { mock } from '@/tests/__helpers__'
 
 describe('components/ui/to-top-button', () => {
   afterEach(() => {
@@ -9,8 +9,8 @@ describe('components/ui/to-top-button', () => {
   })
 
   it('scrolls to top', () => {
-    const scrollToStub = mockAsNoop($, 'scrollTo')
+    const m = mock($, 'scrollTo')
     shallow(Component).click('button')
-    expect(scrollToStub).toHaveBeenCalled()
+    expect(m).toHaveBeenCalled()
   })
 })

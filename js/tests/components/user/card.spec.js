@@ -3,7 +3,7 @@ import { userStore } from '@/stores'
 import { alerts } from '@/utils'
 import factory from '@/tests/factory'
 import router from '@/router'
-import { mockAsNoop } from '@/tests/__helpers__'
+import { mock } from '@/tests/__helpers__'
 
 describe('components/user/card', () => {
   let user
@@ -39,7 +39,7 @@ describe('components/user/card', () => {
   })
 
   it('redirects to update profile if attempting to edit current user', () => {
-    const goStub = mockAsNoop(router, 'go')
+    const goStub = mock(router, 'go')
     userStore.current.id = user.id
     shallow(Component, { propsData: { user }}).click('.btn-edit')
     expect(goStub).toHaveBeenCalledWith('profile')
@@ -53,7 +53,7 @@ describe('components/user/card', () => {
   })
 
   it('triggers deleting user', () => {
-    const confirmStub = mockAsNoop(alerts, 'confirm')
+    const confirmStub = mock(alerts, 'confirm')
     const wrapper = shallow(Component, { propsData: { user }})
     wrapper.click('.btn-delete')
     expect(confirmStub).toHaveBeenCalledWith(
@@ -63,7 +63,7 @@ describe('components/user/card', () => {
   })
 
   it('deletes user', () => {
-    const destroyStub = mockAsNoop(userStore, 'destroy')
+    const destroyStub = mock(userStore, 'destroy')
     shallow(Component, { propsData: { user }}).vm.destroy()
     expect(destroyStub).toHaveBeenCalledWith(user)
   })

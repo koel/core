@@ -1,24 +1,20 @@
+import each from 'jest-each'
 import Component from '@/components/song/list-controls-toggler.vue'
 import isMobile from 'ismobilejs'
 
-describe.skip('components/song/list-controls-toggler', () => {
+describe('components/song/list-controls-toggler', () => {
   beforeEach(() => {
     isMobile.phone = true
   })
 
-  it('renders properly', () => {
-    shallow(Component, { propsData: {
-      showingControls: true
-    }}).has('.toggler.fa-angle-up').should.be.true
-
-    shallow(Component, { propsData: {
-      showingControls: false
-    }}).has('.toggler.fa-angle-up').should.be.false
+  each([[true], [false]]).test('shows/hides properly', (shouldShow) => {
+    const wrapper = shallow(Component, { propsData: { showingControls: shouldShow }})
+    expect(wrapper.has('.toggler.fa-angle-up')).toBe(shouldShow)
   })
 
   it('emits event', () => {
     const wrapper = shallow(Component)
     wrapper.click('.song-list-controls-toggler')
-    wrapper.hasEmitted('toggleControls').should.be.true
+    expect(wrapper.hasEmitted('toggleControls')).toBe(true)
   })
 })

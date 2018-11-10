@@ -1,6 +1,6 @@
 import Component from '@/components/auth/login-form.vue'
 import { userStore } from '@/stores'
-import { mockAsNoop } from '@/tests/__helpers__'
+import { mock } from '@/tests/__helpers__'
 
 describe('components/auth/login-form', () => {
   afterEach(() => {
@@ -9,11 +9,11 @@ describe('components/auth/login-form', () => {
   })
 
   it('displays a form for users to log in', () => {
-    expect(shallow(Component).findAll('form').length).toBe(1)
+    expect(shallow(Component).findAll('form')).toHaveLength(1)
   })
 
   it('triggers login when form is submitted', () => {
-    const loginStub = mockAsNoop(userStore, 'login')
+    const loginStub = mock(userStore, 'login')
     shallow(Component, {
       data: () => ({
         email: 'john@doe.com',

@@ -4,7 +4,7 @@ import SongListControls from '@/components/song/list-controls.vue'
 import { download } from '@/services'
 import factory from '@/tests/factory'
 
-describe('components/screens/favorites', () => {
+describe.skip('components/screens/favorites', () => {
   it('displays the song list if there are favorites', async done => {
     const wrapper = await shallow(Component, {
       data: () => ({

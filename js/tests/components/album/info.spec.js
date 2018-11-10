@@ -9,8 +9,8 @@ describe('components/album/info', () => {
         album: factory('album')
       }
     })
-    expect(wrapper.findAll('.album-info.sidebar').length).toBe(1)
-    expect(wrapper.findAll('.album-info.full').length).toBe(0)
+    expect(wrapper.findAll('.album-info.sidebar')).toHaveLength(1)
+    expect(wrapper.findAll('.album-info.full')).toHaveLength(0)
   })
 
   it('can display the info in full mode', () => {
@@ -20,8 +20,8 @@ describe('components/album/info', () => {
         mode: 'full'
       }
     })
-    expect(wrapper.findAll('.album-info.sidebar').length).toBe(0)
-    expect(wrapper.findAll('.album-info.full').length).toBe(1)
+    expect(wrapper.findAll('.album-info.sidebar')).toHaveLength(0)
+    expect(wrapper.findAll('.album-info.full')).toHaveLength(1)
   })
 
   it('triggers showing full wiki', () => {
@@ -33,7 +33,7 @@ describe('components/album/info', () => {
     expect(wrapper.html()).toMatch(album.info.wiki.full)
   })
 
-  it('lists the correct number of tracks', async (done) => {
+  it('lists the correct number of tracks', async done => {
     const wrapper = await mount(AlbumInfo, {
       propsData: {
         album: factory('album')
@@ -41,7 +41,7 @@ describe('components/album/info', () => {
     })
 
     wrapper.vm.$nextTick(() => {
-      expect(wrapper.findAll(TrackListItem).length).toBe(2)
+      expect(wrapper.findAll(TrackListItem)).toHaveLength(2)
       done()
     })
   })

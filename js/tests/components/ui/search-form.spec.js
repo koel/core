@@ -1,6 +1,6 @@
 import Component from '@/components/ui/search-form.vue'
 import { event } from '@/utils'
-import { mockAsNoop } from '@/tests/__helpers__'
+import { mock } from '@/tests/__helpers__'
 
 describe('components/ui/search-form', () => {
   afterEach(() => {
@@ -13,7 +13,7 @@ describe('components/ui/search-form', () => {
   })
 
   it('emits an event to filter', async done => {
-    const emitStub = mockAsNoop(event, 'emit')
+    const emitStub = mock(event, 'emit')
     const wrapper = shallow(Component)
     wrapper.find('[type=search]').setValue('foo').input()
 

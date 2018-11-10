@@ -1,6 +1,6 @@
 import Component from '@/components/ui/volume.vue'
 import { playback, socket } from '@/services'
-import { mockAsNoop } from '@/tests/__helpers__'
+import { mock } from '@/tests/__helpers__'
 
 describe('components/ui/volume', () => {
   afterEach(() => {
@@ -14,31 +14,31 @@ describe('components/ui/volume', () => {
   })
 
   it('mutes', () => {
-    const muteStub = mockAsNoop(playback, 'mute')
+    const m = mock(playback, 'mute')
     shallow(Component).click('i.mute')
-    expect(muteStub).toHaveBeenCalled()
+    expect(m).toHaveBeenCalled()
   })
 
   it('unmutes', () => {
-    const unmuteStub = mockAsNoop(playback, 'unmute')
+    const m = mock(playback, 'unmute')
     shallow(Component, {
       data: () => ({
         muted: true
       })
     }).click('i.unmute')
-    expect(unmuteStub).toHaveBeenCalled()
+    expect(m).toHaveBeenCalled()
   })
 
   it('sets the volume', () => {
-    const setVolumeStub = mockAsNoop(playback, 'setVolume')
+    const m = mock(playback, 'setVolume')
     shallow(Component).find('#volumeRange').setValue(4.2).input()
-    expect(setVolumeStub).toHaveBeenCalledWith(4.2)
+    expect(m).toHaveBeenCalledWith(4.2)
   })
 
   it('broadcasts the volume value', () => {
-    const broadcastStub = mockAsNoop(socket, 'broadcast')
+    const m = mock(socket, 'broadcast')
     shallow(Component).find('#volumeRange').setValue(4.2).change()
-    expect(broadcastStub).toHaveBeenCalledWith('SOCKET_VOLUME_CHANGED', 4.2)
+    expect(m).toHaveBeenCalledWith('SOCKET_VOLUME_CHANGED', 4.2)
   })
 })
 
