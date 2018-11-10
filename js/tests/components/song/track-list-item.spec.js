@@ -30,18 +30,7 @@ describe('componnents/song/track-list-item', () => {
       album,
       index: 1
     }})
-    expect(wrapper.find('li.available')).toBeDefined()
-    expect(wrapper.html()).toMatch('Foo and bar')
-  })
-
-  it('has an iTunes link if there is no such local song', () => {
-    const m = mock(songStore, 'guess', false)
-    expect(shallow(Component, { propsData: {
-      track,
-      album,
-      index: 1
-    }}).html()).toMatch('http://koel.local/api/itunes/song/42?q=Foo%20and%20bar&amp;jwt-token=abcdef')
-    expect(m).toHaveBeenCalledWith('Foo and bar', album)
+    expect(wrapper).toMatchSnapshot()
   })
 
   it('plays', () => {

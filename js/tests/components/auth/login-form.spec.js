@@ -8,8 +8,8 @@ describe('components/auth/login-form', () => {
     jest.clearAllMocks()
   })
 
-  it('displays a form for users to log in', () => {
-    expect(shallow(Component).findAll('form')).toHaveLength(1)
+  it('renders properly', () => {
+    expect(shallow(Component)).toMatchSnapshot()
   })
 
   it('triggers login when form is submitted', () => {

@@ -4,13 +4,19 @@ import AddUserForm from '@/components/user/add-form.vue'
 import EditUserForm from '@/components/user/edit-form.vue'
 import factory from '@/tests/factory'
 import { userStore } from '@/stores'
+import { mock } from '@/tests/__helpers__'
 
-describe.skip('components/screens/user-list', () => {
+describe('components/screens/user-list', () => {
+  afterEach(() => {
+    jest.resetModules()
+    jest.clearAllMocks()
+  })
+
   it('displays the users', async done => {
     userStore.all = factory('user', 10)
     const wrapper = await mount(Component)
-    Vue.nextTick(() => {
-      wrapper.findAll(UserCard).should.have.lengthOf(10)
+    wrapper.vm.$nextTick(() => {
+      expect(wrapper.findAll(UserCard)).toHaveLength(10)
       done()
     })
   })
@@ -18,21 +24,19 @@ describe.skip('components/screens/user-list', () => {
   it('adds new user', () => {
     userStore.all = factory('user', 10)
     const wrapper = mount(Component)
-    const openStub = stub(wrapper.vm.$refs.addUserForm, 'open')
-    wrapper.has(AddUserForm).should.be.true
+    const m = mock(wrapper.vm.$refs.addUserForm, 'open')
+    expect(wrapper.has(AddUserForm)).toBe(true)
     wrapper.click('.btn-add')
-    openStub.called.should.be.true
-    openStub.restore()
+    expect(m).toHaveBeenCalled()
   })
 
   it('edits a user', () => {
     userStore.all = factory('user', 10)
     const wrapper = mount(Component)
-    const editStub = stub(wrapper.vm.$refs.editUserForm, 'open')
-    wrapper.has(EditUserForm).should.be.true
+    const m = mock(wrapper.vm.$refs.editUserForm, 'open')
+    expect(wrapper.has(EditUserForm)).toBe(true)
     wrapper.click('.btn-edit')
-    editStub.calledWith(userStore.all[0]).should.be.true
-    editStub.restore()
+    expect(m).toHaveBeenCalledWith(userStore.all[0])
   })
 })
 

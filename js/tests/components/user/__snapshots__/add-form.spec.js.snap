@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/user/add-form opens 1`] = `
+<div class="overlay">
+  <form class="user-add">
+    <header>
+      <h1>Add New User</h1>
+    </header>
+    <div>
+      <div class="form-row"><label>Name</label> <input title="Name" type="text" name="name" required="required"></div>
+      <div class="form-row"><label>Email</label> <input title="Email" type="email" name="email" required="required"></div>
+      <div class="form-row"><label>Password</label> <input title="Password" type="password" name="password"></div>
+    </div>
+    <footer><button class="btn btn-green btn-add">Save</button> <button class="btn btn-white btn-cancel">Cancel</button></footer>
+  </form>
+</div>
+`;

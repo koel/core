@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/song/list-controls renders properly 1`] = `
+<div class="buttons song-list-controls"><button class="btn btn-orange btn-shuffle-all"><i class="fa fa-random"></i> All
+  </button>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
+  <addtomenu-stub config="[object Object]" songs=""></addtomenu-stub>
+</div>
+`;

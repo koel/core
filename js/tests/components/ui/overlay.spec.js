@@ -1,6 +1,5 @@
 import each from 'jest-each'
 import Component from '@/components/ui/overlay.vue'
-import SoundBar from '@/components/ui/sound-bar.vue'
 
 describe('components/shared/overlay', () => {
   it('shows with default options', async done => {
@@ -8,8 +7,7 @@ describe('components/shared/overlay', () => {
     await wrapper.vm.show()
 
     Vue.nextTick(() => {
-      expect(wrapper.has(SoundBar)).toBe(true)
-      expect(wrapper.has('button.btn-dismiss')).toBe(false)
+      expect(wrapper).toMatchSnapshot()
       done()
     })
   })
@@ -23,9 +21,7 @@ describe('components/shared/overlay', () => {
     })
 
     Vue.nextTick(() => {
-      expect(wrapper.has(SoundBar)).toBe(false)
-      expect(wrapper.has('button.btn-dismiss')).toBe(true)
-      expect(wrapper.find('span.message').html()).toMatch('Foo')
+      expect(wrapper).toMatchSnapshot()
       done()
     })
   })
@@ -33,7 +29,7 @@ describe('components/shared/overlay', () => {
   each([['show', true], ['hide', false]]).test('%ss', (methodName, visible) => {
     const wrapper = mount(Component)
     wrapper.vm[methodName]()
-    expect(wrapper.has('.display')).toBe(visible)
+    expect(wrapper).toMatchSnapshot()
   })
 
   it('dismisses', () => {

@@ -21,7 +21,7 @@ describe('component/playlist/item', () => {
     const wrapper = shallow(Component, {
       propsData: { playlist }
     })
-    expect(wrapper.find('a[href="#!/playlist/99"]').text()).toMatch('Foo')
+    expect(wrapper).toMatchSnapshot()
   })
 
   it('renders the Favorites menu item', () => {

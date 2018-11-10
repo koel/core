@@ -8,6 +8,10 @@ describe('components/ui/to-top-button', () => {
     jest.clearAllMocks()
   })
 
+  it('renders properly', () => {
+    expect(shallow(Component)).toMatchSnapshot()
+  })
+
   it('scrolls to top', () => {
     const m = mock($, 'scrollTo')
     shallow(Component).click('button')

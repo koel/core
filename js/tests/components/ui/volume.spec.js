@@ -9,8 +9,7 @@ describe('components/ui/volume', () => {
   })
 
   it('renders properly', () => {
-    const wrapper = shallow(Component)
-    expect(wrapper.hasAll('i.mute', '#volumeRange')).toBe(true)
+    expect(shallow(Component)).toMatchSnapshot()
   })
 
   it('mutes', () => {

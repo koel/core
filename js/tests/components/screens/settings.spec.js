@@ -1,8 +1,9 @@
 import Component from '@/components/screens/settings.vue'
 import { sharedStore, settingStore } from '@/stores'
 import { alerts } from '@/utils'
+import { mock } from '@/tests/__helpers__'
 
-describe.skip('components/screens/settings', () => {
+describe('components/screens/settings', () => {
   beforeEach(() => {
     settingStore.state = {
       settings: {
@@ -11,26 +12,28 @@ describe.skip('components/screens/settings', () => {
     }
   })
 
-  it('renders a settings form', () => {
-    shallow(Component).findAll('form').should.have.lengthOf(1)
+  afterEach(() => {
+    jest.resetModules()
+    jest.clearAllMocks()
+  })
+
+  it('renders properly', () => {
+    expect(shallow(Component)).toMatchSnapshot()
   })
 
   it('warns if changing a non-empty media path', () => {
     sharedStore.state.originalMediaPath = '/bar'
-    const confirmStub = stub(alerts, 'confirm')
+    const m = mock(alerts, 'confirm')
     shallow(Component).submit('form')
-    confirmStub.called.should.be.true
-    confirmStub.restore()
+    expect(m).toHaveBeenCalled()
   })
 
   it("doesn't warn if changing an empty media path", () => {
     sharedStore.state.originalMediaPath = ''
-    const confirmStub = stub(alerts, 'confirm')
-    const updateStub = stub(settingStore, 'update')
+    const confirmMock = mock(alerts, 'confirm')
+    const updateMock = mock(settingStore, 'update')
     shallow(Component).submit('form')
-    confirmStub.called.should.be.false
-    updateStub.called.should.be.true
-    confirmStub.restore()
-    updateStub.restore()
+    expect(confirmMock).not.toHaveBeenCalled()
+    expect(updateMock).toHaveBeenCalled()
   })
 })

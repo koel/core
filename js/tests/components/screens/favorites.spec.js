@@ -3,8 +3,14 @@ import SongList from '@/components/song/list.vue'
 import SongListControls from '@/components/song/list-controls.vue'
 import { download } from '@/services'
 import factory from '@/tests/factory'
+import { mock } from '@/tests/__helpers__'
 
-describe.skip('components/screens/favorites', () => {
+describe('components/screens/favorites', () => {
+  afterEach(() => {
+    jest.resetModules()
+    jest.clearAllMocks()
+  })
+
   it('displays the song list if there are favorites', async done => {
     const wrapper = await shallow(Component, {
       data: () => ({
@@ -14,9 +20,9 @@ describe.skip('components/screens/favorites', () => {
       })
     })
 
-    Vue.nextTick(() => {
-      wrapper.hasAll(SongList, SongListControls).should.be.true
-      wrapper.findAll('div.none').should.have.lengthOf(0)
+    wrapper.vm.$nextTick(() => {
+      expect(wrapper.hasAll(SongList, SongListControls)).toBe(true)
+      expect(wrapper.findAll('div.none')).toHaveLength(0)
       done()
     })
   })
@@ -30,23 +36,21 @@ describe.skip('components/screens/favorites', () => {
       })
     })
 
-    wrapper.findAll('div.none').should.have.lengthOf(1)
+    expect(wrapper.findAll('div.none')).toHaveLength(1)
   })
 
   it('allows downloading', () => {
-    const downloadStub = stub(download, 'fromFavorites')
+    const m = mock(download, 'fromFavorites')
 
-    const wrapper = shallow(Component, {
+    shallow(Component, {
       data: () => ({
         state: {
           songs: factory('song', 5)
         },
         sharedState: { allowDownload: true }
       })
-    })
+    }).click('a.download')
 
-    wrapper.click('a.download')
-    downloadStub.called.should.be.true
-    downloadStub.restore()
+    expect(m).toHaveBeenCalled()
   })
 })

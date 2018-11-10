@@ -9,9 +9,9 @@ describe('components/user/card', () => {
   let user
 
   beforeEach(() => {
-    user = factory('user')
-    // fake the user avatar
-    user.avatar = 'http://foo.bar/baz.jpg'
+    user = factory('user', {
+      avatar: 'http://foo.bar/baz.jpg'
+    })
     // make sure the user is not current logged in user
     userStore.current.id = user.id + 1
   })

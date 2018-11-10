@@ -1,7 +1,7 @@
 import Component from '@/components/screens/youtube.vue'
 
-describe.skip('components/screens/youtube', () => {
+describe('components/screens/youtube', () => {
   it('renders properly', () => {
-    shallow(Component).find('h1.heading').text().should.contain('YouTube Video')
+    expect(shallow(Component)).toMatchSnapshot()
   })
 })

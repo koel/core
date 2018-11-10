@@ -37,7 +37,7 @@ describe('components/song/list', () => {
     ['.artist', ['song.album.artist.name', 'song.album.name', 'song.track']],
     ['.album', ['song.album.name', 'song.track']],
     ['.time', 'song.length']
-  ]).test('sorts when selector %s is clicked', (selector, criteria) => {
+  ]).test('sorts when "%s" is clicked', (selector, criteria) => {
     const wrapper = mount(Component, { propsData: {
       items: songs,
       type: 'allSongs'

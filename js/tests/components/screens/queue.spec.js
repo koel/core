@@ -3,43 +3,50 @@ import SongList from '@/components/song/list.vue'
 import factory from '@/tests/factory'
 import { queueStore, songStore } from '@/stores'
 import { playback } from '@/services'
+import { mock } from '@/tests/__helpers__'
 
-describe.skip('components/screens/queue', () => {
-  it('renders properly', async () => {
+describe('components/screens/queue', () => {
+  afterEach(() => {
+    jest.resetModules()
+    jest.clearAllMocks()
+  })
+
+  it('renders properly', async done => {
     const wrapper = await shallow(Component, {
       data: () => ({
         state: { songs: factory('song', 10) }
       })
     })
 
-    Vue.nextTick(() => {
-      wrapper.find('h1.heading').text().should.contain('Current Queue')
-      wrapper.has(SongList).should.be.true
+    wrapper.vm.$nextTick(() => {
+      expect(wrapper.find('h1.heading').text()).toMatch('Current Queue')
+      expect(wrapper.has(SongList)).toBe(true)
+      done()
     })
   })
 
   it('prompts to shuffle all songs if there are songs and current queue is empty', () => {
     songStore.state.songs = factory('song', 10)
-    shallow(Component, {
+    expect(shallow(Component, {
       data: () => ({
         state: { songs: [] }
       })
-    }).find('a.start').text().should.contain('shuffling all songs')
+    }).find('a.start').text()).toMatch('shuffling all songs')
   })
 
   it("doesn't prompt to shuffle all songs if there is no song", () => {
     songStore.state.songs = []
-    shallow(Component, {
+    expect(shallow(Component, {
       data: () => ({
         state: {
           songs: []
         }
       })
-    }).has('a.start').should.be.false
+    }).has('a.start')).toBe(false)
   })
 
   it('shuffles all songs in the queue if any', () => {
-    const queueAndPlayStub = stub(playback, 'queueAndPlay')
+    const m = mock(playback, 'queueAndPlay')
     const songs = factory('song', 10)
     const wrapper = mount(Component, {
       data: () => ({
@@ -48,12 +55,11 @@ describe.skip('components/screens/queue', () => {
     })
 
     wrapper.click('button.btn-shuffle-all')
-    queueAndPlayStub.calledWith(songs).should.be.true
-    queueAndPlayStub.restore()
+    expect(m).toHaveBeenCalledWith(songs, true)
   })
 
   it('shuffles all available songs if there are no songs queued', () => {
-    const queueAndPlayStub = stub(playback, 'queueAndPlay')
+    const m = mock(playback, 'queueAndPlay')
     mount(Component, {
       data: () => ({
         state: {
@@ -61,19 +67,16 @@ describe.skip('components/screens/queue', () => {
         }
       })
     }).click('button.btn-shuffle-all')
-    queueAndPlayStub.calledWith(songStore.all).should.be.true
-    queueAndPlayStub.restore()
+    expect(m).toHaveBeenCalledWith(songStore.all, true)
   })
 
   it('clears the queue', () => {
-    const clearStub = stub(queueStore, 'clear')
-    const wrapper = mount(Component, {
+    const m = mock(queueStore, 'clear')
+    mount(Component, {
       data: () => ({
         state: { songs: factory('song', 10) }
       })
-    })
-    wrapper.click('button.btn-clear-queue')
-    clearStub.called.should.be.true
-    clearStub.restore()
+    }).click('button.btn-clear-queue')
+    expect(m).toHaveBeenCalled()
   })
 })

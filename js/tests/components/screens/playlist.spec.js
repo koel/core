@@ -3,15 +3,21 @@ import SongList from '@/components/song/list.vue'
 import factory from '@/tests/factory'
 import { event, alerts } from '@/utils'
 import { playlistStore } from '@/stores'
+import { mock } from '@/tests/__helpers__'
 
-describe.skip('components/screens/playlist', () => {
+describe('components/screens/playlist', () => {
+  afterEach(() => {
+    jest.resetModules()
+    jest.clearAllMocks()
+  })
+
   it('renders properly', async done => {
     const playlist = factory('playlist', { populated: true })
     const wrapper = await shallow(Component, { data: () => ({ playlist }) })
 
-    Vue.nextTick(() => {
-      wrapper.find('h1.heading').html().should.contain(playlist.name)
-      wrapper.has(SongList).should.be.true
+    wrapper.vm.$nextTick(() => {
+      expect(wrapper.find('h1.heading').html()).toMatch(playlist.name)
+      expect(wrapper.has(SongList)).toBe(true)
       done()
     })
   })
@@ -20,21 +26,20 @@ describe.skip('components/screens/playlist', () => {
     const playlist = factory('playlist', { songs: [] })
     shallow(Component)
 
-    const fetchSongsStub = stub(playlistStore, 'fetchSongs')
+    const m = mock(playlistStore, 'fetchSongs')
     event.emit('LOAD_MAIN_CONTENT', 'playlist', playlist)
-    fetchSongsStub.calledWith(playlist).should.be.true
-    fetchSongsStub.restore()
+    expect(m).toHaveBeenCalledWith(playlist)
   })
 
   it('displays a fallback message if the playlist is empty', () => {
-    shallow(Component, {
+    expect(shallow(Component, {
       data: () => ({
         playlist: factory('playlist', {
           populated: true,
           songs: []
         })
       })
-    }).has('div.none').should.be.true
+    }).has('div.none')).toBe(true)
   })
 
   it('confirms deleting if the playlist is not empty', async done => {
@@ -50,11 +55,10 @@ describe.skip('components/screens/playlist', () => {
       })
     })
 
-    Vue.nextTick(() => {
-      const confirmStub = stub(alerts, 'confirm')
+    wrapper.vm.$nextTick(() => {
+      const m = mock(alerts, 'confirm')
       wrapper.click('.btn-delete-playlist')
-      confirmStub.calledWith('Are you sure? This is a one-way street!', wrapper.vm.destroy).should.be.true
-      confirmStub.restore()
+      expect(m).toHaveBeenCalledWith('Are you sure? This is a one-way street!', wrapper.vm.destroy)
       done()
     })
   })
@@ -71,11 +75,10 @@ describe.skip('components/screens/playlist', () => {
       })
     })
 
-    Vue.nextTick(() => {
-      const confirmStub = stub(alerts, 'confirm')
+    wrapper.vm.$nextTick(() => {
+      const m = mock(alerts, 'confirm')
       wrapper.click('.btn-delete-playlist')
-      confirmStub.called.should.be.false
-      confirmStub.restore()
+      expect(m).not.toHaveBeenCalled()
       done()
     })
   })

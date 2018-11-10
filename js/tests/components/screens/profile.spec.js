@@ -1,50 +1,49 @@
+import each from 'jest-each'
 import Profile from '@/components/screens/profile.vue'
 import factory from '@/tests/factory'
 import { userStore, preferenceStore } from '@/stores'
+import { mock } from '@/tests/__helpers__'
 
-describe.skip('components/screens/profile', () => {
+describe('components/screens/profile', () => {
   beforeEach(() => {
     userStore.state.current = factory('user')
   })
 
-  it('displays a form to update profile', () => {
-    shallow(Profile).has('form').should.be.true
+  afterEach(() => {
+    jest.resetModules()
+    jest.clearAllMocks()
   })
 
-  it('validates password confirmation', () => {
+  it('renders properly', () => {
+    expect(shallow(Profile)).toMatchSnapshot
+  })
+
+  each([
+    ['foo', 'foo'],
+    ['foo', 'bar'],
+    ['', '']
+  ]).test('correctly handles passwords "%s" and "%s"', (pwd, confirmPwd) => {
     const wrapper = shallow(Profile, {
-      data: () => ({
-        pwd: 'foo',
-        confirmPwd: 'bar'
-      })
+      data: () => ({ pwd, confirmPwd })
     })
-    const updateProfileStub = stub(userStore, 'updateProfile')
+    const m = mock(userStore, 'updateProfile')
     wrapper.submit('form')
-    updateProfileStub.called.should.be.false
-    wrapper.setData({
-      confirmPwd: 'foo'
-    })
-    wrapper.submit('form')
-    updateProfileStub.called.should.be.true
-    updateProfileStub.restore()
+    if (pwd === confirmPwd) {
+      expect(m).toHaveBeenCalled()
+    } else {
+      expect(m).not.toHaveBeenCalled()
+    }
   })
 
-  it('updates profile with password fields left empty', () => {
-    const wrapper = shallow(Profile)
-    const updateProfileStub = stub(userStore, 'updateProfile')
-    wrapper.submit('form')
-    updateProfileStub.called.should.be.true
-    updateProfileStub.restore()
-  })
-
-  it('updates preferences', () => {
-    const wrapper = shallow(Profile)
-    const savePrefsStub = sinon.spy(preferenceStore, 'save')
-    wrapper.setData({ prefs: preferenceStore.state })
-    ;['notify', 'confirmClosing', 'transcodeOnMobile'].forEach(key => {
-      wrapper.click(`input[name=${key}]`)
-      savePrefsStub.called.should.be.true
-    })
-    savePrefsStub.restore()
+  each([
+    ['notify'],
+    ['confirmClosing'],
+    ['transcodeOnMobile']
+  ]).test('updates preference "%s"', key => {
+    const m = mock(preferenceStore, 'save')
+    shallow(Profile, {
+      data: () => ({ prefs: preferenceStore.state })
+    }).click(`input[name=${key}]`)
+    expect(m).toHaveBeenCalled()
   })
 })

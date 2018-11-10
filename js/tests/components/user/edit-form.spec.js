@@ -10,12 +10,13 @@ describe('components/user/edit-form', () => {
   })
 
   it('opens', () => {
-    const user = factory('user')
+    const user = factory('user', {
+      name: 'Bob Dylan',
+      email: 'knocking@heaven.door'
+    })
     const wrapper = shallow(Component)
     wrapper.vm.open(user)
-    expect(wrapper.has('form.user-edit')).toBe(true)
-    expect(wrapper.find('input[name=name]').value).toBe(user.name)
-    expect(wrapper.find('input[name=email]').value).toBe(user.email)
+    expect(wrapper).toMatchSnapshot()
   })
 
   it('saves', () => {

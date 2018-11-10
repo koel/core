@@ -3,8 +3,14 @@ import SongList from '@/components/song/list.vue'
 import factory from '@/tests/factory'
 import { recentlyPlayedStore } from '@/stores'
 import { event } from '@/utils'
+import { mock } from '@/tests/__helpers__'
 
-describe.skip('components/screens/recently-played', () => {
+describe('components/screens/recently-played', () => {
+  afterEach(() => {
+    jest.resetModules()
+    jest.clearAllMocks()
+  })
+
   it('renders properly', async done => {
     const wrapper = await mount(Component, {
       data: () => ({
@@ -14,18 +20,17 @@ describe.skip('components/screens/recently-played', () => {
       })
     })
 
-    Vue.nextTick(() => {
-      wrapper.find('h1.heading').text().should.contain('Recently Played')
-      wrapper.has(SongList).should.be.true
+    wrapper.vm.$nextTick(() => {
+      expect(wrapper.find('h1.heading').text()).toMatch('Recently Played')
+      expect(wrapper.has(SongList)).toBe(true)
       done()
     })
   })
 
   it('fetch and populate content on demand', () => {
     shallow(Component)
-    const fetchAllStub = stub(recentlyPlayedStore, 'fetchAll')
+    const m = mock(recentlyPlayedStore, 'fetchAll')
     event.emit('LOAD_MAIN_CONTENT', 'recently-played')
-    fetchAllStub.called.should.be.true
-    fetchAllStub.restore()
+    expect(m).toHaveBeenCalled()
   })
 })

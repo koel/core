@@ -1,6 +1,10 @@
 import Component from '@/components/ui/view-mode-switch.vue'
 
 describe('components/ui/view-mode-switch', () => {
+  it('renders properly', () => {
+    expect(shallow(Component)).toMatchSnapshot()
+  })
+
   it('changes the view mode', () => {
     const wrapper = shallow(Component, { propsData: {
       mode: 'list',

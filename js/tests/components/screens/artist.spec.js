@@ -3,8 +3,9 @@ import SongList from '@/components/song/list.vue'
 import SongListControls from '@/components/song/list-controls.vue'
 import { download, artistInfo as artistInfoService } from '@/services'
 import factory from '@/tests/factory'
+import { mock } from '@/tests/__helpers__'
 
-describe.skip('components/screens/artist', () => {
+describe('components/screens/artist', () => {
   let artist
   beforeEach(() => {
     artist = factory('artist')
@@ -21,6 +22,11 @@ describe.skip('components/screens/artist', () => {
     })
   })
 
+  afterEach(() => {
+    jest.resetModules()
+    jest.clearAllMocks()
+  })
+
   it('renders upon receiving event', async done => {
     const wrapper = await shallow(Component, {
       propsData: { artist }
@@ -28,9 +34,9 @@ describe.skip('components/screens/artist', () => {
 
     Vue.nextTick(() => {
       const html = wrapper.html()
-      html.should.contain(artist.name)
-      html.should.contain('1 album')
-      wrapper.hasAll(SongList, SongListControls).should.be.true
+      expect(html).toMatch(artist.name)
+      expect(html).toMatch('1 album')
+      expect(wrapper.hasAll(SongList, SongListControls)).toBe(true)
       done()
     })
   })
@@ -43,10 +49,9 @@ describe.skip('components/screens/artist', () => {
         sharedState: { useLastfm: true }
       })
     })
-    const fetchStub = stub(artistInfoService, 'fetch')
+    const m = mock(artistInfoService, 'fetch')
     wrapper.click('a.info')
-    fetchStub.calledWith(artist).should.be.true
-    fetchStub.restore()
+    expect(m).toHaveBeenCalledWith(artist)
   })
 
   it('allows downloading', () => {
@@ -56,9 +61,8 @@ describe.skip('components/screens/artist', () => {
         sharedState: { allowDownload: true }
       })
     })
-    const downloadStub = stub(download, 'fromArtist')
+    const m = mock(download, 'fromArtist')
     wrapper.click('a.download')
-    downloadStub.calledWith(artist).should.be.true
-    downloadStub.restore()
+    expect(m).toHaveBeenCalledWith(artist)
   })
 })

@@ -10,9 +10,13 @@ describe('components/song/home-item', () => {
 
   beforeEach(() => {
     song = factory('song', {
-      artist: factory('artist', { name: 'Foo Fighter' }),
+      artist: factory('artist', {
+        id: 42,
+        name: 'Foo Fighter'
+      }),
       playCount: 10,
-      playbackState: 'stopped'
+      playbackState: 'stopped',
+      title: 'Foo bar'
     })
 
     propsData = {
@@ -29,9 +33,7 @@ describe('components/song/home-item', () => {
   })
 
   it('renders properly', () => {
-    expect(wrapper.hasAll('span.cover', 'span.details')).toBe(true)
-    expect(wrapper.html()).toMatch('Foo Fighter')
-    expect(wrapper.html()).toMatch('10 plays')
+    expect(wrapper).toMatchSnapshot()
   })
 
   each([[true, false], [false, true]]).test('queuing and playing behavior', (shouldQueue, queued) => {

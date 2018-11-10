@@ -9,7 +9,7 @@ describe('components/ui/search-form', () => {
   })
 
   it('renders properly', () => {
-    expect(shallow(Component).has('[type=search]')).toBe(true)
+    expect(shallow(Component)).toMatchSnapshot()
   })
 
   it('emits an event to filter', async done => {

@@ -12,7 +12,7 @@ describe('components/user/add-form', () => {
   it('opens', () => {
     const wrapper = shallow(Component)
     wrapper.vm.open()
-    expect(wrapper.has('form.user-add')).toBe(true)
+    expect(wrapper).toMatchSnapshot()
   })
 
   it('adds a new user', () => {

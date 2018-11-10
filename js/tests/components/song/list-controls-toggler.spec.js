@@ -7,6 +7,10 @@ describe('components/song/list-controls-toggler', () => {
     isMobile.phone = true
   })
 
+  it('renders properly', () => {
+    expect(shallow(Component)).toMatchSnapshot()
+  })
+
   each([[true], [false]]).test('shows/hides properly', (shouldShow) => {
     const wrapper = shallow(Component, { propsData: { showingControls: shouldShow }})
     expect(wrapper.has('.toggler.fa-angle-up')).toBe(shouldShow)

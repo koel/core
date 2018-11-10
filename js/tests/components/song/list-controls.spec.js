@@ -3,6 +3,10 @@ import Component from '@/components/song/list-controls.vue'
 import factory from '@/tests/factory'
 
 describe('components/song/list-controls', () => {
+  it('renders properly', () => {
+    expect(shallow(Component)).toMatchSnapshot()
+  })
+
   each([[[]], [[factory('song')]]]).test('allows shuffling all if less than 2 songs are selected', selectedSongs => {
     expect(
       shallow(Component, { propsData: { selectedSongs }})

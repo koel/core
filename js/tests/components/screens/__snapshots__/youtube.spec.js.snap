@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/screens/youtube renders properly 1`] = `
+<section id="youtubeWrapper">
+  <h1 class="heading"><span>YouTube Video</span></h1>
+  <div id="player">
+    <p class="none">Your YouTube video will be played here.<br>
+      You can start a video playback from the right sidebar. When a song is playing, that is.<br>
+      It might also be worth noting that video’s volume, progress and such are controlled from within
+      the video itself, and not via Koel’s controls.</p>
+  </div>
+</section>
+`;
