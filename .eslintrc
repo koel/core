@@ -1,15 +1,14 @@
 {
-  parser: "babel-eslint",
-  extends: "vue",
-  rules: {
-    "no-multi-str": 0
+  "parser": "babel-eslint",
+  "extends": "vue",
+  "globals": {
+    "KOEL_ENV": true,
+    "HTMLElement": true
   },
-  env: {
-    mocha: true
-  },
-  globals: {
-    KOEL_ENV: true,
-    HTMLElement: true
+  "rules": {
+    "camelcase": 0,
+    "no-multi-str": 0,
+    "quotes": 0
   }
 }
 

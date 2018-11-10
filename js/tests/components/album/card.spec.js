@@ -24,8 +24,8 @@ describe('components/album/card', () => {
   it('renders properly', () => {
     expect(wrapper.has('span.cover')).toBe(true)
     const html = wrapper.html()
-    expect(html).toContain(album.name)
-    expect(html).toContain('10 songs')
+    expect(html).toMatch(album.name)
+    expect(html).toMatch('10 songs')
   })
 
   it('plays if clicked', () => {
