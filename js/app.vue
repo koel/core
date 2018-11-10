@@ -26,7 +26,7 @@ import MainWrapper from '@/components/layout/main-wrapper/index.vue'
 import Overlay from '@/components/ui/overlay.vue'
 import LoginForm from '@/components/auth/login-form.vue'
 import EditSongsForm from '@/components/song/edit-form.vue'
-import Hotkeys from '@/components/hotkeys.vue'
+import Hotkeys from '@/components/utils/hotkeys.vue'
 
 import { event, showOverlay, hideOverlay, forceReloadWindow, $, app as appUtils } from '@/utils'
 import { sharedStore, userStore, favoriteStore, queueStore, preferenceStore as preferences } from '@/stores'
