@@ -1,111 +1,92 @@
-import { queueStore } from '../../stores'
-import data from '../blobs/data'
-
-const { songs: allSongs } = data
-// only get the songs by James Blunt
-const songs = allSongs.filter(song => song.artist_id === 5)
+import { queueStore } from '@/stores'
+import data from '@/tests/blobs/data'
 
 describe('stores/queue', () => {
+  const JAMES_BLUNT_ARTIST_ID = 5
+  let songs
+
   beforeEach(() => {
+    songs = data.songs.filter(song => song.artist_id === JAMES_BLUNT_ARTIST_ID)
     queueStore.state.songs = songs
     queueStore.state.current = songs[1]
   })
 
-  describe('#all', () => {
-    it('correctly returns all queued songs', () => {
-      queueStore.all.should.equal(songs)
-    })
+  it('returns all queued songs', () => {
+    expect(queueStore.all).toBe(songs)
   })
 
-  describe('#first', () => {
-    it('correctly returns the first queued song', () => {
-      queueStore.first.title.should.equal('No bravery')
-    })
+  it('returns the first queued song', () => {
+    expect(queueStore.first.title).toBe('No bravery')
   })
 
-  describe('#last', () => {
-    it('correctly returns the last queued song', () => {
-      queueStore.last.title.should.equal('Tears and rain')
-    })
+  it('returns the last queued song', () => {
+    expect(queueStore.last.title).toBe('Tears and rain')
   })
 
-  describe('#queue', () => {
+  describe('queues and unqueues', () => {
+    let thatSongByAll4One
+
     beforeEach(() => {
       queueStore.state.songs = songs
+      thatSongByAll4One = data.songs[0]
     })
 
-    const song = allSongs[0]
-
-    it('correctly appends a song to end of the queue', () => {
-      queueStore.queue(song)
-      queueStore.last.title.should.equal('I Swear')
+    it('appends a song to end of the queue', () => {
+      queueStore.queue(thatSongByAll4One)
+      expect(queueStore.last.title).toBe('I Swear')
     })
 
-    it('correctly prepends a song to top of the queue', () => {
-      queueStore.queue(song, false, true)
-      queueStore.first.title.should.equal('I Swear')
+    it('prepends a song to top of the queue', () => {
+      queueStore.queueToTop(thatSongByAll4One)
+      expect(queueStore.first.title).toBe('I Swear')
     })
 
-    it('correctly replaces the whole queue', () => {
-      queueStore.queue(song, true)
-      queueStore.all.length.should.equal(1)
-      queueStore.first.title.should.equal('I Swear')
-    })
-  })
-
-  describe('#unqueue', () => {
-    beforeEach(() => {
-      queueStore.state.songs = songs
+    it('replaces the whole queue', () => {
+      queueStore.replaceQueueWith(data.songs[0])
+      expect(queueStore.all).toHaveLength(1)
+      expect(queueStore.first.title).toBe('I Swear')
     })
 
-    it('correctly removes a song from queue', () => {
+    it('removes a song from queue', () => {
       queueStore.unqueue(queueStore.state.songs[0])
-      queueStore.first.title.should.equal('So long, Jimmy') // Oh the irony.
+      expect(queueStore.first.title).toBe('So long, Jimmy') // Oh the irony.
     })
 
-    it('correctly removes mutiple songs from queue', () => {
+    it('removes mutiple songs from queue', () => {
       queueStore.unqueue([queueStore.state.songs[0], queueStore.state.songs[1]])
-      queueStore.first.title.should.equal('Wisemen')
+      expect(queueStore.first.title).toBe('Wisemen')
     })
-  })
 
-  describe('#clear', () => {
-    it('correctly clears all songs from queue', () => {
+    it('removes all songs from queue', () => {
       queueStore.clear()
-      queueStore.state.songs.should.be.empty
+      expect(queueStore.state.songs).toHaveLength(0)
     })
   })
 
-  describe('#current', () => {
-    it('returns the correct current song', () => {
-      queueStore.current.title.should.equal('So long, Jimmy')
-    })
-
-    it('successfully sets the current song', () => {
-      queueStore.current = queueStore.state.songs[0]
-      queueStore.current.title.should.equal('No bravery')
-    })
+  it('returns the current song', () => {
+    expect(queueStore.current.title).toBe('So long, Jimmy')
   })
 
-  describe('#getNextSong', () => {
-    it('correctly gets the next song in queue', () => {
-      queueStore.next.title.should.equal('Wisemen')
-    })
-
-    it('correctly returns null if at end of queue', () => {
-      queueStore.current = queueStore.state.songs[queueStore.state.songs.length - 1]
-      ;(queueStore.next === null).should.be.true
-    })
+  it('sets the current song', () => {
+    queueStore.current = queueStore.state.songs[0]
+    expect(queueStore.current.title).toBe('No bravery')
   })
 
-  describe('#getPrevSong', () => {
-    it('correctly gets the previous song in queue', () => {
-      queueStore.previous.title.should.equal('No bravery')
-    })
+  it('gets the next song in queue', () => {
+    expect(queueStore.next.title).toBe('Wisemen')
+  })
 
-    it('correctly returns null if at end of queue', () => {
-      queueStore.current = queueStore.state.songs[0]
-      ;(queueStore.previous === null).should.be.true
-    })
+  it('returns null as next song if at end of queue', () => {
+    queueStore.current = queueStore.state.songs[queueStore.state.songs.length - 1]
+    expect(queueStore.next).toBeNull()
+  })
+
+  it('gets the previous song in queue', () => {
+    expect(queueStore.previous.title).toBe('No bravery')
+  })
+
+  it('returns null as previous song if at beginning of queue', () => {
+    queueStore.current = queueStore.state.songs[0]
+    expect(queueStore.previous).toBeNull()
   })
 })

@@ -32,3 +32,4 @@ Icon
 *.swo
 *~
 
+__coverage__

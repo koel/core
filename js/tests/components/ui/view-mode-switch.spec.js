@@ -2,7 +2,11 @@ import Component from '@/components/ui/view-mode-switch.vue'
 
 describe('components/ui/view-mode-switch', () => {
   it('renders properly', () => {
-    expect(shallow(Component)).toMatchSnapshot()
+    expect(shallow(Component, {
+      propsData: {
+        for: 'albums'
+      }
+    })).toMatchSnapshot()
   })
 
   it('changes the view mode', () => {

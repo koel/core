@@ -1,12 +1,11 @@
-import { albumStore, artistStore } from '../../stores'
-import data from '../blobs/data'
-
-const { artists, albums } = data
+import { cloneDeep } from 'lodash'
+import { albumStore, artistStore } from '@/stores'
+import data from '@/tests/blobs/data'
 
 describe('stores/album', () => {
   beforeEach(() => {
-    artistStore.init(_.cloneDeep(artists))
-    albumStore.init(_.cloneDeep(albums))
+    artistStore.init(cloneDeep(data.artists))
+    albumStore.init(cloneDeep(data.albums))
   })
 
   afterEach(() => {
@@ -14,32 +13,24 @@ describe('stores/album', () => {
     albumStore.state.albums = []
   })
 
-  describe('#init', () => {
-    it('correctly gathers albums', () => {
-      albumStore.state.albums.length.should.equal(7)
-    })
-
-    it('correctly sets album artists', () => {
-      albumStore.state.albums[0].artist.id.should.equal(3)
-    })
+  it('gathers albums', () => {
+    expect(albumStore.state.albums).toHaveLength(7)
   })
 
-  describe('#byId', () => {
-    it('correctly gets an album by ID', () => {
-      albumStore.byId(1193).name.should.equal('All-4-One')
-    })
+  it('sets album artists', () => {
+    expect(albumStore.state.albums[0].artist.id).toBe(3)
   })
 
-  describe('#compact', () => {
-    it('correctly compacts albums', () => {
-      albumStore.compact()
-      albumStore.state.albums.should.be.empty
-    })
+  it('gets an album by ID', () => {
+    expect(albumStore.byId(1193).name).toBe('All-4-One')
   })
 
-  describe('#all', () => {
-    it('correctly returns all albums', () => {
-      albumStore.all.length.should.equal(7)
-    })
+  it('compacts albums', () => {
+    albumStore.compact()
+    expect(albumStore.state.albums).toHaveLength(0)
+  })
+
+  it('returns all albums', () => {
+    expect(albumStore.all).toHaveLength(7)
   })
 })

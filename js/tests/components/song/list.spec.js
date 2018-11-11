@@ -103,9 +103,9 @@ describe('components/song/list', () => {
       items: songs,
       type: 'playlist'
     }})
-    const queueStub = mock(queueStore, 'queue')
-    const goStub = mock(router, 'go')
-    const playStub = mock(playback, 'play')
+    const queueMock = mock(queueStore, 'queue')
+    const goMock = mock(router, 'go')
+    const playMock = mock(playback, 'play')
 
     // select 2 rows
     wrapper.vm.filteredItems[0].selected = true
@@ -113,18 +113,19 @@ describe('components/song/list', () => {
 
     // simple Enter adds selected songs to bottom
     wrapper.find('.song-list-wrap').trigger('keydown.enter')
-    expect(queueStub).toHaveBeenCalledWith(wrapper.vm.selectedSongs, false, undefined)
+    expect(queueMock).toHaveBeenCalledWith(wrapper.vm.selectedSongs)
     // the current screen should be switched to "Queue"
-    expect(goStub).toHaveBeenCalledWith('queue')
+    expect(goMock).toHaveBeenCalledWith('queue')
 
     // Shift+Enter queues to top
+    const queueToTopMock = mock(queueStore, 'queueToTop')
     wrapper.find('.song-list-wrap').trigger('keydown.enter', { shiftKey: true })
-    expect(queueStub).toHaveBeenCalledWith(wrapper.vm.selectedSongs, false, true)
-    expect(goStub).toHaveBeenCalledWith('queue')
+    expect(queueToTopMock).toHaveBeenCalledWith(wrapper.vm.selectedSongs)
+    expect(goMock).toHaveBeenCalledWith('queue')
 
     // Ctrl[+Shift]+Enter queues and plays the first song
     wrapper.find('.song-list-wrap').trigger('keydown.enter', { ctrlKey: true })
-    expect(playStub).toHaveBeenCalledWith(wrapper.vm.selectedSongs[0])
+    expect(playMock).toHaveBeenCalledWith(wrapper.vm.selectedSongs[0])
   })
 
   it('selects all songs', () => {

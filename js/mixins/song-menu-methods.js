@@ -34,7 +34,7 @@ export default {
     },
 
     queueSongsToTop () {
-      queueStore.queue(this.songs, false /* replace */, true /* toTop */)
+      queueStore.queueToTop(this.songs)
       this.close()
     },
 

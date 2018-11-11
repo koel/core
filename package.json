@@ -35,11 +35,11 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.7.0",
-    "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.23.0",
     "babel-runtime": "^6.22.0",
     "chalk": "^1.1.3",
+    "coveralls": "^3.0.2",
     "cross-env": "^3.2.3",
     "crypto-random-string": "^1.0.0",
     "css-loader": "^0.28.7",
@@ -68,8 +68,8 @@
   },
   "scripts": {
     "lint": "eslint js --ext=js,vue",
-    "test": "cross-env NODE_ENV=test && jest tests/components",
-    "test:coverage": "cross-env NODE_ENV=test nyc mocha-webpack --webpack-config webpack.config.js --require js/tests/setup.js --glob *.spec.js js/tests/ --recursive"
+    "test": "cross-env NODE_ENV=test && jest ./js/tests/",
+    "coveralls": "jest --coverage && cat ./js/tests/__coverage__/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",

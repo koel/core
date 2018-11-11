@@ -362,7 +362,7 @@ export const playback = {
       songs = shuffle(songs)
     }
 
-    queueStore.queue(songs, true /* shuffled */)
+    queueStore.replaceQueueWith(songs)
 
     // Wrap this inside a nextTick() to wait for the DOM to complete updating
     // and then play the first song in the queue.

@@ -62,15 +62,15 @@ describe('components/song/add-to-menu', () => {
   })
 
   each([
-    ['after current', '.after-current', 'queueAfterCurrent', []],
-    ['to bottom', '.bottom-queue', 'queue', []],
-    ['to top', '.top-queue', 'queue', [false, true]]
-  ]).test('queues songs %s when "%s" is clicked', (to, selector, queueFunc, queueFuncExtraArgs) => {
+    ['after current', '.after-current', 'queueAfterCurrent'],
+    ['to bottom', '.bottom-queue', 'queue'],
+    ['to top', '.top-queue', 'queueToTop']
+  ]).test('queues songs %s when "%s" is clicked', (to, selector, queueFunc) => {
     const wrapper = initComponent()
     const queueMock = mock(queueStore, queueFunc)
     const closeMock = mock(wrapper.vm, 'close')
     wrapper.click(`li${selector}`)
-    expect(queueMock).toHaveBeenCalledWith(songs, ...queueFuncExtraArgs)
+    expect(queueMock).toHaveBeenCalledWith(songs)
     expect(closeMock).toHaveBeenCalled()
   })
 

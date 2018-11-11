@@ -1,35 +1,34 @@
-import localStorage from 'local-storage'
-import { preferenceStore } from '../../stores'
+import { ls } from '@/services'
+import { preferenceStore } from '@/stores'
+import { mock } from '@/tests/__helpers__'
 
-const user = { id: 0 }
-const preferences = {
-  volume: 8,
-  notify: false
-}
+const user = { id: 1 }
 
 describe('stores/preference', () => {
   beforeEach(() => {
-    localStorage.set(`preferences_${user.id}`, preferences)
     preferenceStore.init(user)
   })
 
-  describe("#set", () => {
-    it('correctly sets preferences', () => {
-      preferenceStore.set('volume', 5)
-      localStorage.get(`preferences_${user.id}`).volume.should.equal(5)
-
-      // Test the proxy
-      preferenceStore.volume = 6
-      localStorage.get(`preferences_${user.id}`).volume.should.equal(6)
-    })
+  afterEach(() => {
+    jest.resetModules()
+    jest.clearAllMocks()
   })
 
-  describe("#get", () => {
-    it('returns correct preference values', () => {
-      preferenceStore.get('volume').should.equal(8)
+  it('sets preferences', () => {
+    const m = mock(ls, 'set')
+    preferenceStore.set('volume', 5)
+    expect(m).toHaveBeenCalledWith('preferences_1', expect.objectContaining({ volume: 5 }))
 
-      // Test the proxy
-      preferenceStore.volume.should.equal(8)
-    })
+    // test the proxy
+    preferenceStore.volume = 6
+    expect(m).toHaveBeenCalledWith('preferences_1', expect.objectContaining({ volume: 6 }))
+  })
+
+  it('returns preference values', () => {
+    preferenceStore.set('volume', 4.2)
+    expect(preferenceStore.get('volume')).toBe(4.2)
+
+    // test the proxy
+    expect(preferenceStore.volume).toBe(4.2)
   })
 })

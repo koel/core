@@ -1,50 +1,40 @@
-import { userStore } from '../../stores'
-import data from '../blobs/data'
+import { userStore } from '@/stores'
+import data from '@/tests/blobs/data'
 
-const { users } = data
+const { users, currentUser } = data
 
 describe('stores/user', () => {
-  beforeEach(() => userStore.init(users, data.currentUser))
+  beforeEach(() => userStore.init(users, currentUser))
 
-  describe('#init', () => {
-    it('correctly sets data state', () => {
-      userStore.state.users.should.equal(users)
-      userStore.state.current.should.equal(data.currentUser)
-    })
+  it('sets data state', () => {
+    expect(userStore.state.users).toBe(users)
+    expect(userStore.state.current).toBe(currentUser)
   })
 
-  describe('#all', () => {
-    it('correctly returns all users', () => {
-      userStore.all.should.equal(users)
-    })
+  it('returns all users', () => {
+    expect(userStore.all).toBe(users)
   })
 
-  describe('#byId', () => {
-    it('correctly gets a user by ID', () => {
-      userStore.byId(1).should.equal(users[0])
-    })
+  it('gets a user by ID', () => {
+    expect(userStore.byId(1)).toBe(users[0])
   })
 
-  describe('#current', () => {
-    it('correctly gets the current user', () => {
-      userStore.current.id.should.equal(1)
-    })
-
-    it('correctly sets the current user', () => {
-      userStore.current = users[1]
-      userStore.current.id.should.equal(2)
-    })
+  it('gets the current user', () => {
+    expect(userStore.current.id).toBe(1)
   })
 
-  describe('#setAvatar', () => {
-    it('correctly sets the current user’s avatar', () => {
-      userStore.setAvatar()
-      userStore.current.avatar.should.equal('https://www.gravatar.com/avatar/b9611f1bba1aacbe6f5de5856695a202?s=256')
-    })
+  it('sets the current user', () => {
+    userStore.current = users[1]
+    expect(userStore.current.id).toBe(2)
+  })
 
-    it('correctly sets a user’s avatar', () => {
-      userStore.setAvatar(users[1])
-      users[1].avatar.should.equal('https://www.gravatar.com/avatar/5024672cfe53f113b746e1923e373058?s=256')
-    })
+  it('sets the current user’s avatar', () => {
+    userStore.setAvatar()
+    expect(userStore.current.avatar).toBe('https://www.gravatar.com/avatar/b9611f1bba1aacbe6f5de5856695a202?s=256')
+  })
+
+  it('sets a user’s avatar', () => {
+    userStore.setAvatar(users[1])
+    expect(users[1].avatar).toBe('https://www.gravatar.com/avatar/5024672cfe53f113b746e1923e373058?s=256')
   })
 })

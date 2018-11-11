@@ -17,5 +17,8 @@ module.exports = {
     KOEL_ENV: 'web'
   },
   setupTestFrameworkScriptFile: '<rootDir>/js/tests/setup.js',
-  verbose: true
+  verbose: true,
+  coverageReporters: ['lcov', 'json', 'html'],
+  coverageDirectory: '<rootDir>/js/tests/__coverage__',
+  coveragePathIgnorePatterns: ['/node_modules/', '/tests/', '/stubs/', '/libs/']
 }

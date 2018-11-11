@@ -58,24 +58,31 @@ export const queueStore = {
   },
 
   /**
-   * Add a list of songs to the end of the current queue,
-   * or replace the current queue as a whole if `replace` is true.
-   *
-   * @param {Object|Array.<Object>}   songs   The song, or an array of songs
-   * @param {Boolean}         replace Whether to replace the current queue
-   * @param {Boolean}         toTop   Whether to prepend or append to the queue
+   * Add a list of songs to the end of the current queue.
+   * @param {Object|Array.<Object>} songs The song, or an array of songs
    */
-  queue (songs, replace = false, toTop = false) {
-    songs = [].concat(songs)
-
-    if (replace) {
-      this.all = songs
-    } else {
-      this.all = toTop ? union(songs, this.all) : union(this.all, songs)
-    }
+  queue (songs) {
+    this.all = union(this.all, [].concat(songs))
   },
 
   /**
+   * Add a list of songs to the top of the current queue.
+   * @param {Object|Array.<Object>} songs The song, or an array of songs
+   */
+  queueToTop (songs) {
+    this.all = union([].concat(songs), this.all)
+  },
+
+  /**
+   * Replace the current queue with a list of songs.
+   * @param {Object|Array.<Object>} songs The song, or an array of songs
+   */
+  replaceQueueWith (songs) {
+    this.all = [].concat(songs)
+  },
+
+  /**
+   * Queue songs right after the currently played song.
    * @param  {Array.<Object>|Object} songs
    */
   queueAfterCurrent (songs) {

@@ -1,62 +1,47 @@
-import { songStore, albumStore, artistStore } from '../../stores'
-import data from '../blobs/data'
-
-const { songs, artists, albums, interactions } = data
+import { songStore, albumStore, artistStore } from '@/stores'
+import data from '@/tests/blobs/data'
 
 describe('stores/song', () => {
   beforeEach(() => {
-    artistStore.init(artists)
-    albumStore.init(albums)
-    songStore.init(songs)
+    artistStore.init(data.artists)
+    albumStore.init(data.albums)
+    songStore.init(data.songs)
+    songStore.initInteractions(data.interactions)
   })
 
-  describe('#init', () => {
-    it('correctly gathers all songs', () => {
-      songStore.state.songs.length.should.equal(14)
-    })
-
-    it('coverts lengths to formatted lengths', () => {
-      songStore.state.songs[0].fmtLength.should.be.a.string
-    })
-
-    it('correctly sets albums', () => {
-      songStore.state.songs[0].album.id.should.equal(1193)
-    })
+  it('gathers all songs', () => {
+    expect(songStore.state.songs).toHaveLength(14)
   })
 
-  describe('#all', () => {
-    it('correctly returns all songs', () => {
-      songStore.all.length.should.equal(14)
-    })
+  it('converts length to formatted lengths', () => {
+    expect(songStore.state.songs[0].fmtLength).toBe('04:19')
   })
 
-  describe('#byId', () => {
-    it('correctly gets a song by ID', () => {
-      songStore.byId('e6d3977f3ffa147801ca5d1fdf6fa55e').title.should.equal('Like a rolling stone')
-    })
+  it('sets albums', () => {
+    expect(songStore.state.songs[0].album.id).toBe(1193)
   })
 
-  describe('#byIds', () => {
-    it('correctly gets multiple songs by IDs', () => {
-      const songs = songStore.byIds(['e6d3977f3ffa147801ca5d1fdf6fa55e', 'aa16bbef6a9710eb9a0f41ecc534fad5'])
-      songs[0].title.should.equal('Like a rolling stone')
-      songs[1].title.should.equal("Knockin' on heaven's door")
-    })
+  it('returns all songs', () => {
+    expect(songStore.state.songs).toHaveLength(14)
   })
 
-  describe('#initInteractions', () => {
-    beforeEach(() => songStore.initInteractions(interactions))
-
-    it('correctly sets interaction status', () => {
-      const song = songStore.byId('cb7edeac1f097143e65b1b2cde102482')
-      song.liked.should.be.true
-      song.playCount.should.equal(3)
-    })
+  it('gets a song by ID', () => {
+    expect(songStore.byId('e6d3977f3ffa147801ca5d1fdf6fa55e').title).toBe('Like a rolling stone')
   })
 
-  describe('#guess', () => {
-    it('correcty guesses a song', () => {
-      songStore.guess('i swear', albumStore.byId(1193)).id.should.equal('39189f4545f9d5671fb3dc964f0080a0')
-    })
+  it('gets multiple songs by IDs', () => {
+    const songs = songStore.byIds(['e6d3977f3ffa147801ca5d1fdf6fa55e', 'aa16bbef6a9710eb9a0f41ecc534fad5'])
+    expect(songs[0].title).toBe('Like a rolling stone')
+    expect(songs[1].title).toBe("Knockin' on heaven's door")
+  })
+
+  it('sets interaction status', () => {
+    const song = songStore.byId('cb7edeac1f097143e65b1b2cde102482')
+    expect(song.liked).toBe(true)
+    expect(song.playCount).toBe(3)
+  })
+
+  it('guesses a song', () => {
+    expect(songStore.guess('i swear', albumStore.byId(1193)).id).toBe('39189f4545f9d5671fb3dc964f0080a0')
   })
 })

@@ -238,7 +238,7 @@ export default {
           //  • Cmd/Ctrl+Shift+Enter: Queue songs to top and play the first queued song
           // --------------------------------------------------------------------
           //
-          queueStore.queue(this.selectedSongs, false, event.shiftKey)
+          event.shiftKey ? queueStore.queueToTop(this.selectedSongs) : queueStore.queue(this.selectedSongs)
 
           if (event.ctrlKey || event.metaKey) {
             playback.play(this.selectedSongs[0])
