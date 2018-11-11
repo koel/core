@@ -4,7 +4,6 @@ import factory from '@/tests/factory'
 
 describe('components/screens/artist-list', () => {
   it('displays a list of artists', async done => {
-
     const wrapper = await mount(List, {
       data: () => ({
         artists: factory('artist', 5, {
