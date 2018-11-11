@@ -39,7 +39,7 @@
     "babel-register": "^6.23.0",
     "babel-runtime": "^6.22.0",
     "chalk": "^1.1.3",
-    "coveralls": "^3.0.2",
+    "codecov": "^3.1.0",
     "cross-env": "^3.2.3",
     "crypto-random-string": "^1.0.0",
     "css-loader": "^0.28.7",
@@ -68,8 +68,7 @@
   },
   "scripts": {
     "lint": "eslint js --ext=js,vue",
-    "test": "cross-env NODE_ENV=test && jest ./js/tests/",
-    "coveralls": "jest --coverage && cat ./js/tests/__coverage__/lcov.info | coveralls"
+    "test": "cross-env NODE_ENV=test && jest ./js/tests && codecov"
   },
   "repository": {
     "type": "git",
