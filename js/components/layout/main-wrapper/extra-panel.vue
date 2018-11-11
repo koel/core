@@ -29,7 +29,7 @@
           mode="sidebar"
           ref="album-info"
           v-show="currentView === 'albumInfo'"/>
-        <youtube-video-list v-if="sharedState.useYouTube"
+        <you-tube-video-list v-if="sharedState.useYouTube"
           :song="song"
           :youtube="song.youtube"
           ref="youtube"
@@ -51,7 +51,7 @@ export default {
     LyricsPane: () => import('@/components/ui/lyrics-pane.vue'),
     ArtistInfo: () => import('@/components/artist/info.vue'),
     AlbumInfo: () => import('@/components/album/info.vue'),
-    YoutubeVideoList: () => import('@/components/ui/youtube-video-list.vue')
+    YouTubeVideoList: () => import('@/components/ui/youtube-video-list.vue')
   },
 
   data () {

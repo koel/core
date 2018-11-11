@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component/layout/main-wrapper/index renders properly 1`] = `
+<div id="mainWrapper">
+  <sidebar-stub></sidebar-stub>
+  <section id="mainContent">
+    <!---->
+    <div class="translucent" style="background-image: none;"></div>
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+  </section>
+  <section id="extra" class="showing">
+    <div class="tabs">
+      <div class="header clear"><a class="lyrics active">Lyrics</a> <a class="artist">Artist</a> <a class="album">Album</a>
+        <!---->
+      </div>
+      <div class="panes">
+        <!---->
+        <!---->
+        <!---->
+        <!---->
+      </div>
+    </div>
+  </section>
+</div>
+`;

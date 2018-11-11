@@ -1,5 +1,4 @@
 import Component from '@/components/layout/main-wrapper/sidebar.vue'
-import Playlists from '@/components/playlist/list.vue'
 import { sharedStore } from '@/stores'
 import factory from '@/tests/factory'
 
@@ -8,17 +7,14 @@ describe('compoponents/layout/main-wrapper/sidebar', () => {
     const wrapper = await mount(Component)
 
     Vue.nextTick(() => {
-      wrapper.hasAll(
-        Playlists,
-        ...(['home', 'queue', 'songs', 'albums', 'artists'].map(item => `.menu a.${item}`))
-      ).should.be.true
+      expect(wrapper).toMatchSnapshot()
       done()
     })
   })
 
   it('displays YouTube menu item if using YouTube', () => {
     sharedStore.state.useYouTube = true
-    shallow(Component).has('a.youtube').should.be.true
+    expect(shallow(Component)).toMatchSnapshot()
   })
 
   it('displays management menu items for admin', async done => {
@@ -31,7 +27,7 @@ describe('compoponents/layout/main-wrapper/sidebar', () => {
     })
 
     Vue.nextTick(() => {
-      wrapper.hasAll('.menu a.settings', '.menu a.users').should.be.true
+      expect(wrapper).toMatchSnapshot()
       done()
     })
   })
@@ -48,8 +44,7 @@ describe('compoponents/layout/main-wrapper/sidebar', () => {
     })
 
     Vue.nextTick(() => {
-      wrapper.has('a.new-ver').should.be.true
-      wrapper.find('a.new-ver').text().should.contain('Koel version v0.0.1 is available!')
+      expect(wrapper).toMatchSnapshot()
       done()
     })
   })

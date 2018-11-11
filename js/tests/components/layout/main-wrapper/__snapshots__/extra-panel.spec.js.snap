@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/layout/extra-panel does not have a YouTube tab if not using YouTube 1`] = `
+<section id="extra" class="showing">
+  <div class="tabs">
+    <div class="header clear"><a class="lyrics active">Lyrics</a> <a class="artist">Artist</a> <a class="album">Album</a>
+      <!---->
+    </div>
+    <div class="panes">
+      <lyricspane-stub song="[object Object]"></lyricspane-stub>
+      <!---->
+      <!---->
+      <!---->
+    </div>
+  </div>
+</section>
+`;
+
+exports[`components/layout/extra-panel has a YouTube tab if using YouTube 1`] = `
+<section id="extra" class="showing">
+  <div class="tabs">
+    <div class="header clear"><a class="lyrics active">Lyrics</a> <a class="artist">Artist</a> <a class="album">Album</a> <a class="youtube"><i class="fa fa-youtube-play"></i></a></div>
+    <div class="panes">
+      <lyricspane-stub song="[object Object]"></lyricspane-stub>
+      <!---->
+      <!---->
+      <div class="youtube-extra-wrapper" style="display: none;">
+        <p class="nope">Play a song to retrieve related YouTube videos.</p>
+        <p class="nope" style="display: none;">Loading…</p>
+      </div>
+    </div>
+  </div>
+</section>
+`;
+
+exports[`components/layout/extra-panel renders properly 1`] = `
+<section id="extra" class="showing">
+  <div class="tabs">
+    <div class="header clear"><a class="lyrics active">Lyrics</a> <a class="artist">Artist</a> <a class="album">Album</a>
+      <!---->
+    </div>
+    <div class="panes">
+      <lyricspane-stub song="[object Object]"></lyricspane-stub>
+      <!---->
+      <!---->
+      <!---->
+    </div>
+  </div>
+</section>
+`;

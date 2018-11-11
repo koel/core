@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/layout/app-header renders propery 1`] = `
+<header id="mainHeader">
+  <h1 class="brand">Koel</h1> <span class="hamburger"><i class="fa fa-bars"></i></span> <span class="magnifier"><i class="fa fa-search"></i></span>
+  <div id="searchForm" class="side search showing"><input type="search" placeholder="Search" class=""></div> <span id="userBadge" class="profile"><a href="#!/profile" class="view-profile control"><img src="" alt="Avatar" class="avatar"> <span class="name"></span></a> <a class="logout"><i class="fa fa-sign-out control"></i></a></span>
+</header>
+`;

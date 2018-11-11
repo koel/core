@@ -1,28 +1,30 @@
 import Component from '@/components/layout/app-header.vue'
-import SearchForm from '@/components/ui/search-form.vue'
-import UserBadge from '@/components/user/badge.vue'
 import { event } from '@/utils'
+import { mock } from '@/tests/__helpers__'
 
 describe('components/layout/app-header', () => {
+  afterEach(() => {
+    jest.resetModules()
+    jest.clearAllMocks()
+  })
+
   it('renders propery', async done => {
     const wrapper = await mount(Component)
     Vue.nextTick(() => {
-      wrapper.hasAll(SearchForm, UserBadge).should.be.true
+      expect(wrapper).toMatchSnapshot()
       done()
     })
   })
 
   it('toggles sidebar', () => {
-    const emitStub = stub(event, 'emit')
+    const m = mock(event, 'emit')
     shallow(Component).click('.hamburger')
-    emitStub.calledWith('TOGGLE_SIDEBAR').should.be.true
-    emitStub.restore()
+    expect(m).toHaveBeenCalledWith('TOGGLE_SIDEBAR')
   })
 
   it('toggles search form', () => {
-    const emitStub = stub(event, 'emit')
+    const m = mock(event, 'emit')
     shallow(Component).click('.magnifier')
-    emitStub.calledWith('TOGGLE_SEARCH_FORM').should.be.true
-    emitStub.restore()
+    expect(m).toHaveBeenCalledWith('TOGGLE_SEARCH_FORM')
   })
 })

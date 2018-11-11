@@ -11,6 +11,6 @@ describe('components/layout/main-wrapper/main-content', () => {
       })
     })
     event.emit('SONG_PLAYED', song)
-    wrapper.vm.albumCover.should.equal(song.album.cover)
+    expect(wrapper).toMatchSnapshot()
   })
 })
