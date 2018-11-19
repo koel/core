@@ -144,7 +144,7 @@ export default {
     },
 
     coverUrl () {
-      return this.allSongsAreallSongsAreInSameAlbum ? this.songs[0].album.cover : app.unknownCover
+      return this.allSongsAreInSameAlbum ? this.songs[0].album.cover : app.unknownCover
     },
 
     compilationState () {
