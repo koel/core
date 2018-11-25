@@ -1,5 +1,5 @@
 <template>
-  <section id="playlists" @contextmenu="openContextMenu">
+  <section id="playlists" @contextmenu.prevent="openContextMenu">
     <h1>Playlists
       <i class="fa fa-plus-circle control create" :class="{ creating: creating }" @click="creating = !creating"></i>
     </h1>
