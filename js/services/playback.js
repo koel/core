@@ -170,7 +170,7 @@ export const playback = {
       // @link https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/showNotification
     }
 
-    if ('mediaSession' in navigator) {
+    if (isMediaSessionSupported) {
       /* global MediaMetadata */
       navigator.mediaSession.metadata = new MediaMetadata({
         title: song.title,
