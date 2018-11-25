@@ -3,6 +3,7 @@
  */
 import select from 'select'
 import { event } from '@/utils'
+import { sharedStore } from '@/stores'
 
 /**
  * Load (display) a main panel (view).
@@ -59,4 +60,8 @@ export function copyText (txt) {
   copyArea.value = txt
   select(copyArea)
   document.execCommand('copy')
+}
+
+export function getDefaultCover () {
+  return sharedStore.state.cdnUrl + '/public/img/covers/unknown-album.png'
 }

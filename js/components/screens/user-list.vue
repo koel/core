@@ -18,9 +18,6 @@
         <user-card v-for="user in state.users" :user="user" @editUser="showEditUserForm" :key="user.id"/>
       </div>
     </div>
-
-    <edit-user-form ref="editUserForm"/>
-    <add-user-form ref="addUserForm"/>
   </section>
 </template>
 
@@ -28,12 +25,11 @@
 import isMobile from 'ismobilejs'
 
 import { userStore } from '@/stores'
+import { event } from '@/utils'
 
 export default {
   components: {
-    UserCard: () => import('@/components/user/card.vue'),
-    EditUserForm: () => import('@/components/user/edit-form.vue'),
-    AddUserForm: () => import('@/components/user/add-form.vue')
+    UserCard: () => import('@/components/user/card.vue')
   },
 
   data () {
@@ -45,13 +41,8 @@ export default {
   },
 
   methods: {
-    showAddUserForm () {
-      this.$refs.addUserForm.open()
-    },
-
-    showEditUserForm (user) {
-      this.$refs.editUserForm.open(user)
-    }
+    showAddUserForm: () => event.emit(event.$names.MODAL_SHOW_ADD_USER_FORM),
+    showEditUserForm: user => event.emit(event.$names.MODAL_SHOW_EDIT_USER_FORM, user)
   }
 }
 </script>

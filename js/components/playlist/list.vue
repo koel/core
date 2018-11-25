@@ -1,5 +1,5 @@
 <template>
-  <section id="playlists">
+  <section id="playlists" @contextmenu="openContextMenu">
     <h1>Playlists
       <i class="fa fa-plus-circle control create" :class="{ creating: creating }" @click="creating = !creating"></i>
     </h1>
@@ -14,7 +14,7 @@
       >
     </form>
 
-    <ul class="menu">
+    <ul>
       <playlist-item type="favorites" :playlist="{ name: 'Favorites', songs: favoriteState.songs }"/>
       <playlist-item type="recently-played" :playlist="{ name: 'Recently Played', songs: [] }"/>
 
@@ -24,6 +24,8 @@
         :playlist="playlist"
         :key="playlist.id"/>
     </ul>
+
+    <context-menu ref="contextMenu" @createPlaylist="creating = true"/>
   </section>
 </template>
 
@@ -33,7 +35,8 @@ import router from '@/router'
 
 export default {
   components: {
-    PlaylistItem: () => import('@/components/playlist/item.vue')
+    PlaylistItem: () => import('@/components/playlist/item.vue'),
+    ContextMenu: () => import('@/components/playlist/context-menu.vue')
   },
 
   data: () => ({
@@ -52,6 +55,10 @@ export default {
       this.newName = ''
       // Activate the new playlist right away
       this.$nextTick(() => router.go(`playlist/${playlist.id}`))
+    },
+
+    openContextMenu (event) {
+      this.$nextTick(() => this.$refs.contextMenu.open(event.pageY, event.pageX))
     }
   }
 }

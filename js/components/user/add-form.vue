@@ -1,5 +1,5 @@
 <template>
-  <div class="overlay" v-if="newUser">
+  <div class="add-user">
     <sound-bar v-if="loading"/>
     <form class="user-add" @submit.prevent="submit" v-else>
       <header>
@@ -23,7 +23,7 @@
 
       <footer>
         <button class="btn btn-green btn-add">Save</button>
-        <button class="btn btn-white btn-cancel" @click.prevent="cancel">Cancel</button>
+        <button class="btn btn-white btn-cancel" @click.prevent="close">Cancel</button>
       </footer>
     </form>
   </div>
@@ -46,20 +46,20 @@ export default {
   },
 
   methods: {
-    open () {
-      this.newUser = clone(userStore.stub)
-    },
-
     async submit () {
       this.loading = true
       await userStore.store(this.newUser.name, this.newUser.email, this.newUser.password)
       this.loading = false
-      this.newUser = null
+      this.close()
     },
 
-    cancel () {
-      this.newUser = null
+    close () {
+      this.$emit('close')
     }
+  },
+
+  created () {
+    this.newUser = clone(userStore.stub)
   }
 }
 </script>

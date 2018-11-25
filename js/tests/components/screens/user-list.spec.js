@@ -1,9 +1,8 @@
 import Component from '@/components/screens/user-list.vue'
 import UserCard from '@/components/user/card.vue'
-import AddUserForm from '@/components/user/add-form.vue'
-import EditUserForm from '@/components/user/edit-form.vue'
 import factory from '@/tests/factory'
 import { userStore } from '@/stores'
+import { event } from '@/utils'
 import { mock } from '@/tests/__helpers__'
 
 describe('components/screens/user-list', () => {
@@ -22,21 +21,16 @@ describe('components/screens/user-list', () => {
   })
 
   it('adds new user', () => {
-    userStore.all = factory('user', 10)
-    const wrapper = mount(Component)
-    const m = mock(wrapper.vm.$refs.addUserForm, 'open')
-    expect(wrapper.has(AddUserForm)).toBe(true)
-    wrapper.click('.btn-add')
-    expect(m).toHaveBeenCalled()
+    const m = mock(event, 'emit')
+    shallow(Component).click('.btn-add')
+    expect(m).toHaveBeenCalledWith('MODAL_SHOW_ADD_USER_FORM')
   })
 
   it('edits a user', () => {
     userStore.all = factory('user', 10)
-    const wrapper = mount(Component)
-    const m = mock(wrapper.vm.$refs.editUserForm, 'open')
-    expect(wrapper.has(EditUserForm)).toBe(true)
-    wrapper.click('.btn-edit')
-    expect(m).toHaveBeenCalledWith(userStore.all[0])
+    const m = mock(event, 'emit')
+    mount(Component).click('.btn-edit') // the first Edit button
+    expect(m).toHaveBeenCalledWith('MODAL_SHOW_EDIT_USER_FORM', userStore.all[0])
   })
 })
 

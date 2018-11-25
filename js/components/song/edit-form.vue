@@ -1,5 +1,5 @@
 <template>
-  <div id="editSongsOverlay" v-if="shown" class="overlay">
+  <div class="edit-song">
     <sound-bar v-if="loading"/>
     <form v-else @submit.prevent="submit">
       <header>
@@ -65,20 +65,20 @@
       </div>
 
       <footer>
-        <input type="submit" value="Update">
-        <a @click.prevent="close" class="btn btn-white">Cancel</a>
+        <button type="submit" class="btn btn-blue">Update</button>
+        <a @click.prevent="close" class="btn btn-white btn-cancel">Cancel</a>
       </footer>
     </form>
   </div>
 </template>
 
 <script>
-import { every, filter, union } from 'lodash'
+import { union } from 'lodash'
 
 import { br2nl } from '@/utils'
 import { songInfo } from '@/services/info'
 import { artistStore, albumStore, songStore } from '@/stores'
-import { app } from '@/config'
+import { getDefaultCover } from '@/utils'
 
 const COMPILATION_STATES = {
   NONE: 0, // No songs belong to a compilation album
@@ -92,10 +92,16 @@ export default {
     Typeahead: () => import('@/components/ui/typeahead.vue')
   },
 
+  props: {
+    songs: {
+      required: true,
+      type: [Array, Object]
+    }
+  },
+
   data () {
     return {
-      shown: false,
-      songs: [],
+      mutatedSongs: [],
       currentView: '',
       loading: true,
 
@@ -132,24 +138,24 @@ export default {
 
   computed: {
     editingOnlyOneSong () {
-      return this.songs.length === 1
+      return this.mutatedSongs.length === 1
     },
 
     allSongsAreFromSameArtist () {
-      return every(this.songs, song => song.artist.id === this.songs[0].artist.id)
+      return this.mutatedSongs.every(song => song.artist.id === this.mutatedSongs[0].artist.id)
     },
 
     allSongsAreInSameAlbum () {
-      return every(this.songs, song => song.album.id === this.songs[0].album.id)
+      return this.mutatedSongs.every(song => song.album.id === this.mutatedSongs[0].album.id)
     },
 
     coverUrl () {
-      return this.allSongsAreInSameAlbum ? this.songs[0].album.cover : app.unknownCover
+      return this.allSongsAreInSameAlbum ? this.mutatedSongs[0].album.cover : getDefaultCover()
     },
 
     compilationState () {
-      const albums = this.songs.reduce((acc, song) => union(acc, [song.album]), [])
-      const compiledAlbums = filter(albums, album => album.is_compilation)
+      const albums = this.mutatedSongs.reduce((acc, song) => union(acc, [song.album]), [])
+      const compiledAlbums = albums.filter(album => album.is_compilation)
 
       if (!compiledAlbums.length) {
         this.formData.compilationState = COMPILATION_STATES.NONE
@@ -163,7 +169,7 @@ export default {
     },
 
     displayedTitle () {
-      return this.editingOnlyOneSong ? this.formData.title : `${this.songs.length} songs selected`
+      return this.editingOnlyOneSong ? this.formData.title : `${this.mutatedSongs.length} songs selected`
     },
 
     displayedArtistName () {
@@ -180,35 +186,34 @@ export default {
   },
 
   methods: {
-    async open (songs) {
-      this.shown = true
-      this.songs = [].concat(songs)
+    async open () {
+      this.mutatedSongs = [].concat(this.songs)
       this.currentView = 'details'
 
       if (this.editingOnlyOneSong) {
-        this.formData.title = this.songs[0].title
-        this.formData.albumName = this.songs[0].album.name
-        this.formData.artistName = this.songs[0].artist.name
+        this.formData.title = this.mutatedSongs[0].title
+        this.formData.albumName = this.mutatedSongs[0].album.name
+        this.formData.artistName = this.mutatedSongs[0].artist.name
 
         // If we're editing only one song and the song's info (including lyrics)
         // hasn't been loaded, load it now.
-        if (!this.songs[0].infoRetrieved) {
+        if (!this.mutatedSongs[0].infoRetrieved) {
           this.loading = true
 
-          await songInfo.fetch(this.songs[0])
+          await songInfo.fetch(this.mutatedSongs[0])
           this.loading = false
-          this.formData.lyrics = br2nl(this.songs[0].lyrics)
-          this.formData.track = this.songs[0].track || ''
+          this.formData.lyrics = br2nl(this.mutatedSongs[0].lyrics)
+          this.formData.track = this.mutatedSongs[0].track || ''
           this.initCompilationStateCheckbox()
         } else {
           this.loading = false
-          this.formData.lyrics = br2nl(this.songs[0].lyrics)
-          this.formData.track = this.songs[0].track || ''
+          this.formData.lyrics = br2nl(this.mutatedSongs[0].lyrics)
+          this.formData.track = this.mutatedSongs[0].track || ''
           this.initCompilationStateCheckbox()
         }
       } else {
-        this.formData.albumName = this.allSongsAreInSameAlbum ? this.songs[0].album.name : ''
-        this.formData.artistName = this.allSongsAreFromSameArtist ? this.songs[0].artist.name : ''
+        this.formData.albumName = this.allSongsAreInSameAlbum ? this.mutatedSongs[0].album.name : ''
+        this.formData.artistName = this.allSongsAreFromSameArtist ? this.mutatedSongs[0].artist.name : ''
         this.loading = false
         this.initCompilationStateCheckbox()
       }
@@ -248,38 +253,40 @@ export default {
     },
 
     close () {
-      this.shown = false
+      this.$emit('close')
     },
 
     async submit () {
       this.loading = true
 
       try {
-        await songStore.update(this.songs, this.formData)
+        await songStore.update(this.mutatedSongs, this.formData)
         this.close()
       } finally {
         this.loading = false
       }
     }
+  },
+
+  async created () {
+    await this.open()
   }
 }
 </script>
 
-<style lang="scss">
-#editSongsOverlay {
-  form {
-    > header {
-      img {
-        flex: 0 0 96px;
-      }
+<style lang="scss" scoped>
+form {
+  > header {
+    img {
+      flex: 0 0 96px;
+    }
 
-      .meta {
-        flex: 1;
-        padding-left: 8px;
+    .meta {
+      flex: 1;
+      padding-left: 8px;
 
-        .mixed {
-          opacity: .5;
-        }
+      .mixed {
+        opacity: .5;
       }
     }
   }

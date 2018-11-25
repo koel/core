@@ -11,44 +11,45 @@ describe('components/song/edit-form', () => {
     jest.clearAllMocks()
   })
 
-  it('opens', () => {
-    const wrapper = shallow(Component)
-    wrapper.vm.open(factory('song', 3))
-    expect(wrapper.has('form')).toBe(true)
-  })
-
   it('supports editing a single song', async done => {
     const song = factory('song', { infoRetrieved: true })
-    const wrapper = await mount(Component)
-    wrapper.vm.open(song)
+    const wrapper = await mount(Component, {
+      propsData: { songs: song }
+    })
 
-    const metaHtml = wrapper.find('.meta').html()
-    expect(metaHtml).toMatch(song.title)
-    expect(metaHtml).toMatch(song.album.name)
-    expect(metaHtml).toMatch(song.artist.name)
+    wrapper.vm.$nextTick(() => {
+      const metaHtml = wrapper.find('.meta').html()
+      expect(metaHtml).toMatch(song.title)
+      expect(metaHtml).toMatch(song.album.name)
+      expect(metaHtml).toMatch(song.artist.name)
 
-    expect(wrapper.has(Typeahead)).toBe(true)
-    expect(wrapper.find('input[name=title]').value).toBe(song.title)
-    expect(wrapper.find('input[name=album]').value).toBe(song.album.name)
-    expect(wrapper.find('input[name=artist]').value).toBe(song.artist.name)
-    expect(wrapper.find('input[name=track]').value).toBe(song.track.toString())
+      expect(wrapper.has(Typeahead)).toBe(true)
+      expect(wrapper.find('input[name=title]').value).toBe(song.title)
+      expect(wrapper.find('input[name=album]').value).toBe(song.album.name)
+      expect(wrapper.find('input[name=artist]').value).toBe(song.artist.name)
+      expect(wrapper.find('input[name=track]').value).toBe(song.track.toString())
 
-    wrapper.click('.tabs .tab-lyrics')
-    expect(wrapper.find('textarea[name=lyrics]').value).toBe(song.lyrics)
-    done()
+      wrapper.click('.tabs .tab-lyrics')
+      expect(wrapper.find('textarea[name=lyrics]').value).toBe(song.lyrics)
+      done()
+    })
   })
 
   it('fetches song information on demand', () => {
     const song = factory('song', { infoRetrieved: false })
     const fetchMock = mock(songInfo, 'fetch')
-    const wrapper = mount(Component)
-    wrapper.vm.open(song)
+    mount(Component, {
+      propsData: { songs: song }
+    })
     expect(fetchMock).toHaveBeenCalledWith(song)
   })
 
   it('supports editing multiple songs of multiple artists', () => {
-    const wrapper = mount(Component)
-    wrapper.vm.open(factory('song', 3))
+    const wrapper = mount(Component, {
+      propsData: {
+        songs: factory('song', 3)
+      }
+    })
 
     const metaHtml = wrapper.find('.meta').html()
     expect(metaHtml).toMatch('3 songs selected')
@@ -61,13 +62,15 @@ describe('components/song/edit-form', () => {
   })
 
   it('supports editing multiple songs of same artist and different albums', () => {
-    const wrapper = mount(Component)
     const artist = factory('artist')
-    const songs = factory('song', 5, {
-      artist,
-      artist_id: artist.id
+    const wrapper = mount(Component, {
+      propsData: {
+        songs: factory('song', 5, {
+          artist,
+          artist_id: artist.id
+        })
+      }
     })
-    wrapper.vm.open(songs)
 
     const metaHtml = wrapper.find('.meta').html()
     expect(metaHtml).toMatch('5 songs selected')
@@ -80,15 +83,17 @@ describe('components/song/edit-form', () => {
   })
 
   it('supports editing multiple songs in same album', () => {
-    const wrapper = mount(Component)
     const album = factory('album')
-    const songs = factory('song', 4, {
-      album,
-      album_id: album.id,
-      artist: album.artist,
-      artist_id: album.artist.id
+    const wrapper = mount(Component, {
+      propsData: {
+        songs: factory('song', 4, {
+          album,
+          album_id: album.id,
+          artist: album.artist,
+          artist_id: album.artist.id
+        })
+      }
     })
-    wrapper.vm.open(songs)
 
     const metaHtml = wrapper.find('.meta').html()
     expect(metaHtml).toMatch('4 songs selected')
@@ -105,20 +110,23 @@ describe('components/song/edit-form', () => {
     const songs = factory('song', 3)
     const formData = { foo: 'bar' }
     const wrapper = await mount(Component, {
-      data: () => ({ formData })
+      data: () => ({ formData }),
+      propsData: {
+        songs
+      }
     })
-    await wrapper.vm.open(songs)
     wrapper.submit('form')
     expect(updateStub).toHaveBeenCalledWith(songs, formData)
     done()
   })
 
-  it('closes', async done => {
-    const wrapper = shallow(Component)
-    await wrapper.vm.open(factory('song', 3))
-    expect(wrapper.has('form')).toBe(true)
-    await wrapper.vm.close()
-    expect(wrapper.has('form')).toBe(false)
-    done()
+  it('closes', () => {
+    const wrapper = shallow(Component, {
+      propsData: {
+        songs: factory('song', 3)
+      }
+    })
+    wrapper.click('.btn-cancel')
+    expect(wrapper.hasEmitted('close')).toBe(true)
   })
 })

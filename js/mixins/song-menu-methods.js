@@ -7,22 +7,7 @@ import { queueStore, playlistStore, favoriteStore } from '@/stores'
  * for example close() and open().
  */
 export default {
-  data () {
-    return {
-      shown: false,
-      top: 0,
-      left: 0
-    }
-  },
-
   methods: {
-    open () {},
-
-    close () {
-      Array.from(this.$el.querySelectorAll('.submenu')).forEach(el => (el.style.display = 'none'))
-      this.shown = false
-    },
-
     queueSongsAfterCurrent () {
       queueStore.queueAfterCurrent(this.songs)
       this.close()

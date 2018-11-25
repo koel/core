@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`components/user/add-form opens 1`] = `
-<div class="overlay">
+<div class="add-user">
   <form class="user-add">
     <header>
       <h1>Add New User</h1>

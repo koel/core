@@ -90,7 +90,7 @@ export const playback = {
     audioService.init(this.player.media)
     event.emit(event.$names.INIT_EQUALIZER)
 
-    if (isMediaSessionSupported()) {
+    if (isMediaSessionSupported) {
       navigator.mediaSession.setActionHandler('play', () => this.resume())
       navigator.mediaSession.setActionHandler('pause', () => this.pause())
       navigator.mediaSession.setActionHandler('previoustrack', () => this.playPrev())

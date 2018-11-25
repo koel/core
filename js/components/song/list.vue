@@ -43,7 +43,7 @@
       key-field="song.id"
     />
 
-    <song-menu ref="contextMenu" :songs="selectedSongs"/>
+    <context-menu ref="contextMenu" :songs="selectedSongs"/>
   </div>
 </template>
 
@@ -80,7 +80,7 @@ export default {
 
   components: {
     songItem,
-    songMenu: () => import('@/components/song/menu.vue')
+    ContextMenu: () => import('@/components/song/context-menu.vue')
   },
 
   data () {

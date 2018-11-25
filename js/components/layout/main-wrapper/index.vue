@@ -3,6 +3,7 @@
     <sidebar/>
     <main-content/>
     <extra-panel/>
+    <modal-wrapper/>
   </div>
 </template>
 
@@ -10,8 +11,9 @@
 export default {
   components: {
     Sidebar: () => import('@/components/layout/main-wrapper/sidebar.vue'),
-    mainContent: () => import('@/components/layout/main-wrapper/main-content.vue'),
-    ExtraPanel: () => import('@/components/layout/main-wrapper/extra-panel.vue')
+    MainContent: () => import('@/components/layout/main-wrapper/main-content.vue'),
+    ExtraPanel: () => import('@/components/layout/main-wrapper/extra-panel.vue'),
+    ModalWrapper: () => import('@/components/layout/modal-wrapper.vue')
   }
 }
 </script>

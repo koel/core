@@ -5,7 +5,7 @@ import isMobile from 'ismobilejs'
  *
  * @return {Boolean}
  */
-export function isAudioContextSupported () {
+export const isAudioContextSupported = (() => {
   // Apple device just doesn't love AudioContext that much.
   if (isMobile.apple.device) {
     return false
@@ -28,20 +28,16 @@ export function isAudioContextSupported () {
   }
 
   return true
-}
+})()
 
 /**
  * Checks if HTML5 clipboard can be used.
  * @return {Boolean}
  */
-export function isClipboardSupported () {
-  return 'execCommand' in document
-}
+export const isClipboardSupported = 'execCommand' in document
 
 /**
  * Checks if Media Session API is supported.
  * @return {Boolean}
  */
-export function isMediaSessionSupported () {
-  return 'mediaSession' in navigator
-}
+export const isMediaSessionSupported = 'mediaSession' in navigator

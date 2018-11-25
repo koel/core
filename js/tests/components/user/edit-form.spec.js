@@ -14,16 +14,22 @@ describe('components/user/edit-form', () => {
       name: 'Bob Dylan',
       email: 'knocking@heaven.door'
     })
-    const wrapper = shallow(Component)
-    wrapper.vm.open(user)
+    const wrapper = shallow(Component, {
+      propsData: {
+        user
+      }
+    })
     expect(wrapper).toMatchSnapshot()
   })
 
   it('saves', () => {
     const user = factory('user')
     const updateStub = mock(userStore, 'update')
-    const wrapper = shallow(Component)
-    wrapper.vm.open(user)
+    const wrapper = shallow(Component, {
+      propsData: {
+        user
+      }
+    })
     wrapper.submit('form')
     expect(updateStub).toHaveBeenCalledWith(user, user.name, user.email, user.password)
   })
@@ -31,11 +37,13 @@ describe('components/user/edit-form', () => {
   it('cancels', () => {
     const user = factory('user')
     const updateStub = mock(userStore, 'update')
-    const wrapper = shallow(Component)
-    wrapper.vm.open(user)
-    expect(wrapper.has('form.user-edit')).toBe(true)
+    const wrapper = shallow(Component, {
+      propsData: {
+        user
+      }
+    })
     wrapper.click('.btn-cancel')
-    expect(wrapper.has('form.user-edit')).toBe(false)
+    expect(wrapper.hasEmitted('close')).toBe(true)
     expect(updateStub).not.toHaveBeenCalled()
   })
 })

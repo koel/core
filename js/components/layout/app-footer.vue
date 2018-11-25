@@ -80,7 +80,7 @@ export default {
        *
        * @type {Boolean}
        */
-      useEqualizer: isAudioContextSupported(),
+      useEqualizer: isAudioContextSupported,
       visualizerActivated: false
     }
   },

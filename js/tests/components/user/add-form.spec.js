@@ -11,7 +11,6 @@ describe('components/user/add-form', () => {
 
   it('opens', () => {
     const wrapper = shallow(Component)
-    wrapper.vm.open()
     expect(wrapper).toMatchSnapshot()
   })
 
@@ -19,7 +18,6 @@ describe('components/user/add-form', () => {
     const newUser = factory('user')
     const storeStub = mock(userStore, 'store')
     const wrapper = shallow(Component)
-    wrapper.vm.open()
     wrapper.setData({ newUser })
     wrapper.submit('form.user-add')
     expect(storeStub).toHaveBeenCalledWith(newUser.name, newUser.email, newUser.password)
@@ -27,9 +25,7 @@ describe('components/user/add-form', () => {
 
   it('cancels', () => {
     const wrapper = shallow(Component)
-    wrapper.vm.open()
-    expect(wrapper.has('form.user-add')).toBe(true)
-    wrapper.vm.cancel()
-    expect(wrapper.has('form.user-add')).toBe(false)
+    wrapper.click('.btn-cancel')
+    expect(wrapper.hasEmitted('close')).toBe(true)
   })
 })

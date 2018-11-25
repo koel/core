@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`components/user/edit-form opens 1`] = `
-<div class="overlay">
+<div class="edit-user">
   <form class="user-edit">
     <header>
       <h1>Edit User</h1>
@@ -11,7 +11,7 @@ exports[`components/user/edit-form opens 1`] = `
       <div class="form-row"><label>Email</label> <input title="Email" type="email" name="email" required="required"></div>
       <div class="form-row"><label>Password</label> <input type="password" name="password" placeholder="Leave blank for no changes"></div>
     </div>
-    <footer><button class="btn btn-green btn-update">Update</button> <button class="btn btn-white btn-cancel">Cancel</button></footer>
+    <footer><button type="submit" class="btn btn-green btn-update">Update</button> <button class="btn btn-white btn-cancel">Cancel</button></footer>
   </form>
 </div>
 `;

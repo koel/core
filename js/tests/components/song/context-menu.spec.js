@@ -1,19 +1,20 @@
 import each from 'jest-each'
-import Component from '@/components/song/menu.vue'
+import Component from '@/components/song/context-menu'
 import { download } from '@/services'
 import { songStore, playlistStore, queueStore, favoriteStore, sharedStore, userStore } from '@/stores'
 import { event } from '@/utils'
 import factory from '@/tests/factory'
 import { mock } from '@/tests/__helpers__'
 
-describe('components/song/menu', () => {
+describe('components/song/context-menu', () => {
   let songs, wrapper
 
   beforeEach(() => {
     userStore.current.is_admin = true
     sharedStore.state.allowDownload = true
     songs = factory('song', 2)
-    wrapper = shallow(Component, {
+
+    wrapper = mount(Component, {
       propsData: { songs },
       data: () => ({ copyable: true })
     })
@@ -66,7 +67,7 @@ describe('components/song/menu', () => {
     const m = mock(event, 'emit')
     userStore.current.is_admin = true
     wrapper.click('.open-edit-form')
-    expect(m).toHaveBeenCalledWith('EDIT_SONGS', songs)
+    expect(m).toHaveBeenCalledWith('MODAL_SHOW_EDIT_SONG_FORM', songs)
   })
 
   it('downloads', () => {

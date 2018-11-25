@@ -6,7 +6,6 @@
       <main-wrapper/>
       <app-footer/>
       <overlay ref="overlay"/>
-      <edit-songs-form ref="editSongsForm"/>
     </div>
 
     <template v-else>
@@ -25,7 +24,6 @@ import AppFooter from '@/components/layout/app-footer.vue'
 import MainWrapper from '@/components/layout/main-wrapper/index.vue'
 import Overlay from '@/components/ui/overlay.vue'
 import LoginForm from '@/components/auth/login-form.vue'
-import EditSongsForm from '@/components/song/edit-form.vue'
 import Hotkeys from '@/components/utils/hotkeys.vue'
 
 import { event, showOverlay, hideOverlay, forceReloadWindow, $, app as appUtils } from '@/utils'
@@ -41,8 +39,7 @@ export default {
     AppFooter,
     MainWrapper,
     Overlay,
-    LoginForm,
-    EditSongsForm
+    LoginForm
   },
 
   data () {
@@ -144,13 +141,6 @@ export default {
 
   created () {
     event.on({
-      /**
-       * Shows the "Edit Song" form.
-       *
-       * @param {Array.<Object>} An array of songs to edit
-       */
-      [event.$names.EDIT_SONGS]: songs => this.$refs.editSongsForm.open(songs),
-
       /**
        * Log the current user out and reset the application state.
        */
