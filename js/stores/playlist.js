@@ -68,7 +68,7 @@ export const playlistStore = {
     this.all = difference(this.all, [].concat(playlists))
   },
 
-  store (name, songs = []) {
+  store (name, songs = [], rules = null) {
     if (songs.length) {
       // Extract the IDs from the song objects.
       songs = songs.map(song => song.id)
@@ -77,7 +77,7 @@ export const playlistStore = {
     NProgress.start()
 
     return new Promise((resolve, reject) => {
-      http.post('playlist', { name, songs }, ({ data: playlist }) => {
+      http.post('playlist', { name, songs, rules }, ({ data: playlist }) => {
         playlist.songs = songs
         this.populateContent(playlist)
         this.add(playlist)
@@ -119,6 +119,10 @@ export const playlistStore = {
   },
 
   removeSongs: (playlist, songs) => {
+    if (playlist.is_smart) {
+      return
+    }
+
     NProgress.start()
 
     playlist.songs = difference(playlist.songs, songs)

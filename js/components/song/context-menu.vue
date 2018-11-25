@@ -16,10 +16,10 @@
           <li class="top-queue" @click="queueSongsToTop">Top of Queue</li>
           <li class="separator"></li>
           <li class="favorite" @click="addSongsToFavorite">Favorites</li>
-          <li class="separator" v-if="playlistState.playlists.length"></li>
+          <li class="separator" v-if="normalPlaylists.length"></li>
           <li
             class="playlist"
-            v-for="p in playlistState.playlists"
+            v-for="p in normalPlaylists"
             :key="p.id"
             @click="addSongsToExistingPlaylist(p)">{{ p.name }}</li>
         </ul>
@@ -66,6 +66,10 @@ export default {
 
     firstSongPlaying () {
       return this.songs[0] ? this.songs[0].playbackState === 'playing' : false
+    },
+
+    normalPlaylists () {
+      return this.playlistState.playlists.filter(playlist => !playlist.is_smart)
     },
 
     isAdmin: () => userStore.current.is_admin

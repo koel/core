@@ -1,5 +1,7 @@
 <template>
-  <li @dblclick.prevent="makeEditable" :class="['playlist', type, editing ? 'editing' : '']">
+  <li
+    @dblclick.prevent="makeEditable"
+    :class="['playlist', type, editing ? 'editing' : '', playlist.is_smart ? 'smart' : '']">
     <a :href="url"
       @dragleave="removeDroppableState"
       @dragenter.prevent="allowDrop"
@@ -65,6 +67,10 @@ export default {
     },
 
     contentEditable () {
+      if (this.playlist.is_smart) {
+        return false
+      }
+
       return this.type === 'playlist' || this.type === 'favorites'
     }
   },
@@ -207,6 +213,10 @@ export default {
   &.recently-played a::before {
     content: "\f1da";
     color: $colorGreen;
+  }
+
+  &.smart a::before {
+    content: "\f069";
   }
 
   input {

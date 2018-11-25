@@ -12,7 +12,7 @@ import { event } from '@/utils'
 
 export default {
   components: {
-    CreateSmartPlaylistForm: () => import('@/components/playlist/create-smart-playlist-form.vue'),
+    CreateSmartPlaylistForm: () => import('@/components/playlist/smart-playlist/create-form.vue'),
     AddUserForm: () => import('@/components/user/add-form.vue'),
     EditUserForm: () => import('@/components/user/edit-form.vue'),
     EditSongForm: () => import('@/components/song/edit-form.vue')
