@@ -44,16 +44,7 @@ export default {
     },
 
     addRule () {
-      this.mutatedGroup.rules.push(this.createRule())
-    },
-
-    createRule () {
-      return {
-        id: (new Date()).getTime(),
-        model: models[0].name,
-        operator: operators[0].operator,
-        value: ['']
-      }
+      this.mutatedGroup.rules.push(this.$options.createRule())
     },
 
     removeRule (rule) {
@@ -64,7 +55,14 @@ export default {
     notifyParentForUpdate () {
       this.$emit('input', this.mutatedGroup)
     }
-  }
+  },
+
+  createRule: () => ({
+    id: (new Date()).getTime(),
+    model: models[0].name,
+    operator: operators[0].operator,
+    value: ['']
+  })
 }
 </script>
 

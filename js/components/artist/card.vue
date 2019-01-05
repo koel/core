@@ -47,11 +47,9 @@ export default {
   filters: { pluralize },
   mixins: [artistAttributes],
 
-  data () {
-    return {
-      sharedState: sharedStore.state
-    }
-  },
+  data: () => ({
+    sharedState: sharedStore.state
+  }),
 
   computed: {
     /**

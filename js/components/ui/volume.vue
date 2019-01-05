@@ -14,11 +14,9 @@ import { playback, socket } from '@/services'
 import { event } from '@/utils'
 
 export default {
-  data () {
-    return {
-      muted: false
-    }
-  },
+  data: () => ({
+    muted: false
+  }),
 
   methods: {
     mute () {

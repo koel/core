@@ -41,7 +41,7 @@
       state: recentlyPlayedStore.state
     }),
 
-    created () {
+    created: () => {
       /**
        * Listen to 'main-content-view:load' event to load all recently played songs into the view
        */

@@ -3,7 +3,7 @@
     <div class="presets">
       <label class="select-wrapper">
         <select v-model="selectedPresetIndex">
-          <option v-for="p in presets" :value="p.id" :key="p.id" v-once>{{ p.name }}</option>
+          <option v-for="p in $options.presets" :value="p.id" :key="p.id" v-once>{{ p.name }}</option>
         </select>
       </label>
     </div>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { cloneDeep } from 'lodash'
+import { cloneDeep, tap } from 'lodash'
 import nouislider from 'nouislider'
 
 import { event, $ } from '@/utils'
@@ -44,17 +44,15 @@ export default {
     selectedPresetIndex: -1
   }),
 
-  computed: {
-    presets () {
-      const clonedPreset = cloneDeep(equalizerStore.presets)
+  presets: (() => {
+    return tap(cloneDeep(equalizerStore.presets), clonedPresets => {
       // Prepend an empty option for instruction purpose.
-      clonedPreset.unshift({
+      clonedPresets.unshift({
         id: -1,
         name: 'Preset'
       })
-      return clonedPreset
-    }
-  },
+    })
+  })(),
 
   watch: {
     selectedPresetIndex (val) {

@@ -14,11 +14,9 @@ import { userStore } from '@/stores'
 import { event } from '@/utils'
 
 export default {
-  data () {
-    return {
-      state: userStore.state
-    }
-  },
+  data: () => ({
+    state: userStore.state
+  }),
 
   methods: {
     logout: () => event.emit(event.$names.LOG_OUT)

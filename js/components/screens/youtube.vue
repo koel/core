@@ -28,7 +28,7 @@ export default {
     /**
      * Initialize the YouTube player. This should only be called once.
      */
-    initPlayer () {
+    initPlayer: () => {
       if (!player) {
         player = YouTubePlayer('player', {
           width: '100%',

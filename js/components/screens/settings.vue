@@ -54,7 +54,7 @@ export default {
       }
     },
 
-    async save () {
+    save: async () => {
       showOverlay()
 
       try {

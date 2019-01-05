@@ -45,12 +45,10 @@ export default {
     }
   },
 
-  data () {
-    return {
-      loading: false,
-      mutatedUser: null
-    }
-  },
+  data: () => ({
+    loading: false,
+    mutatedUser: null
+  }),
 
   methods: {
     async submit () {

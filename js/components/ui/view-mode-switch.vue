@@ -41,9 +41,7 @@ export default {
      *
      * @return {string}
      */
-    preferenceKey () {
-      return `${this.for}ViewMode`
-    }
+    preferenceKey: vm => `${vm.for}ViewMode`
   },
 
   methods: {

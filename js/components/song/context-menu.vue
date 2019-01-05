@@ -51,13 +51,11 @@ export default {
     BaseContextMenu: () => import('@/components/ui/context-menu.vue')
   },
 
-  data () {
-    return {
-      playlistState: playlistStore.state,
-      sharedState: sharedStore.state,
-      copyable: isClipboardSupported
-    }
-  },
+  data: () => ({
+    playlistState: playlistStore.state,
+    sharedState: sharedStore.state,
+    copyable: isClipboardSupported
+  }),
 
   computed: {
     onlyOneSongSelected () {

@@ -55,12 +55,10 @@ export default {
     TrackListItem: () => import('@/components/song/track-list-item.vue')
   },
 
-  data () {
-    return {
-      showingFullWiki: false,
-      useiTunes: sharedStore.state.useiTunes
-    }
-  },
+  data: () => ({
+    showingFullWiki: false,
+    useiTunes: sharedStore.state.useiTunes
+  }),
 
   watch: {
     /**

@@ -23,22 +23,20 @@ export default {
     SoundBar: () => import('@/components/ui/sound-bar.vue')
   },
 
-  data () {
-    return {
-      state: {
-        showing: true,
-        dismissable: false,
-        /**
-         * Either 'loading', 'success', 'info', 'warning', or 'error'.
-         * This dictates the icon as well as possibly other visual appearances.
-         *
-         * @type {String}
-         */
-        type: 'loading',
-        message: ''
-      }
+  data: () => ({
+    state: {
+      showing: true,
+      dismissable: false,
+      /**
+       * Either 'loading', 'success', 'info', 'warning', or 'error'.
+       * This dictates the icon as well as possibly other visual appearances.
+       *
+       * @type {String}
+       */
+      type: 'loading',
+      message: ''
     }
-  },
+  }),
 
   methods: {
     show (options) {

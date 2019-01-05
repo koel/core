@@ -83,7 +83,7 @@ export const songStore = {
    *
    * @return {Float|String}
    */
-  getLength (songs, toHis = false) {
+  getLength: (songs, toHis = false) => {
     const duration = songs.reduce((length, song) => length + song.length, 0)
 
     return toHis ? secondsToHis(duration) : duration
@@ -222,7 +222,7 @@ export const songStore = {
     return take(orderBy(this.all, 'created_at', 'desc'), n)
   },
 
-  generateDataToBroadcast (song) {
+  generateDataToBroadcast: song => {
     return {
       song: {
         id: song.id,

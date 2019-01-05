@@ -83,20 +83,18 @@ export default {
     ContextMenu: () => import('@/components/song/context-menu.vue')
   },
 
-  data () {
-    return {
-      renderers: Object.freeze({
-        song: songItem
-      }),
-      lastSelectedRow: null,
-      q: '',
-      sortKey: '',
-      order: -1,
-      sortingByAlbum: false,
-      sortingByArtist: false,
-      songRows: []
-    }
-  },
+  data: () => ({
+    renderers: Object.freeze({
+      song: songItem
+    }),
+    lastSelectedRow: null,
+    q: '',
+    sortKey: '',
+    order: -1,
+    sortingByAlbum: false,
+    sortingByArtist: false,
+    songRows: []
+  }),
 
   watch: {
     items () {
@@ -262,9 +260,7 @@ export default {
      * Select all (filtered) rows in the current list.
      */
     selectAllRows () {
-      this.filteredItems.forEach(row => {
-        row.selected = true
-      })
+      this.filteredItems.forEach(row => (row.selected = true))
     },
 
     rowClicked (rowVm, event) {
@@ -308,9 +304,7 @@ export default {
     },
 
     clearSelection () {
-      this.filteredItems.forEach(row => {
-        row.selected = false
-      })
+      this.filteredItems.forEach(row => (row.selected = false))
     },
 
     /**

@@ -99,42 +99,40 @@ export default {
     }
   },
 
-  data () {
-    return {
-      mutatedSongs: [],
-      currentView: '',
-      loading: true,
+  data: () => ({
+    mutatedSongs: [],
+    currentView: '',
+    loading: true,
 
-      artistState: artistStore.state,
-      artistTypeaheadOptions: {
-        displayKey: 'name',
-        filterKey: 'name',
-        name: 'artist'
-      },
+    artistState: artistStore.state,
+    artistTypeaheadOptions: {
+      displayKey: 'name',
+      filterKey: 'name',
+      name: 'artist'
+    },
 
-      albumState: albumStore.state,
-      albumTypeaheadOptions: {
-        displayKey: 'name',
-        filterKey: 'name',
-        name: 'album'
-      },
+    albumState: albumStore.state,
+    albumTypeaheadOptions: {
+      displayKey: 'name',
+      filterKey: 'name',
+      name: 'album'
+    },
 
-      /**
-       * In order not to mess up the original songs, we manually assign and manipulate
-       * their attributes.
-       *
-       * @type {Object}
-       */
-      formData: {
-        title: '',
-        albumName: '',
-        artistName: '',
-        lyrics: '',
-        track: '',
-        compilationState: null
-      }
+    /**
+     * In order not to mess up the original songs, we manually assign and manipulate
+     * their attributes.
+     *
+     * @type {Object}
+     */
+    formData: {
+      title: '',
+      albumName: '',
+      artistName: '',
+      lyrics: '',
+      track: '',
+      compilationState: null
     }
-  },
+  }),
 
   computed: {
     editingOnlyOneSong () {

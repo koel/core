@@ -43,14 +43,12 @@ export default {
   mixins: [hasSongList],
   filters: { pluralize },
 
-  data () {
-    return {
-      state: queueStore.state,
-      songListControlConfig: {
-        clearQueue: true
-      }
+  data: () => ({
+    state: queueStore.state,
+    songListControlConfig: {
+      clearQueue: true
     }
-  },
+  }),
 
   computed: {
     shouldShowShufflingAllLink: () => songStore.all.length > 0

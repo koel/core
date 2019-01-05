@@ -32,12 +32,10 @@ export default {
     }
   },
 
-  data () {
-    return {
-      loading: false,
-      videos: []
-    }
-  },
+  data: () => ({
+    loading: false,
+    videos: []
+  }),
 
   watch: {
     song (val) {

@@ -12,11 +12,9 @@
 import { $ } from '@/utils'
 
 export default {
-  data () {
-    return {
-      showing: false
-    }
-  },
+  data: () => ({
+    showing: false
+  }),
 
   methods: {
     scrollToTop () {

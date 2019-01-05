@@ -40,24 +40,28 @@ Vue.config.keyCodes = {
  * Listen to the global shortcuts (media keys).
  * Only works in the app.
  */
-const listenToGlobalShortcuts = () => {
-  ipc.on(events.GLOBAL_SHORTCUT, (e, msg) => {
-    switch (msg) {
-      case 'MediaNextTrack':
-        playback.playNext()
-        break
-      case 'MediaPreviousTrack':
-        playback.playPrev()
-        break
-      case 'MediaStop':
-        playback.stop()
-        break
-      case 'MediaPlayPause':
-        const play = document.querySelector('#mainFooter .play')
-        play ? play.click() : document.querySelector('#mainFooter .pause').click()
-        break
-    }
-  })
+let listenToGlobalShortcuts = () => {}
+
+if (KOEL_ENV === 'app') {
+  listenToGlobalShortcuts = () => {
+    ipc.on(events.GLOBAL_SHORTCUT, (e, msg) => {
+      switch (msg) {
+        case 'MediaNextTrack':
+          playback.playNext()
+          break
+        case 'MediaPreviousTrack':
+          playback.playPrev()
+          break
+        case 'MediaStop':
+          playback.stop()
+          break
+        case 'MediaPlayPause':
+          const play = document.querySelector('#mainFooter .play')
+          play ? play.click() : document.querySelector('#mainFooter .pause').click()
+          break
+      }
+    })
+  }
 }
 
 export default {

@@ -162,7 +162,7 @@ export default {
      * This method opens a new window.
      * Koel will reload once the connection is successful.
      */
-    connectToLastfm () {
+    connectToLastfm: () => {
       window.open(
         `${window.BASE_URL}api/lastfm/connect?jwt-token=${ls.get('jwt-token')}`,
         '_blank',
@@ -174,15 +174,7 @@ export default {
      * Disconnect the current user from Last.fm.
      * Oh God why.
      */
-    disconnectFromLastfm () {
-      // Should we use userStore?
-      // - We shouldn't. This doesn't have anything to do with stores.
-      // Should we confirm the user?
-      // - Nope. Users should be grown-ass adults who take responsibilty of their actions.
-      // But one of my users is my new born kid!
-      // - Then? Kids will fuck things up anyway.
-      http.delete('lastfm/disconnect', {}, forceReloadWindow)
-    }
+    disconnectFromLastfm: () => http.delete('lastfm/disconnect', {}, forceReloadWindow)
   }
 }
 </script>

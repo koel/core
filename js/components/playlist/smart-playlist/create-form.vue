@@ -52,7 +52,7 @@ export default {
 
   methods: {
     addGroup () {
-      this.ruleGroups.push(this.createGroup())
+      this.ruleGroups.push(this.$options.createGroup())
     },
 
     onGroupChanged (data) {
@@ -61,13 +61,6 @@ export default {
       // Remove empty group
       if (changedGroup.rules.length === 0) {
         this.ruleGroups = this.ruleGroups.filter(group => group.id !== changedGroup.id)
-      }
-    },
-
-    createGroup () {
-      return {
-        id: (new Date()).getTime(),
-        rules: []
       }
     },
 
@@ -82,7 +75,12 @@ export default {
       this.close()
       this.$nextTick(() => router.go(`playlist/${playlist.id}`))
     }
-  }
+  },
+
+  createGroup: () => ({
+    id: (new Date()).getTime(),
+    rules: []
+  })
 }
 </script>
 

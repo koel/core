@@ -36,13 +36,11 @@ export default {
     value: String
   },
 
-  data () {
-    return {
-      filter: '',
-      showingResult: false,
-      mutatedValue: this.value
-    }
-  },
+  data: () => ({
+    filter: '',
+    showingResult: false,
+    mutatedValue: this.value
+  }),
 
   computed: {
     displayedItems () {

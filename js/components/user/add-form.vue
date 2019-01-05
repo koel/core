@@ -38,12 +38,10 @@ export default {
     SoundBar: () => import('@/components/ui/sound-bar.vue')
   },
 
-  data () {
-    return {
-      loading: false,
-      newUser: null
-    }
-  },
+  data: () => ({
+    loading: false,
+    newUser: null
+  }),
 
   methods: {
     async submit () {

@@ -51,9 +51,7 @@ export default {
       this.shown = false
     },
 
-    notifyOtherInstancesToClose () {
-      event.emit(event.$names.CONTEXT_MENU_OPENING)
-    }
+    notifyOtherInstancesToClose: () => event.emit(event.$names.CONTEXT_MENU_OPENING)
   },
 
   /**

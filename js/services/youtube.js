@@ -3,7 +3,7 @@ import { event } from '@/utils'
 import router from '@/router'
 
 export const youtube = {
-  searchVideosRelatedToSong (song) {
+  searchVideosRelatedToSong: song => {
     song.youtube = song.youtube || {}
     const pageToken = song.youtube.nextPageToken || ''
 

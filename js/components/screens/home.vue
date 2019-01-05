@@ -97,33 +97,31 @@ export default {
    */
   mixins: [infiniteScroll],
 
-  data () {
-    return {
-      greetings: [
-        'Oh hai!',
-        'Hey, %s!',
-        'Howdy, %s!',
-        'Yo!',
-        'How’s it going, %s?',
-        'Sup, %s?',
-        'How’s life, %s?',
-        'How’s your day, %s?',
-        'How have you been, %s?'
-      ],
-      recentSongs: [],
-      top: {
-        songs: [],
-        albums: [],
-        artists: []
-      },
-      recentlyAdded: {
-        albums: [],
-        songs: []
-      },
+  data: () => ({
+    greetings: [
+      'Oh hai!',
+      'Hey, %s!',
+      'Howdy, %s!',
+      'Yo!',
+      'How’s it going, %s?',
+      'Sup, %s?',
+      'How’s life, %s?',
+      'How’s your day, %s?',
+      'How have you been, %s?'
+    ],
+    recentSongs: [],
+    top: {
+      songs: [],
+      albums: [],
+      artists: []
+    },
+    recentlyAdded: {
+      albums: [],
+      songs: []
+    },
 
-      preferences: preferenceStore.state
-    }
-  },
+    preferences: preferenceStore.state
+  }),
 
   computed: {
     greeting () {
@@ -145,9 +143,7 @@ export default {
       this.recentSongs = recentlyPlayedStore.excerptState.songs
     },
 
-    goToRecentlyPlayedScreen () {
-      router.go('recently-played')
-    }
+    goToRecentlyPlayedScreen: () => router.go('recently-played')
   },
 
   created () {

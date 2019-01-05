@@ -40,11 +40,9 @@ export default {
     }
   },
 
-  data () {
-    return {
-      showingFullBio: false
-    }
-  },
+  data: () => ({
+    showingFullBio: false
+  }),
 
   watch: {
     /**

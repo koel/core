@@ -25,15 +25,13 @@ export default {
     ViewModeSwitch: () => import('@/components/ui/view-mode-switch.vue')
   },
 
-  data () {
-    return {
-      perPage: 9,
-      numOfItems: 9,
-      q: '',
-      viewMode: null,
-      albums: []
-    }
-  },
+  data: () => ({
+    perPage: 9,
+    numOfItems: 9,
+    q: '',
+    viewMode: null,
+    albums: []
+  }),
 
   computed: {
     displayedItems () {

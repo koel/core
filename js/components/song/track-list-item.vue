@@ -35,11 +35,9 @@ export default {
     }
   },
 
-  data () {
-    return {
-      useiTunes: sharedStore.state.useiTunes
-    }
-  },
+  data: () => ({
+    useiTunes: sharedStore.state.useiTunes
+  }),
 
   computed: {
     song () {

@@ -15,19 +15,17 @@ export default {
     ControlsToggler: () => import('@/components/song/list-controls-toggler.vue')
   },
 
-  data () {
-    return {
-      state: null,
-      meta: {
-        songCount: 0,
-        totalLength: '00:00'
-      },
-      selectedSongs: [],
-      showingControls: false,
-      songListControlConfig: {},
-      isPhone: isMobile.phone
-    }
-  },
+  data: () => ({
+    state: null,
+    meta: {
+      songCount: 0,
+      totalLength: '00:00'
+    },
+    selectedSongs: [],
+    showingControls: false,
+    songListControlConfig: {},
+    isPhone: isMobile.phone
+  }),
 
   methods: {
     shuffleAll () {

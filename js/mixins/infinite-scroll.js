@@ -8,12 +8,10 @@ export default {
     ToTopButton: () => import('@/components/ui/to-top-button.vue')
   },
 
-  data () {
-    return {
-      numOfItems: 30,
-      perPage: 30
-    }
-  },
+  data: () => ({
+    numOfItems: 30,
+    perPage: 30
+  }),
 
   methods: {
     scrolling ({ target: { scrollTop, clientHeight, scrollHeight }}) {

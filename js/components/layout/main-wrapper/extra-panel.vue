@@ -54,14 +54,12 @@ export default {
     YouTubeVideoList: () => import('@/components/ui/youtube-video-list.vue')
   },
 
-  data () {
-    return {
-      song: songStore.stub,
-      state: preferences.state,
-      sharedState: sharedStore.state,
-      currentView: 'lyrics'
-    }
-  },
+  data: () => ({
+    song: songStore.stub,
+    state: preferences.state,
+    sharedState: sharedStore.state,
+    currentView: 'lyrics'
+  }),
 
   watch: {
     /**
@@ -69,7 +67,7 @@ export default {
      * to/from the html tag.
      * Some element's CSS can then be controlled based on this class.
      */
-    'state.showExtraPanel' (showingExtraPanel) {
+    'state.showExtraPanel': showingExtraPanel => {
       if (showingExtraPanel && !isMobile.any) {
         $.addClass(document.documentElement, 'with-extra-panel')
       } else {
@@ -78,7 +76,7 @@ export default {
     }
   },
 
-  mounted () {
+  mounted: () => {
     // On ready, add 'with-extra-panel' class.
     if (!isMobile.any) {
       $.addClass(document.documentElement, 'with-extra-panel')

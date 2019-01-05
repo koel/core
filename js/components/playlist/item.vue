@@ -41,12 +41,10 @@ export default {
     }
   },
 
-  data () {
-    return {
-      editing: false,
-      active: false
-    }
-  },
+  data: () => ({
+    editing: false,
+    active: false
+  }),
 
   computed: {
     url () {

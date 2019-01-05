@@ -29,7 +29,7 @@ export default {
   methods: {
     async login () {
       if (this.isDesktopApp) {
-        axios.defaults.baseURL = `${this.url}/api`
+        axios.defaults.baseURL = (this.url.endsWith('/') ? this.url : `${this.url}/`) + 'api'
       }
 
       try {

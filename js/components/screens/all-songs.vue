@@ -33,10 +33,8 @@ export default {
   mixins: [hasSongList],
   filters: { pluralize },
 
-  data () {
-    return {
-      state: songStore.state
-    }
-  }
+  data: () => ({
+    state: songStore.state
+  })
 }
 </script>

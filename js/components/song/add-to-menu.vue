@@ -55,12 +55,10 @@ export default {
   mixins: [songMenuMethods],
   filters: { pluralize },
 
-  data () {
-    return {
-      newPlaylistName: '',
-      playlistState: playlistStore.state
-    }
-  },
+  data: () => ({
+    newPlaylistName: '',
+    playlistState: playlistStore.state
+  }),
 
   watch: {
     songs () {

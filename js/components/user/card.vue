@@ -35,11 +35,9 @@ export default {
     }
   },
 
-  data () {
-    return {
-      confirmingDelete: false
-    }
-  },
+  data: () => ({
+    confirmingDelete: false
+  }),
 
   computed: {
     isCurrentUser () {

@@ -66,24 +66,22 @@ import { isAudioContextSupported, event } from '@/utils'
 import { songStore, favoriteStore, preferenceStore } from '@/stores'
 
 export default {
-  data () {
-    return {
-      song: songStore.stub,
-      viewingQueue: false,
+  data: () => ({
+    song: songStore.stub,
+    viewingQueue: false,
 
-      prefs: preferenceStore.state,
-      showEqualizer: false,
-      cover: null,
+    prefs: preferenceStore.state,
+    showEqualizer: false,
+    cover: null,
 
-      /**
-       * Indicate if we should build and use an equalizer.
-       *
-       * @type {Boolean}
-       */
-      useEqualizer: isAudioContextSupported,
-      visualizerActivated: false
-    }
-  },
+    /**
+     * Indicate if we should build and use an equalizer.
+     *
+     * @type {Boolean}
+     */
+    useEqualizer: isAudioContextSupported,
+    visualizerActivated: false
+  }),
 
   components: {
     SoundBar: () => import('@/components/ui/sound-bar.vue'),
@@ -96,10 +94,6 @@ export default {
 
     playNext: () => playback.playNext(),
 
-    /**
-     * Resume the current song.
-     * If the current song is the stub, just play the first song in the queue.
-     */
     resume () {
       this.song.id ? playback.resume() : playback.playFirstInQueue()
     },

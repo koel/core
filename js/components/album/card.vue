@@ -52,11 +52,9 @@ export default {
   filters: { pluralize },
   mixins: [albumAttributes],
 
-  data () {
-    return {
-      sharedState: sharedStore.state
-    }
-  },
+  data: () => ({
+    sharedState: sharedStore.state
+  }),
 
   computed: {
     isNormalArtist () {
