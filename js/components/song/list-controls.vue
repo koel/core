@@ -1,9 +1,21 @@
 <template>
   <div class="buttons song-list-controls">
+    <button class="btn btn-green btn-play-all"
+      @click.prevent="play"
+      v-if="selectedSongs.length < 2">
+      <i class="fa fa-play"></i> All
+    </button>
+
     <button class="btn btn-orange btn-shuffle-all"
       @click.prevent="shuffle"
       v-if="fullConfig.shuffle && selectedSongs.length < 2">
       <i class="fa fa-random"></i> All
+    </button>
+
+    <button class="btn btn-green btn-play-selected"
+      @click.prevent="playSelected"
+      v-if="selectedSongs.length > 1">
+      <i class="fa fa-play"></i> Selected
     </button>
 
     <button class="btn btn-orange btn-shuffle-selected"
@@ -83,8 +95,16 @@ export default {
   },
 
   methods: {
+    play () {
+      this.$emit('playAll')
+    },
+
     shuffle () {
       this.$emit('shuffleAll')
+    },
+
+    playSelected () {
+      this.$emit('playSelected')
     },
 
     shuffleSelected () {

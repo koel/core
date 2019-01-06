@@ -20,7 +20,9 @@
 
         <song-list-controls
           v-show="!isPhone || showingControls"
+          @playAll="playAll"
           @shuffleAll="shuffleAll"
+          @playSelected="playSelected"
           @shuffleSelected="shuffleSelected"
           @deletePlaylist="confirmDelete"
           :config="songListControlConfig"
@@ -77,12 +79,20 @@ export default {
   },
 
   methods: {
+    playAll () {
+      playback.queueAndPlay(this.playlist.songs, false)
+    },
+
     /**
      * Shuffle the songs in the current playlist.
      * Overriding the mixin.
      */
     shuffleAll () {
       playback.queueAndPlay(this.playlist.songs, true /* shuffled */)
+    },
+
+    playSelected () {
+      playback.queueAndPlay(this.selectedSongs, false)
     },
 
     confirmDelete () {
