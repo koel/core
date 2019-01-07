@@ -278,6 +278,24 @@ export const playback = {
   },
 
   /**
+   * Rewind current song
+   *
+   * @param {Number} seconds   0-999
+   */
+  playRewind (seconds) {
+    this.player.rewind(seconds)
+  },
+
+  /**
+   * Forward current song
+   *
+   * @param {Number} seconds   0-999
+   */
+  playForward (seconds) {
+    this.player.forward(seconds)
+  },
+
+  /**
    * @param {Number}     volume   0-10
    * @param {Boolean=true}   persist  Whether the volume should be saved into local storage
    */

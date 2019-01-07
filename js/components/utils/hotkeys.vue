@@ -3,8 +3,10 @@
     @keydown.space="togglePlayback"
     @keydown.j = "playNext"
     @keydown.k = "playPrev"
-    @keydown.f = "search"
-    @keydown.l = "toggleLike"
+    @keydown.h = "playRewind"
+    @keydown.l = "playForward"
+    @keydown.s = "search"
+    @keydown.f = "toggleLike"
     @keydown.mediaPrev = "playPrev"
     @keydown.mediaNext = "playNext"
     @keydown.mediaToggle = "togglePlayback"
@@ -29,8 +31,10 @@ Vue.config.keyCodes = {
   a: 65,
   j: 74,
   k: 75,
-  f: 70,
+  h: 72,
   l: 76,
+  s: 83,
+  f: 70,
   mediaNext: 176,
   mediaPrev: 177,
   mediaToggle: 179
@@ -104,6 +108,34 @@ export default {
       }
 
       playback.playNext()
+      e.preventDefault()
+    },
+
+    /**
+     * Rewind current song N seconds
+     *
+     * @param {Object} e The keydown event
+     */
+    playRewind: e => {
+      if ($.is(e.target, 'input,textarea')) {
+        return true
+      }
+
+      playback.playRewind(10)
+      e.preventDefault()
+    },
+
+    /**
+     * Forward current song N seconds
+     *
+     * @param {Object} e The keydown event
+     */
+    playForward: e => {
+      if ($.is(e.target, 'input,textarea')) {
+        return true
+      }
+
+      playback.playForward(10)
       e.preventDefault()
     },
 
