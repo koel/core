@@ -26,6 +26,7 @@
 @mixin artist-album-card() {
   .item {
     position: relative;
+    max-width: 256px;
 
     .as-list & {
       grid-column: 1;
