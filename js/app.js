@@ -10,6 +10,10 @@ Vue.component('global-events', GlobalEvents)
 
 if (KOEL_ENV === 'app') {
   Vue.use(require('vue-electron'))
+} else {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').then(() => console.log('Service Worker registered'))
+  }
 }
 
 Vue.config.productionTip = false
