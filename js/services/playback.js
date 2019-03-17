@@ -148,7 +148,8 @@ export const playback = {
     document.querySelector('.plyr audio').setAttribute('title', `${song.artist.name} - ${song.title}`)
 
     // We'll just "restart" playing the song, which will handle notification, scrobbling etc.
-    this.restart()
+    // Fixes #898
+    audioService.context.resume().then(() => this.restart())
   },
 
   showNotification (song) {
