@@ -34,7 +34,7 @@
         <div class="wrapper" v-koel-clickaway="closeEqualizer">
           <equalizer v-if="useEqualizer" v-show="showEqualizer"/>
           <a @click.prevent="toggleVisualizer" title="Click for a marvelous visualizer!">
-            <sound-bar v-show="song.playbackState === 'playing'"/>
+            <sound-bar v-if="song.playbackState === 'playing'"/>
           </a>
           <i v-if="song.id"
             class="like control fa fa-heart"
