@@ -6,7 +6,7 @@ describe('components/shared/overlay', () => {
     const wrapper = mount(Component)
     await wrapper.vm.show()
 
-    Vue.nextTick(() => {
+    wrapper.vm.$nextTick(() => {
       expect(wrapper).toMatchSnapshot()
       done()
     })
@@ -20,7 +20,7 @@ describe('components/shared/overlay', () => {
       message: 'Foo'
     })
 
-    Vue.nextTick(() => {
+    wrapper.vm.$nextTick(() => {
       expect(wrapper).toMatchSnapshot()
       done()
     })

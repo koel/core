@@ -17,7 +17,7 @@ describe('components/screens/album', () => {
       propsData: { album }
     })
 
-    Vue.nextTick(() => {
+    wrapper.vm.$nextTick(() => {
       const html = wrapper.html()
       expect(html).toMatch(album.name)
       expect(html).toMatch(album.artist.name)

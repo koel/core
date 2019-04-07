@@ -10,7 +10,7 @@ describe('components/layout/app-header', () => {
 
   it('renders propery', async done => {
     const wrapper = await mount(Component)
-    Vue.nextTick(() => {
+    wrapper.vm.$nextTick(() => {
       expect(wrapper).toMatchSnapshot()
       done()
     })

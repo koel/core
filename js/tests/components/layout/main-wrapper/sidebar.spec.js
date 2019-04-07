@@ -6,7 +6,7 @@ describe('compoponents/layout/main-wrapper/sidebar', () => {
   it('renders properly', async done => {
     const wrapper = await mount(Component)
 
-    Vue.nextTick(() => {
+    wrapper.vm.$nextTick(() => {
       expect(wrapper).toMatchSnapshot()
       done()
     })
@@ -26,7 +26,7 @@ describe('compoponents/layout/main-wrapper/sidebar', () => {
       })
     })
 
-    Vue.nextTick(() => {
+    wrapper.vm.$nextTick(() => {
       expect(wrapper).toMatchSnapshot()
       done()
     })
@@ -43,7 +43,7 @@ describe('compoponents/layout/main-wrapper/sidebar', () => {
       })
     })
 
-    Vue.nextTick(() => {
+    wrapper.vm.$nextTick(() => {
       expect(wrapper).toMatchSnapshot()
       done()
     })

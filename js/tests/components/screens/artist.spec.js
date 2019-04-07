@@ -32,7 +32,7 @@ describe('components/screens/artist', () => {
       propsData: { artist }
     })
 
-    Vue.nextTick(() => {
+    wrapper.vm.$nextTick(() => {
       const html = wrapper.html()
       expect(html).toMatch(artist.name)
       expect(html).toMatch('1 album')

@@ -35,10 +35,11 @@ export default {
 
   computed: {
     displayedItems () {
-      return limitBy(
-        filterBy(this.albums, this.q, 'name', 'artist.name'),
-        this.numOfItems
-      )
+      return limitBy(this.filteredItems, this.numOfItems)
+    },
+
+    filteredItems () {
+      return filterBy(this.albums, this.q, 'name', 'artist.name')
     }
   },
 

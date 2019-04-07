@@ -8,7 +8,7 @@ describe('components/screens/all-songs', () => {
     songStore.all = factory('song', 10)
     const wrapper = await shallow(Component)
 
-    Vue.nextTick(() => {
+    wrapper.vm.$nextTick(() => {
       expect(wrapper.find('h1.heading').text()).toMatch('All Songs')
       expect(wrapper.has(SongList)).toBe(true)
       done()
