@@ -29,18 +29,31 @@
 </template>
 
 <script>
-  import { pluralize } from '@/utils'
-  import { recentlyPlayedStore } from '@/stores'
-  import hasSongList from '@/mixins/has-song-list'
+import { event, pluralize } from '@/utils'
+import { recentlyPlayedStore } from '@/stores'
+import hasSongList from '@/mixins/has-song-list'
 
-  export default {
-    mixins: [hasSongList],
-    filters: { pluralize },
+export default {
+  mixins: [hasSongList],
+  filters: { pluralize },
 
-    data: () => ({
-      state: recentlyPlayedStore.state
+  data: () => ({
+    state: recentlyPlayedStore.state
+  }),
+
+  created () {
+    event.on({
+      /**
+       * Listen to 'main-content-view:load' event to load all recently played songs into the view
+       */
+      [event.$names.LOAD_MAIN_CONTENT]: view => {
+        if (view === 'recently-played') {
+          recentlyPlayedStore.fetchAll()
+        }
+      }
     })
   }
+}
 </script>
 
 <style lang="scss">
