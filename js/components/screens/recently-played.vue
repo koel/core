@@ -29,7 +29,7 @@
 </template>
 
 <script>
-  import { event, pluralize } from '@/utils'
+  import { pluralize } from '@/utils'
   import { recentlyPlayedStore } from '@/stores'
   import hasSongList from '@/mixins/has-song-list'
 
@@ -39,18 +39,7 @@
 
     data: () => ({
       state: recentlyPlayedStore.state
-    }),
-
-    created: () => {
-      /**
-       * Listen to 'main-content-view:load' event to load all recently played songs into the view
-       */
-      event.on(event.$names.LOAD_MAIN_CONTENT, async view => {
-        if (view === 'recently-played') {
-          await recentlyPlayedStore.fetchAll()
-        }
-      })
-    }
+    })
   }
 </script>
 

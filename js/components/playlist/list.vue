@@ -1,7 +1,11 @@
 <template>
-  <section id="playlists" @contextmenu.prevent="openContextMenu">
+  <section id="playlists">
     <h1>Playlists
-      <i class="fa fa-plus-circle control create" :class="{ creating: creating }" @click="creating = !creating"></i>
+      <i
+        class="fa fa-plus-circle control create"
+        :class="{ creating: creating }"
+        @click="toggleContextMenu"
+      ></i>
     </h1>
 
     <form v-if="creating" @submit.prevent="createPlaylist" class="create">
@@ -22,7 +26,8 @@
         v-for="playlist in playlistState.playlists"
         type="playlist"
         :playlist="playlist"
-        :key="playlist.id"/>
+        :key="playlist.id"
+      />
     </ul>
 
     <context-menu ref="contextMenu" @createPlaylist="creating = true"/>
@@ -36,7 +41,7 @@ import router from '@/router'
 export default {
   components: {
     PlaylistItem: () => import('@/components/playlist/item.vue'),
-    ContextMenu: () => import('@/components/playlist/context-menu.vue')
+    ContextMenu: () => import('@/components/playlist/create-new-context-menu.vue')
   },
 
   data: () => ({
@@ -57,8 +62,14 @@ export default {
       this.$nextTick(() => router.go(`playlist/${playlist.id}`))
     },
 
-    openContextMenu (event) {
-      this.$nextTick(() => this.$refs.contextMenu.open(event.pageY, event.pageX))
+    toggleContextMenu (event) {
+      this.$nextTick(() => {
+        if (this.creating) {
+          this.creating = false
+        } else {
+          this.$refs.contextMenu.open(event.pageY, event.pageX)
+        }
+      })
     }
   }
 }

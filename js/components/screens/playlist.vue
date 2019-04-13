@@ -22,7 +22,7 @@
           v-show="!isPhone || showingControls"
           @shuffleAll="shuffleAll"
           @shuffleSelected="shuffleSelected"
-          @deletePlaylist="confirmDelete"
+          @deletePlaylist="destroy"
           :config="songListControlConfig"
           :selectedSongs="selectedSongs"
         />
@@ -44,10 +44,9 @@
 </template>
 
 <script>
-import { pluralize, event, alerts } from '@/utils'
+import { pluralize, event } from '@/utils'
 import { playlistStore, sharedStore } from '@/stores'
 import { playback, download } from '@/services'
-import router from '@/router'
 import hasSongList from '@/mixins/has-song-list'
 
 export default {
@@ -85,22 +84,8 @@ export default {
       playback.queueAndPlay(this.playlist.songs, true /* shuffled */)
     },
 
-    confirmDelete () {
-      if (!this.playlist.songs.length) {
-        this.destroy()
-        return
-      }
-
-      alerts.confirm('Are you sure? This is a one-way street!', this.destroy)
-    },
-
-    async destroy () {
-      await playlistStore.delete(this.playlist)
-      // Reset the current playlist to our stub, so that we don't encounter
-      // any property reference error.
-      this.playlist = playlistStore.stub
-
-      router.go('home')
+    destroy () {
+      event.emit(event.$names.PLAYLIST_DELETE, this.playlist)
     },
 
     download () {

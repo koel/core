@@ -15,9 +15,9 @@ import { event } from '@/utils'
 import { playback } from '@/services'
 import YouTubePlayer from 'youtube-player'
 
-let player
-
 export default {
+  player: null,
+
   data () {
     return {
       title: 'YouTube Video'
@@ -29,14 +29,14 @@ export default {
      * Initialize the YouTube player. This should only be called once.
      */
     initPlayer: () => {
-      if (!player) {
-        player = YouTubePlayer('player', {
+      if (!this.$options.player) {
+        this.$options.player = YouTubePlayer('player', {
           width: '100%',
           height: '100%'
         })
 
         // Pause song playback when video is played
-        player.on('stateChange', event => event.data === 1 && playback.pause())
+        this.$options.player.on('stateChange', event => event.data === 1 && playback.pause())
       }
     }
   },
@@ -46,14 +46,14 @@ export default {
       [event.$names.PLAY_YOUTUBE_VIDEO]: ({ id, title }) => {
         this.title = title
         this.initPlayer()
-        player.loadVideoById(id)
-        player.playVideo()
+        this.$options.player.loadVideoById(id)
+        this.$options.player.playVideo()
       },
 
       /**
        * Stop video playback when a song is played/resumed.
        */
-      [event.$names.SONG_PLAYED]: () => player && player.pauseVideo()
+      [event.$names.SONG_PLAYED]: () => this.$options.player && this.$options.player.pauseVideo()
     })
   }
 }

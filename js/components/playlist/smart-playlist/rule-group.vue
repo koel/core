@@ -13,7 +13,7 @@
       @remove="removeRule(rule)"
     />
 
-    <button @click.prevent="addRule" class="btn-small"><i class="fa fa-plus"></i> RULE</button>
+    <a @click.prevent="addRule" class="btn btn-small"><i class="fa fa-plus"></i> RULE</a>
   </div>
 </template>
 

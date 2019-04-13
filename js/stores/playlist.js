@@ -93,7 +93,6 @@ export const playlistStore = {
     return new Promise((resolve, reject) => {
       http.delete(`playlist/${playlist.id}`, {}, ({ data }) => {
         this.remove(playlist)
-        alerts.success(`Deleted playlist &quot;${playlist.name}&quot;.`)
         resolve(data)
       }, error => reject(error))
     })
@@ -141,8 +140,11 @@ export const playlistStore = {
     return new Promise((resolve, reject) => {
       http.put(
         `playlist/${playlist.id}`,
-        { name: playlist.name },
-        () => resolve(playlist),
+        { name: playlist.name, rules: playlist.rules },
+        () => {
+          alerts.success(`Updated playlist &quot;${playlist.name}&quot;.`)
+          resolve(playlist)
+        },
         error => reject(error)
       )
     })

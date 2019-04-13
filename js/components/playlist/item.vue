@@ -7,6 +7,7 @@
       @dragenter.prevent="allowDrop"
       @dragover.prevent
       @drop.stop.prevent="handleDrop"
+      @contextmenu.prevent="openContextMenu"
       :class="{ active: active }"
     >{{ playlist.name }}</a>
 
@@ -19,16 +20,23 @@
       v-koel-focus
       required
     >
+
+    <context-menu :playlist="playlist" ref="contextMenu" @edit="makeEditable" />
   </li>
 </template>
 
 <script>
-import { event, $ } from '@/utils'
+import { $, event } from '@/utils'
+import router from '@/router'
 import { songStore, playlistStore, favoriteStore } from '@/stores'
 
 const VALID_PLAYLIST_TYPES = ['playlist', 'favorites', 'recently-played']
 
 export default {
+  components: {
+    ContextMenu: () => import('@/components/playlist/item-context-menu.vue')
+  },
+
   props: {
     playlist: {
       type: Object,
@@ -70,6 +78,10 @@ export default {
       }
 
       return this.type === 'playlist' || this.type === 'favorites'
+    },
+
+    hasContextMenu () {
+      return this.type === 'playlist'
     }
   },
 
@@ -161,6 +173,13 @@ export default {
       }
 
       return false
+    },
+
+    openContextMenu (event) {
+      if (this.hasContextMenu) {
+        router.go(`/playlist/${this.playlist.id}`)
+        this.$refs.contextMenu.open(event.pageY, event.pageX)
+      }
     }
   },
 

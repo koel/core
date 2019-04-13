@@ -106,8 +106,6 @@ export default {
 
   created () {
     event.on({
-      // Hide the panel away if a main view is triggered on mobile.
-      [event.$names.LOAD_MAIN_CONTENT]: () => (isMobile.phone && (preferences.showExtraPanel = false)),
       [event.$names.SONG_PLAYED]: song => this.fetchSongInfo(song)
     })
   }

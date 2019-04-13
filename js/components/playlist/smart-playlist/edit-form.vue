@@ -3,18 +3,18 @@
     <sound-bar v-if="meta.loading"/>
     <form @submit.prevent="submit" v-else>
       <header>
-        <h1>New Smart Playlist</h1>
+        <h1>Edit Smart Playlist</h1>
       </header>
 
       <div>
         <div class="form-row">
           <label>Name</label>
-          <input type="text" v-model="name" required>
+          <input type="text" v-model="mutatedPlaylist.name" required>
         </div>
 
         <div class="form-row rules">
           <rule-group
-            v-for="(group, index) in ruleGroups"
+            v-for="(group, index) in playlist.rules"
             :isFirstGroup="index === 0"
             :key="group.id"
             :group="group"
@@ -25,7 +25,7 @@
       </div>
 
       <footer>
-        <button class="btn btn-green" type="submit">Create</button>
+        <button class="btn btn-green" type="submit">Save</button>
         <button class="btn btn-white btn-cancel" @click.prevent="close">Cancel</button>
       </footer>
     </form>
@@ -34,7 +34,6 @@
 
 <script>
 import { playlistStore } from '@/stores'
-import router from '@/router'
 
 export default {
   components: {
@@ -42,25 +41,31 @@ export default {
     SoundBar: () => import('@/components/ui/sound-bar.vue')
   },
 
+  props: {
+    playlist: {
+      required: true,
+      type: Object
+    }
+  },
+
   data: () => ({
-    name: '',
-    ruleGroups: [],
     meta: {
       loading: false
-    }
+    },
+    mutatedPlaylist: {}
   }),
 
   methods: {
     addGroup () {
-      this.ruleGroups.push(this.$options.createGroup())
+      this.mutatedPlaylist.rules.push(this.$options.createGroup())
     },
 
     onGroupChanged (data) {
-      let changedGroup = this.ruleGroups.find(g => g.id === data.id)
+      let changedGroup = this.mutatedPlaylist.rules.find(g => g.id === data.id)
       changedGroup = Object.assign(changedGroup, data)
       // Remove empty group
       if (changedGroup.rules.length === 0) {
-        this.ruleGroups = this.ruleGroups.filter(group => group.id !== changedGroup.id)
+        this.mutatedPlaylist.rules = this.mutatedPlaylist.rules.filter(group => group.id !== changedGroup.id)
       }
     },
 
@@ -70,11 +75,16 @@ export default {
 
     async submit () {
       this.meta.loading = true
-      const playlist = await playlistStore.store(this.name, [], this.ruleGroups)
+      await playlistStore.update(this.mutatedPlaylist)
+      Object.assign(this.playlist, this.mutatedPlaylist)
       this.meta.loading = false
       this.close()
-      this.$nextTick(() => router.go(`playlist/${playlist.id}`))
+      await playlistStore.fetchSongs(this.playlist)
     }
+  },
+
+  created () {
+    Object.assign(this.mutatedPlaylist, this.playlist)
   },
 
   createGroup: () => ({

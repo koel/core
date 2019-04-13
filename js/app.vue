@@ -2,6 +2,7 @@
   <div id="app" :class="{ desktop: isDesktopApp }">
     <div id="main" tabindex="0" v-if="authenticated">
       <hotkeys/>
+      <event-listeners/>
       <app-header/>
       <main-wrapper/>
       <app-footer/>
@@ -25,12 +26,12 @@ import MainWrapper from '@/components/layout/main-wrapper/index.vue'
 import Overlay from '@/components/ui/overlay.vue'
 import LoginForm from '@/components/auth/login-form.vue'
 import Hotkeys from '@/components/utils/hotkeys.vue'
+import EventListeners from '@/components/utils/event-listeners.vue'
 
-import { event, showOverlay, hideOverlay, forceReloadWindow, $, app as appUtils } from '@/utils'
-import { sharedStore, userStore, favoriteStore, queueStore, preferenceStore as preferences } from '@/stores'
+import { event, showOverlay, hideOverlay, $, app as appUtils } from '@/utils'
+import { sharedStore, favoriteStore, queueStore, preferenceStore as preferences } from '@/stores'
 import { playback, ls, socket, http } from '@/services'
 import { focusDirective, clickawayDirective } from '@/directives'
-import router from '@/router'
 
 export default {
   components: {
@@ -39,7 +40,8 @@ export default {
     AppFooter,
     MainWrapper,
     Overlay,
-    LoginForm
+    LoginForm,
+    EventListeners
   },
 
   data () {
@@ -137,21 +139,6 @@ export default {
     },
 
     triggerMaximize: () => appUtils.triggerMaximize()
-  },
-
-  created () {
-    event.on({
-      /**
-       * Log the current user out and reset the application state.
-       */
-      async [event.$names.LOG_OUT] () {
-        await userStore.logout()
-        ls.remove('jwt-token')
-        forceReloadWindow()
-      },
-
-      [event.$names.KOEL_READY]: () => router.init()
-    })
   }
 }
 
