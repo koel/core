@@ -20,6 +20,6 @@ describe('components/ui/search-form', () => {
     setTimeout(() => {
       expect(emitStub).toHaveBeenCalledWith('FILTER_CHANGED', 'foo')
       done()
-    }, 200) // because of debounce
+    }, 300) // because of debounce
   })
 })

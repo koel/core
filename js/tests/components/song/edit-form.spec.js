@@ -120,7 +120,7 @@ describe('components/song/edit-form', () => {
     done()
   })
 
-  it.only('closes', () => {
+  it('closes', () => {
     const wrapper = shallow(Component, {
       propsData: {
         songs: factory('song', 3)

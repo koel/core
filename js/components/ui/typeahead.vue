@@ -39,7 +39,7 @@ export default {
   data: () => ({
     filter: '',
     showingResult: false,
-    mutatedValue: this.value
+    mutatedValue: ''
   }),
 
   computed: {
@@ -149,6 +149,10 @@ export default {
     hideResults () {
       this.showingResult = false
     }
+  },
+
+  created () {
+    this.mutatedValue = this.value
   }
 }
 </script>
