@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="login" :class="{ error: failed }">
+  <form @submit.prevent="login" :class="{ error: failed }" data-cy="loginForm">
     <div class="logo">
       <img src="~#/../img/logo.svg" width="156" height="auto">
     </div>

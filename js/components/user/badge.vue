@@ -5,7 +5,7 @@
       <span class="name">{{ state.current.name }}</span>
     </a>
 
-    <a class="logout" @click.prevent="logout"><i class="fa fa-sign-out control"></i></a>
+    <a class="logout" @click.prevent="logout" data-cy="btnLogOut"><i class="fa fa-sign-out control"></i></a>
   </span>
 </template>
 
