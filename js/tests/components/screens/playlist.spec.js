@@ -1,7 +1,7 @@
 import Component from '@/components/screens/playlist.vue'
 import SongList from '@/components/song/list.vue'
 import factory from '@/tests/factory'
-import { event, alerts } from '@/utils'
+import { event } from '@/utils'
 import { playlistStore } from '@/stores'
 import { mock } from '@/tests/__helpers__'
 
@@ -42,43 +42,13 @@ describe('components/screens/playlist', () => {
     }).has('div.none')).toBe(true)
   })
 
-  it('confirms deleting if the playlist is not empty', async done => {
-    const wrapper = await mount(Component, {
-      data: () => ({
-        playlist: factory('playlist', {
-          populated: true,
-          songs: factory('song', 3)
-        }),
-        songListControlConfig: {
-          deletePlaylist: true
-        }
-      })
-    })
-
+  it('emits an event to delete the playlist', async done => {
+    const playlist = factory('playlist', { populated: true })
+    const wrapper = await shallow(Component, { data: () => ({ playlist }) })
+    const emitMock = mock(event, 'emit')
+    wrapper.click('.btn-delete-playlist')
     wrapper.vm.$nextTick(() => {
-      const m = mock(alerts, 'confirm')
-      wrapper.click('.btn-delete-playlist')
-      expect(m).toHaveBeenCalledWith('Are you sure? This is a one-way street!', wrapper.vm.destroy)
-      done()
-    })
-  })
-
-  it("doesn't confirm deleting if the playlist is empty", async done => {
-    const playlist = factory('playlist', {
-      populated: true,
-      songs: []
-    })
-
-    const wrapper = await mount(Component, {
-      data: () => ({
-        playlist
-      })
-    })
-
-    wrapper.vm.$nextTick(() => {
-      const m = mock(alerts, 'confirm')
-      wrapper.click('.btn-delete-playlist')
-      expect(m).not.toHaveBeenCalled()
+      expect(emitMock).toHaveBeenCalledWith('PLAYLIST_DELETE', playlist)
       done()
     })
   })

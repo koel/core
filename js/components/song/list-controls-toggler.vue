@@ -1,5 +1,5 @@
 <template>
-  <span class="song-list-controls-toggler" v-if="$options.isPhone" @click="toggleControls">
+  <span class="song-list-controls-toggler" v-if="isPhone" @click="toggleControls">
     <i class="fa fa-angle-up toggler" v-if="showingControls"/>
     <i class="fa fa-angle-down toggler" v-else/>
   </span>
@@ -16,7 +16,9 @@ export default {
     }
   },
 
-  isPhone: isMobile.phone,
+  data: () => ({
+    isPhone: isMobile.phone
+  }),
 
   methods: {
     toggleControls () {

@@ -39,6 +39,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
     <!---->
     <!---->
     <!---->
+    <!---->
   </div>
 </div>
 `;
