@@ -1,7 +1,7 @@
 <template>
   <div class="rule-group">
     <div class="group-banner">
-      <span v-if="isFirstGroup">Match songs with <strong>all</strong> of these criteria</span>
+      <span v-if="isFirstGroup">Include songs that match <strong>all</strong> of these criteria</span>
       <span v-else><strong>or</strong> <strong>all</strong> of these criteria</span>
     </div>
 

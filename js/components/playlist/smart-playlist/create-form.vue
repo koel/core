@@ -1,35 +1,39 @@
 <template>
-  <div class="create-smart-playlist">
-    <sound-bar v-if="meta.loading"/>
-    <form @submit.prevent="submit" v-else>
-      <header>
-        <h1>New Smart Playlist</h1>
-      </header>
+  <form-base>
+    <template slot="default">
+      <div class="create-smart-playlist">
+        <sound-bar v-if="meta.loading"/>
+        <form @submit.prevent="submit" v-else>
+          <header>
+            <h1>New Smart Playlist</h1>
+          </header>
 
-      <div>
-        <div class="form-row">
-          <label>Name</label>
-          <input type="text" v-model="name" required>
-        </div>
+          <div>
+            <div class="form-row">
+              <label>Name</label>
+              <input type="text" v-model="name" required>
+            </div>
 
-        <div class="form-row rules">
-          <rule-group
-            v-for="(group, index) in ruleGroups"
-            :isFirstGroup="index === 0"
-            :key="group.id"
-            :group="group"
-            @input="onGroupChanged"
-          />
-          <a @click.prevent="addGroup" class="btn btn-small"><i class="fa fa-plus"></i> GROUP</a>
-        </div>
+            <div class="form-row rules">
+              <rule-group
+                v-for="(group, index) in ruleGroups"
+                :isFirstGroup="index === 0"
+                :key="group.id"
+                :group="group"
+                @input="onGroupChanged"
+              />
+              <a @click.prevent="addGroup" class="btn btn-small"><i class="fa fa-plus"></i> GROUP</a>
+            </div>
+          </div>
+
+          <footer>
+            <button class="btn btn-green" type="submit">Create</button>
+            <button class="btn btn-white btn-cancel" @click.prevent="close">Cancel</button>
+          </footer>
+        </form>
       </div>
-
-      <footer>
-        <button class="btn btn-green" type="submit">Create</button>
-        <button class="btn btn-white btn-cancel" @click.prevent="close">Cancel</button>
-      </footer>
-    </form>
-  </div>
+    </template>
+  </form-base>
 </template>
 
 <script>
@@ -38,6 +42,7 @@ import router from '@/router'
 
 export default {
   components: {
+    FormBase: () => import('./form-base.vue'),
     RuleGroup: () => import('@/components/playlist/smart-playlist/rule-group.vue'),
     SoundBar: () => import('@/components/ui/sound-bar.vue')
   },
@@ -83,19 +88,3 @@ export default {
   })
 }
 </script>
-
-<style lang="scss" scoped>
-form {
-  width: 490px;
-}
-
-.rules {
-  background: #f2f2f2;
-  padding: 12px;
-  border-radius: 5px;
-
-  input[type=text], input[type=number], input[type=datetime] {
-    display: inline-block;
-  }
-}
-</style>
