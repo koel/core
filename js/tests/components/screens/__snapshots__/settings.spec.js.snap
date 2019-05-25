@@ -5,11 +5,11 @@ exports[`components/screens/settings renders properly 1`] = `
   <h1 class="heading"><span>Settings</span></h1>
   <form class="main-scroll-wrap">
     <div class="form-row"><label for="inputSettingsPath">Media Path</label>
-      <p class="help">
+      <p id="mediaPathHelp" class="help">
         The <em>absolute</em> path to the server directory containing your media.
         Koel will scan this directory for songs and extract any available information.<br>
         Scanning may take a while, especially if you have a lot of songs, so be patient.
-      </p> <input type="text" id="inputSettingsPath">
+      </p> <input type="text" id="inputSettingsPath" aria-describedby="mediaPathHelp">
     </div>
     <div class="form-row"><button type="submit">Scan</button></div>
   </form>

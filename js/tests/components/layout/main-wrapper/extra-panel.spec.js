@@ -44,11 +44,12 @@ describe('components/layout/extra-panel', () => {
     })
   })
 
-  each([['.album'], ['.artist'], ['.lyrics']]).test('switches to "%s" tab', selector => {
-    const wrapper = shallow(Component)
-    wrapper.click(`.header ${selector}`)
-    expect(wrapper.find('.header .active').is(selector)).toBe(true)
-  })
+  each([['#extraTabLyrics'], ['#extraTabAlbum'], ['#extraTabArtist']])
+    .test('switches to "%s" tab', selector => {
+      const wrapper = shallow(Component)
+      wrapper.click(selector)
+      expect(wrapper.find('[aria-selected=true]').is(selector)).toBe(true)
+    })
 
   it('fetch song info when a new song is played', () => {
     shallow(Component)

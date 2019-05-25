@@ -81,7 +81,7 @@ exports[`compoponents/layout/main-wrapper/sidebar renders properly 1`] = `
   </section>
   <section id="playlists" current-view="home">
     <h1>Playlists
-      <i class="fa fa-plus-circle control create"></i></h1>
+      <i role="button" title="Create a new playlist" class="fa fa-plus-circle control create"></i></h1>
     <!---->
     <ul>
       <!---->

@@ -29,7 +29,7 @@ describe('components/song/edit-form', () => {
       expect(wrapper.find('input[name=artist]').value).toBe(song.artist.name)
       expect(wrapper.find('input[name=track]').value).toBe(song.track.toString())
 
-      wrapper.click('.tabs .tab-lyrics')
+      wrapper.click('#editSongTabLyrics')
       expect(wrapper.find('textarea[name=lyrics]').value).toBe(song.lyrics)
       done()
     })
