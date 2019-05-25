@@ -15,7 +15,6 @@ exports[`compoponents/layout/main-wrapper/sidebar displays YouTube menu item if 
   </section>
   <playlistlist-stub current-view="home"></playlistlist-stub>
   <!---->
-  <!---->
 </nav>
 `;
 
@@ -40,7 +39,6 @@ exports[`compoponents/layout/main-wrapper/sidebar displays management menu items
       <li><a href="#!/users" class="users">Users</a></li>
     </ul>
   </section>
-  <!---->
 </nav>
 `;
 
@@ -64,9 +62,7 @@ exports[`compoponents/layout/main-wrapper/sidebar displays new version info 1`] 
       <li><a href="#!/settings" class="settings">Settings</a></li>
       <li><a href="#!/users" class="users">Users</a></li>
     </ul>
-  </section> <a href="https://github.com/phanan/koel/releases/tag/v0.0.1" target="_blank" class="new-ver">
-    Koel version v0.0.1 is available!
-  </a>
+  </section>
 </nav>
 `;
 
@@ -93,7 +89,6 @@ exports[`compoponents/layout/main-wrapper/sidebar renders properly 1`] = `
     </ul>
     <!---->
   </section>
-  <!---->
   <!---->
 </nav>
 `;

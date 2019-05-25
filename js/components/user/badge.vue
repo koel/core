@@ -1,11 +1,13 @@
 <template>
   <span class="profile" id="userBadge">
-    <a class="view-profile control" href="#!/profile">
+    <a class="view-profile control" href="#!/profile" title="View/edit user profile">
       <img class="avatar" :src="state.current.avatar" alt="Avatar"/>
       <span class="name">{{ state.current.name }}</span>
     </a>
 
-    <a class="logout" @click.prevent="logout" data-cy="btnLogOut"><i class="fa fa-sign-out control"></i></a>
+    <a class="logout control" @click.prevent="logout" data-cy="btnLogOut" href="#" title="Log out">
+      <i class="fa fa-sign-out"></i>
+    </a>
   </span>
 </template>
 
@@ -32,8 +34,9 @@ export default {
   @include vertical-center();
   justify-content: flex-end;
   flex: 0 0 $extraPanelWidth;
-  padding-right: 16px;
   text-align: right;
+  height: 100%;
+  position: relative;
 
   .avatar {
     width: 24px;
@@ -43,7 +46,13 @@ export default {
   }
 
   .view-profile {
-    margin-right: 16px;
+    height: 100%;
+    @include vertical-center();
+  }
+
+  .logout {
+    height: 100%;
+    padding: 0 16px;
     @include vertical-center();
   }
 

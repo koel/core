@@ -8,7 +8,12 @@
       <i class="fa fa-search"></i>
     </span>
     <search-form/>
-    <user-badge/>
+    <div class="header-right">
+      <user-badge/>
+      <a class="about control" href="/#!/about" title="About Koel" @click.prevent="showAboutDialog">
+        <i class="fa fa-info-circle"/>
+      </a>
+    </div>
   </header>
 
 </template>
@@ -30,13 +35,15 @@ export default {
   methods: {
     toggleSidebar: () => event.emit(event.$names.TOGGLE_SIDEBAR),
     toggleSearchForm: () => event.emit(event.$names.TOGGLE_SEARCH_FORM),
-    triggerMaximize: () => app.triggerMaximize()
+    triggerMaximize: () => app.triggerMaximize(),
+    showAboutDialog: () => event.emit(event.$names.MODAL_SHOW_ABOUT_DIALOG)
   }
 }
 </script>
 
 <style lang="scss">
 @import "~#/partials/_vars.scss";
+@import "~#/partials/_mixins.scss";
 
 #mainHeader {
   height: $headerHeight;
@@ -66,6 +73,20 @@ export default {
     line-height: $headerHeight;
     text-align: center;
     display: none;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: flex-end;
+
+    .about {
+      height: 100%;
+      @include vertical-center();
+      padding: 16px;
+      border-left: 1px solid rgba(255, 255, 255, .1);
+    }
   }
 
   @media only screen and (max-width: 667px) {

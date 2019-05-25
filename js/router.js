@@ -6,72 +6,41 @@ import { playback } from './services'
 
 export default {
   routes: {
-    '/home' () {
-      loadMainView('home')
-    },
+    '/home': () => loadMainView('home'),
+    '/queue': () => loadMainView('queue'),
+    '/songs': () => loadMainView('songs'),
+    '/albums': () => loadMainView('albums'),
+    '/artists': () => loadMainView('artists'),
+    '/favorites': () => loadMainView('favorites'),
+    '/recently-played': () => loadMainView('recently-played'),
+    '/settings': () => userStore.current.is_admin && loadMainView('settings'),
+    '/users': () => userStore.current.is_admin && loadMainView('users'),
+    '/youtube': () => loadMainView('youtubePlayer'),
+    '/visualizer': () => loadMainView('visualizer'),
+    '/profile': () => loadMainView('profile'),
 
-    '/queue' () {
-      loadMainView('queue')
-    },
-
-    '/songs' () {
-      loadMainView('songs')
-    },
-
-    '/albums' () {
-      loadMainView('albums')
-    },
-
-    '/album/(\\d+)' (id) {
+    '/album/(\\d+)': id => {
       const album = albumStore.byId(~~id)
       if (album) {
         loadMainView('album', album)
       }
     },
 
-    '/artists' () {
-      loadMainView('artists')
-    },
-
-    '/artist/(\\d+)' (id) {
+    '/artist/(\\d+)': id => {
       const artist = artistStore.byId(~~id)
       if (artist) {
         loadMainView('artist', artist)
       }
     },
 
-    '/favorites' () {
-      loadMainView('favorites')
-    },
-
-    '/recently-played' () {
-      loadMainView('recently-played')
-    },
-
-    '/playlist/(\\d+)' (id) {
+    '/playlist/(\\d+)': id => {
       const playlist = playlistStore.byId(~~id)
       if (playlist) {
         loadMainView('playlist', playlist)
       }
     },
 
-    '/settings' () {
-      userStore.current.is_admin && loadMainView('settings')
-    },
-
-    '/users' () {
-      userStore.current.is_admin && loadMainView('users')
-    },
-
-    '/profile' () {
-      loadMainView('profile')
-    },
-
-    '/login' () {
-
-    },
-
-    '/song/([a-z0-9]{32})' (id) {
+    '/song/([a-z0-9]{32})': id => {
       const song = songStore.byId(id)
       if (!song) return
 
@@ -82,14 +51,6 @@ export default {
       } else {
         playback.queueAndPlay(song)
       }
-    },
-
-    '/youtube' () {
-      loadMainView('youtubePlayer')
-    },
-
-    '/visualizer' () {
-      loadMainView('visualizer')
     }
   },
 
@@ -118,7 +79,7 @@ export default {
    *
    * @param  {String|Number} path
    */
-  go (path) {
+  go: path => {
     if (window.__UNIT_TESTING__) {
       return
     }

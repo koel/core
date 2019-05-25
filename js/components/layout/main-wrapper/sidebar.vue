@@ -44,14 +44,6 @@
         </li>
       </ul>
     </section>
-
-    <a
-      :href="latestVersionUrl"
-      target="_blank"
-      v-if="displayNewVersion"
-      class="new-ver">
-      Koel version {{ sharedState.latestVersion }} is available!
-    </a>
   </nav>
 </template>
 
@@ -72,17 +64,6 @@ export default {
     showing: !isMobile.phone,
     sharedState: sharedStore.state
   }),
-
-  computed: {
-    latestVersionUrl () {
-      return `https://github.com/phanan/koel/releases/tag/${this.sharedState.latestVersion}`
-    },
-
-    displayNewVersion () {
-      return this.userState.current.is_admin &&
-        this.sharedState.currentVersion < this.sharedState.latestVersion
-    }
-  },
 
   methods: {
     /**
@@ -248,21 +229,6 @@ export default {
       &.users::before {
         content: "\f0c0";
       }
-    }
-  }
-
-  .new-ver {
-    margin: 16px;
-    padding: 16px;
-    border: 1px solid $color2ndText;
-    color: $colorMainText;
-    opacity: .3;
-    font-size: .9rem;
-    display: block;
-    transition: .3s;
-
-    &:hover {
-      opacity: .7;
     }
   }
 

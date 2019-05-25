@@ -20,9 +20,9 @@
 
     <album-screen v-if="view === 'album'" :album="shownAlbum"/>
     <artist-screen v-if="view === 'artist'" :artist="shownArtist"/>
-    <user-list-screen v-if="view === 'users'"/>
     <settings-screen v-if="view === 'settings'"/>
     <profile-screen v-if="view === 'profile'"/>
+    <user-list-screen v-if="view === 'users'"/>
     <youtube-screen v-if="sharedState.useYouTube" v-show="view === 'youtubePlayer'"/>
   </section>
 </template>
