@@ -2,13 +2,14 @@
   <li
     @dblclick.prevent="makeEditable"
     :class="['playlist', type, editing ? 'editing' : '', playlist.is_smart ? 'smart' : '']">
-    <a :href="url"
-      @dragleave="removeDroppableState"
+    <a
+      :class="{ active }"
+      :href="url"
+      @contextmenu.prevent="openContextMenu"
       @dragenter.prevent="allowDrop"
+      @dragleave="removeDroppableState"
       @dragover.prevent
       @drop.stop.prevent="handleDrop"
-      @contextmenu.prevent="openContextMenu"
-      :class="{ active: active }"
     >{{ playlist.name }}</a>
 
     <input type="text"

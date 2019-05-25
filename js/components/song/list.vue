@@ -1,7 +1,6 @@
 <template>
   <div class="song-list-wrap main-scroll-wrap" :class="type"
     ref="wrapper"
-    tabindex="1"
     @keydown.delete.prevent.stop="handleDelete"
     @keydown.enter.prevent.stop="handleEnter"
     @keydown.a.prevent="handleA"

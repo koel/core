@@ -1,39 +1,87 @@
 <template>
   <section id="extra" :class="{ showing: state.showExtraPanel }">
     <div class="tabs">
-      <div class="header clear">
-        <a @click.prevent="currentView = 'lyrics'"
-          class="lyrics"
-          :class="{ active: currentView === 'lyrics' }">Lyrics</a>
-        <a @click.prevent="currentView = 'artistInfo'"
-          class="artist"
-          :class="{ active: currentView === 'artistInfo' }">Artist</a>
-        <a @click.prevent="currentView = 'albumInfo'"
-          class="album"
-          :class="{ active: currentView === 'albumInfo' }">Album</a>
-        <a @click.prevent="currentView = 'youtube'"
+      <div class="clear" role="tablist">
+        <button
+          :aria-selected="currentView === 'lyrics'"
+          @click.prevent="currentView = 'lyrics'"
+          aria-controls="extraPanelLyrics"
+          id="extraTabLyrics"
+          role="tab"
+        >
+          Lyrics
+        </button>
+        <button
+          :aria-selected="currentView === 'artistInfo'"
+          @click.prevent="currentView = 'artistInfo'"
+          aria-controls="extraPanelArtist"
+          id="extraTabArtist"
+          role="tab"
+        >
+          Artist
+        </button>
+        <button
+          :aria-selected="currentView === 'albumInfo'"
+          @click.prevent="currentView = 'albumInfo'"
+          aria-controls="extraPanelAlbum"
+          id="extraTabAlbum"
+          role="tab"
+        >
+          Album
+        </button>
+        <button
+          :aria-selected="currentView === 'youtube'"
+          @click.prevent="currentView = 'youtube'"
+          aria-controls="extraPanelYouTube"
+          id="extraTabYouTube"
+          role="tab"
+          title="YouTube"
           v-if="sharedState.useYouTube"
-          class="youtube"
-          :class="{ active: currentView === 'youtube' }"><i class="fa fa-youtube-play"></i></a>
+        >
+          <i class="fa fa-youtube-play"></i>
+        </button>
       </div>
 
       <div class="panes">
-        <lyrics-pane :song="song" ref="lyrics" v-show="currentView === 'lyrics'"/>
-        <artist-info v-if="song.artist.id"
-          :artist="song.artist"
-          mode="sidebar"
-          ref="artist-info"
-          v-show="currentView === 'artistInfo'"/>
-        <album-info v-if="song.album.id"
-          :album="song.album"
-          mode="sidebar"
-          ref="album-info"
-          v-show="currentView === 'albumInfo'"/>
-        <you-tube-video-list v-if="sharedState.useYouTube"
-          :song="song"
-          :youtube="song.youtube"
-          ref="youtube"
-          v-show="currentView === 'youtube'"/>
+        <div
+          aria-labelledby="extraTabLyrics"
+          id="extraPanelLyrics"
+          role="tabpanel"
+          tabindex="0"
+          v-show="currentView === 'lyrics'"
+        >
+          <lyrics-pane :song="song" />
+        </div>
+
+        <div
+          aria-labelledby="extraTabArtist"
+          id="extraPanelArtist"
+          role="tabpanel"
+          tabindex="0"
+          v-show="currentView === 'artistInfo'"
+        >
+          <artist-info v-if="song.artist.id" :artist="song.artist" mode="sidebar"/>
+        </div>
+
+        <div
+          aria-labelledby="extraTabAlbum"
+          id="extraPanelAlbum"
+          role="tabpanel"
+          tabindex="0"
+          v-show="currentView === 'albumInfo'"
+        >
+          <album-info v-if="song.album.id" :album="song.album" mode="sidebar"/>
+        </div>
+
+        <div
+          aria-labelledby="extraTabAlbum"
+          id="extraPanelAlbum"
+          role="tabpanel"
+          tabindex="0"
+          v-show="currentView === 'youtube'"
+        >
+          <you-tube-video-list v-if="sharedState.useYouTube" :song="song" :youtube="song.youtube"/>
+        </div>
       </div>
     </div>
   </section>

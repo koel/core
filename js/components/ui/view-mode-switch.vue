@@ -1,11 +1,25 @@
 <template>
   <span class="view-modes">
-    <a class="thumbnails" :class="{ active: mutatedMode === 'thumbnails' }"
+    <a
+      class="thumbnails"
+      :class="{ active: mutatedMode === 'thumbnails' }"
       title="View as thumbnails"
-      @click.prevent="setMode('thumbnails')"><i class="fa fa-th-large"></i></a>
-    <a class="list" :class="{ active: mutatedMode === 'list' }"
+      @click.prevent="setMode('thumbnails')"
+      role="button"
+      href="#"
+    >
+      <i class="fa fa-th-large"></i>
+    </a>
+    <a
+      class="list"
+      :class="{ active: mutatedMode === 'list' }"
       title="View as list"
-      @click.prevent="setMode('list')"><i class="fa fa-list"></i></a>
+      @click.prevent="setMode('list')"
+      role="button"
+      href="#"
+    >
+      <i class="fa fa-list"></i>
+    </a>
   </span>
 </template>
 

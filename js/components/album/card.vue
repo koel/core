@@ -1,7 +1,20 @@
 <template>
-  <article class="item" v-if="album.songs.length" draggable="true" @dragstart="dragStart">
+  <article
+    :title="`${album.name} by ${album.artist.name}`"
+    @dragstart="dragStart"
+    class="item"
+    draggable="true"
+    tabindex="0"
+    v-if="album.songs.length"
+  >
     <span class="cover" :style="{ backgroundImage: `url(${album.cover})` }">
-      <a class="control control-play" @click.prevent="playOrQueue">
+      <a
+        :title="`Play all songs in the album ${album.name}`"
+        @click.prevent="playOrQueue"
+        class="control control-play"
+        href
+        role="button"
+      >
         <i class="fa fa-play"></i>
       </a>
     </span>
@@ -21,12 +34,23 @@
           {{ album.playCount | pluralize('play') }}
         </span>
         <span class="right">
-          <a href @click.prevent="shuffle" title="Shuffle" class="shuffle-album">
+          <a
+            :title="`Shuffle all songs in the album ${album.name}`"
+            @click.prevent="shuffle"
+            class="shuffle-album"
+            href
+            role="button"
+          >
             <i class="fa fa-random"></i>
           </a>
-          <a href @click.prevent="download" v-if="sharedState.allowDownload"
+          <a
+            :title="`Download all songs in the album ${album.name}`"
+            @click.prevent="download"
             class="download-album"
-            title="Download all songs in album">
+            href
+            role="button"
+            v-if="sharedState.allowDownload"
+          >
             <i class="fa fa-download"></i>
           </a>
         </span>

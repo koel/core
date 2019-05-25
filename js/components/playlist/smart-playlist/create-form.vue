@@ -22,13 +22,13 @@
                 :group="group"
                 @input="onGroupChanged"
               />
-              <a @click.prevent="addGroup" class="btn btn-small"><i class="fa fa-plus"></i> GROUP</a>
+              <a @click.prevent="addGroup" class="btn btn-small" role="button"><i class="fa fa-plus"></i> GROUP</a>
             </div>
           </div>
 
           <footer>
-            <button class="btn btn-green" type="submit">Create</button>
-            <button class="btn btn-white btn-cancel" @click.prevent="close">Cancel</button>
+            <button class="btn-green" type="submit">Create</button>
+            <button class="btn-white btn-cancel" @click.prevent="close">Cancel</button>
           </footer>
         </form>
       </div>

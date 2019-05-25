@@ -7,13 +7,19 @@
     <form @submit.prevent="confirmThenSave" class="main-scroll-wrap">
       <div class="form-row">
         <label for="inputSettingsPath">Media Path</label>
-        <p class="help">
+
+        <p class="help" id="mediaPathHelp">
           The <em>absolute</em> path to the server directory containing your media.
           Koel will scan this directory for songs and extract any available information.<br>
           Scanning may take a while, especially if you have a lot of songs, so be patient.
         </p>
 
-        <input type="text" v-model="state.settings.media_path" id="inputSettingsPath">
+        <input
+          type="text"
+          v-model="state.settings.media_path"
+          id="inputSettingsPath"
+          aria-describedby="mediaPathHelp"
+        >
       </div>
 
       <div class="form-row">

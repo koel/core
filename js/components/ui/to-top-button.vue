@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div class="to-top-btn-wrapper" v-show="showing">
-      <button @click="scrollToTop">
+      <button @click="scrollToTop" title="Scroll to top">
         <i class="fa fa-arrow-circle-up"></i> Top
       </button>
     </div>

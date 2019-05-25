@@ -13,22 +13,41 @@
 
       <div>
         <div class="tabs tabs-white">
-          <div class="header clear">
-            <a @click.prevent="currentView = 'details'"
-              class="tab-details"
-              :class="{ active: currentView === 'details' }">Details</a>
-            <a @click.prevent="currentView = 'lyrics'"
+          <div class="clear" role="tablist">
+            <button
+              :aria-selected="currentView === 'details'"
+              @click.prevent="currentView = 'details'"
+              aria-controls="editSongPanelDetails"
+              id="editSongTabDetails"
+              role="tab"
+            >
+              Details
+            </button>
+            <button
+              @click.prevent="currentView = 'lyrics'"
               v-if="editingOnlyOneSong"
-              class="tab-lyrics"
-              :class="{ active: currentView === 'lyrics' }">Lyrics</a>
+              :aria-selected="currentView === 'lyrics'"
+              aria-controls="editSongPanelLyrics"
+              id="editSongTabLyrics"
+              role="tab"
+            >
+              Lyrics
+            </button>
           </div>
 
           <div class="panes">
-            <div v-show="currentView === 'details'">
+            <div
+              aria-labelledby="editSongTabDetails"
+              id="editSongPanelDetails"
+              role="tabpanel"
+              tabindex="0"
+              v-show="currentView === 'details'"
+            >
               <div class="form-row" v-if="editingOnlyOneSong">
                 <label>Title</label>
                 <input title="Title" name="title" type="text" v-model="formData.title">
               </div>
+
               <div class="form-row">
                 <label>Artist</label>
                 <typeahead
@@ -36,6 +55,7 @@
                   :options="artistTypeaheadOptions"
                   v-model="formData.artistName"/>
               </div>
+
               <div class="form-row">
                 <label>Album</label>
                 <typeahead
@@ -43,19 +63,29 @@
                   :options="albumTypeaheadOptions"
                   v-model="formData.albumName"/>
               </div>
+
               <div class="form-row">
                 <label class="small">
                   <input type="checkbox" @change="changeCompilationState" ref="compilationStateChk" />
                   Album is a compilation of songs by various artists
                 </label>
               </div>
+
               <div class="form-row" v-show="editingOnlyOneSong">
                 <label>Track</label>
                 <input name="track" type="text" pattern="\d*" v-model="formData.track"
                 title="Empty or a number">
               </div>
             </div>
-            <div v-if="editingOnlyOneSong" v-show="currentView === 'lyrics'">
+
+            <div
+              aria-labelledby="editSongTabLyrics"
+              id="editSongPanelLyrics"
+              role="tabpanel"
+              tabindex="0"
+              v-if="editingOnlyOneSong"
+              v-show="currentView === 'lyrics'"
+            >
               <div class="form-row">
                 <textarea title="Lyrics" name="lyrics" v-model="formData.lyrics"></textarea>
               </div>
@@ -65,8 +95,8 @@
       </div>
 
       <footer>
-        <button type="submit" class="btn btn-blue">Update</button>
-        <a @click.prevent="close" class="btn btn-white btn-cancel">Cancel</a>
+        <button type="submit" class="btn-blue">Update</button>
+        <button @click.prevent="close" class="btn-white btn-cancel">Cancel</button>
       </footer>
     </form>
   </div>

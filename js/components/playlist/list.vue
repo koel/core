@@ -2,31 +2,33 @@
   <section id="playlists">
     <h1>Playlists
       <i
-        class="fa fa-plus-circle control create"
-        :class="{ creating: creating }"
+        :class="{ creating }"
         @click="toggleContextMenu"
+        class="fa fa-plus-circle control create"
+        role="button"
+        title="Create a new playlist"
       ></i>
     </h1>
 
     <form v-if="creating" @submit.prevent="createPlaylist" class="create">
-      <input type="text"
+      <input
         @keyup.esc.prevent="creating = false"
-        v-model="newName"
-        v-koel-focus
         placeholder="↵ to save"
         required
+        type="text"
+        v-koel-focus
+        v-model="newName"
       >
     </form>
 
     <ul>
       <playlist-item type="favorites" :playlist="{ name: 'Favorites', songs: favoriteState.songs }"/>
       <playlist-item type="recently-played" :playlist="{ name: 'Recently Played', songs: [] }"/>
-
       <playlist-item
-        v-for="playlist in playlistState.playlists"
-        type="playlist"
         :playlist="playlist"
         :key="playlist.id"
+        type="playlist"
+        v-for="playlist in playlistState.playlists"
       />
     </ul>
 

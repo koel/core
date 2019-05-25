@@ -1,11 +1,18 @@
 <template>
   <span class="profile" id="userBadge">
     <a class="view-profile control" href="#!/profile" title="View/edit user profile">
-      <img class="avatar" :src="state.current.avatar" alt="Avatar"/>
+      <img class="avatar" :src="state.current.avatar" :alt="`Avatar of ${state.current.name}`"/>
       <span class="name">{{ state.current.name }}</span>
     </a>
 
-    <a class="logout control" @click.prevent="logout" data-cy="btnLogOut" href="#" title="Log out">
+    <a
+      :title="`Log ${state.current.name} out`"
+      @click.prevent="logout"
+      class="logout control"
+      data-cy="btnLogOut"
+      href
+      role="button"
+    >
       <i class="fa fa-sign-out"></i>
     </a>
   </span>

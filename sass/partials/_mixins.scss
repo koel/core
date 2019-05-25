@@ -157,7 +157,7 @@
       opacity: .5;
     }
 
-    &:hover {
+    &:hover, &:focus {
       .cover {
         &:before {
           background-color: rgba(0, 0, 0, .4);

@@ -22,8 +22,8 @@
       </div>
 
       <footer>
-        <button class="btn btn-green btn-add">Save</button>
-        <button class="btn btn-white btn-cancel" @click.prevent="close">Cancel</button>
+        <button class="btn-green btn-add">Save</button>
+        <button class="btn-white btn-cancel" @click.prevent="close">Cancel</button>
       </footer>
     </form>
   </div>

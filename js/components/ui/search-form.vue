@@ -1,5 +1,5 @@
 <template>
-  <div class="side search" id="searchForm" :class="{ showing: showing }">
+  <div class="side search" id="searchForm" :class="{ showing: showing }" role="search">
     <input type="search"
       ref="input"
       :class="{ dirty: q }"

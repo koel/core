@@ -1,14 +1,16 @@
 <template>
-  <ul class="menu"
-    :class="extraClass"
-    v-show="shown"
-    tabindex="-1"
-    @contextmenu.prevent
-    :style="{ top: `${top}px`, left: `${left}px` }"
-    v-koel-clickaway="close"
-  >
-    <slot>Menu items to go here.</slot>
-  </ul>
+  <nav>
+    <ul class="menu"
+      :class="extraClass"
+      v-show="shown"
+      tabindex="-1"
+      @contextmenu.prevent
+      :style="{ top: `${top}px`, left: `${left}px` }"
+      v-koel-clickaway="close"
+    >
+      <slot>Menu items to go here.</slot>
+    </ul>
+  </nav>
 </template>
 
 <script>

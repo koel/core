@@ -1,6 +1,6 @@
 <template>
   <div id="app" :class="{ desktop: isDesktopApp }">
-    <div id="main" tabindex="0" v-if="authenticated">
+    <div id="main" v-if="authenticated">
       <hotkeys/>
       <event-listeners/>
       <app-header/>

@@ -1,13 +1,28 @@
 <template>
-  <article class="item" v-if="showing" draggable="true" @dragstart="dragStart">
+  <article
+    :title="artist.name"
+    @dragstart="dragStart"
+    class="item"
+    draggable="true"
+    tabindex="0"
+    v-if="showing"
+  >
     <span class="cover" :style="{ backgroundImage: `url(${image})` }">
-      <a class="control control-play" @click.prevent="playOrQueue">
+      <a
+        :title="`Play all songs by ${artist.name}`"
+        @click.prevent="playOrQueue"
+        class="control control-play"
+        href
+        role="button"
+      >
         <i class="fa fa-play"></i>
       </a>
     </span>
     <footer>
       <div class="info">
-        <a class="name" :href="`#!/artist/${artist.id}`">{{ artist.name }}</a>
+        <a class="name" :href="`#!/artist/${artist.id}`">
+          {{ artist.name }}
+        </a>
       </div>
       <p class="meta">
         <span class="left">
@@ -18,10 +33,23 @@
           {{ artist.playCount | pluralize('play') }}
         </span>
         <span class="right">
-          <a href @click.prevent="shuffle" title="Shuffle" class="shuffle-artist">
+          <a
+            :title="`Shuffle all songs by ${artist.name}`"
+            @click.prevent="shuffle"
+            class="shuffle-artist"
+            href
+            role="button"
+          >
             <i class="fa fa-random"></i>
           </a>
-          <a href @click.prevent="download" v-if="sharedState.allowDownload" title="Download all songs by artist" class="download-artist">
+          <a
+            :title="`Download all songs by ${artist.name}`"
+            @click.prevent="download"
+            class="download-artist"
+            href
+            role="button"
+            v-if="sharedState.allowDownload"
+          >
             <i class="fa fa-download"></i>
           </a>
         </span>

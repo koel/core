@@ -4,7 +4,7 @@
       <h1>About Koel</h1>
     </header>
 
-    <div role="content">
+    <main>
       <div class="logo">
         <img src="~#/../img/logo.svg" width="128" height="auto">
       </div>
@@ -28,7 +28,7 @@
         <a href="https://github.com/users/phanan/sponsorship" target="_blank">GitHub Sponsors</a> and/or
         <a href="https://opencollective.com/koel" target="_blank">OpenCollective</a>.
       </p>
-    </div>
+    </main>
 
     <footer>
       <button class="btn btn-red btn-rounded" @click.prevent="close">Close</button>
@@ -75,7 +75,7 @@ export default {
   border-radius: 8px;
   overflow: hidden;
 
-  [role=content] {
+  main {
     padding: 24px;
     p {
       margin: 12px 0;

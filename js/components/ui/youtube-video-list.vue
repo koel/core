@@ -1,11 +1,14 @@
 <template>
   <div class="youtube-extra-wrapper">
     <template v-if="videos && videos.length">
-      <a class="video"
-        v-for="video in videos"
+      <a
         :href="`https://youtu.be/${video.id.videoId}`"
         :key="video.id.videoId"
-        @click.prevent="play(video)">
+        @click.prevent="play(video)"
+        class="video"
+        role="button"
+        v-for="video in videos"
+      >
         <div class="thumb">
           <img :src="video.snippet.thumbnails.default.url" width="90">
         </div>
@@ -16,6 +19,7 @@
       </a>
       <button @click.prevent="loadMore" v-if="!loading" class="more btn-blue">Load More</button>
     </template>
+
     <p class="nope" v-else>Play a song to retrieve related YouTube videos.</p>
     <p class="nope" v-show="loading">Loading…</p>
   </div>

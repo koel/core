@@ -230,14 +230,15 @@ button, input[type="submit"], input[type="reset"], input[type="button"], .btn {
 }
 
 .tabs {
-  .header {
+  [role=tablist] {
     $tabColor: #5c5c5c;
     border-bottom: 1px solid $tabColor;
 
-    a {
+    [role=tab] {
       padding: .6rem 1rem;
       margin-left: 4px;
       border-radius: 4px 4px 0 0;
+      background: transparent;
       text-transform: uppercase;
       color: lighten($tabColor, 50%);
       opacity: .4;
@@ -245,7 +246,7 @@ button, input[type="submit"], input[type="reset"], input[type="button"], .btn {
       margin-bottom: -1px;
       float: left;
 
-      &.active {
+      &[aria-selected=true] {
         border-bottom: 1px solid $colorExtraBgr;
         opacity: 1;
       }
@@ -257,14 +258,14 @@ button, input[type="submit"], input[type="reset"], input[type="button"], .btn {
   }
 
   &.tabs-white {
-    .header {
+    [role=tablist] {
       border-bottom-color: #aaa;
 
-      a {
+      [role=tab] {
         color: #333;
         border-color: #aaa;
 
-        &.active {
+        &[aria-selected=true] {
           border-bottom-color: #fff;
         }
       }

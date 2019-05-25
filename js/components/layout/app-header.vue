@@ -1,16 +1,22 @@
 <template>
   <header id="mainHeader" @dblclick="triggerMaximize" data-cy="appHeader">
     <h1 class="brand" v-once>{{ appName }}</h1>
-    <span class="hamburger" @click="toggleSidebar">
+    <span class="hamburger" @click="toggleSidebar" role="button" title="Show or hide the sidebar">
       <i class="fa fa-bars"></i>
     </span>
-    <span class="magnifier" @click="toggleSearchForm">
+    <span class="magnifier" @click="toggleSearchForm" role="button" title="Show or hide the search form">
       <i class="fa fa-search"></i>
     </span>
     <search-form/>
     <div class="header-right">
       <user-badge/>
-      <a class="about control" href="/#!/about" title="About Koel" @click.prevent="showAboutDialog">
+      <a
+        @click.prevent="showAboutDialog"
+        class="about control"
+        href
+        title="About Koel"
+        role="button"
+      >
         <i class="fa fa-info-circle"/>
       </a>
     </div>
