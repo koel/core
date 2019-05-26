@@ -18,17 +18,15 @@ import YouTubePlayer from 'youtube-player'
 export default {
   player: null,
 
-  data () {
-    return {
-      title: 'YouTube Video'
-    }
-  },
+  data: () => ({
+    title: 'YouTube Video'
+  }),
 
   methods: {
     /**
      * Initialize the YouTube player. This should only be called once.
      */
-    initPlayer: () => {
+    initPlayer () {
       if (!this.$options.player) {
         this.$options.player = YouTubePlayer('player', {
           width: '100%',
