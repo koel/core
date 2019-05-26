@@ -4,16 +4,32 @@
 
     <ul>
       <template v-if="config.queue">
-        <li class="after-current" @click="queueSongsAfterCurrent">After Current Song</li>
-        <li class="bottom-queue" @click="queueSongsToBottom">Bottom of Queue</li>
-        <li class="top-queue" @click="queueSongsToTop">Top of Queue</li>
+        <li class="after-current" @click="queueSongsAfterCurrent" role="button" tabindex="0">After Current Song</li>
+        <li class="bottom-queue" @click="queueSongsToBottom" role="button" tabindex="0">Bottom of Queue</li>
+        <li class="top-queue" @click="queueSongsToTop" role="button" tabindex="0">Top of Queue</li>
       </template>
-      <li class="favorites" v-if="config.favorites" @click="addSongsToFavorite">Favorites</li>
+
+      <li
+        @click="addSongsToFavorite"
+        class="favorites"
+        role="button"
+        tabindex="0"
+        v-if="config.favorites"
+      >
+        Favorites
+      </li>
+
       <template v-if="config.playlists">
-        <li class="playlist"
-          v-for="playlist in playlistState.playlists"
+        <li
           :key="playlist.id"
-          @click="addSongsToExistingPlaylist(playlist)">{{ playlist.name }}</li>
+          @click="addSongsToExistingPlaylist(playlist)"
+          class="playlist"
+          role="button"
+          tabindex="0"
+          v-for="playlist in playlistState.playlists"
+        >
+          {{ playlist.name }}
+        </li>
       </template>
     </ul>
 
@@ -21,12 +37,14 @@
       <p>or create a new playlist</p>
 
       <form class="form-save form-simple form-new-playlist" @submit.prevent="createNewPlaylistFromSongs">
-        <input type="text"
+        <input
           @keyup.esc.prevent="close"
-          v-model="newPlaylistName"
+          required
+          type="text"
           placeholder="Playlist name"
-          required>
-        <button type="submit">
+          v-model="newPlaylistName"
+        >
+        <button type="submit" title="Save">
           <i class="fa fa-save"></i>
         </button>
       </form>

@@ -101,10 +101,17 @@ input[type="checkbox"] {
   }
 }
 
-a, a:link, a:visited {
-  color: $colorLink;
+a {
   text-decoration: none;
   cursor: pointer;
+
+  &:link, &:visited {
+    color: $colorLink;
+  }
+
+  &:hover, &:focus {
+    color: $colorHighlight;
+  }
 }
 
 .clear, .clearfix {

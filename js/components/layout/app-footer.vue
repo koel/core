@@ -1,16 +1,35 @@
 <template>
   <footer id="mainFooter">
     <div class="side player-controls" id="playerControls">
-      <i class="prev fa fa-step-backward control" @click.prevent="playPrev"></i>
+      <i
+        @click.prevent="playPrev"
+        class="prev fa fa-step-backward control"
+        role="button"
+        tabindex="0"
+        title="Play previous song"
+      ></i>
 
-      <span class="play control" v-if="song.playbackState !== 'playing'" @click.prevent="resume">
+      <span
+        @click.prevent="resume"
+        class="play control"
+        role="button"
+        v-if="song.playbackState !== 'playing'"
+        tabindex="0"
+        title="Play or resume"
+      >
         <i class="fa fa-play"></i>
       </span>
-      <span class="pause control" v-else @click.prevent="pause">
+      <span @click.prevent="pause" class="pause control" role="button" title="Pause" tabindex="0" v-else>
         <i class="fa fa-pause"></i>
       </span>
 
-      <i class="next fa fa-step-forward control" @click.prevent="playNext"></i>
+      <i
+        @click.prevent="playNext"
+        class="next fa fa-step-forward control"
+        role="button"
+        tabindex="0"
+        title="Play next song"
+      ></i>
     </div>
 
     <div class="media-info-wrap">
@@ -33,24 +52,54 @@
       <div class="other-controls" :class="{ 'with-gradient': prefs.showExtraPanel }">
         <div class="wrapper" v-koel-clickaway="closeEqualizer">
           <equalizer v-if="useEqualizer" v-show="showEqualizer"/>
-          <a @click.prevent="toggleVisualizer" title="Click for a marvelous visualizer!">
+
+          <a @click.prevent="toggleVisualizer" title="Click for a marvelous visualizer!" role="button" tabindex="0">
             <sound-bar v-if="song.playbackState === 'playing'"/>
           </a>
-          <i v-if="song.id"
-            class="like control fa fa-heart"
+
+          <i
             :class="{ liked: song.liked }"
-            @click.prevent="like"></i>
-          <span class="control info"
+            @click.prevent="like"
+            class="like control fa fa-heart"
+            v-if="song.id"
+            role="button"
+            tabindex="0"
+            :title="`${ song.liked ? 'Unlike' : 'Like' } current song`"
+          ></i>
+
+          <span
+            :class="{ active: prefs.showExtraPanel }"
             @click.prevent="toggleExtraPanel"
-            :class="{ active: prefs.showExtraPanel }">Info</span>
-          <i class="fa fa-sliders control equalizer"
-            v-if="useEqualizer"
+            class="control info"
+            role="button"
+            tabindex="0"
+            title="View song information"
+          >
+            Info
+          </span>
+
+          <i
+            :class="{ active: showEqualizer }"
             @click="showEqualizer = !showEqualizer"
-            :class="{ active: showEqualizer }"></i>
+            class="fa fa-sliders control equalizer"
+            v-if="useEqualizer"
+            role="button"
+            tabindex="0"
+            :title="`${ showEqualizer ? 'Hide' : 'Show'} equalizer`"
+          ></i>
+
           <a v-else class="queue control" :class="{ active: viewingQueue }" href="#!/queue">
             <i class="fa fa-list-ol"></i>
           </a>
-          <span class="repeat control" :class="prefs.repeatMode" @click.prevent="changeRepeatMode">
+
+          <span
+            :class="prefs.repeatMode"
+            @click.prevent="changeRepeatMode"
+            class="repeat control"
+            role="button"
+            tabindex="0"
+            :title="`Change repeat mode (current mode: ${prefs.repeatMode})`"
+          >
             <i class="fa fa-repeat"></i>
           </span>
           <volume/>

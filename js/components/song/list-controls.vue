@@ -1,39 +1,55 @@
 <template>
   <div class="buttons song-list-controls">
-    <button class="btn btn-orange btn-shuffle-all"
+    <button
       @click.prevent="shuffle"
-      v-if="fullConfig.shuffle && selectedSongs.length < 2">
+      class="btn btn-orange btn-shuffle-all"
+      title="Shuffle all"
+      v-if="fullConfig.shuffle && selectedSongs.length < 2"
+    >
       <i class="fa fa-random"></i> All
     </button>
 
-    <button class="btn btn-orange btn-shuffle-selected"
+    <button
       @click.prevent="shuffleSelected"
-      v-if="fullConfig.shuffle && selectedSongs.length > 1">
+      class="btn btn-orange btn-shuffle-selected"
+      title="Shuffle selected"
+      v-if="fullConfig.shuffle && selectedSongs.length > 1"
+    >
       <i class="fa fa-random"></i> Selected
     </button>
 
-    <button class="btn btn-green btn-add-to"
+    <button
+      :title="`${showingAddToMenu ? 'Cancel' : 'Add selected songs to…'}`"
       @click.prevent.stop="showingAddToMenu = !showingAddToMenu"
-      v-if="selectedSongs.length">
+      class="btn btn-green btn-add-to"
+      v-if="selectedSongs.length"
+    >
       {{ showingAddToMenu ? 'Cancel' : 'Add To…' }}
     </button>
 
-    <button class="btn btn-red btn-clear-queue"
+    <button
       @click.prevent="clearQueue"
-      v-if="showClearQueueButton">
+      class="btn btn-red btn-clear-queue"
+      v-if="showClearQueueButton"
+      title="Clear current queue"
+    >
       Clear
     </button>
 
-    <button class="del btn btn-red btn-delete-playlist" v-if="showDeletePlaylistButton"
+    <button
+      @click.prevent="deletePlaylist"
+      class="del btn btn-red btn-delete-playlist"
       title="Delete this playlist"
-      @click.prevent="deletePlaylist">
+      v-if="showDeletePlaylistButton"
+    >
       <i class="fa fa-times"></i> Playlist
     </button>
 
-    <add-to-menu v-koel-clickaway="closeAddToMenu"
+    <add-to-menu
       :config="fullConfig.addTo"
       :songs="selectedSongs"
       :showing="showingAddToMenu"
+      v-koel-clickaway="closeAddToMenu"
     />
   </div>
 </template>

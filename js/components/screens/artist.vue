@@ -20,7 +20,13 @@
 
           <template v-if="sharedState.allowDownload">
             •
-            <a class="download" href @click.prevent="download" title="Download all songs by this artist">
+            <a
+              @click.prevent="download"
+              class="download"
+              href
+              role="button"
+              title="Download all songs by this artist"
+            >
               Download All
             </a>
           </template>

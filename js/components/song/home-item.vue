@@ -1,7 +1,9 @@
 <template>
-  <li class="song-item-home"
+  <li
     :class="{ playing: song.playbackState === 'playing' || song.playbackState === 'paused' }"
     @dblclick.prevent="play"
+    class="song-item-home"
+    tabindex="0"
   >
     <span class="cover" :style="{ backgroundImage: 'url('+song.album.cover+')' }">
       <a class="control" @click.prevent="changeSongState">
@@ -75,7 +77,7 @@ export default {
     color: $colorHighlight;
   }
 
-  &:hover .cover {
+  &:hover .cover, &:focus .cover {
     .control {
       display: block;
     }
