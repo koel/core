@@ -1,5 +1,5 @@
 <template>
-  <li :class="{ available: song }" :title="tooltip" @click="play">
+  <li :class="{ available: song }" :title="tooltip" @click="play" role="button" tabindex="0">
     <span class="no">{{ index + 1 }}</span>
     <span class="title">{{ track.title }}</span>
     <a
@@ -64,25 +64,35 @@ export default {
 }
 </script>
 
-<style lang="scss">
-a.view-on-itunes {
-  display: inline-block;
-  border-radius: 3px;
-  font-size: .8rem;
-  padding: 0 5px;
-  color: #fff;
-  background: rgba(255, 255, 255, .1);
-  height: 20px;
-  line-height: 20px;
-  margin-left: 4px;
+<style lang="scss" scoped>
+@import "~#/partials/_vars.scss";
 
-  &:hover {
-    background: linear-gradient(27deg, #fe5c52 0%,#c74bd5 50%,#2daaff 100%);
-    color: #fff;
+[role=button] {
+  &:focus {
+    span.title {
+      color: $colorHighlight;
+    }
   }
 
-  &:active {
-    box-shadow: inset 0px 5px 5px -5px #000;
+  a.view-on-itunes {
+    display: inline-block;
+    border-radius: 3px;
+    font-size: .8rem;
+    padding: 0 5px;
+    color: #fff;
+    background: rgba(255, 255, 255, .1);
+    height: 20px;
+    line-height: 20px;
+    margin-left: 4px;
+
+    &:hover, &:focus {
+      background: linear-gradient(27deg, #fe5c52 0%,#c74bd5 50%,#2daaff 100%);
+      color: #fff;
+    }
+
+    &:active {
+      box-shadow: inset 0px 5px 5px -5px #000;
+    }
   }
 }
 </style>

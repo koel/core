@@ -2,11 +2,18 @@
   <article class="album-info" :class="mode">
     <h1 class="name">
       <span>{{ album.name }}</span>
-      <a class="shuffle" @click.prevent="shuffleAll"><i class="fa fa-random"></i></a>
+      <a
+        :title="`Shuffle all songs in ${album.name}`"
+        @click.prevent="shuffleAll"
+        class="shuffle"
+        role="button"
+      >
+        <i class="fa fa-random"></i>
+      </a>
     </h1>
 
-    <div v-if="album.info">
-      <img v-if="album.info.image" :src="album.info.image" class="cover">
+    <main v-if="album.info">
+      <img v-if="album.info.image" :src="album.info.image" class="cover" alt="Album's cover">
 
       <div class="wiki" v-if="album.info.wiki && album.info.wiki.summary">
         <div class="summary" v-show="showSummary" v-html="album.info.wiki.summary"></div>
@@ -17,21 +24,10 @@
         </button>
       </div>
 
-      <section class="track-listing" v-if="album.info.tracks.length">
-        <h1>Track Listing</h1>
-        <ul class="tracks">
-          <li is="track-list-item"
-            v-for="(track, idx) in album.info.tracks"
-            :album="album"
-            :track="track"
-            :index="idx"
-            :key="idx"
-          ></li>
-        </ul>
-      </section>
+      <track-list :album="album" v-if="album.info.tracks.length"/>
 
       <footer>Data &copy; <a target="_blank" :href="album.info.url">Last.fm</a></footer>
-    </div>
+    </main>
 
     <p class="none" v-else>No album information found.</p>
   </article>
@@ -52,7 +48,7 @@ export default {
   },
 
   components: {
-    TrackListItem: () => import('@/components/song/track-list-item.vue')
+    TrackList: () => import('./track-list.vue')
   },
 
   data: () => ({

@@ -2,13 +2,23 @@
   <article class="artist-info" :class="mode">
     <h1 class="name">
       <span>{{ artist.name }}</span>
-      <a class="shuffle" @click.prevent="shuffleAll"><i class="fa fa-random"></i></a>
+      <a
+        :title="`Shuffle all songs by ${artist.name}`"
+        @click.prevent="shuffleAll"
+        class="shuffle"
+        role="button"
+      >
+        <i class="fa fa-random"></i>
+      </a>
     </h1>
 
-    <div v-if="artist.info">
-      <img v-if="artist.info.image" :src="artist.info.image"
+    <main v-if="artist.info">
+      <img
+        alt="Artist's photo"
+        class="cool-guys-posing cover"
         title="They see me posin, they hatin"
-        class="cool-guys-posing cover">
+        v-if="artist.info.image" :src="artist.info.image"
+      >
 
       <div class="bio" v-if="artist.info.bio.summary">
         <div class="summary" v-show="showSummary" v-html="artist.info.bio.summary"></div>
@@ -21,7 +31,7 @@
       <p class="none" v-else>This artist has no Last.fm biography – yet.</p>
 
       <footer>Data &copy; <a target="_blank" :href="artist.info.url">Last.fm</a></footer>
-    </div>
+    </main>
 
     <p class="none" v-else>Nothing can be found. This artist is a mystery.</p>
   </article>

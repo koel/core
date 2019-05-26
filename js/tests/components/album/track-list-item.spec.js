@@ -1,4 +1,4 @@
-import Component from '@/components/song/track-list-item.vue'
+import Component from '@/components/album/track-list-item.vue'
 import { sharedStore, songStore, queueStore } from '@/stores'
 import { playback, ls } from '@/services'
 import factory from '@/tests/factory'

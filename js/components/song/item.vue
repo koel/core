@@ -2,7 +2,6 @@
   <tr
     class="song-item"
     draggable="true"
-    :data-song-id="song.id"
     @click="clicked"
     @dblclick.prevent="playRightAwayyyyyyy"
     @dragstart="dragStart"
@@ -11,7 +10,7 @@
     @dragover.prevent
     @drop.stop.prevent="drop"
     @contextmenu.prevent="contextMenu"
-    :class="{ selected: item.selected, playing: playing }"
+    :class="{ playing, selected: item.selected }"
   >
     <td class="track-number">{{ song.track || '' }}</td>
     <td class="title">{{ song.title }}</td>
