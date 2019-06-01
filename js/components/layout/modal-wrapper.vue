@@ -19,7 +19,7 @@ export default {
     AddUserForm: () => import('@/components/user/add-form.vue'),
     EditUserForm: () => import('@/components/user/edit-form.vue'),
     EditSongForm: () => import('@/components/song/edit-form.vue'),
-    AboutDialog: () => import('@/components/about-dialog.vue')
+    AboutDialog: () => import('@/components/meta/about-dialog.vue')
   },
 
   data: () => ({

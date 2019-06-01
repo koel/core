@@ -221,16 +221,9 @@ export default {
 
 #mainFooter {
   background: $color2ndBgr;
-  position: fixed;
-  width: 100%;
   height: $footerHeight;
-  bottom: 0;
-  left: 0;
   border-top: 1px solid $colorMainBgr;
-
   display: flex;
-  flex: 1;
-  z-index: 1000;
 
   .media-info-wrap {
     flex: 1;
@@ -370,7 +363,7 @@ export default {
 
   .album-thumb {
     flex: 0 0 $footerHeight;
-    height: $footerHeight;
+    height: 100%;
     background-size: cover;
     position: relative;
   }

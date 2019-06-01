@@ -6,6 +6,7 @@
       <app-header/>
       <main-wrapper/>
       <app-footer/>
+      <support-koel/>
       <overlay ref="overlay"/>
     </div>
 
@@ -41,7 +42,8 @@ export default {
     MainWrapper,
     Overlay,
     LoginForm,
-    EventListeners
+    EventListeners,
+    SupportKoel: () => import('@/components/meta/support-koel.vue')
   },
 
   data () {
@@ -186,9 +188,8 @@ Vue.directive('koel-clickaway', clickawayDirective)
 
 #main, .login-wrapper {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
   flex-direction: column;
-  padding-bottom: $footerHeight;
 }
 
 .login-wrapper {

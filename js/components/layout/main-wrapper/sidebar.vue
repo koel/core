@@ -141,7 +141,6 @@ export default {
   flex: 0 0 256px;
   background-color: $colorSidebarBgr;
   padding: 22px 0 0;
-  max-height: calc(100vh - #{$headerHeight + $footerHeight});
   overflow: auto;
   overflow-x: hidden;
   -ms-overflow-style: -ms-autohiding-scrollbar;
@@ -242,7 +241,6 @@ export default {
   @media only screen and (max-width : 667px) {
     position: fixed;
     height: calc(100vh - #{$headerHeight + $footerHeight});
-    padding-bottom: $footerHeight; // make sure the footer can never overlap the content
     width: 100%;
     z-index: 99;
     top: $headerHeight;

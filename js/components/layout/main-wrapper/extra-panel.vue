@@ -176,9 +176,8 @@ export default {
 
 #extra {
   flex: 0 0 $extraPanelWidth;
-  padding: 24px 16px $footerHeight;
+  padding: 24px 16px;
   background: $colorExtraBgr;
-  max-height: calc(100vh - #{$headerHeight + $footerHeight});
   display: none;
   color: $color2ndText;
   overflow: auto;
@@ -203,8 +202,7 @@ export default {
 
   @media only screen and (max-width : 1024px) {
     position: fixed;
-    height: calc(100vh - #{$headerHeight + $footerHeight});
-    padding-bottom: $footerHeight; // make sure the footer can never overlap the content
+    height: calc(100vh - #{$headerHeight});
     width: $extraPanelWidth;
     z-index: 5;
     top: $headerHeight;
