@@ -224,6 +224,7 @@ export default {
   height: $footerHeight;
   border-top: 1px solid $colorMainBgr;
   display: flex;
+  position: relative;
 
   .media-info-wrap {
     flex: 1;
@@ -279,9 +280,6 @@ export default {
     }
 
     .like {
-      &:hover {
-      }
-
       &.liked {
         color: $colorHeart;
       }

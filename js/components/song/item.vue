@@ -114,6 +114,7 @@ export default {
 
 .song-item {
   border-bottom: 1px solid $color2ndBgr;
+  max-width: 100% !important; // overriding .item
   height: 35px;
 
   html.no-touchevents &:hover {
