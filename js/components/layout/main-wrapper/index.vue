@@ -19,8 +19,11 @@ export default {
 </script>
 
 <style lang="scss">
+@import "~#/partials/_vars.scss";
+
 #mainWrapper {
   display: flex;
   flex: 1;
+  height: calc(100vh - #{$headerHeight + $footerHeight});
 }
 </style>
