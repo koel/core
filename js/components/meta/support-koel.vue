@@ -15,7 +15,7 @@ import { event } from '@/utils'
 import { preferenceStore as preferences } from '@/stores'
 
 let supportBarTimeoutHandle
-const DELAY_UNTIL_SHOWN = 1 * 60 * 1000
+const DELAY_UNTIL_SHOWN = 30 * 60 * 1000
 
 export default {
   data: () => ({
