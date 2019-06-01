@@ -3,40 +3,41 @@ import isMobile from 'ismobilejs'
 import { loadMainView } from './utils'
 import { artistStore, albumStore, songStore, queueStore, playlistStore, userStore } from './stores'
 import { playback } from './services'
+import { views } from '@/config'
 
 export default {
   routes: {
-    '/home': () => loadMainView('home'),
-    '/queue': () => loadMainView('queue'),
-    '/songs': () => loadMainView('songs'),
-    '/albums': () => loadMainView('albums'),
-    '/artists': () => loadMainView('artists'),
-    '/favorites': () => loadMainView('favorites'),
-    '/recently-played': () => loadMainView('recently-played'),
-    '/settings': () => userStore.current.is_admin && loadMainView('settings'),
-    '/users': () => userStore.current.is_admin && loadMainView('users'),
-    '/youtube': () => loadMainView('youtubePlayer'),
-    '/visualizer': () => loadMainView('visualizer'),
-    '/profile': () => loadMainView('profile'),
+    '/home': () => loadMainView(views.HOME),
+    '/queue': () => loadMainView(views.QUEUE),
+    '/songs': () => loadMainView(views.SONGS),
+    '/albums': () => loadMainView(views.ALBUMS),
+    '/artists': () => loadMainView(views.ARTISTS),
+    '/favorites': () => loadMainView(views.FAVORITES),
+    '/recently-played': () => loadMainView(views.RECENTLY_PLAYED),
+    '/settings': () => userStore.current.is_admin && loadMainView(views.SETTINGS),
+    '/users': () => userStore.current.is_admin && loadMainView(views.USERS),
+    '/youtube': () => loadMainView(views.YOUTUBE),
+    '/visualizer': () => loadMainView(views.VISUALIZER),
+    '/profile': () => loadMainView(views.PROFILE),
 
     '/album/(\\d+)': id => {
       const album = albumStore.byId(~~id)
       if (album) {
-        loadMainView('album', album)
+        loadMainView(views.ALBUM, album)
       }
     },
 
     '/artist/(\\d+)': id => {
       const artist = artistStore.byId(~~id)
       if (artist) {
-        loadMainView('artist', artist)
+        loadMainView(views.ARTIST, artist)
       }
     },
 
     '/playlist/(\\d+)': id => {
       const playlist = playlistStore.byId(~~id)
       if (playlist) {
-        loadMainView('playlist', playlist)
+        loadMainView(views.PLAYLIST, playlist)
       }
     },
 
@@ -47,7 +48,7 @@ export default {
       if (isMobile.apple.device) {
         // Mobile Safari doesn't allow autoplay, so we just queue.
         queueStore.queue(song)
-        loadMainView('queue')
+        loadMainView(views.QUEUE)
       } else {
         playback.queueAndPlay(song)
       }
@@ -61,7 +62,7 @@ export default {
 
   loadState () {
     if (!window.location.hash) {
-      return this.go('home')
+      return this.go(views.DEFAULT)
     }
 
     Object.keys(this.routes).forEach(route => {

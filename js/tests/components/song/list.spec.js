@@ -24,7 +24,7 @@ describe('components/song/list', () => {
     const getLengthStub = mock(songStore, 'getFormattedLength', '12:34:56')
     mount(Component, { propsData: {
       items: songs,
-      type: 'allSongs'
+      type: 'all-songs'
     }})
 
     expect(getLengthStub).toHaveBeenCalledWith(songs)
@@ -40,7 +40,7 @@ describe('components/song/list', () => {
   ]).test('sorts when "%s" is clicked', (selector, criteria) => {
     const wrapper = mount(Component, { propsData: {
       items: songs,
-      type: 'allSongs'
+      type: 'all-songs'
     }})
     const m = mock(wrapper.vm, 'sort')
     wrapper.click(`.song-list-header ${selector}`)
@@ -66,7 +66,7 @@ describe('components/song/list', () => {
   ]).test('parses query "%s" into keyword "%s" and proper search fields', (q, keywords, fields) => {
     const wrapper = shallow(Component, { propsData: {
       items: songs,
-      type: 'allSongs'
+      type: 'all-songs'
     }})
 
     expect(wrapper.vm.extractSearchDataFromQuery(q)).toEqual({ keywords, fields })
@@ -75,7 +75,7 @@ describe('components/song/list', () => {
   it('plays when Enter is pressed with one selected song', () => {
     const wrapper = mount(Component, { propsData: {
       items: songs,
-      type: 'allSongs'
+      type: 'all-songs'
     }})
     // select one row
     wrapper.vm.filteredItems[0].selected = true

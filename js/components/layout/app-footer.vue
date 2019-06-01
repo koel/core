@@ -34,7 +34,7 @@
 
     <div class="media-info-wrap">
       <div class="middle-pane">
-        <span class="album-thumb" v-if="cover" :style="{ backgroundImage: 'url('+cover+')' }"></span>
+        <span class="album-thumb" v-if="cover" :style="{ backgroundImage: `url('${cover}')` }"></span>
 
         <div class="progress" id="progressPane">
           <h3 class="title">{{ song.title }}</h3>
@@ -113,6 +113,7 @@
 import { playback, socket } from '@/services'
 import { isAudioContextSupported, event } from '@/utils'
 import { songStore, favoriteStore, preferenceStore } from '@/stores'
+import { views } from '@/config'
 
 export default {
   data: () => ({
@@ -187,7 +188,7 @@ export default {
        * Listen to main-content-view:load event and highlight the Queue icon if
        * the Queue screen is being loaded.
        */
-      [event.$names.LOAD_MAIN_CONTENT]: view => (this.viewingQueue = view === 'queue')
+      [event.$names.LOAD_MAIN_CONTENT]: view => (this.viewingQueue = view === views.QUEUE)
     })
   }
 }

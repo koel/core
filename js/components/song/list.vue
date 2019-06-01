@@ -55,6 +55,7 @@ import { playback } from '@/services'
 import router from '@/router'
 
 const songItem = () => import('@/components/song/item.vue')
+const VALID_SONG_LIST_TYPES = ['all-songs', 'queue', 'playlist', 'favorites', 'recently-played', 'artist', 'album']
 
 export default {
   name: 'song-list',
@@ -65,8 +66,8 @@ export default {
     },
     type: {
       type: String,
-      default: 'allSongs',
-      validator: value => ['allSongs', 'queue', 'playlist', 'favorites', 'recently-played', 'artist', 'album'].includes(value)
+      default: 'all-songs',
+      validator: value => VALID_SONG_LIST_TYPES.includes(value)
     },
     sortable: {
       type: Boolean,

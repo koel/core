@@ -5,10 +5,10 @@
 
       <ul class="menu">
         <li>
-          <a :class="['home', currentView == 'home' ? 'active' : '']" href="#!/home">Home</a>
+          <a :class="['home', currentView === $options.views.HOME ? 'active' : '']" href="#!/home">Home</a>
         </li>
         <li>
-          <a :class="['queue', currentView == 'queue' ? 'active' : '']"
+          <a :class="['queue', currentView === $options.views.QUEUE ? 'active' : '']"
             href="#!/queue"
             @dragleave="removeDroppableState"
             @dragenter.prevent="allowDrop"
@@ -16,16 +16,20 @@
             @drop.stop.prevent="handleDrop">Current Queue</a>
         </li>
         <li>
-          <a :class="['songs', currentView == 'songs' ? 'active' : '']" href="#!/songs">All Songs</a>
+          <a :class="['songs', currentView === $options.views.SONGS ? 'active' : '']" href="#!/songs">All Songs</a>
         </li>
         <li>
-          <a :class="['albums', currentView == 'albums' ? 'active' : '']" href="#!/albums">Albums</a>
+          <a :class="['albums', currentView === $options.views.ALBUMS ? 'active' : '']" href="#!/albums">Albums</a>
         </li>
         <li>
-          <a :class="['artists', currentView == 'artists' ? 'active' : '']" href="#!/artists">Artists</a>
+          <a :class="['artists', currentView === $options.views.ARTISTS ? 'active' : '']" href="#!/artists">
+            Artists
+          </a>
         </li>
         <li v-if="sharedState.useYouTube">
-          <a :class="['youtube', currentView == 'youtubePlayer' ? 'active' : '']" href="#!/youtube">YouTube Video</a>
+          <a :class="['youtube', currentView === $options.views.YOUTUBE ? 'active' : '']" href="#!/youtube">
+            YouTube Video
+          </a>
         </li>
       </ul>
     </section>
@@ -52,14 +56,17 @@ import isMobile from 'ismobilejs'
 
 import { event, $ } from '@/utils'
 import { sharedStore, userStore, songStore, queueStore } from '@/stores'
+import { views } from '@/config'
 
 export default {
+  views,
+
   components: {
     PlaylistList: () => import('@/components/playlist/list.vue')
   },
 
   data: () => ({
-    currentView: 'home',
+    currentView: views.DEFAULT,
     userState: userStore.state,
     showing: !isMobile.phone,
     sharedState: sharedStore.state

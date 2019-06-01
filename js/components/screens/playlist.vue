@@ -47,6 +47,7 @@
 import { pluralize, event } from '@/utils'
 import { playlistStore, sharedStore } from '@/stores'
 import { playback, download } from '@/services'
+import { views } from '@/config'
 import hasSongList from '@/mixins/has-song-list'
 
 export default {
@@ -67,7 +68,7 @@ export default {
      * playlist into view if applicable.
      */
     event.on(event.$names.LOAD_MAIN_CONTENT, (view, playlist) => {
-      if (view !== 'playlist') {
+      if (view !== views.PLAYLIST) {
         return
       }
 

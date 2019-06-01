@@ -39,7 +39,7 @@ export const download = {
    * Build a download link using a segment and trigger it.
    *
    * @param  {string} uri The uri segment, corresponding to the song(s),
-   *            artist, playlist, or album.
+   *                      artist, playlist, or album.
    */
   trigger: uri => {
     const sep = uri.includes('?') ? '&' : '?'

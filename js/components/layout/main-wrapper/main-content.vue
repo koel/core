@@ -9,29 +9,32 @@
 
     <div class="translucent" :style="{ backgroundImage: albumCover ? `url(${albumCover})` : 'none' }"></div>
 
-    <home-screen v-show="view === 'home'"/>
-    <queue-screen v-show="view === 'queue'"/>
-    <all-songs-screen v-show="view === 'songs'"/>
-    <album-list-screen v-show="view === 'albums'"/>
-    <artist-list-screen v-show="view === 'artists'"/>
-    <playlist-screen v-show="view === 'playlist'"/>
-    <favorites-screen v-show="view === 'favorites'"/>
-    <recently-played-screen v-show="view === 'recently-played'"/>
+    <home-screen v-show="view === $options.views.HOME"/>
+    <queue-screen v-show="view === $options.views.QUEUE"/>
+    <all-songs-screen v-show="view === $options.views.SONGS"/>
+    <album-list-screen v-show="view === $options.views.ALBUMS"/>
+    <artist-list-screen v-show="view === $options.views.ARTISTS"/>
+    <playlist-screen v-show="view === $options.views.PLAYLIST"/>
+    <favorites-screen v-show="view === $options.views.FAVORITES"/>
+    <recently-played-screen v-show="view === $options.views.RECENTLY_PLAYED"/>
 
-    <album-screen v-if="view === 'album'" :album="shownAlbum"/>
-    <artist-screen v-if="view === 'artist'" :artist="shownArtist"/>
-    <settings-screen v-if="view === 'settings'"/>
-    <profile-screen v-if="view === 'profile'"/>
-    <user-list-screen v-if="view === 'users'"/>
-    <youtube-screen v-if="sharedState.useYouTube" v-show="view === 'youtubePlayer'"/>
+    <album-screen v-if="view === $options.views.ALBUM" :album="shownAlbum"/>
+    <artist-screen v-if="view === $options.views.ARTIST" :artist="shownArtist"/>
+    <settings-screen v-if="view === $options.views.SETTINGS"/>
+    <profile-screen v-if="view === $options.views.PROFILE"/>
+    <user-list-screen v-if="view === $options.views.USERS"/>
+    <youtube-screen v-if="sharedState.useYouTube" v-show="view === $options.views.YOUTUBE"/>
   </section>
 </template>
 
 <script>
 import { event } from '@/utils'
 import { albumStore, sharedStore } from '@/stores'
+import { views } from '@/config'
 
 export default {
+  views,
+
   components: {
     AlbumListScreen: () => import('@/components/screens/album-list.vue'),
     AlbumScreen: () => import('@/components/screens/album.vue'),
@@ -51,7 +54,7 @@ export default {
   },
 
   data: () => ({
-    view: 'home',
+    view: views.DEFAULT,
     albumCover: null,
     sharedState: sharedStore.state,
     showingVisualizer: false,
@@ -63,10 +66,10 @@ export default {
     event.on({
       [event.$names.LOAD_MAIN_CONTENT]: (view, data) => {
         switch (view) {
-          case 'album':
+          case views.ALBUM:
             this.shownAlbum = data
             break
-          case 'artist':
+          case views.ARTIST:
             this.shownArtist = data
             break
         }
