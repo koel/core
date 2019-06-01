@@ -24,6 +24,6 @@ export default {
 #mainWrapper {
   display: flex;
   flex: 1;
-  height: calc(100vh - #{$headerHeight + $footerHeight});
+  max-height: calc(100vh - #{$headerHeight + $footerHeight});
 }
 </style>
