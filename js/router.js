@@ -62,7 +62,7 @@ export default {
 
   loadState () {
     if (!window.location.hash) {
-      return this.go(views.DEFAULT)
+      return this.go('home')
     }
 
     Object.keys(this.routes).forEach(route => {
