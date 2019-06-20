@@ -15,24 +15,25 @@ import {
 
 export const sharedStore = {
   state: {
-    songs: [],
     albums: [],
-    artists: [],
-    favorites: [],
-    queued: [],
-    interactions: [],
-    users: [],
-    settings: [],
-    currentUser: null,
-    playlists: [],
-    useLastfm: false,
-    useYouTube: false,
-    useiTunes: false,
     allowDownload: false,
-    currentVersion: '',
-    latestVersion: '',
+    artists: [],
     cdnUrl: '',
-    originalMediaPath: ''
+    currentUser: null,
+    currentVersion: '',
+    favorites: [],
+    interactions: [],
+    latestVersion: '',
+    originalMediaPath: '',
+    playlists: [],
+    queued: [],
+    recentlyPlayed: [],
+    settings: [],
+    songs: [],
+    useiTunes: false,
+    useLastfm: false,
+    users: [],
+    useYouTube: false
   },
 
   init () {
