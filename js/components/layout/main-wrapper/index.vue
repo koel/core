@@ -19,11 +19,9 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-
 #mainWrapper {
   display: flex;
   flex: 1;
-  max-height: calc(100vh - #{$headerHeight + $footerHeight});
+  height: 0; // fix a flex-box bug https://github.com/philipwalton/flexbugs/issues/197#issuecomment-378908438
 }
 </style>
