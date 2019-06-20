@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { views } from '@/config'
 import { event, pluralize } from '@/utils'
 import { recentlyPlayedStore } from '@/stores'
 import hasSongList from '@/mixins/has-song-list'
@@ -47,7 +48,7 @@ export default {
        * Listen to 'main-content-view:load' event to load all recently played songs into the view
        */
       [event.$names.LOAD_MAIN_CONTENT]: view => {
-        if (view === 'recently-played') {
+        if (view === views.RECENTLY_PLAYED) {
           recentlyPlayedStore.fetchAll()
         }
       }
