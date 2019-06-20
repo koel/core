@@ -43,11 +43,9 @@ export default {
     }
   },
 
-  data () {
-    return {
-      mutatedMode: this.mode
-    }
-  },
+  data: () => ({
+    mutatedMode: null
+  }),
 
   computed: {
     /**
