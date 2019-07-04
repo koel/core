@@ -23,5 +23,6 @@ export default {
   display: flex;
   flex: 1;
   height: 0; // fix a flex-box bug https://github.com/philipwalton/flexbugs/issues/197#issuecomment-378908438
+  overflow: hidden;
 }
 </style>
