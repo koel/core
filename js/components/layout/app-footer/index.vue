@@ -33,21 +33,7 @@
     </div>
 
     <div class="media-info-wrap">
-      <div class="middle-pane">
-        <span class="album-thumb" v-if="cover" :style="{ backgroundImage: `url('${cover}')` }"></span>
-
-        <div class="progress" id="progressPane">
-          <h3 class="title">{{ song.title }}</h3>
-          <p class="meta">
-            <a class="artist" :href="`#!/artist/${song.artist.id}`">{{ song.artist.name }}</a> –
-            <a class="album" :href="`#!/album/${song.album.id}`">{{ song.album.name }}</a>
-          </p>
-
-          <div class="plyr">
-            <audio crossorigin="anonymous" controls></audio>
-          </div>
-        </div>
-      </div>
+      <middle-pane :song="song"/>
 
       <div class="other-controls" :class="{ 'with-gradient': prefs.showExtraPanel }">
         <div class="wrapper" v-koel-clickaway="closeEqualizer">
@@ -115,6 +101,7 @@ import { isAudioContextSupported, event } from '@/utils'
 import { songStore, favoriteStore, preferenceStore } from '@/stores'
 import { views } from '@/config'
 
+
 export default {
   data: () => ({
     song: songStore.stub,
@@ -122,7 +109,6 @@ export default {
 
     prefs: preferenceStore.state,
     showEqualizer: false,
-    cover: null,
 
     /**
      * Indicate if we should build and use an equalizer.
@@ -134,9 +120,10 @@ export default {
   }),
 
   components: {
-    SoundBar: () => import('@/components/ui/sound-bar.vue'),
-    Equalizer: () => import('@/components/ui/equalizer.vue'),
-    Volume: () => import('@/components/ui/volume.vue')
+    SoundBar: () => import('@/components/ui/sound-bar'),
+    Equalizer: () => import('@/components/ui/equalizer'),
+    Volume: () => import('@/components/ui/volume'),
+    MiddlePane: () => import('@/components/layout/app-footer/middle-pane')
   },
 
   methods: {
@@ -173,7 +160,7 @@ export default {
   created () {
     event.on({
       /**
-       * Listen to song:played event to set the current playing song and the cover image.
+       * Listen to song:played event to set the current playing song.
        *
        * @param  {Object} song
        *
@@ -181,7 +168,6 @@ export default {
        */
       [event.$names.SONG_PLAYED]: song => {
         this.song = song
-        this.cover = this.song.album.cover
       },
 
       /**
@@ -197,27 +183,6 @@ export default {
 <style lang="scss">
 @import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
-
-@mixin hasSoftGradientOnTop($startColor) {
-  position: relative;
-
-  // Add a reverse gradient here to elimate the "hard cut" feel when the
-  // song list is too long.
-  &::before {
-    $gradientHeight: 2*$footerHeight/3;
-    content: " ";
-    position: absolute;
-    width: 100%;
-    height: $gradientHeight;
-    top: -$gradientHeight;
-    left: 0;
-
-    // Safari 8 won't recognize rgba(255, 255, 255, 0) and treat it as black.
-    // rgba($startColor, 0) is a workaround.
-    background-image: linear-gradient(to bottom, rgba($startColor, 0) 0%, rgba($startColor, 1) 100%);
-    pointer-events: none; // click-through
-  }
-}
 
 #mainFooter {
   background: $color2ndBgr;
@@ -345,115 +310,11 @@ export default {
     opacity: 1;
   }
 
-
   @media only screen and (max-width: 768px) {
     flex: 1;
 
     &::before {
       display: none;
-    }
-  }
-}
-
-.middle-pane {
-  flex: 1;
-  display: flex;
-
-  .album-thumb {
-    flex: 0 0 $footerHeight;
-    height: 100%;
-    background-size: cover;
-    position: relative;
-  }
-
-  @include hasSoftGradientOnTop($colorMainBgr);
-
-  @media only screen and (max-width: 768px) {
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 8px;
-
-    .album-thumb {
-      display: none;
-    }
-
-    ::before {
-      display: none;
-    }
-  }
-}
-
-#progressPane {
-  flex: 1;
-  text-align: center;
-  padding-top: 16px;
-  line-height: 18px;
-  background: rgba(1, 1, 1, .2);
-  position: relative;
-
-  .meta {
-    font-size: .9rem;
-
-    a {
-      &:hover {
-        color: $colorHighlight;
-      }
-    }
-  }
-
-  // Some little tweaks here and there
-  .plyr {
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-
-  .plyr__progress {
-    overflow: hidden;
-    height: 1px;
-
-    html.touch &, .middle-pane:hover & {
-      overflow: visible;
-      height: $plyr-volume-track-height;
-    }
-  }
-
-  .plyr__controls {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 0;
-  }
-
-  .plyr__controls--left, .plyr__controls--right {
-    display: none;
-  }
-
-
-  @media only screen and (max-width: 768px) {
-    .meta, .title {
-      display: none;
-    }
-
-    top: -15px;
-    padding-top: 0;
-    width: 100%;
-    position: absolute;
-
-    .plyr {
-      &__progress {
-        height: 16px;
-
-        &--buffer[value],
-        &--played[value],
-        &--seek[type='range'] {
-          height: 16px;
-        }
-      }
     }
   }
 }

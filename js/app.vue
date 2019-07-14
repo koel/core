@@ -21,13 +21,13 @@
 <script>
 import Vue from 'vue'
 
-import AppHeader from '@/components/layout/app-header.vue'
-import AppFooter from '@/components/layout/app-footer.vue'
-import MainWrapper from '@/components/layout/main-wrapper/index.vue'
-import Overlay from '@/components/ui/overlay.vue'
-import LoginForm from '@/components/auth/login-form.vue'
-import Hotkeys from '@/components/utils/hotkeys.vue'
-import EventListeners from '@/components/utils/event-listeners.vue'
+import AppHeader from '@/components/layout/app-header'
+import AppFooter from '@/components/layout/app-footer/index'
+import MainWrapper from '@/components/layout/main-wrapper/index'
+import Overlay from '@/components/ui/overlay'
+import LoginForm from '@/components/auth/login-form'
+import Hotkeys from '@/components/utils/hotkeys'
+import EventListeners from '@/components/utils/event-listeners'
 
 import { event, showOverlay, hideOverlay, $, app as appUtils } from '@/utils'
 import { sharedStore, favoriteStore, queueStore, preferenceStore as preferences } from '@/stores'
@@ -102,7 +102,7 @@ export default {
         }
 
         // Ping the server everytime the window is focused, so that we don't have those
-        // "suddent" logout.
+        // "sudden" logout.
         window.addEventListener('focus', () => http.get('/ping'))
 
         this.subscribeToBroadcastedEvents()

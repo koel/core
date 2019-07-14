@@ -65,17 +65,17 @@ export const playback = {
     })
 
     player.addEventListener('timeupdate', e => {
+      const nextSong = queueStore.next
+
+      if (!nextSong || nextSong.preloaded || (isMobile.any && preferences.transcodeOnMobile)) {
+        return
+      }
+
       if (
         this.player.media.duration &&
         this.player.media.currentTime + PRELOAD_BUFFER > this.player.media.duration
       ) {
         // Try preloading the next song
-        const nextSong = queueStore.next
-
-        if (!nextSong || nextSong.preloaded || (isMobile.any && preferences.transcodeOnMobile)) {
-          return
-        }
-
         const audio = document.createElement('audio')
         audio.setAttribute('src', songStore.getSourceUrl(nextSong))
         audio.setAttribute('preload', 'auto')
