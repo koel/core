@@ -65,6 +65,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~#/partials/_vars.scss";
+
 .youtube-extra-wrapper {
   overflow-x: hidden;
 
@@ -86,10 +88,8 @@ export default {
       font-size: .9rem;
     }
 
-    &:hover {
-      .title {
-        color: #fff;
-      }
+    &:hover, &:active, &:focus {
+      color: #fff;
     }
 
     &:last-of-type {
