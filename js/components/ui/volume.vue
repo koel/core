@@ -72,8 +72,8 @@ export default {
   @include vertical-center();
 
   // More tweaks
-  input[type=range] {
-    margin-top: -3px;
+  [type=range] {
+    margin: -1px 0 0 5px;
   }
 
   i {
