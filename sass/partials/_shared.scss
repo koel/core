@@ -22,6 +22,7 @@ input, select, button, textarea, .btn {
   font-weight: $fontWeight_Thin;
   padding: .5rem .6rem;
   border-radius: .2rem;
+  margin: 0;
 
   &:required, &:invalid {
     box-shadow: none;
