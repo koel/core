@@ -6,7 +6,7 @@
   "dependencies": {
     "@phanan/vuebus": "phanan/vuebus",
     "alertify.js": "^1.0.12",
-    "axios": "^0.15.3",
+    "axios": "^0.18.1",
     "blueimp-md5": "^2.3.0",
     "intersection-observer": "^0.2.0",
     "ismobilejs": "^0.4.0",
