@@ -30,7 +30,7 @@ describe('components/screens/recently-played', () => {
   it('fetch and populate content on demand', () => {
     shallow(Component)
     const m = mock(recentlyPlayedStore, 'fetchAll')
-    event.emit('LOAD_MAIN_CONTENT', 'recently-played')
+    event.emit('LOAD_MAIN_CONTENT', 'RECENTLY_PLAYED')
     expect(m).toHaveBeenCalled()
   })
 })
