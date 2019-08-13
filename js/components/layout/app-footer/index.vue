@@ -17,7 +17,7 @@ import { views } from '@/config'
 export default {
   data: () => ({
     song: songStore.stub,
-    viewingQueue: false,
+    viewingQueue: false
   }),
 
   components: {

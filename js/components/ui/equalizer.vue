@@ -115,6 +115,10 @@ export default {
     createSliders () {
       const config = equalizerStore.get()
       Array.from(document.querySelectorAll('#equalizer .slider')).forEach((el, i) => {
+        if (el.noUiSlider) {
+          el.noUiSlider.destroy()
+        }
+
         nouislider.create(el, {
           connect: [false, true],
           // the first element is the preamp. The rest are gains.
