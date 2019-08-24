@@ -14,7 +14,8 @@ module.exports = {
     '<rootDir>/node_modules/jest-serializer-vue'
   ],
   globals: {
-    KOEL_ENV: 'web'
+    KOEL_ENV: 'web',
+    NODE_ENV: 'test'
   },
   setupTestFrameworkScriptFile: '<rootDir>/js/tests/setup.js',
   verbose: true,

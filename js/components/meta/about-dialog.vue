@@ -23,6 +23,10 @@
         <a href="https://github.com/phanan/koel/graphs/contributors" target="_blank">contributors</a>.
       </p>
 
+      <p class="demo-credits" v-if="demo">
+        Demo music provided by <a href="https://www.bensound.com" target="_blank">Bensound</a>.
+      </p>
+
       <p>
         Loving Koel? Please consider supporting its development via
         <a href="https://github.com/users/phanan/sponsorship" target="_blank">GitHub Sponsors</a> and/or
@@ -42,7 +46,8 @@ import { sharedStore, userStore } from '@/stores'
 export default {
   data: () => ({
     userState: userStore.state,
-    sharedState: sharedStore.state
+    sharedState: sharedStore.state,
+    demo: NODE_ENV === 'demo'
   }),
 
   computed: {

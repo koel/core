@@ -3,6 +3,7 @@
   "extends": "vue",
   "globals": {
     "KOEL_ENV": true,
+    "NODE_ENV": true,
     "HTMLElement": true
   },
   "rules": {
