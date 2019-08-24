@@ -15,12 +15,17 @@ import axios from 'axios'
 import { userStore } from '@/stores'
 import { ls } from '@/services'
 
+const DEMO_ACCOUNT = {
+  email: 'demo@koel.phanan.net',
+  password: 'demo'
+}
+
 export default {
   data () {
     return {
       url: '',
-      email: '',
-      password: '',
+      email: NODE_ENV === 'demo' ? DEMO_ACCOUNT.email : '',
+      password: NODE_ENV === 'demo' ? DEMO_ACCOUNT.password : '',
       failed: false,
       isDesktopApp: KOEL_ENV === 'app'
     }
