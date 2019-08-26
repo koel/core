@@ -7,17 +7,10 @@
     tabindex="0"
     v-if="album.songs.length"
   >
-    <span class="cover" :style="{ backgroundImage: `url(${album.cover})` }">
-      <a
-        :title="`Play all songs in the album ${album.name}`"
-        @click.prevent="playOrQueue"
-        class="control control-play"
-        href
-        role="button"
-      >
-        <i class="fa fa-play"></i>
-      </a>
+    <span class="thumbnail-wrapper">
+      <album-thumbnail :entity="album" />
     </span>
+
     <footer>
       <div class="info">
         <a class="name" :href="`#!/album/${album.id}`">{{ album.name }}</a>
@@ -60,19 +53,23 @@
 </template>
 
 <script>
-import { orderBy } from 'lodash'
 import { pluralize } from '@/utils'
-import { queueStore, artistStore, sharedStore } from '@/stores'
+import { artistStore, sharedStore } from '@/stores'
 import { playback, download } from '@/services'
 import albumAttributes from '@/mixins/album-attributes'
 
 export default {
+  components: {
+    AlbumThumbnail: () => import('@/components/ui/album-artist-thumbnail')
+  },
+
   props: {
     album: {
       type: Object,
       required: true
     }
   },
+
   filters: { pluralize },
   mixins: [albumAttributes],
 
@@ -88,18 +85,6 @@ export default {
   },
 
   methods: {
-    /**
-     * Play all songs in the current album in track order,
-     * or queue them up if Ctrl/Cmd key is pressed.
-     */
-    playOrQueue (e) {
-      if (e.metaKey || e.ctrlKey) {
-        queueStore.queue(orderBy(this.album.songs, ['disc', 'track']))
-      } else {
-        playback.playAllInAlbum(this.album, false)
-      }
-    },
-
     shuffle () {
       playback.playAllInAlbum(this.album, true /* shuffled */)
     },
@@ -126,8 +111,6 @@ export default {
 @import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
-@include artist-album-card();
-
 .sep {
   display: none;
   color: $color2ndText;
@@ -136,4 +119,6 @@ export default {
     display: inline;
   }
 }
+
+@include artist-album-card();
 </style>

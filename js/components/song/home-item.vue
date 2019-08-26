@@ -5,14 +5,14 @@
     class="song-item-home"
     tabindex="0"
   >
-    <span class="cover" :style="{ backgroundImage: 'url('+song.album.cover+')' }">
+    <span class="cover" :style="{ backgroundImage: `url(${song.album.cover})` }">
       <a class="control" @click.prevent="changeSongState">
         <i class="fa fa-play" v-if="song.playbackState !== 'playing'"></i>
         <i class="fa fa-pause" v-else></i>
       </a>
     </span>
     <span class="details">
-      <span v-if="showPlayCount" :style="{ width: song.playCount*100/topPlayCount+'%' }" class="play-count"></span>
+      <span v-if="showPlayCount" :style="{ width: `${song.playCount*100/topPlayCount}%` }" class="play-count"></span>
       {{ song.title }}
       <span class="by">
         <a :href="`#!/artist/${song.artist.id}`">{{ song.artist.name }}</a>
@@ -116,7 +116,6 @@ export default {
       width: 28px;
       height: 28px;
       background: rgba(0, 0, 0, .7);
-      border: 1px solid transparent;
       line-height: 2rem;
       font-size: 1rem;
       text-align: center;
@@ -124,11 +123,6 @@ export default {
       display: none;
       color: #fff;
       transition: .3s;
-
-      &:hover {
-        transform: scale(1.2);
-        border-color: #fff;
-      }
 
       html.touchevents & {
         display: block;

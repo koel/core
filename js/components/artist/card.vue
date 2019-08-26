@@ -7,17 +7,10 @@
     tabindex="0"
     v-if="showing"
   >
-    <span class="cover" :style="{ backgroundImage: `url(${image})` }">
-      <a
-        :title="`Play all songs by ${artist.name}`"
-        @click.prevent="playOrQueue"
-        class="control control-play"
-        href
-        role="button"
-      >
-        <i class="fa fa-play"></i>
-      </a>
+    <span class="thumbnail-wrapper">
+      <artist-thumbnail :entity="artist" />
     </span>
+
     <footer>
       <div class="info">
         <a class="name" :href="`#!/artist/${artist.id}`">
@@ -59,9 +52,8 @@
 </template>
 
 <script>
-import { orderBy } from 'lodash'
 import { pluralize } from '@/utils'
-import { artistStore, queueStore, sharedStore } from '@/stores'
+import { artistStore, sharedStore } from '@/stores'
 import { playback, download } from '@/services'
 import artistAttributes from '@/mixins/artist-attributes'
 
@@ -72,6 +64,11 @@ export default {
       required: true
     }
   },
+
+  components: {
+    ArtistThumbnail: () => import('@/components/ui/album-artist-thumbnail')
+  },
+
   filters: { pluralize },
   mixins: [artistAttributes],
 
@@ -92,14 +89,6 @@ export default {
   },
 
   methods: {
-    playOrQueue (e) {
-      if (e.metaKey || e.ctrlKey) {
-        queueStore.queue(orderBy(this.artist.songs, ['album_id', 'disc', 'track']))
-      } else {
-        playback.playAllByArtist(this.artist, false)
-      }
-    },
-
     shuffle () {
       playback.playAllByArtist(this.artist, true /* shuffled */)
     },

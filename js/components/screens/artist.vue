@@ -2,7 +2,10 @@
   <section id="artistWrapper">
     <h1 class="heading">
       <span class="overview">
-        <img :src="image" width="64" height="64" class="cover">
+        <span class="thumbnail-wrapper">
+          <artist-thumbnail :entity="artist" />
+        </span>
+
         {{ artist.name }}
         <controls-toggler :showing-controls="showingControls" @toggleControls="toggleControls"/>
 
@@ -73,8 +76,9 @@ export default {
   },
 
   components: {
-    ArtistInfo: () => import('@/components/artist/info.vue'),
-    SoundBar: () => import('@/components/ui/sound-bar.vue')
+    ArtistInfo: () => import('@/components/artist/info'),
+    SoundBar: () => import('@/components/ui/sound-bar'),
+    ArtistThumbnail: () => import('@/components/ui/album-artist-thumbnail')
   },
 
   filters: { pluralize },
@@ -147,20 +151,22 @@ export default {
 
   .heading {
     .overview {
+      .thumbnail-wrapper {
+        display: block;
+        width: 64px;
+        position: absolute;
+        left: 0;
+
+        @media only screen and (max-width : 768px) {
+          display: none;
+        }
+      }
+
       position: relative;
       padding-left: 84px;
 
       @media only screen and (max-width : 768px) {
         padding-left: 0;
-      }
-    }
-
-    .cover {
-      position: absolute;
-      left: 0;
-
-      @media only screen and (max-width : 768px) {
-        display: none;
       }
     }
   }
