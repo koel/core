@@ -58,6 +58,7 @@ export default {
   border-top: 1px solid $colorMainBgr;
   display: flex;
   position: relative;
+  z-index: 9;
 
   .media-info-wrap {
     flex: 1;
