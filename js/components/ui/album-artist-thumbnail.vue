@@ -71,7 +71,6 @@ export default {
 .cover {
   position: relative;
   width: 100%;
-  max-width: 256px;
   display: block;
   background-repeat: no-repeat;
   background-size: cover;
