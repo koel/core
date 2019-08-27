@@ -13,6 +13,7 @@
 <script>
 import { event } from '@/utils'
 import { preferenceStore as preferences } from '@/stores'
+import isMobile from 'ismobilejs'
 
 let supportBarTimeoutHandle
 const DELAY_UNTIL_SHOWN = 30 * 60 * 1000
@@ -24,7 +25,13 @@ export default {
 
   created () {
     event.on({
-      [event.$names.KOEL_READY]: () => preferences.supportBarNoBugging || this.setUpShowBarTimeout()
+      [event.$names.KOEL_READY]: () => {
+        if (isMobile.any || preferences.supportBarNoBugging) {
+          return
+        }
+
+        this.setUpShowBarTimeout()
+      }
     })
   },
 
