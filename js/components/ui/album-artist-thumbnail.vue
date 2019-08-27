@@ -1,12 +1,12 @@
 <template>
   <span class="cover" :style="{ backgroundImage: `url(${backgroundImageUrl})` }">
     <a
-      :title="controlTitleAttribute"
       @click.prevent="playOrQueue"
-      class="control control-play"
+      class="control control-play font-size-0"
       href
       role="button"
     >
+      {{ buttonLabel }}
     </a>
   </span>
 </template>
@@ -15,6 +15,7 @@
 import { orderBy } from 'lodash'
 import { queueStore } from '@/stores'
 import { playback } from '@/services'
+import { getDefaultCover } from '@/utils'
 
 export default {
   props: {
@@ -34,10 +35,16 @@ export default {
     },
 
     backgroundImageUrl () {
-      return this.forAlbum ? this.entity.cover : this.entity.image
+      return this.forAlbum
+        ? this.entity.cover
+          ? this.entity.cover
+          : getDefaultCover()
+        : this.entity.image
+          ? this.entity.image
+          : getDefaultCover()
     },
 
-    controlTitleAttribute () {
+    buttonLabel () {
       return this.forAlbum
         ? `Play all songs in the album ${this.entity.name}`
         : `Play all songs by the artist ${this.entity.name}`
@@ -90,7 +97,7 @@ export default {
       width: 100%;
       height: 100%;
       top: 0;
-      background: rgba(0, 0, 0, .5);
+      background: rgba(0, 0, 0, .3);
       opacity: 0;
       z-index: 1;
     }
@@ -115,6 +122,16 @@ export default {
       &::before, &::after {
         transition: .3s opacity;
         opacity: 1;
+      }
+    }
+
+    &:active {
+      &::before {
+        background: rgba(0, 0, 0, .5);
+      }
+
+      &::after {
+        transform: scale(.9);
       }
     }
   }
