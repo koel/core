@@ -26,14 +26,14 @@ describe('components/ui/context-menu', () => {
     wrapper.vm.open(42, 128)
     expect(wrapper.find('.menu').element.style.top).toBe('42px')
     expect(wrapper.find('.menu').element.style.left).toBe('128px')
-    expect(getComputedStyle(wrapper.find('.menu').element).display).toBe('block')
+    expect(global.getComputedStyle(wrapper.find('.menu').element).display).toBe('block')
   })
 
   it('closes', () => {
     const wrapper = mount(Component)
     wrapper.vm.open(42, 128)
     wrapper.vm.close()
-    expect(getComputedStyle(wrapper.find('.menu').element).display).toBe('none')
+    expect(global.getComputedStyle(wrapper.find('.menu').element).display).toBe('none')
   })
 
   it('notifies other instances to close', () => {
