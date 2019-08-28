@@ -3,6 +3,12 @@
   "version": "3.4.2",
   "description": "The core client scripts and assets for Koel",
   "main": "js/app.js",
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-0"
+    ]
+  },
   "dependencies": {
     "@phanan/vuebus": "phanan/vuebus",
     "alertify.js": "^1.0.12",
