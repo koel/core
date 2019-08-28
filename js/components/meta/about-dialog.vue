@@ -11,7 +11,7 @@
 
       <p class="current-version">{{ sharedState.currentVersion }}</p>
 
-      <p v-if="hasNewVersion" class="new-version">
+      <p v-if="shouldDisplayVersionUpdate && hasNewVersion" class="new-version">
         <a :href="latestVersionUrl" target="_blank">
             A new Koel version is available ({{ sharedState.latestVersion }}).
         </a>
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import compareVersions from 'compare-versions'
 import { sharedStore, userStore } from '@/stores'
 
 export default {
@@ -55,9 +56,12 @@ export default {
       return `https://github.com/phanan/koel/releases/tag/${this.sharedState.latestVersion}`
     },
 
+    shouldDisplayVersionUpdate () {
+      return this.userState.current.is_admin
+    },
+
     hasNewVersion () {
-      return this.userState.current.is_admin &&
-        this.sharedState.currentVersion < this.sharedState.latestVersion
+      return compareVersions(this.sharedState.latestVersion, this.sharedState.currentVersion, '>')
     }
   },
 
