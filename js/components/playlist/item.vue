@@ -30,6 +30,7 @@
 import { $, event } from '@/utils'
 import router from '@/router'
 import { songStore, playlistStore, favoriteStore } from '@/stores'
+import { views } from '@/config'
 
 const VALID_PLAYLIST_TYPES = ['playlist', 'favorites', 'recently-played']
 
@@ -187,11 +188,13 @@ export default {
   created () {
     event.on(event.$names.LOAD_MAIN_CONTENT, (view, playlist) => {
       switch (view) {
-        case 'favorites':
-        case 'recently-played':
-          this.active = this.type === view
+        case views.FAVORITES:
+          this.active = this.type === 'favorites'
           break
-        case 'playlist':
+        case views.RECENTLY_PLAYED:
+          this.active = this.type === 'recently-played'
+          break
+        case views.PLAYLIST:
           this.active = this.playlist === playlist
           break
         default:

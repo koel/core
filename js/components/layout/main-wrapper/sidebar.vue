@@ -41,10 +41,10 @@
 
       <ul class="menu">
         <li>
-          <a :class="['settings', currentView == 'settings' ? 'active' : '']" href="#!/settings">Settings</a>
+          <a :class="['settings', currentView === $options.views.SETTINGS ? 'active' : '']" href="#!/settings">Settings</a>
         </li>
         <li>
-          <a :class="['users', currentView == 'users' ? 'active' : '']" href="#!/users">Users</a>
+          <a :class="['users', currentView === $options.views.USERS ? 'active' : '']" href="#!/users">Users</a>
         </li>
       </ul>
     </section>
