@@ -16,6 +16,7 @@
         @shuffleAll="shuffleAll"
         @shuffleSelected="shuffleSelected"
         @clearQueue="clearQueue"
+        :songs="state.songs"
         :config="songListControlConfig"
         :selectedSongs="selectedSongs"
       />

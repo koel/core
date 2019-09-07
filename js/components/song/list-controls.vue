@@ -4,7 +4,7 @@
       @click.prevent="shuffle"
       class="btn btn-orange btn-shuffle-all"
       title="Shuffle all"
-      v-if="fullConfig.shuffle && selectedSongs.length < 2"
+      v-if="fullConfig.shuffle && selectedSongs.length < 2 && songs.length"
     >
       <i class="fa fa-random"></i> All
     </button>
@@ -58,6 +58,10 @@
 export default {
   props: {
     config: Object,
+    songs: {
+      type: Array,
+      default: () => []
+    },
     selectedSongs: {
       type: Array,
       default: () => []

@@ -40,6 +40,7 @@
         v-show="artist.songs.length && (!isPhone || showingControls)"
         @shuffleAll="shuffleAll"
         @shuffleSelected="shuffleSelected"
+        :songs="artist.songs"
         :config="songListControlConfig"
         :selectedSongs="selectedSongs"
       />

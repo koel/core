@@ -23,6 +23,7 @@
           @shuffleAll="shuffleAll"
           @shuffleSelected="shuffleSelected"
           @deletePlaylist="destroy"
+          :songs = "playlist.songs"
           :config="songListControlConfig"
           :selectedSongs="selectedSongs"
         />

@@ -59,14 +59,17 @@ describe('components/screens/queue', () => {
   })
 
   it('shuffles all available songs if there are no songs queued', () => {
+    songStore.state.songs = factory('song', 10)
     const m = mock(playback, 'queueAndPlay')
-    mount(Component, {
+    const c = shallow(Component, {
       data: () => ({
         state: {
           songs: []
         }
       })
-    }).click('button.btn-shuffle-all')
+    })
+
+    c.click('a.start')
     expect(m).toHaveBeenCalledWith(songStore.all, true)
   })
 

@@ -35,6 +35,7 @@
         v-show="album.songs.length && (!isPhone || showingControls)"
         @shuffleAll="shuffleAll"
         @shuffleSelected="shuffleSelected"
+        :songs="album.songs"
         :config="songListControlConfig"
         :selectedSongs="selectedSongs"
       />
