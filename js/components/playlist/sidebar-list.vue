@@ -42,7 +42,7 @@ import router from '@/router'
 
 export default {
   components: {
-    PlaylistItem: () => import('@/components/playlist/item.vue'),
+    PlaylistItem: () => import('@/components/playlist/sidebar-item.vue'),
     ContextMenu: () => import('@/components/playlist/create-new-context-menu.vue')
   },
 

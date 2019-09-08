@@ -12,15 +12,12 @@
       @drop.stop.prevent="handleDrop"
     >{{ playlist.name }}</a>
 
-    <input type="text"
-      @keyup.esc="cancelEdit"
-      @keyup.enter="update"
-      @blur="update"
-      v-model="playlist.name"
+    <name-editor
+      :playlist="playlist"
+      @cancelled="cancelEditing"
+      @updated="onPlaylistNameUpdated"
       v-if="nameEditable && editing"
-      v-koel-focus
-      required
-    >
+    />
 
     <context-menu :playlist="playlist" ref="contextMenu" @edit="makeEditable" />
   </li>
@@ -36,7 +33,8 @@ const VALID_PLAYLIST_TYPES = ['playlist', 'favorites', 'recently-played']
 
 export default {
   components: {
-    ContextMenu: () => import('@/components/playlist/item-context-menu.vue')
+    ContextMenu: () => import('@/components/playlist/item-context-menu.vue'),
+    NameEditor: () => import('@/components/playlist/name-editor.vue')
   },
 
   props: {
@@ -93,29 +91,7 @@ export default {
         return
       }
 
-      this.beforeEditCache = this.playlist.name
       this.editing = true
-    },
-
-    update () {
-      if (!this.nameEditable || !this.editing) {
-        return
-      }
-
-      this.editing = false
-
-      this.playlist.name = this.playlist.name.trim()
-      if (!this.playlist.name) {
-        this.playlist.name = this.beforeEditCache
-        return
-      }
-
-      playlistStore.update(this.playlist)
-    },
-
-    cancelEdit () {
-      this.editing = false
-      this.playlist.name = this.beforeEditCache
     },
 
     /**
@@ -182,6 +158,15 @@ export default {
         router.go(`/playlist/${this.playlist.id}`)
         this.$refs.contextMenu.open(event.pageY, event.pageX)
       }
+    },
+
+    cancelEditing () {
+      this.editing = false
+    },
+
+    onPlaylistNameUpdated (mutatedPlaylist) {
+      this.playlist.name = mutatedPlaylist.name
+      this.editing = false
     }
   },
 
