@@ -73,7 +73,7 @@ export default {
         return
       }
 
-      typeof playlist.populated === 'undefined' ? this.populate(playlist) : (this.playlist = playlist)
+      playlist.populated ? (this.playlist = playlist) : this.populate(playlist)
     })
   },
 

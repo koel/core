@@ -112,6 +112,12 @@ export const playlistStore = {
 
       http.put(`playlist/${playlist.id}/sync`, { songs: playlist.songs.map(song => song.id) }, () => {
         alerts.success(`Added ${pluralize(songs.length, 'song')} into &quot;${playlist.name}&quot;.`)
+
+        // Playlist's songs are not reactive right away for some reason.
+        // This is a dirty hack to force reactivity.
+        playlist.name = `${playlist.name} `
+        playlist.name = playlist.name.trim()
+
         resolve(playlist)
       }, error => reject(error))
     })
