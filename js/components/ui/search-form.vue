@@ -1,10 +1,12 @@
 <template>
   <div class="side search" id="searchForm" :class="{ showing: showing }" role="search">
     <input type="search"
-      ref="input"
       :class="{ dirty: q }"
       @input="filter"
+      autocorrect="false"
       placeholder="Search"
+      ref="input"
+      spellcheck="false"
       v-model="q"
       v-koel-focus
     >
