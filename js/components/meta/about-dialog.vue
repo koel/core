@@ -48,7 +48,8 @@ export default {
   data: () => ({
     userState: userStore.state,
     sharedState: sharedStore.state,
-    demo: NODE_ENV === 'demo'
+    demo: NODE_ENV === 'demo',
+    compareVersions
   }),
 
   computed: {
@@ -61,7 +62,7 @@ export default {
     },
 
     hasNewVersion () {
-      return compareVersions(this.sharedState.latestVersion, this.sharedState.currentVersion, '>')
+      return compareVersions.compare(this.sharedState.latestVersion, this.sharedState.currentVersion, '>')
     }
   },
 
