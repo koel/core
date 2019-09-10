@@ -48,8 +48,7 @@ export default {
   data: () => ({
     userState: userStore.state,
     sharedState: sharedStore.state,
-    demo: NODE_ENV === 'demo',
-    compareVersions
+    demo: NODE_ENV === 'demo'
   }),
 
   computed: {
