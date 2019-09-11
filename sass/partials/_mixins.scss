@@ -21,6 +21,12 @@
   &.as-list {
     grid-gap: 8px;
   }
+
+  &.as-thumbnails {
+    article.item {
+      max-width: 256px;
+    }
+  }
 }
 
 @mixin artist-album-card() {
