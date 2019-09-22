@@ -5,7 +5,7 @@
       <view-mode-switch :mode="viewMode" for="artists" @viewModeChanged="changeViewMode"/>
     </h1>
 
-    <div class="artists main-scroll-wrap" :class="`as-${viewMode}`" @scroll="scrolling">
+    <div ref="scroller" class="artists main-scroll-wrap" :class="`as-${viewMode}`" @scroll="scrolling">
       <artist-card v-for="item in displayedItems" :artist="item" :key="item.id"/>
       <to-top-button/>
     </div>
@@ -51,7 +51,11 @@ export default {
 
   created () {
     event.on({
-      [event.$names.KOEL_READY]: () => (this.artists = artistStore.all),
+      [event.$names.KOEL_READY]: () => {
+        this.artists = artistStore.all
+        // #1086 solving not scrollable issue on very big screens
+        this.$nextTick(() => this.makeScrollable(this.$refs.scroller, this.artists.length))
+      },
       [event.$names.FILTER_CHANGED]: q => (this.q = q)
     })
   }

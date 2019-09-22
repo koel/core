@@ -51,7 +51,10 @@ export default {
 
   created () {
     event.on({
-      [event.$names.KOEL_READY]: () => (this.albums = albumStore.all),
+      [event.$names.KOEL_READY]: () => {
+        this.albums = albumStore.all
+        this.$nextTick(() => this.makeScrollable(this.$refs.scroller, this.albums.length))
+      },
       [event.$names.FILTER_CHANGED]: q => (this.q = q)
     })
   }

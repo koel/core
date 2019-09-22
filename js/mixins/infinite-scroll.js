@@ -24,6 +24,14 @@ export default {
 
     displayMore () {
       this.numOfItems += this.perPage
+    },
+
+    makeScrollable (container, totalItemCount) {
+      if (container.scrollHeight <= container.clientHeight && this.numOfItems < totalItemCount) {
+        this.displayMore()
+        // we can't use $nextTick here because it's instant and scrollHeight wouldn't have been udpated.
+        window.setTimeout(() => this.makeScrollable(container, totalItemCount), 200)
+      }
     }
   }
 }
