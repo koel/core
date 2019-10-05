@@ -53,11 +53,18 @@ export default {
     event.on({
       [event.$names.KOEL_READY]: () => {
         this.artists = artistStore.all
+
         // #1086 solving not scrollable issue on very big screens
-        this.$nextTick(() => this.makeScrollable(this.$refs.scroller, this.artists.length))
+        if (this.$refs.scroller) {
+          this.$nextTick(() => this.makeScrollable(this.$refs.scroller, this.artists.length))
+        }
       },
       [event.$names.FILTER_CHANGED]: q => (this.q = q)
     })
+  },
+
+  mounted () {
+    this.makeScrollable(this.$refs.scroller, this.artists.length)
   }
 }
 </script>

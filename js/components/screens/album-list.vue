@@ -53,10 +53,17 @@ export default {
     event.on({
       [event.$names.KOEL_READY]: () => {
         this.albums = albumStore.all
-        this.$nextTick(() => this.makeScrollable(this.$refs.scroller, this.albums.length))
+
+        if (this.$refs.scroller) {
+          this.$nextTick(() => this.makeScrollable(this.$refs.scroller, this.albums.length))
+        }
       },
       [event.$names.FILTER_CHANGED]: q => (this.q = q)
     })
+  },
+
+  mounted () {
+    this.makeScrollable(this.$refs.scroller, this.albums.length)
   }
 }
 </script>
