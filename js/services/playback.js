@@ -102,17 +102,20 @@ export const playback = {
       preferences.repeatMode === 'REPEAT_ONE' ? this.restart() : this.playNext()
     })
 
-    mediaElement.addEventListener('canplay', () => {
-      const song = queueStore.current
-      recentlyPlayedStore.add(song)
-      songStore.registerPlay(song)
-      recentlyPlayedStore.fetchAll()
-    })
-
     mediaElement.addEventListener('timeupdate', throttle(e => {
+      const currentSong = queueStore.current
+
+      if (!currentSong.playCountRegistered) {
+        // if we've passed 25% of the song, it's safe to say the song has been "played".
+        // Refer to https://github.com/phanan/koel/issues/1087.
+        if (!mediaElement.duration || this.isTranscoding || mediaElement.currentTime * 4 > mediaElement.duration) {
+          this.registerPlay(currentSong)
+        }
+      }
+
       const nextSong = queueStore.next
 
-      if (!nextSong || nextSong.preloaded || (isMobile.any && preferences.transcodeOnMobile)) {
+      if (!nextSong || nextSong.preloaded || this.isTranscoding) {
         return
       }
 
@@ -120,6 +123,15 @@ export const playback = {
         this.preload(nextSong)
       }
     }, 3000))
+  },
+
+  isTranscoding: (() => isMobile.any && preferences.transcodeOnMobile)(),
+
+  registerPlay: song => {
+    recentlyPlayedStore.add(song)
+    songStore.registerPlay(song)
+    recentlyPlayedStore.fetchAll()
+    song.playCountRegistered = true
   },
 
   preload: song => {
@@ -204,7 +216,7 @@ export const playback = {
     // Record the UNIX timestamp the song start playing, for scrobbling purpose
     song.playStartTime = Math.floor(Date.now() / 1000)
 
-    song.registeredPlayCount = false
+    song.playCountRegistered = false
 
     event.emit(event.$names.SONG_PLAYED, song)
 
