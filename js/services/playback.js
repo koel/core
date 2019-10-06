@@ -64,7 +64,7 @@ export const playback = {
     this.initialized = true
   },
 
-  listentToSocketEvents () {
+  listenToSocketEvents () {
     socket.listen(event.$names.SOCKET_TOGGLE_PLAYBACK, () => this.toggle())
       .listen(event.$names.SOCKET_PLAY_NEXT, () => this.playNext())
       .listen(event.$names.SOCKET_PLAY_PREV, () => this.playPrev())
