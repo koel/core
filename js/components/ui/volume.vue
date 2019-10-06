@@ -11,14 +11,15 @@
     <i
       @click="mute"
       class="fa fa-volume-up mute"
-      v-else
       role="button"
       tabindex="0"
       title="Mute"
+      v-else
     ></i>
     <input
-      @change="broadcastVolume" class="plyr__volume"
+      @change="broadcastVolume"
       @input="setVolume"
+      class="plyr__volume"
       id="volumeRange"
       max="10"
       step="0.1"
