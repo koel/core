@@ -31,6 +31,7 @@ export const playback = {
   volumeInput: null,
   repeatModes: ['NO_REPEAT', 'REPEAT_ALL', 'REPEAT_ONE'],
   initialized: false,
+  timeupdateThrottle: 3000,
 
   init () {
     // We don't need to init this service twice, or the media events will be duplicated.
@@ -94,7 +95,7 @@ export const playback = {
   listenToMediaEvents (mediaElement) {
     mediaElement.addEventListener('error', () => this.playNext(), true)
 
-    mediaElement.addEventListener('ended', e => {
+    mediaElement.addEventListener('ended', () => {
       if (sharedStore.state.useLastfm && userStore.current.preferences.lastfm_session_key) {
         songStore.scrobble(queueStore.current)
       }
@@ -102,13 +103,13 @@ export const playback = {
       preferences.repeatMode === 'REPEAT_ONE' ? this.restart() : this.playNext()
     })
 
-    mediaElement.addEventListener('timeupdate', throttle(e => {
+    mediaElement.addEventListener('timeupdate', throttle(() => {
       const currentSong = queueStore.current
 
-      if (!currentSong.playCountRegistered) {
+      if (!currentSong.playCountRegistered && !this.isTranscoding) {
         // if we've passed 25% of the song, it's safe to say the song has been "played".
         // Refer to https://github.com/phanan/koel/issues/1087.
-        if (!mediaElement.duration || this.isTranscoding || mediaElement.currentTime * 4 > mediaElement.duration) {
+        if (!mediaElement.duration || mediaElement.currentTime * 4 >= mediaElement.duration) {
           this.registerPlay(currentSong)
         }
       }
@@ -122,7 +123,7 @@ export const playback = {
       if (mediaElement.duration && mediaElement.currentTime + PRELOAD_BUFFER > mediaElement.duration) {
         this.preload(nextSong)
       }
-    }, 3000))
+    }, this.timeupdateThrottle))
   },
 
   isTranscoding: (() => isMobile.any && preferences.transcodeOnMobile)(),
@@ -196,8 +197,7 @@ export const playback = {
     }
 
     if (isMediaSessionSupported) {
-      /* global MediaMetadata */
-      navigator.mediaSession.metadata = new MediaMetadata({
+      navigator.mediaSession.metadata = new window.MediaMetadata({
         title: song.title,
         artist: song.artist.name,
         album: song.album.name,
