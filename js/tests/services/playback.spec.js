@@ -1,5 +1,6 @@
 import each from 'jest-each'
 import plyr from 'plyr'
+import { shuffle, orderBy } from 'lodash'
 import { playback, socket } from '@/services'
 import { event } from '@/utils'
 import { mock } from '@/tests/__helpers__'
@@ -11,7 +12,6 @@ import {
   recentlyPlayedStore,
   preferenceStore as preferences
 } from '@/stores'
-import { shuffle } from 'lodash'
 import router from '@/router'
 import factory from '@/tests/factory'
 
@@ -438,5 +438,43 @@ describe('services/playback', () => {
 
     playback.playFirstInQueue()
     expect(queueAndPlayMock).toHaveBeenCalled()
+  })
+
+  it('plays all songs by an artist, shuffled', () => {
+    const artist = { songs: factory('song', 5) }
+    const queueAndPlayMock = mock(playback, 'queueAndPlay')
+
+    playback.playAllByArtist(artist)
+    expect(queueAndPlayMock).toHaveBeenCalledWith(artist.songs, true)
+  })
+
+  it('plays all songs by an artist in proper order', () => {
+    const artist = { songs: factory('song', 5) }
+    const orderedSongs = factory('song', 5)
+    orderBy.mockReturnValue(orderedSongs)
+
+    const queueAndPlayMock = mock(playback, 'queueAndPlay')
+    playback.playAllByArtist(artist, false)
+    expect(orderBy).toHaveBeenCalledWith(artist.songs, ['album_id', 'disc', 'track'])
+    expect(queueAndPlayMock).toHaveBeenCalledWith(orderedSongs)
+  })
+
+  it('plays all songs in an album, shuffled', () => {
+    const album = { songs: factory('song', 5) }
+    const queueAndPlayMock = mock(playback, 'queueAndPlay')
+
+    playback.playAllInAlbum(album)
+    expect(queueAndPlayMock).toHaveBeenCalledWith(album.songs, true)
+  })
+
+  it('plays all songs in an album in proper order', () => {
+    const album = { songs: factory('song', 5) }
+    const orderedSongs = factory('song', 5)
+    orderBy.mockReturnValue(orderedSongs)
+
+    const queueAndPlayMock = mock(playback, 'queueAndPlay')
+    playback.playAllInAlbum(album, false)
+    expect(orderBy).toHaveBeenCalledWith(album.songs, ['disc', 'track'])
+    expect(queueAndPlayMock).toHaveBeenCalledWith(orderedSongs)
   })
 })
