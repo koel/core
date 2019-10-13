@@ -11,6 +11,8 @@ import {
   recentlyPlayedStore,
   preferenceStore as preferences
 } from '@/stores'
+import { shuffle } from 'lodash'
+import router from '@/router'
 import factory from '@/tests/factory'
 
 const prepareForTests = () => {
@@ -32,9 +34,6 @@ const prepareForTests = () => {
       createMediaElementSource: jest.fn(() => {})
     }
   })
-
-  // pretty ugly hack to make lodash's throttle play nice with jest
-  playback.timeupdateThrottle = 0
 }
 
 describe('services/playback', () => {
@@ -43,6 +42,7 @@ describe('services/playback', () => {
   afterEach(() => {
     jest.resetModules()
     jest.restoreAllMocks()
+    jest.clearAllMocks()
   })
 
   it('only initializes once', () => {
@@ -353,4 +353,90 @@ describe('services/playback', () => {
       playback.toggle()
       expect(actionMock).toHaveBeenCalled()
     })
+
+  it('queues and plays all songs shuffled by default', async done => {
+    const allSongs = factory('song', 5)
+    const shuffledSongs = factory('song', 5)
+    Object.defineProperty(songStore, 'all', {
+      get: () => allSongs
+    })
+
+    const firstSongInQueue = factory('song')
+    Object.defineProperty(queueStore, 'first', {
+      get: () => firstSongInQueue
+    })
+
+    const replaceQueueMock = mock(queueStore, 'replaceQueueWith')
+    const goMock = mock(router, 'go')
+    const playMock = mock(playback, 'play')
+    shuffle.mockReturnValue(shuffledSongs)
+
+    await playback.queueAndPlay()
+    expect(shuffle).toHaveBeenCalledWith(allSongs)
+    expect(replaceQueueMock).toHaveBeenCalledWith(shuffledSongs)
+    expect(goMock).toHaveBeenCalledWith('queue')
+    expect(playMock).toHaveBeenCalledWith(firstSongInQueue)
+
+    done()
+  })
+
+  it('queues and plays songs without shuffling', async done => {
+    const songs = factory('song', 5)
+    const replaceQueueMock = mock(queueStore, 'replaceQueueWith')
+    const goMock = mock(router, 'go')
+    const playMock = mock(playback, 'play')
+    const firstSongInQueue = songs[0]
+    Object.defineProperty(queueStore, 'first', {
+      get: () => firstSongInQueue
+    })
+
+    await playback.queueAndPlay(songs)
+    expect(shuffle).not.toHaveBeenCalled()
+    expect(replaceQueueMock).toHaveBeenCalledWith(songs)
+    expect(goMock).toHaveBeenCalledWith('queue')
+    expect(playMock).toHaveBeenCalledWith(firstSongInQueue)
+
+    done()
+  })
+
+  it('queues and plays songs with shuffling', async done => {
+    const songs = factory('song', 5)
+    const shuffledSongs = factory('song', 5)
+    const replaceQueueMock = mock(queueStore, 'replaceQueueWith')
+    const goMock = mock(router, 'go')
+    const playMock = mock(playback, 'play')
+    const firstSongInQueue = songs[0]
+    Object.defineProperty(queueStore, 'first', {
+      get: () => firstSongInQueue
+    })
+    shuffle.mockReturnValue(shuffledSongs)
+
+    await playback.queueAndPlay(songs, true)
+    expect(shuffle).toHaveBeenCalledWith(songs)
+    expect(replaceQueueMock).toHaveBeenCalledWith(shuffledSongs)
+    expect(goMock).toHaveBeenCalledWith('queue')
+    expect(playMock).toHaveBeenCalledWith(firstSongInQueue)
+
+    done()
+  })
+
+  it('plays first song in queue', () => {
+    const songs = factory('song', 5)
+    queueStore.all = songs
+    Object.defineProperty(queueStore, 'first', {
+      get: () => songs[0]
+    })
+    const playMock = mock(playback, 'play')
+
+    playback.playFirstInQueue()
+    expect(playMock).toHaveBeenCalledWith(songs[0])
+  })
+
+  it('playFirstInQueue triggers queueAndPlay if queue is empty', () => {
+    queueStore.all = []
+    const queueAndPlayMock = mock(playback, 'queueAndPlay')
+
+    playback.playFirstInQueue()
+    expect(queueAndPlayMock).toHaveBeenCalled()
+  })
 })
