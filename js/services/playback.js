@@ -32,7 +32,6 @@ export const playback = {
   volumeInput: null,
   repeatModes: ['NO_REPEAT', 'REPEAT_ALL', 'REPEAT_ONE'],
   initialized: false,
-  timeupdateThrottle: 3000,
 
   init () {
     // We don't need to init this service twice, or the media events will be duplicated.
@@ -124,7 +123,7 @@ export const playback = {
       if (mediaElement.duration && mediaElement.currentTime + PRELOAD_BUFFER > mediaElement.duration) {
         this.preload(nextSong)
       }
-    }, this.timeupdateThrottle))
+    }, 3000))
   },
 
   isTranscoding: (() => isMobile.any && preferences.transcodeOnMobile)(),
