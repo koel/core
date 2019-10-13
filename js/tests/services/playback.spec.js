@@ -1,6 +1,7 @@
 import each from 'jest-each'
-import { playback } from '@/services'
 import plyr from 'plyr'
+import { playback, socket } from '@/services'
+import { event } from '@/utils'
 import { mock } from '@/tests/__helpers__'
 import {
   queueStore,
@@ -164,4 +165,192 @@ describe('services/playback', () => {
     expect(registerPlayMock).toHaveBeenCalledWith(song)
     expect(song.playCountRegistered).toBe(true)
   })
+
+  it('preloads a song', () => {
+    // we actually don't care how the implementation looks like because it might change.
+    // Most important is, the `preloaded` attribute should be set.
+    const audioElement = jest.fn().mockImplementation(() => ({
+      setAttribute: jest.fn(),
+      load: jest.fn()
+    }))
+
+    const createElementMock = mock(document, 'createElement', audioElement)
+    const song = factory('song')
+    playback.preload(song)
+    expect(createElementMock).toHaveBeenCalledWith('audio')
+    expect(song.preloaded).toBe(true)
+  })
+
+  it('restarts a song', () => {
+    const song = factory('song')
+    Object.defineProperty(queueStore, 'current', {
+      get: () => song
+    })
+    mock(Math, 'floor', 1000)
+    const emitMock = mock(event, 'emit')
+    const broadcastMock = mock(socket, 'broadcast')
+    const showNotificationMock = mock(playback, 'showNotification')
+    const dataToBroadcast = {}
+    mock(songStore, 'generateDataToBroadcast', dataToBroadcast)
+    const restartMock = mock(playback.player, 'restart')
+    const playMock = mock(playback.player, 'play')
+
+    playback.restart()
+    expect(song.playStartTime).toEqual(1000)
+    expect(song.playCountRegistered).toBe(false)
+    expect(emitMock).toHaveBeenCalledWith('SONG_PLAYED', song)
+    expect(broadcastMock).toHaveBeenCalledWith('SOCKET_SONG', dataToBroadcast)
+    expect(showNotificationMock).toHaveBeenCalled()
+    expect(restartMock).toHaveBeenCalled()
+    expect(playMock).toHaveBeenCalled()
+  })
+
+  each([['NO_REPEAT', 'REPEAT_ALL'], ['REPEAT_ALL', 'REPEAT_ONE'], ['REPEAT_ONE', 'NO_REPEAT']]).test(
+    'it switches from repeat mode %s to repeat mode %s',
+    (fromMode, toMode) => {
+      preferences.repeatMode = fromMode
+
+      playback.changeRepeatMode()
+      expect(preferences.repeatMode).toEqual(toMode)
+    }
+  )
+
+  it('restarts song if playPrev is triggered after 5 seconds', () => {
+    const restartMock = mock(playback.player, 'restart')
+    Object.defineProperty(playback.player.media, 'currentTime', {
+      get: () => 6
+    })
+    Object.defineProperty(queueStore, 'current', {
+      get: () => factory('song', { length: 120 })
+    })
+
+    playback.playPrev()
+    expect(restartMock).toHaveBeenCalled()
+  })
+
+  it('stops if playPrev is triggered when there is no prev song and repeat mode is NO_REPEAT', () => {
+    const stopMock = mock(playback, 'stop')
+    Object.defineProperty(playback.player.media, 'currentTime', {
+      get: () => 4
+    })
+    Object.defineProperty(queueStore, 'current', {
+      get: () => factory('song', { length: 120 })
+    })
+    Object.defineProperty(playback, 'previous', {
+      get: () => null
+    })
+    preferences.repeatMode = 'NO_REPEAT'
+
+    playback.playPrev()
+    expect(stopMock).toHaveBeenCalled()
+  })
+
+  it('plays the previous song', () => {
+    const previousSong = factory('song')
+    Object.defineProperty(playback, 'previous', {
+      get: () => previousSong
+    })
+    Object.defineProperty(playback.player.media, 'currentTime', {
+      get: () => 4
+    })
+    Object.defineProperty(queueStore, 'current', {
+      get: () => factory('song', { length: 120 })
+    })
+    const playMock = mock(playback, 'play')
+
+    playback.playPrev()
+    expect(playMock).toHaveBeenCalledWith(previousSong)
+  })
+
+  it('stops if playNext is triggered when there is no next song and repeat mode is NO_REPEAT', () => {
+    Object.defineProperty(playback, 'next', {
+      get: () => null
+    })
+    preferences.repeatMode = 'NO_REPEAT'
+    const stopMock = mock(playback, 'stop')
+
+    playback.playNext()
+    expect(stopMock).toHaveBeenCalled()
+  })
+
+  it('plays the next song', () => {
+    const nextSong = factory('song')
+    Object.defineProperty(playback, 'next', {
+      get: () => nextSong
+    })
+    const playMock = mock(playback, 'play')
+
+    playback.playNext()
+    expect(playMock).toHaveBeenCalledWith(nextSong)
+  })
+
+  it('stops playback', () => {
+    const currentSong = factory('song')
+    const pauseMock = mock(playback.player, 'pause')
+    const seekMock = mock(playback.player, 'seek')
+    Object.defineProperty(queueStore, 'current', {
+      get: () => currentSong
+    })
+    const broadcastMock = mock(socket, 'broadcast')
+
+    playback.stop()
+    expect(currentSong.playbackState).toEqual('stopped')
+    expect(pauseMock).toHaveBeenCalled()
+    expect(seekMock).toHaveBeenCalledWith(0)
+    expect(broadcastMock).toHaveBeenCalledWith('SOCKET_PLAYBACK_STOPPED')
+    expect(document.title).toEqual('Koel')
+  })
+
+  it('pauses playback', () => {
+    const currentSong = factory('song')
+    Object.defineProperty(queueStore, 'current', {
+      get: () => currentSong
+    })
+    const dataToBroadcast = {}
+    mock(songStore, 'generateDataToBroadcast', dataToBroadcast)
+    const pauseMock = mock(playback.player, 'pause')
+    const broadcastMock = mock(socket, 'broadcast')
+
+    playback.pause()
+    expect(currentSong.playbackState).toEqual('paused')
+    expect(broadcastMock).toHaveBeenCalledWith('SOCKET_SONG', dataToBroadcast)
+    expect(pauseMock).toHaveBeenCalled()
+  })
+
+  it('resumes playback', () => {
+    const currentSong = factory('song')
+    Object.defineProperty(queueStore, 'current', {
+      get: () => currentSong
+    })
+    const dataToBroadcast = {}
+    mock(songStore, 'generateDataToBroadcast', dataToBroadcast)
+    const playMock = mock(playback.player, 'play')
+    const broadcastMock = mock(socket, 'broadcast')
+    const emitMock = mock(event, 'emit')
+
+    playback.resume()
+    expect(currentSong.playbackState).toEqual('playing')
+    expect(broadcastMock).toHaveBeenCalledWith('SOCKET_SONG', dataToBroadcast)
+    expect(playMock).toHaveBeenCalled()
+    expect(emitMock).toHaveBeenCalledWith('SONG_PLAYED', currentSong)
+  })
+
+  it('plays first in queue if toggled when there is no current song', () => {
+    const playFirstInQueueMock = mock(playback, 'playFirstInQueue')
+    Object.defineProperty(queueStore, 'current', {
+      get: () => null
+    })
+    playback.toggle()
+    expect(playFirstInQueueMock).toHaveBeenCalled()
+  })
+
+  each([['resume', 'stopped'], ['resume', 'paused'], ['pause', 'playing']])
+    .test('%ss playback if toggled when current song is %s', (action, playbackState) => {
+      const actionMock = mock(playback, action)
+      Object.defineProperty(queueStore, 'current', {
+        get: () => factory('song', { playbackState })
+      })
+      playback.toggle()
+      expect(actionMock).toHaveBeenCalled()
+    })
 })
