@@ -20,6 +20,7 @@ import router from '@/router'
  * The number of seconds before the current song ends to start preload the next one.
  */
 const PRELOAD_BUFFER = 30
+const DEFAULT_VOLUME_VALUE = 7
 
 let mainWin
 if (KOEL_ENV === 'app') {
@@ -322,8 +323,8 @@ export const playback = {
 
   unmute () {
     // If the saved volume is 0, we unmute to the default level (7).
-    if (preferences.volume === '0' || preferences.volume === 0) {
-      preferences.volume = 7
+    if (parseInt(preferences.volume) === 0) {
+      preferences.volume = DEFAULT_VOLUME_VALUE
     }
 
     this.setVolume(preferences.volume)
