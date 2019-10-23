@@ -63,10 +63,10 @@
         </div>
       </section>
 
-      <section class="top-albums" :class="`as-${preferences.albumsViewMode}`" v-show="top.albums.length">
+      <section class="top-albums" v-show="top.albums.length">
         <h1>Top Albums</h1>
 
-        <div class="wrapper">
+        <div class="wrapper" :class="`as-${preferences.albumsViewMode}`">
           <album-card v-for="album in top.albums" :album="album" :key="album.id"/>
         </div>
       </section>
