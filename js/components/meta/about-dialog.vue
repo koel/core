@@ -35,7 +35,7 @@
     </main>
 
     <footer>
-      <button class="btn btn-red btn-rounded" @click.prevent="close">Close</button>
+      <btn @click.prevent="close" red rounded>Close</btn>
     </footer>
   </div>
 </template>
@@ -45,6 +45,10 @@ import compareVersions from 'compare-versions'
 import { sharedStore, userStore } from '@/stores'
 
 export default {
+  components: {
+    Btn: () => import('@/components/ui/btn')
+  },
+
   data: () => ({
     userState: userStore.state,
     sharedState: sharedStore.state,

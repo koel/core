@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <a class="btn btn-red" @click.prevent="removeRule"><i class="fa fa-times"></i></a>
+    <btn @click.prevent="removeRule" class="remove-rule" red><i class="fa fa-times"></i></btn>
 
     <select v-model="selectedModel">
       <option v-for="model in models" :key="model.name" :value="model">{{ model.label }}</option>
@@ -28,7 +28,8 @@ import types from '@/config/smart-playlist/types'
 
 export default {
   components: {
-    RuleInput: () => import('@/components/playlist/smart-playlist/rule-input.vue')
+    Btn: () => import('@/components/ui/btn'),
+    RuleInput: () => import('@/components/playlist/smart-playlist/rule-input')
   },
 
   props: ['rule'],
@@ -113,5 +114,9 @@ export default {
 
 select {
   width: auto !important;
+}
+
+button.remove-rule i {
+  margin-right: 0;
 }
 </style>

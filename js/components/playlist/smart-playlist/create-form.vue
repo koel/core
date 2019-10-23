@@ -16,19 +16,19 @@
 
             <div class="form-row rules">
               <rule-group
-                v-for="(group, index) in ruleGroups"
+                :group="group"
                 :isFirstGroup="index === 0"
                 :key="group.id"
-                :group="group"
                 @input="onGroupChanged"
+                v-for="(group, index) in ruleGroups"
               />
-              <a @click.prevent="addGroup" class="btn btn-small" role="button"><i class="fa fa-plus"></i> GROUP</a>
+              <btn @click.prevent="addGroup" green small><i class="fa fa-plus"></i> GROUP</btn>
             </div>
           </div>
 
           <footer>
-            <button class="btn-green" type="submit">Create</button>
-            <button class="btn-white btn-cancel" @click.prevent="close">Cancel</button>
+            <btn type="submit">Save</btn>
+            <btn class="btn-cancel" @click.prevent="close" white>Cancel</btn>
           </footer>
         </form>
       </div>
@@ -42,9 +42,10 @@ import router from '@/router'
 
 export default {
   components: {
-    FormBase: () => import('./form-base.vue'),
-    RuleGroup: () => import('@/components/playlist/smart-playlist/rule-group.vue'),
-    SoundBar: () => import('@/components/ui/sound-bar.vue')
+    Btn: () => import('@/components/ui/btn'),
+    FormBase: () => import('./form-base'),
+    RuleGroup: () => import('@/components/playlist/smart-playlist/rule-group'),
+    SoundBar: () => import('@/components/ui/sound-bar')
   },
 
   data: () => ({

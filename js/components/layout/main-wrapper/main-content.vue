@@ -36,21 +36,21 @@ export default {
   views,
 
   components: {
-    AlbumListScreen: () => import('@/components/screens/album-list.vue'),
-    AlbumScreen: () => import('@/components/screens/album.vue'),
-    ArtistListScreen: () => import('@/components/screens/artist-list.vue'),
-    ArtistScreen: () => import('@/components/screens/artist.vue'),
-    AllSongsScreen: () => import('@/components/screens/all-songs.vue'),
-    SettingsScreen: () => import('@/components/screens/settings.vue'),
-    UserListScreen: () => import('@/components/screens/user-list.vue'),
-    HomeScreen: () => import('@/components/screens/home.vue'),
-    QueueScreen: () => import('@/components/screens/queue.vue'),
-    PlaylistScreen: () => import('@/components/screens/playlist.vue'),
-    FavoritesScreen: () => import('@/components/screens/favorites.vue'),
-    RecentlyPlayedScreen: () => import('@/components/screens/recently-played.vue'),
-    ProfileScreen: () => import('@/components/screens/profile.vue'),
-    YoutubeScreen: () => import('@/components/screens/youtube.vue'),
-    Visualizer: () => import('@/components/ui/visualizer.vue')
+    AlbumListScreen: () => import('@/components/screens/album-list'),
+    AlbumScreen: () => import('@/components/screens/album'),
+    ArtistListScreen: () => import('@/components/screens/artist-list'),
+    ArtistScreen: () => import('@/components/screens/artist'),
+    AllSongsScreen: () => import('@/components/screens/all-songs'),
+    SettingsScreen: () => import('@/components/screens/settings'),
+    UserListScreen: () => import('@/components/screens/user-list'),
+    HomeScreen: () => import('@/components/screens/home'),
+    QueueScreen: () => import('@/components/screens/queue'),
+    PlaylistScreen: () => import('@/components/screens/playlist'),
+    FavoritesScreen: () => import('@/components/screens/favorites'),
+    RecentlyPlayedScreen: () => import('@/components/screens/recently-played'),
+    ProfileScreen: () => import('@/components/screens/profile'),
+    YoutubeScreen: () => import('@/components/screens/youtube'),
+    Visualizer: () => import('@/components/ui/visualizer')
   },
 
   data: () => ({
@@ -156,11 +156,9 @@ export default {
       }
     }
 
-    .buttons {
+    .btn-group {
       text-align: right;
       z-index: 2;
-
-      @include button-group();
     }
   }
 

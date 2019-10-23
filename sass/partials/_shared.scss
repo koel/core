@@ -46,6 +46,10 @@ input, select, button, textarea, .btn {
   &::-moz-focus-inner { border: 0 !important; }
 }
 
+button {
+  cursor: pointer;
+}
+
 select {
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAYAAABX5MJvAAAA4UlEQVRYhe3WMQ6CMABA0Y9xcHDVlBM5OXsC4xXcvImzg/EQTNykHZx0JcHFxkKQtpQGhv5OtCG8pElLVlMzdYupAZAQvxJClxC6WSCW5kMu8jNwAVYRvlUBV6nkqb2QmSdmLvI3sI4AMNtIJZ/mRHs77pEBRRvQhTgCj0iAEth3LTQQUskKOESAlMBOKvmyIiJBegGdiJEhVsBfxEgQJ0AvIhDiDLAiBkK8AE4IT4g3wBnhCBkE8EJYIIMB3ogW5PadKkIAANQBQwixDXlfj8YtOlWz+KlJCF1C6BJCNwvEB8RnttABpb3tAAAAAElFTkSuQmCC);
   background-size: 12px;
@@ -165,77 +169,7 @@ label {
   }
 }
 
-button, input[type="submit"], input[type="reset"], input[type="button"], .btn {
-  background: $colorBtnBgr;
-  color: $colorBtnText;
-  font-size: 1rem;
-  padding: .6rem 1rem;
-  cursor: pointer;
 
-  &.btn-small {
-    font-size: .9rem;
-    padding: .3rem .7rem;
-  }
-
-  @include inset-when-pressed();
-
-  &.btn-green {
-    background-color: $colorGreen;
-
-    &:hover {
-      background-color: darken($colorGreen, 10%);
-    }
-  }
-
-  &.btn-white {
-    background-color: #fff;
-    color: #333;
-
-    &:hover {
-      background-color: darken(#fff, 10%);
-    }
-  }
-
-  &.btn-red {
-    background-color: $colorRed;
-
-    &:hover {
-      background-color: darken($colorRed, 10%);
-    }
-  }
-
-  &.btn-blue {
-    background-color: $colorBlue;
-
-    &:hover {
-      background-color: darken($colorBlue, 10%);
-    }
-  }
-
-  &.btn-grey {
-    background-color: $colorGrey;
-
-    &:hover {
-      background-color: darken($colorGrey, 10%);
-    }
-  }
-
-  &.btn-orange {
-    background-color: $colorOrange;
-
-    &:hover {
-      background-color: darken($colorOrange, 10%);
-    }
-  }
-
-  &.btn-transparent {
-    background-color: transparent;
-  }
-
-  &.btn-rounded {
-    border-radius: 999px;
-  }
-}
 
 .tabs {
   [role=tablist] {

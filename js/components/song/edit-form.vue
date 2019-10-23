@@ -95,8 +95,8 @@
       </div>
 
       <footer>
-        <button type="submit" class="btn-blue">Update</button>
-        <button @click.prevent="close" class="btn-white btn-cancel">Cancel</button>
+        <btn type="submit">Update</btn>
+        <btn @click.prevent="close" class="btn-cancel" white>Cancel</btn>
       </footer>
     </form>
   </div>
@@ -118,8 +118,9 @@ const COMPILATION_STATES = {
 
 export default {
   components: {
-    SoundBar: () => import('@/components/ui/sound-bar.vue'),
-    Typeahead: () => import('@/components/ui/typeahead.vue')
+    Btn: () => import('@/components/ui/btn'),
+    SoundBar: () => import('@/components/ui/sound-bar'),
+    Typeahead: () => import('@/components/ui/typeahead')
   },
 
   props: {

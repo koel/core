@@ -6,11 +6,12 @@
         <i class="fa fa-angle-up toggler" v-show="isPhone && showingControls" @click.prevent="showingControls = false"></i>
       </span>
 
-      <div class="buttons" v-show="!isPhone || showingControls">
-        <button class="btn btn-green btn-add" @click="showAddUserForm">
+      <btn-group v-show="!isPhone || showingControls" uppercased>
+        <btn class="btn-add" @click="showAddUserForm" green>
           <i class="fa fa-plus"></i>
-          Add</button>
-      </div>
+          Add
+        </btn>
+      </btn-group>
     </h1>
 
     <div class="main-scroll-wrap">
@@ -29,7 +30,9 @@ import { event } from '@/utils'
 
 export default {
   components: {
-    UserCard: () => import('@/components/user/card.vue')
+    Btn: () => import('@/components/ui/btn'),
+    BtnGroup: () => import('@/components/ui/btn-group'),
+    UserCard: () => import('@/components/user/card')
   },
 
   data () {

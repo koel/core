@@ -1,51 +1,60 @@
 <template>
-  <div class="buttons song-list-controls">
-    <button
-      @click.prevent="shuffle"
-      class="btn btn-orange btn-shuffle-all"
-      title="Shuffle all"
-      v-if="fullConfig.shuffle && selectedSongs.length < 2 && songs.length"
-    >
-      <i class="fa fa-random"></i> All
-    </button>
+  <div class="song-list-controls">
+    <btn-group uppercased>
+      <btn
+        @click.prevent="shuffle"
+        class="btn-shuffle-all"
+        orange
+        title="Shuffle all"
+        v-if="fullConfig.shuffle && selectedSongs.length < 2 && songs.length"
+      >
+        <i class="fa fa-random"></i> All
+      </btn>
 
-    <button
-      @click.prevent="shuffleSelected"
-      class="btn btn-orange btn-shuffle-selected"
-      title="Shuffle selected"
-      v-if="fullConfig.shuffle && selectedSongs.length > 1"
-    >
-      <i class="fa fa-random"></i> Selected
-    </button>
+      <btn
+        @click.prevent="shuffleSelected"
+        class="btn-shuffle-selected"
+        orange
+        title="Shuffle selected"
+        v-if="fullConfig.shuffle && selectedSongs.length > 1"
+      >
+        <i class="fa fa-random"></i> Selected
+      </btn>
 
-    <button
-      :title="`${showingAddToMenu ? 'Cancel' : 'Add selected songs to…'}`"
-      @click.prevent.stop="showingAddToMenu = !showingAddToMenu"
-      class="btn btn-green btn-add-to"
-      v-if="selectedSongs.length"
-    >
-      {{ showingAddToMenu ? 'Cancel' : 'Add To…' }}
-    </button>
+      <btn
+        :title="`${showingAddToMenu ? 'Cancel' : 'Add selected songs to…'}`"
+        @click.prevent.stop="showingAddToMenu = !showingAddToMenu"
+        class="btn-add-to"
+        green
+        v-if="selectedSongs.length"
+      >
+        {{ showingAddToMenu ? 'Cancel' : 'Add To…' }}
+      </btn>
 
-    <button
-      @click.prevent="clearQueue"
-      class="btn btn-red btn-clear-queue"
-      v-if="showClearQueueButton"
-      title="Clear current queue"
-    >
-      Clear
-    </button>
+      <btn
+        @click.prevent="clearQueue"
+        class="btn-clear-queue"
+        red
+        v-if="showClearQueueButton"
+        title="Clear current queue"
+      >
+        Clear
+      </btn>
 
-    <button
-      @click.prevent="deletePlaylist"
-      class="del btn btn-red btn-delete-playlist"
-      title="Delete this playlist"
-      v-if="showDeletePlaylistButton"
-    >
-      <i class="fa fa-times"></i> Playlist
-    </button>
+      <btn
+        @click.prevent="deletePlaylist"
+        class="del btn-delete-playlist"
+        red
+        title="Delete this playlist"
+        v-if="showDeletePlaylistButton"
+      >
+        <i class="fa fa-times"></i> Playlist
+      </btn>
+
+    </btn-group>
 
     <add-to-menu
+      @closing="closeAddToMenu"
       :config="fullConfig.addTo"
       :songs="selectedSongs"
       :showing="showingAddToMenu"
@@ -69,7 +78,9 @@ export default {
   },
 
   components: {
-    addToMenu: () => import('./add-to-menu.vue')
+    AddToMenu: () => import('./add-to-menu'),
+    Btn: () => import('@/components/ui/btn'),
+    BtnGroup: () => import('@/components/ui/btn-group')
   },
 
   data: () => ({
@@ -125,3 +136,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.song-list-controls {
+  position: relative;
+  min-width: 196px;
+}
+</style>

@@ -306,41 +306,6 @@
   }
 }
 
-@mixin button-group() {
-  display: flex;
-  position: relative;
-  min-width: 192px;
-  justify-content: flex-end;
-
-  button {
-    $buttonHeight: 28px;
-
-    font-size: .92rem;
-    height: $buttonHeight;
-    padding: 0 1.23rem;
-    line-height: $buttonHeight;
-    text-transform: uppercase;
-    display: inline-block;
-
-    border-radius: $buttonHeight/2 0px 0px $buttonHeight/2;
-
-    &:last-of-type {
-      border-top-right-radius: $buttonHeight/2;
-      border-bottom-right-radius: $buttonHeight/2;
-    }
-
-    &:not(:first-child) {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-      margin-left: 1px;
-    }
-
-    i {
-      margin-right: 4px;
-    }
-  }
-}
-
 @mixin context-menu() {
   font-weight: $fontWeight_Thin;
   font-size: $fontSize;

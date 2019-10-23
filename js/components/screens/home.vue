@@ -20,9 +20,7 @@
 
         <section class="recent">
           <h1>Recently Played
-            <button class="btn btn-orange btn-small btn-rounded" @click.prevent="goToRecentlyPlayedScreen">
-              View All
-            </button>
+            <btn @click.prevent="goToRecentlyPlayedScreen" rounded small orange>View All</btn>
           </h1>
 
           <ol class="recent-song-list" v-show="recentSongs.length">
@@ -86,9 +84,10 @@ import router from '@/router'
 
 export default {
   components: {
-    AlbumCard: () => import('@/components/album/card.vue'),
-    ArtistCard: () => import('@/components/artist/card.vue'),
-    SongItem: () => import('@/components/song/home-item.vue')
+    AlbumCard: () => import('@/components/album/card'),
+    ArtistCard: () => import('@/components/artist/card'),
+    SongItem: () => import('@/components/song/home-item'),
+    Btn: () => import('@/components/ui/btn')
   },
 
   /**

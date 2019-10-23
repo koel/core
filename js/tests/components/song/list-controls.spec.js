@@ -1,5 +1,5 @@
 import each from 'jest-each'
-import Component from '@/components/song/list-controls.vue'
+import Component from '@/components/song/list-controls'
 import factory from '@/tests/factory'
 import { take } from 'lodash'
 
@@ -10,14 +10,14 @@ describe('components/song/list-controls', () => {
 
   each([[factory('song', 5), 0], [factory('song', 5), 1]]).test(
     'allows shuffling all if less than 2 songs are selected',
-    (songs, selectedSongCount) => {
+    async (songs, selectedSongCount, done) => {
       const selectedSongs = take(songs, selectedSongCount)
+      const wrapper = await mount(Component, { propsData: { songs, selectedSongs }})
 
-      expect(
-        shallow(Component, { propsData: { songs, selectedSongs }})
-          .click('.btn-shuffle-all')
-          .hasEmitted('shuffleAll')
-      ).toBe(true)
+      wrapper.vm.$nextTick(() => {
+        expect(wrapper.click('.btn-shuffle-all').hasEmitted('shuffleAll')).toBe(true)
+        done()
+      })
     })
 
   it('allows shuffling selected if more than 1 song are selected', () => {

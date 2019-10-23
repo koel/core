@@ -12,10 +12,10 @@
         </div>
 
         <div class="buttons">
-          <button class="btn btn-blue btn-edit" @click="edit">
+          <btn class="btn-edit" @click="edit">
             {{ isCurrentUser ? 'Update Profile' : 'Edit' }}
-          </button>
-          <button v-if="!isCurrentUser" class="btn btn-red btn-delete" @click="confirmDelete">Delete</button>
+          </btn>
+          <btn v-if="!isCurrentUser" class="btn-delete" red @click="confirmDelete">Delete</btn>
         </div>
       </div>
     </div>
@@ -28,6 +28,10 @@ import router from '@/router'
 import { alerts } from '@/utils'
 
 export default {
+  components: {
+    Btn: () => import('@/components/ui/btn')
+  },
+
   props: {
     user: {
       type: Object,

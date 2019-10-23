@@ -1,0 +1,49 @@
+<template>
+  <span class="btn-group" v-bind="$attrs">
+    <slot>
+      <btn green>Foo</btn>
+      <btn orange>Bar</btn>
+      <btn red>Baz</btn>
+    </slot>
+  </span>
+</template>
+
+<script>
+export default {
+  components: {
+    Btn: () => import('@/components/ui/btn')
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.btn-group {
+  display: flex;
+  position: relative;
+  justify-content: flex-end;
+
+  button {
+    display: inline-block;
+
+    &:not(:first-child) {
+      border-radius: 0;
+    }
+
+    &:first-of-type {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-top-left-radius: 9999px;
+      border-bottom-left-radius: 9999px;
+    }
+
+    &:last-of-type {
+      border-top-right-radius: 9999px;
+      border-bottom-right-radius: 9999px;
+    }
+  }
+
+  &[uppercased] button {
+    text-transform: uppercase;
+  }
+}
+</style>

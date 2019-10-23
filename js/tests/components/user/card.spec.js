@@ -38,28 +38,39 @@ describe('components/user/card', () => {
     expect(wrapper.find('.btn-edit').text()).toBe('Update Profile')
   })
 
-  it('redirects to update profile if attempting to edit current user', () => {
+  it('redirects to update profile if attempting to edit current user', async done => {
     const goStub = mock(router, 'go')
     userStore.current.id = user.id
-    shallow(Component, { propsData: { user }}).click('.btn-edit')
-    expect(goStub).toHaveBeenCalledWith('profile')
+    const wrapper = await mount(Component, { propsData: { user }})
+
+    wrapper.vm.$nextTick(() => {
+      wrapper.click('.btn-edit')
+      expect(goStub).toHaveBeenCalledWith('profile')
+      done()
+    })
   })
 
-  it('edits user', () => {
-    const wrapper = shallow(Component, { propsData: {
-      user
-    }})
-    expect(wrapper.click('.btn-edit').hasEmitted('editUser', user)).toBe(true)
+  it('edits user', async done => {
+    const wrapper = await mount(Component, { propsData: { user }})
+
+    wrapper.vm.$nextTick(() => {
+      expect(wrapper.click('.btn-edit').hasEmitted('editUser', user)).toBe(true)
+      done()
+    })
   })
 
-  it('triggers deleting user', () => {
+  it('triggers deleting user', async done => {
     const confirmStub = mock(alerts, 'confirm')
-    const wrapper = shallow(Component, { propsData: { user }})
-    wrapper.click('.btn-delete')
-    expect(confirmStub).toHaveBeenCalledWith(
-      `You’re about to unperson ${user.name}. Are you sure?`,
-      wrapper.vm.destroy
-    )
+    const wrapper = await mount(Component, { propsData: { user }})
+
+    wrapper.vm.$nextTick(() => {
+      wrapper.click('.btn-delete')
+      expect(confirmStub).toHaveBeenCalledWith(
+        `You’re about to unperson ${user.name}. Are you sure?`,
+        wrapper.vm.destroy
+      )
+      done()
+    })
   })
 
   it('deletes user', () => {

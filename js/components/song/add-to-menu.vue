@@ -44,9 +44,7 @@
           placeholder="Playlist name"
           v-model="newPlaylistName"
         >
-        <button type="submit" title="Save">
-          <i class="fa fa-save"></i>
-        </button>
+        <btn type="submit" title="Save">⏎</btn>
       </form>
     </template>
   </div>
@@ -59,6 +57,10 @@ import router from '@/router'
 import songMenuMethods from '@/mixins/song-menu-methods'
 
 export default {
+  components: {
+    Btn: () => import('@/components/ui/btn')
+  },
+
   props: {
     songs: {
       type: Array,
@@ -105,7 +107,7 @@ export default {
     },
 
     close () {
-      this.$parent.closeAddToMenu()
+      this.$emit('closing')
     }
   }
 }
@@ -118,11 +120,12 @@ export default {
 .add-to {
   @include context-menu();
 
+  width: 100%;
+  max-width: 225px;
   position: absolute;
   padding: 8px;
-  top: 36px;
+  top: 39px;
   left: 0;
-  width: 100%;
 
   p {
     margin: 4px 0;
@@ -189,6 +192,9 @@ export default {
       margin-top: 0;
       border-radius: 0 5px 5px 0 !important;
       height: 28px;
+      line-height: 28px;
+      padding-top: 0;
+      padding-bottom: 0;
       margin-left: -2px !important;
     }
   }

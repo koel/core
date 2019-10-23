@@ -44,7 +44,7 @@
         </div>
 
         <div class="form-row">
-          <button type="submit" class="btn btn-submit">Save</button>
+          <btn type="submit" class="btn-submit">Save</btn>
         </div>
       </form>
 
@@ -90,18 +90,18 @@
           </p>
 
           <div class="buttons">
-            <button @click.prevent="connectToLastfm" class="connect">
+            <btn @click.prevent="connectToLastfm" class="connect">
               <i class="fa fa-lastfm"></i>
               {{ state.current.preferences.lastfm_session_key ? 'Reconnect' : 'Connect' }}
-            </button>
+            </btn>
 
-            <button
+            <btn
               v-if="state.current.preferences.lastfm_session_key"
               @click.prevent="disconnectFromLastfm"
               class="disconnect"
             >
               Disconnect
-            </button>
+            </btn>
           </div>
         </div>
 
@@ -125,6 +125,10 @@ import { forceReloadWindow } from '@/utils'
 import { http, ls } from '@/services'
 
 export default {
+  components: {
+    Btn: () => import('@/components/ui/btn')
+  },
+
   data () {
     return {
       state: userStore.state,

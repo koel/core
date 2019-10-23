@@ -22,8 +22,8 @@
       </div>
 
       <footer>
-        <button class="btn-green btn-add">Save</button>
-        <button class="btn-white btn-cancel" @click.prevent="close">Cancel</button>
+        <btn class="btn-add">Save</btn>
+        <btn class="btn-cancel" @click.prevent="close" white>Cancel</btn>
       </footer>
     </form>
   </div>
@@ -35,7 +35,8 @@ import { userStore } from '@/stores'
 
 export default {
   components: {
-    SoundBar: () => import('@/components/ui/sound-bar.vue')
+    Btn: () => import('@/components/ui/btn'),
+    SoundBar: () => import('@/components/ui/sound-bar')
   },
 
   data: () => ({

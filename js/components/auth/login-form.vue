@@ -6,7 +6,7 @@
     <input v-if="isDesktopApp" v-model="url" type="url" placeholder="Koel's Host" autofocus required>
     <input v-model="email" type="email" placeholder="Email Address" autofocus required>
     <input v-model="password" type="password" placeholder="Password" required>
-    <button type="submit">Log In</button>
+    <btn type="submit">Log In</btn>
   </form>
 </template>
 
@@ -21,6 +21,10 @@ const DEMO_ACCOUNT = {
 }
 
 export default {
+  components: {
+    Btn: () => import('@/components/ui/btn')
+  },
+
   data () {
     return {
       url: '',

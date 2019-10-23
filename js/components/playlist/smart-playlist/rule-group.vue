@@ -6,14 +6,14 @@
     </div>
 
     <rule
-      v-for="rule in mutatedGroup.rules"
       :key="rule.id"
       :rule="rule"
       @input="onRuleChanged"
       @remove="removeRule(rule)"
+      v-for="rule in mutatedGroup.rules"
     />
 
-    <a @click.prevent="addRule" class="btn btn-small"><i class="fa fa-plus"></i> RULE</a>
+    <btn @click.prevent="addRule" green small><i class="fa fa-plus"></i> RULE</btn>
   </div>
 </template>
 
@@ -25,7 +25,8 @@ export default {
   props: ['group', 'isFirstGroup'],
 
   components: {
-    Rule: () => import('@/components/playlist/smart-playlist/rule.vue')
+    Btn: () => import('@/components/ui/btn'),
+    Rule: () => import('@/components/playlist/smart-playlist/rule')
   },
 
   data: () => ({

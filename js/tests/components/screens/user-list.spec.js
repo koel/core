@@ -14,23 +14,30 @@ describe('components/screens/user-list', () => {
   it('displays the users', async done => {
     userStore.all = factory('user', 10)
     const wrapper = await mount(Component)
+
     wrapper.vm.$nextTick(() => {
       expect(wrapper.findAll(UserCard)).toHaveLength(10)
       done()
     })
   })
 
-  it('adds new user', () => {
-    const m = mock(event, 'emit')
-    shallow(Component).click('.btn-add')
-    expect(m).toHaveBeenCalledWith('MODAL_SHOW_ADD_USER_FORM')
+  it('adds new user', async done => {
+    const emitMock = mock(event, 'emit')
+    const wrapper = await mount(Component)
+
+    wrapper.vm.$nextTick(() => {
+      wrapper.click('.btn-add')
+      expect(emitMock).toHaveBeenCalledWith('MODAL_SHOW_ADD_USER_FORM')
+      done()
+    })
   })
 
   it('edits a user', () => {
     userStore.all = factory('user', 10)
-    const m = mock(event, 'emit')
-    mount(Component).click('.btn-edit') // the first Edit button
-    expect(m).toHaveBeenCalledWith('MODAL_SHOW_EDIT_USER_FORM', userStore.all[0])
+    const emitMock = mock(event, 'emit')
+    mount(Component).click('.btn-edit')
+
+    expect(emitMock).toHaveBeenCalledWith('MODAL_SHOW_EDIT_USER_FORM', userStore.all[0])
   })
 })
 

@@ -15,15 +15,15 @@
         </p>
 
         <input
+          aria-describedby="mediaPathHelp"
+          id="inputSettingsPath"
           type="text"
           v-model="state.settings.media_path"
-          id="inputSettingsPath"
-          aria-describedby="mediaPathHelp"
         >
       </div>
 
       <div class="form-row">
-        <button type="submit">Scan</button>
+        <btn type="submit">Scan</btn>
       </div>
     </form>
   </section>
@@ -35,6 +35,10 @@ import { parseValidationError, forceReloadWindow, showOverlay, hideOverlay, aler
 import router from '@/router'
 
 export default {
+  components: {
+    Btn: () => import('@/components/ui/btn')
+  },
+
   data () {
     return {
       state: settingStore.state,

@@ -17,13 +17,18 @@
         </div>
         <div class="form-row">
           <label>Password</label>
-          <input type="password" name="password" v-model="mutatedUser.password" placeholder="Leave blank for no changes">
+          <input
+            name="password"
+            placeholder="Leave blank for no changes"
+            type="password"
+            v-model="mutatedUser.password"
+          >
         </div>
       </div>
 
       <footer>
-        <button class="btn btn-green btn-update" type="submit">Update</button>
-        <button class="btn btn-white btn-cancel" @click.prevent="close">Cancel</button>
+        <btn class="btn-update" type="submit">Update</btn>
+        <btn class="btn-cancel" @click.prevent="close" white>Cancel</btn>
       </footer>
     </form>
   </div>
@@ -35,7 +40,8 @@ import { userStore } from '@/stores'
 
 export default {
   components: {
-    SoundBar: () => import('@/components/ui/sound-bar.vue')
+    Btn: () => import('@/components/ui/btn'),
+    SoundBar: () => import('@/components/ui/sound-bar')
   },
 
   props: {
