@@ -1,5 +1,5 @@
 import each from 'jest-each'
-import Component from '@/components/song/list-controls-toggler.vue'
+import Component from '@/components/song/list-controls-toggler'
 import isMobile from 'ismobilejs'
 
 describe('components/song/list-controls-toggler', () => {

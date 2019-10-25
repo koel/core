@@ -1,4 +1,4 @@
-import Component from '@/components/playlist/name-editor.vue'
+import Component from '@/components/playlist/name-editor'
 import factory from '@/tests/factory'
 import { playlistStore } from '@/stores'
 import { mock } from '@/tests/__helpers__'

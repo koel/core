@@ -1,4 +1,4 @@
-import Component from '@/components/user/add-form.vue'
+import Component from '@/components/user/add-form'
 import factory from '@/tests/factory'
 import { userStore } from '@/stores'
 import { mock } from '@/tests/__helpers__'

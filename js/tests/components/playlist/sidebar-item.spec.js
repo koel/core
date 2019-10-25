@@ -1,5 +1,5 @@
-import Component from '@/components/playlist/sidebar-item.vue'
-import NameEditor from '@/components/playlist/name-editor.vue'
+import Component from '@/components/playlist/sidebar-item'
+import NameEditor from '@/components/playlist/name-editor'
 import factory from '@/tests/factory'
 
 describe('components/playlist/sidebar-item', () => {

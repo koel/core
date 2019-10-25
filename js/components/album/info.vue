@@ -48,7 +48,7 @@ export default {
   },
 
   components: {
-    TrackList: () => import('./track-list.vue')
+    TrackList: () => import('./track-list')
   },
 
   data: () => ({

@@ -21,8 +21,8 @@ import infiniteScroll from '@/mixins/infinite-scroll'
 export default {
   mixins: [infiniteScroll],
   components: {
-    ArtistCard: () => import('@/components/artist/card.vue'),
-    ViewModeSwitch: () => import('@/components/ui/view-mode-switch.vue')
+    ArtistCard: () => import('@/components/artist/card'),
+    ViewModeSwitch: () => import('@/components/ui/view-mode-switch')
   },
 
   data: () => ({

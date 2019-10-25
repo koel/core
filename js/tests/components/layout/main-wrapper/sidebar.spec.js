@@ -1,4 +1,4 @@
-import Component from '@/components/layout/main-wrapper/sidebar.vue'
+import Component from '@/components/layout/main-wrapper/sidebar'
 import { sharedStore } from '@/stores'
 import factory from '@/tests/factory'
 

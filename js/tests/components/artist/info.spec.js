@@ -1,4 +1,4 @@
-import Component from '@/components/artist/info.vue'
+import Component from '@/components/artist/info'
 import factory from '@/tests/factory'
 
 describe('components/artist/info', () => {

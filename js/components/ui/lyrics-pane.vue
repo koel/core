@@ -20,7 +20,7 @@ export default {
   },
 
   components: {
-    TextZoomer: () => import('@/components/ui/text-zoomer.vue')
+    TextZoomer: () => import('@/components/ui/text-zoomer')
   },
 
   data: () => ({

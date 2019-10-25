@@ -1,5 +1,5 @@
 import each from 'jest-each'
-import Component from '@/components/layout/main-wrapper/extra-panel.vue'
+import Component from '@/components/layout/main-wrapper/extra-panel'
 import factory from '@/tests/factory'
 import { event } from '@/utils'
 import { songInfo } from '@/services'

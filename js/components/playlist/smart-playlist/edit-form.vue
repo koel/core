@@ -39,9 +39,9 @@ import { playlistStore } from '@/stores'
 
 export default {
   components: {
-    FormBase: () => import('./form-base.vue'),
-    RuleGroup: () => import('@/components/playlist/smart-playlist/rule-group.vue'),
-    SoundBar: () => import('@/components/ui/sound-bar.vue')
+    FormBase: () => import('./form-base'),
+    RuleGroup: () => import('@/components/playlist/smart-playlist/rule-group'),
+    SoundBar: () => import('@/components/ui/sound-bar')
   },
 
   props: {

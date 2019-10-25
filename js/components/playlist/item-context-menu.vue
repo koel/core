@@ -10,7 +10,7 @@ import { event } from '@/utils'
 
 export default {
   components: {
-    BaseContextMenu: () => import('@/components/ui/context-menu.vue')
+    BaseContextMenu: () => import('@/components/ui/context-menu')
   },
 
   props: {

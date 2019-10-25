@@ -1,4 +1,4 @@
-import Component from '@/components/layout/main-wrapper/main-content.vue'
+import Component from '@/components/layout/main-wrapper/main-content'
 import { event } from '@/utils'
 import factory from '@/tests/factory'
 

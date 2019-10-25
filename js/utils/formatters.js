@@ -2,7 +2,7 @@
  * Convert a duration in seconds into H:i:s format.
  * If H is 0, it will be ommited.
  */
-export function secondsToHis (d) {
+export const secondsToHis = d => {
   d = ~~d
 
   let s = d % 60
@@ -33,9 +33,8 @@ export function secondsToHis (d) {
  *
  * @return {Array.<String>}
  */
-export function parseValidationError (error) {
-  return Object.keys(error).reduce((messages, field) => messages.concat(error[field]), [])
-}
+export const parseValidationError = error =>
+  Object.keys(error).reduce((messages, field) => messages.concat(error[field]), [])
 
 /**
  * Turn <br> into new line characters.
@@ -44,6 +43,4 @@ export function parseValidationError (error) {
  *
  * @return {string}
  */
-export function br2nl (str) {
-  return str ? str.replace(/<br\s*[\/]?>/gi, '\n') : ''
-}
+export const br2nl = str => str ? str.replace(/<br\s*[\/]?>/gi, '\n') : ''

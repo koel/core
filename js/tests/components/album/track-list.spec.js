@@ -1,5 +1,5 @@
-import Component from '@/components/album/track-list.vue'
-import TrackListItem from '@/components/album/track-list-item.vue'
+import Component from '@/components/album/track-list'
+import TrackListItem from '@/components/album/track-list-item'
 import factory from '@/tests/factory'
 
 describe('components/album/track-list', () => {

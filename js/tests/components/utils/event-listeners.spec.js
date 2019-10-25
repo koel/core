@@ -1,4 +1,4 @@
-import Component from '@/components/utils/event-listeners.vue'
+import Component from '@/components/utils/event-listeners'
 import factory from '@/tests/factory'
 import { playlistStore, userStore } from '@/stores'
 import router from '@/router'

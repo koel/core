@@ -21,8 +21,8 @@ export default {
   mixins: [infiniteScroll],
 
   components: {
-    AlbumCard: () => import('@/components/album/card.vue'),
-    ViewModeSwitch: () => import('@/components/ui/view-mode-switch.vue')
+    AlbumCard: () => import('@/components/album/card'),
+    ViewModeSwitch: () => import('@/components/ui/view-mode-switch')
   },
 
   data: () => ({

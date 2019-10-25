@@ -1,5 +1,5 @@
-import Component from '@/components/song/edit-form.vue'
-import Typeahead from '@/components/ui/typeahead.vue'
+import Component from '@/components/song/edit-form'
+import Typeahead from '@/components/ui/typeahead'
 import factory from '@/tests/factory'
 import { songStore } from '@/stores'
 import { songInfo } from '@/services/info'

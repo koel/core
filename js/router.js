@@ -4,6 +4,7 @@ import { loadMainView } from './utils'
 import { artistStore, albumStore, songStore, queueStore, playlistStore, userStore } from './stores'
 import { playback } from './services'
 import { views } from '@/config'
+import { use } from '@/utils'
 
 export default {
   routes: {
@@ -19,32 +20,11 @@ export default {
     '/youtube': () => loadMainView(views.YOUTUBE),
     '/visualizer': () => loadMainView(views.VISUALIZER),
     '/profile': () => loadMainView(views.PROFILE),
+    '/album/(\\d+)': id => use(albumStore.byId(~~id), album => loadMainView(views.ALBUM, album)),
+    '/artist/(\\d+)': id => use(artistStore.byId(~~id), artist => loadMainView(views.ARTIST, artist)),
+    '/playlist/(\\d+)': id => use(playlistStore.byId(~~id), playlist => loadMainView(views.PLAYLIST, playlist)),
 
-    '/album/(\\d+)': id => {
-      const album = albumStore.byId(~~id)
-      if (album) {
-        loadMainView(views.ALBUM, album)
-      }
-    },
-
-    '/artist/(\\d+)': id => {
-      const artist = artistStore.byId(~~id)
-      if (artist) {
-        loadMainView(views.ARTIST, artist)
-      }
-    },
-
-    '/playlist/(\\d+)': id => {
-      const playlist = playlistStore.byId(~~id)
-      if (playlist) {
-        loadMainView(views.PLAYLIST, playlist)
-      }
-    },
-
-    '/song/([a-z0-9]{32})': id => {
-      const song = songStore.byId(id)
-      if (!song) return
-
+    '/song/([a-z0-9]{32})': id => use(songStore.byId(id), song => {
       if (isMobile.apple.device) {
         // Mobile Safari doesn't allow autoplay, so we just queue.
         queueStore.queue(song)
@@ -52,7 +32,7 @@ export default {
       } else {
         playback.queueAndPlay(song)
       }
-    }
+    })
   },
 
   init () {

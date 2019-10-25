@@ -5,8 +5,6 @@ if (KOEL_ENV === 'app') {
   mainWindow = require('electron').remote.getCurrentWindow()
 }
 
-const app = {
+export const app = {
   triggerMaximize: () => mainWindow && (mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize())
 }
-
-export { app }

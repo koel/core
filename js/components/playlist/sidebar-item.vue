@@ -33,8 +33,8 @@ const VALID_PLAYLIST_TYPES = ['playlist', 'favorites', 'recently-played']
 
 export default {
   components: {
-    ContextMenu: () => import('@/components/playlist/item-context-menu.vue'),
-    NameEditor: () => import('@/components/playlist/name-editor.vue')
+    ContextMenu: () => import('@/components/playlist/item-context-menu'),
+    NameEditor: () => import('@/components/playlist/name-editor')
   },
 
   props: {

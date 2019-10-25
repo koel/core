@@ -105,10 +105,10 @@ EXTRA_PANEL_TABS.DEFAULT = EXTRA_PANEL_TABS.LYRICS
 
 export default {
   components: {
-    LyricsPane: () => import('@/components/ui/lyrics-pane.vue'),
-    ArtistInfo: () => import('@/components/artist/info.vue'),
-    AlbumInfo: () => import('@/components/album/info.vue'),
-    YouTubeVideoList: () => import('@/components/ui/youtube-video-list.vue')
+    LyricsPane: () => import('@/components/ui/lyrics-pane'),
+    ArtistInfo: () => import('@/components/artist/info'),
+    AlbumInfo: () => import('@/components/album/info'),
+    YouTubeVideoList: () => import('@/components/ui/youtube-video-list')
   },
 
   data: () => ({

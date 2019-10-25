@@ -1,5 +1,5 @@
 import each from 'jest-each'
-import Component from '@/components/song/item.vue'
+import Component from '@/components/song/item'
 import factory from '@/tests/factory'
 import { playback } from '@/services'
 import { queueStore } from '@/stores'

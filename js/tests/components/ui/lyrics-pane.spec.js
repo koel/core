@@ -1,4 +1,4 @@
-import Lyrics from '@/components/ui/lyrics-pane.vue'
+import Lyrics from '@/components/ui/lyrics-pane'
 import factory from '@/tests/factory'
 
 describe('components/ui/lyrics', () => {

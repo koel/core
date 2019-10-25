@@ -1,6 +1,6 @@
 import './static-loader'
 import Vue from 'vue'
-import App from './app.vue'
+import App from './app'
 import { http } from './services'
 import { VirtualScroller } from 'vue-virtual-scroller/dist/vue-virtual-scroller'
 import GlobalEvents from 'vue-global-events'
@@ -27,5 +27,5 @@ new Vue({
 })
 
 if (KOEL_ENV !== 'app' && 'serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').then(() => { console.log('Service Worker Registered') })
+  navigator.serviceWorker.register('./sw.js').then(() => console.log('Service Worker Registered'))
 }

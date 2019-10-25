@@ -1,4 +1,4 @@
-import Component from '@/components/ui/volume.vue'
+import Component from '@/components/ui/volume'
 import { playback, socket } from '@/services'
 import { mock } from '@/tests/__helpers__'
 

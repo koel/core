@@ -14,12 +14,12 @@ import { event } from '@/utils'
 
 export default {
   components: {
-    CreateSmartPlaylistForm: () => import('@/components/playlist/smart-playlist/create-form.vue'),
-    EditSmartPlaylistForm: () => import('@/components/playlist/smart-playlist/edit-form.vue'),
-    AddUserForm: () => import('@/components/user/add-form.vue'),
-    EditUserForm: () => import('@/components/user/edit-form.vue'),
-    EditSongForm: () => import('@/components/song/edit-form.vue'),
-    AboutDialog: () => import('@/components/meta/about-dialog.vue')
+    CreateSmartPlaylistForm: () => import('@/components/playlist/smart-playlist/create-form'),
+    EditSmartPlaylistForm: () => import('@/components/playlist/smart-playlist/edit-form'),
+    AddUserForm: () => import('@/components/user/add-form'),
+    EditUserForm: () => import('@/components/user/edit-form'),
+    EditSongForm: () => import('@/components/song/edit-form'),
+    AboutDialog: () => import('@/components/meta/about-dialog')
   },
 
   data: () => ({

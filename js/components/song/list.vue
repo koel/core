@@ -55,7 +55,7 @@ import { playlistStore, queueStore, songStore, favoriteStore } from '@/stores'
 import { playback } from '@/services'
 import router from '@/router'
 
-const songItem = () => import('@/components/song/item.vue')
+const songItem = () => import('@/components/song/item')
 const VALID_SONG_LIST_TYPES = ['all-songs', 'queue', 'playlist', 'favorites', 'recently-played', 'artist', 'album']
 
 export default {
@@ -81,7 +81,7 @@ export default {
 
   components: {
     songItem,
-    ContextMenu: () => import('@/components/song/context-menu.vue')
+    ContextMenu: () => import('@/components/song/context-menu')
   },
 
   data: () => ({

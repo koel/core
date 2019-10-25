@@ -1,4 +1,4 @@
-import Component from '@/components/artist/card.vue'
+import Component from '@/components/artist/card'
 import Thumbnail from '@/components/ui/album-artist-thumbnail'
 import factory from '@/tests/factory'
 import { playback, download } from '@/services'

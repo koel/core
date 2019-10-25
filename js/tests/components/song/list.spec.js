@@ -1,6 +1,6 @@
 import each from 'jest-each'
 import router from '@/router'
-import Component from '@/components/song/list.vue'
+import Component from '@/components/song/list'
 import factory from '@/tests/factory'
 import { event } from '@/utils'
 import { songStore, queueStore } from '@/stores'

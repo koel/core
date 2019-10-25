@@ -1,6 +1,6 @@
 import each from 'jest-each'
 import _ from 'lodash'
-import Component from '@/components/song/add-to-menu.vue'
+import Component from '@/components/song/add-to-menu'
 import factory from '@/tests/factory'
 import { playlistStore, queueStore, favoriteStore } from '@/stores'
 import { mock } from '@/tests/__helpers__'

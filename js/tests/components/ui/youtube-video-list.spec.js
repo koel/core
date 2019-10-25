@@ -1,4 +1,4 @@
-import YouTube from '@/components/ui/youtube-video-list.vue'
+import YouTube from '@/components/ui/youtube-video-list'
 import { youtube as youtubeService } from '@/services'
 import factory from '@/tests/factory'
 import { mock } from '@/tests/__helpers__'

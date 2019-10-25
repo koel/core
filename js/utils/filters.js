@@ -1,13 +1,13 @@
 import { isObject, isNumber, get } from 'lodash'
 
-export function orderBy (arr, sortKey, reverse) {
+export const orderBy = (arr, sortKey, reverse) => {
   if (!sortKey) {
     return arr
   }
 
   const order = (reverse && reverse < 0) ? -1 : 1
 
-  function compareRecordsByKey (a, b, key) {
+  const compareRecordsByKey = (a, b, key) => {
     let aKey = isObject(a) ? get(a, key) : a
     let bKey = isObject(b) ? get(b, key) : b
 
@@ -49,11 +49,9 @@ export function orderBy (arr, sortKey, reverse) {
   })
 }
 
-export function limitBy (arr, n, offset = 0) {
-  return arr.slice(offset, offset + n)
-}
+export const limitBy = (arr, n, offset = 0) => arr.slice(offset, offset + n)
 
-export function filterBy (arr, search, ...keys) {
+export const filterBy = (arr, search, ...keys) => {
   if (!search) {
     return arr
   }
@@ -67,10 +65,10 @@ export function filterBy (arr, search, ...keys) {
   }, [])
 }
 
-export function pluralize () {
-  if (!arguments[0] || arguments[0] > 1) {
-    return `${arguments[0]} ${arguments[1]}s`
+export const pluralize = (...args) => {
+  if (!args[0] || args[0] > 1) {
+    return `${args[0]} ${args[1]}s`
   }
 
-  return `${arguments[0]} ${arguments[1]}`
+  return `${args[0]} ${args[1]}`
 }

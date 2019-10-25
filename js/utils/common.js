@@ -2,7 +2,7 @@
  * Other common methods.
  */
 import select from 'select'
-import { event } from '@/utils'
+import { event, use } from '@/utils'
 import { sharedStore } from '@/stores'
 
 /**
@@ -11,20 +11,18 @@ import { sharedStore } from '@/stores'
  * @param {String} view   The view, which can be found under components/main-wrapper/main-content.
  * @param {...*}      Extra data to attach to the view.
  */
-export function loadMainView (view, ...args) {
-  event.emit(event.$names.LOAD_MAIN_CONTENT, view, ...args)
-}
+export const loadMainView = (view, ...args) => event.emit(event.$names.LOAD_MAIN_CONTENT, view, ...args)
 
 /**
  * Force reloading window regardless of "Confirm before reload" setting.
  * This is handy for certain cases, for example Last.fm connect/disconnect.
  */
-export function forceReloadWindow () {
+export const forceReloadWindow = () => {
   if (window.__UNIT_TESTING__) {
     return
   }
 
-  window.onbeforeunload = function () {}
+  window.onbeforeunload = () => {}
   window.location.reload()
 }
 
@@ -35,33 +33,24 @@ export function forceReloadWindow () {
  * @param  {String}  type
  * @param  {Boolean} dismissable
  */
-export function showOverlay (message = 'Just a little patience…', type = 'loading', dismissable = false) {
+export const showOverlay = (message = 'Just a little patience…', type = 'loading', dismissable = false) =>
   event.emit(event.$names.SHOW_OVERLAY, { message, type, dismissable })
-}
 
 /**
  * Hide the overlay.
  */
-export function hideOverlay () {
-  event.emit(event.$names.HIDE_OVERLAY)
-}
+export const hideOverlay = () => event.emit(event.$names.HIDE_OVERLAY)
 
 /**
  * Copy a text into clipboard.
  *
  * @param  {string} txt
  */
-export function copyText (txt) {
-  const copyArea = document.querySelector('#copyArea')
-  if (!copyArea) {
-    return
-  }
+export const copyText = txt => use(document.querySelector('#copyArea'), copyArea => {
   copyArea.style.top = `${window.pageYOffset || document.documentElement.scrollTop}px`
   copyArea.value = txt
   select(copyArea)
   document.execCommand('copy')
-}
+})
 
-export function getDefaultCover () {
-  return sharedStore.state.cdnUrl + '/public/img/covers/unknown-album.png'
-}
+export const getDefaultCover = () => `${sharedStore.state.cdnUrl}/public/img/covers/unknown-album.png`

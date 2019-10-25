@@ -67,7 +67,7 @@
   import { socket, ls } from '@/services'
   import { userStore } from '@/stores'
   import { event } from '@/utils'
-  import loginForm from '@/components/auth/login-form.vue'
+  import loginForm from '@/components/auth/login-form'
 
   let volumeSlider
   const MAX_RETRIES = 10

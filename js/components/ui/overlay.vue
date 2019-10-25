@@ -20,7 +20,7 @@ import { event } from '@/utils'
 
 export default {
   components: {
-    SoundBar: () => import('@/components/ui/sound-bar.vue')
+    SoundBar: () => import('@/components/ui/sound-bar')
   },
 
   data: () => ({

@@ -1,4 +1,4 @@
-import Component from '@/components/ui/to-top-button.vue'
+import Component from '@/components/ui/to-top-button'
 import { $ } from '@/utils'
 import { mock } from '@/tests/__helpers__'
 

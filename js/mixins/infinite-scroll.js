@@ -5,7 +5,7 @@
  */
 export default {
   components: {
-    ToTopButton: () => import('@/components/ui/to-top-button.vue')
+    ToTopButton: () => import('@/components/ui/to-top-button')
   },
 
   data: () => ({

@@ -1,4 +1,4 @@
-import Component from '@/components/screens/youtube.vue'
+import Component from '@/components/screens/youtube'
 
 describe('components/screens/youtube', () => {
   it('renders properly', () => {

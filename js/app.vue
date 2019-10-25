@@ -43,7 +43,7 @@ export default {
     Overlay,
     LoginForm,
     EventListeners,
-    SupportKoel: () => import('@/components/meta/support-koel.vue')
+    SupportKoel: () => import('@/components/meta/support-koel')
   },
 
   data () {

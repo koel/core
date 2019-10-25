@@ -62,7 +62,7 @@ export default {
   views,
 
   components: {
-    PlaylistList: () => import('@/components/playlist/sidebar-list.vue')
+    PlaylistList: () => import('@/components/playlist/sidebar-list')
   },
 
   data: () => ({

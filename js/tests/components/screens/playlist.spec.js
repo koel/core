@@ -1,5 +1,5 @@
-import Component from '@/components/screens/playlist.vue'
-import SongList from '@/components/song/list.vue'
+import Component from '@/components/screens/playlist'
+import SongList from '@/components/song/list'
 import factory from '@/tests/factory'
 import { event } from '@/utils'
 import { playlistStore } from '@/stores'

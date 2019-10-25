@@ -1,5 +1,5 @@
 import each from 'jest-each'
-import Profile from '@/components/screens/profile.vue'
+import Profile from '@/components/screens/profile'
 import factory from '@/tests/factory'
 import { userStore, preferenceStore } from '@/stores'
 import { mock } from '@/tests/__helpers__'

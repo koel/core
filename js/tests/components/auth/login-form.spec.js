@@ -1,4 +1,4 @@
-import Component from '@/components/auth/login-form.vue'
+import Component from '@/components/auth/login-form'
 import { userStore } from '@/stores'
 import { mock } from '@/tests/__helpers__'
 

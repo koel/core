@@ -10,9 +10,9 @@ import { event } from '@/utils'
 
 export default {
   components: {
-    SongList: () => import('@/components/song/list.vue'),
-    SongListControls: () => import('@/components/song/list-controls.vue'),
-    ControlsToggler: () => import('@/components/song/list-controls-toggler.vue')
+    SongList: () => import('@/components/song/list'),
+    SongListControls: () => import('@/components/song/list-controls'),
+    ControlsToggler: () => import('@/components/song/list-controls-toggler')
   },
 
   data: () => ({

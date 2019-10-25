@@ -1,5 +1,5 @@
-import List from '@/components/screens/artist-list.vue'
-import Card from '@/components/artist/card.vue'
+import List from '@/components/screens/artist-list'
+import Card from '@/components/artist/card'
 import factory from '@/tests/factory'
 
 describe('components/screens/artist-list', () => {

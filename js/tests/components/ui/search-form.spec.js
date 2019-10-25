@@ -1,4 +1,4 @@
-import Component from '@/components/ui/search-form.vue'
+import Component from '@/components/ui/search-form'
 import { event } from '@/utils'
 import { mock } from '@/tests/__helpers__'
 

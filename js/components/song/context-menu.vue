@@ -48,7 +48,7 @@ export default {
   mixins: [songMenuMethods],
 
   components: {
-    BaseContextMenu: () => import('@/components/ui/context-menu.vue')
+    BaseContextMenu: () => import('@/components/ui/context-menu')
   },
 
   data: () => ({

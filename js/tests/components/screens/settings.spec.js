@@ -1,4 +1,4 @@
-import Component from '@/components/screens/settings.vue'
+import Component from '@/components/screens/settings'
 import { sharedStore, settingStore } from '@/stores'
 import { alerts } from '@/utils'
 import { mock } from '@/tests/__helpers__'

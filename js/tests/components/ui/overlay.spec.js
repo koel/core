@@ -1,5 +1,5 @@
 import each from 'jest-each'
-import Component from '@/components/ui/overlay.vue'
+import Component from '@/components/ui/overlay'
 
 describe('components/shared/overlay', () => {
   it('shows with default options', async done => {

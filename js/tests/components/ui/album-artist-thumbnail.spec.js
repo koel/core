@@ -1,5 +1,5 @@
 import each from 'jest-each'
-import Component from '@/components/ui/album-artist-thumbnail.vue'
+import Component from '@/components/ui/album-artist-thumbnail'
 import factory from '@/tests/factory'
 import { playback } from '@/services'
 import { queueStore, sharedStore } from '@/stores'

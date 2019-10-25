@@ -1,7 +1,7 @@
 import './static-loader'
 import Vue from 'vue'
 import { http } from '@/services'
-import App from './app.vue'
+import App from './app'
 
 new Vue({
   el: '#app',

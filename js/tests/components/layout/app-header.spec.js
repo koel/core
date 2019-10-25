@@ -1,4 +1,4 @@
-import Component from '@/components/layout/app-header.vue'
+import Component from '@/components/layout/app-header'
 import { event } from '@/utils'
 import { mock } from '@/tests/__helpers__'
 

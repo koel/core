@@ -1,4 +1,4 @@
-import Component from '@/components/ui/view-mode-switch.vue'
+import Component from '@/components/ui/view-mode-switch'
 
 describe('components/ui/view-mode-switch', () => {
   it('renders properly', () => {

@@ -1,4 +1,4 @@
-import AlbumInfo from '@/components/album/info.vue'
+import AlbumInfo from '@/components/album/info'
 import factory from '@/tests/factory'
 
 describe('components/album/info', () => {

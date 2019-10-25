@@ -25,7 +25,7 @@ export default {
   },
 
   components: {
-    TrackListItem: () => import('./track-list-item.vue')
+    TrackListItem: () => import('./track-list-item')
   }
 }
 </script>

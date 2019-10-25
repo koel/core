@@ -1,4 +1,4 @@
-import Component from '@/components/user/edit-form.vue'
+import Component from '@/components/user/edit-form'
 import { userStore } from '@/stores'
 import factory from '@/tests/factory'
 import { mock } from '@/tests/__helpers__'

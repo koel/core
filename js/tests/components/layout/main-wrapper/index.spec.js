@@ -1,4 +1,4 @@
-import Component from '@/components/layout/main-wrapper/index.vue'
+import Component from '@/components/layout/main-wrapper/index'
 
 describe('component/layout/main-wrapper/index', () => {
   it('renders properly', async done => {
