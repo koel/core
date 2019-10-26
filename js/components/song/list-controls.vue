@@ -141,5 +141,9 @@ export default {
 .song-list-controls {
   position: relative;
   min-width: 196px;
+
+  @media only screen and (max-width: 768px) {
+    min-width: 0;
+  }
 }
 </style>

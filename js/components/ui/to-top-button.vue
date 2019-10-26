@@ -52,6 +52,7 @@ export default {
     padding: 8px 16px;
     background: rgba(0, 0, 0, .5);
     border: 1px solid $colorMainText;
+    color: $colorMainText;
 
     i {
       margin-right: 4px;
