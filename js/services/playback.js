@@ -126,7 +126,9 @@ export const playback = {
     }, 3000))
   },
 
-  isTranscoding: (() => isMobile.any && preferences.transcodeOnMobile)(),
+  get isTranscoding () {
+    return isMobile.any && preferences.transcodeOnMobile
+  },
 
   registerPlay: song => {
     recentlyPlayedStore.add(song)
