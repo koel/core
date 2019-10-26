@@ -65,8 +65,8 @@ describe('services/playback', () => {
       'when playCountRegistered is %s, isTranscoding is %s, current media time is %d, media duration is %d, then registerPlay() should be call %d times',
       (playCountRegistered, isTranscoding, currentTime, duration, numberOfCalls) => {
         queueStore.current = factory('song', { playCountRegistered })
+        Object.defineProperty(playback, 'isTranscoding', { get: () => isTranscoding })
         playback.init()
-        playback.isTranscoding = isTranscoding
         const mediaElement = playback.player.media
         // we can't set mediaElement.currentTime|duration directly because they're read-only
         Object.defineProperties(mediaElement, {
@@ -133,8 +133,8 @@ describe('services/playback', () => {
         Object.defineProperty(queueStore, 'next', {
           get: () => factory('song', { preloaded })
         })
+        Object.defineProperty(playback, 'isTranscoding', { get: () => isTranscoding })
         playback.init()
-        playback.isTranscoding = isTranscoding
         const mediaElement = playback.player.media
         Object.defineProperties(mediaElement, {
           currentTime: {
