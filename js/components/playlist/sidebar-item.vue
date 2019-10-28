@@ -6,10 +6,7 @@
       :class="{ active }"
       :href="url"
       @contextmenu.prevent="openContextMenu"
-      @dragenter.prevent="allowDrop"
-      @dragleave="removeDroppableState"
-      @dragover.prevent
-      @drop.stop.prevent="handleDrop"
+      v-koel-droppable="handleDrop"
     >{{ playlist.name }}</a>
 
     <name-editor
@@ -24,7 +21,7 @@
 </template>
 
 <script>
-import { $, event } from '@/utils'
+import { event } from '@/utils'
 import router from '@/router'
 import { songStore, playlistStore, favoriteStore } from '@/stores'
 import { views } from '@/config'
@@ -95,32 +92,6 @@ export default {
     },
 
     /**
-     * Remove the droppable state when a dragleave event occurs on the playlist's DOM element.
-     *
-     * @param {Object} e The dragleave event.
-     */
-    removeDroppableState (e) {
-      if (this.contentEditable) {
-        $.removeClass(e.target, 'droppable')
-      }
-    },
-
-    /**
-     * Add a "droppable" class and set the drop effect when an item is dragged over the playlist's
-     * DOM element.
-     *
-     * @param {Object} e The dragover event.
-     */
-    allowDrop (e) {
-      if (this.contentEditable) {
-        $.addClass(e.target, 'droppable')
-        e.dataTransfer.dropEffect = 'move'
-      }
-
-      return false
-    },
-
-    /**
      * Handle songs dropped to our favorite or playlist menu item.
      *
      * @param  {Object}   e    The event
@@ -131,8 +102,6 @@ export default {
       if (!this.contentEditable) {
         return false
       }
-
-      this.removeDroppableState(e)
 
       if (!e.dataTransfer.getData('application/x-koel.text+plain')) {
         return false

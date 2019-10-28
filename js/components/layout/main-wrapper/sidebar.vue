@@ -8,12 +8,11 @@
           <a :class="['home', currentView === $options.views.HOME ? 'active' : '']" href="#!/home">Home</a>
         </li>
         <li>
-          <a :class="['queue', currentView === $options.views.QUEUE ? 'active' : '']"
+          <a
+            :class="['queue', currentView === $options.views.QUEUE ? 'active' : '']"
             href="#!/queue"
-            @dragleave="removeDroppableState"
-            @dragenter.prevent="allowDrop"
-            @dragover.prevent
-            @drop.stop.prevent="handleDrop">Current Queue</a>
+            v-koel-droppable="handleDrop"
+          >Current Queue</a>
         </li>
         <li>
           <a :class="['songs', currentView === $options.views.SONGS ? 'active' : '']" href="#!/songs">All Songs</a>
@@ -54,7 +53,7 @@
 <script>
 import isMobile from 'ismobilejs'
 
-import { event, $ } from '@/utils'
+import { event } from '@/utils'
 import { sharedStore, userStore, songStore, queueStore } from '@/stores'
 import { views } from '@/config'
 
@@ -74,34 +73,13 @@ export default {
 
   methods: {
     /**
-     * Remove the droppable state when a dragleave event occurs on the playlist's DOM element.
-     *
-     * @param  {Object} e The dragleave event.
-     */
-    removeDroppableState: e => $.removeClass(e.target, 'droppable'),
-
-    /**
-     * Add a "droppable" class and set the drop effect when an item is dragged over "Queue" menu.
-     *
-     * @param  {Object} e The dragover event.
-     */
-    allowDrop (e) {
-      $.addClass(e.target, 'droppable')
-      e.dataTransfer.dropEffect = 'move'
-
-      return false
-    },
-
-    /**
      * Handle songs dropped to our Queue menu item.
      *
      * @param  {Object} e The event
      *
      * @return {Boolean}
      */
-    handleDrop (e) {
-      this.removeDroppableState(e)
-
+    handleDrop: e => {
       if (!e.dataTransfer.getData('application/x-koel.text+plain')) {
         return false
       }

@@ -46,11 +46,22 @@ export const hideOverlay = () => event.emit(event.$names.HIDE_OVERLAY)
  *
  * @param  {string} txt
  */
-export const copyText = txt => use(document.querySelector('#copyArea'), copyArea => {
+export const copyText = text => use(document.querySelector('#copyArea'), copyArea => {
   copyArea.style.top = `${window.pageYOffset || document.documentElement.scrollTop}px`
-  copyArea.value = txt
+  copyArea.value = text
   select(copyArea)
   document.execCommand('copy')
 })
 
 export const getDefaultCover = () => `${sharedStore.state.cdnUrl}/public/img/covers/unknown-album.png`
+
+/**
+ * Create a fancy ghost drag image.
+ *
+ * @param {DragEvent} event
+ * @param {string} text
+ */
+export const createGhostDragImage = (event, text) => use(document.querySelector('#dragGhost'), ghost => {
+  ghost.innerText = text
+  event.dataTransfer.setDragImage(ghost, 0, 0)
+})

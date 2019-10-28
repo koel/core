@@ -1,4 +1,5 @@
 import { noop } from './__helpers__'
+import { focus, clickaway, droppable } from '@/directives'
 
 require('vue-test-helpers')()
 
@@ -9,10 +10,11 @@ window.__UNIT_TESTING__ = true
 
 global.noop = noop
 
-// Stub components and directives so that rendering will not yell at us.
+// Stubs so that rendering will not yell at us.
 global.Vue.component('virtual-scroller', {
   render: h => noop
 })
 
-global.Vue.directive('koel-focus', noop)
-global.Vue.directive('koel-clickaway', noop)
+global.Vue.directive('koel-focus', focus)
+global.Vue.directive('koel-clickaway', clickaway)
+global.Vue.directive('koel-droppable', droppable)

@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { pluralize } from '@/utils'
+import { pluralize, createGhostDragImage } from '@/utils'
 import { artistStore, sharedStore } from '@/stores'
 import { playback, download } from '@/services'
 import albumAttributes from '@/mixins/album-attributes'
@@ -97,11 +97,7 @@ export default {
       const songIds = this.album.songs.map(song => song.id)
       e.dataTransfer.setData('application/x-koel.text+plain', songIds)
       e.dataTransfer.effectAllowed = 'move'
-
-      // Set a fancy drop image using our ghost element.
-      const ghost = document.getElementById('dragGhost')
-      ghost.innerText = `All ${pluralize(songIds.length, 'song')} in ${this.album.name}`
-      e.dataTransfer.setDragImage(ghost, 0, 0)
+      createGhostDragImage(e, `All ${pluralize(songIds.length, 'song')} in ${this.album.name}`)
     }
   }
 }

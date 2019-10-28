@@ -3,7 +3,7 @@
  * Trigger a function if the user clicks out of the bound element.
  * @type {Object}
  */
-export const clickawayDirective = {
+export const clickaway = {
   bind (el, { value }) {
     if (typeof value !== 'function') {
       console.warn(`Expect a function, got ${value}`)

@@ -50,7 +50,7 @@
 <script>
 import isMobile from 'ismobilejs'
 
-import { filterBy, orderBy, event, pluralize, $ } from '@/utils'
+import { filterBy, orderBy, event, pluralize, createGhostDragImage, $ } from '@/utils'
 import { playlistStore, queueStore, songStore, favoriteStore } from '@/stores'
 import { playback } from '@/services'
 import router from '@/router'
@@ -313,7 +313,7 @@ export default {
      * Even though the event is triggered on one row only, we'll collect other
      * selected rows, if any, as well.
      */
-    dragStart (rowVm, event) {
+    dragStart (rowVm, e) {
       // If the user is dragging an unselected row, clear the current selection.
       if (!rowVm.item.selected) {
         this.clearSelection()
@@ -321,13 +321,9 @@ export default {
       }
 
       const songIds = this.selectedSongs.map(song => song.id)
-      event.dataTransfer.effectAllowed = 'move'
-      event.dataTransfer.setData('application/x-koel.text+plain', songIds)
-
-      // Set a fancy drop image using our ghost element.
-      const ghost = document.getElementById('dragGhost')
-      ghost.innerText = `${pluralize(songIds.length, 'song')}`
-      event.dataTransfer.setDragImage(ghost, 0, 0)
+      e.dataTransfer.effectAllowed = 'move'
+      e.dataTransfer.setData('application/x-koel.text+plain', songIds)
+      createGhostDragImage(e, `${pluralize(songIds.length, 'song')}`)
     },
 
     /**
@@ -360,7 +356,7 @@ export default {
       return this.removeDroppableState(event)
     },
 
-    removeDroppableState (event) {
+    removeDroppableState: event => {
       $.removeClass(event.target.parentNode, 'droppable')
       return false
     },
@@ -379,7 +375,7 @@ export default {
     /**
      * @return { Object } A { keywords, fields } object
      */
-    extractSearchDataFromQuery (q) {
+    extractSearchDataFromQuery: q => {
       const re = /in:(title|album|artist)/ig
       const fields = []
       const matches = q.match(re)

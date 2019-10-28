@@ -32,7 +32,7 @@ import EventListeners from '@/components/utils/event-listeners'
 import { event, showOverlay, hideOverlay, $, app as appUtils } from '@/utils'
 import { sharedStore, favoriteStore, queueStore, preferenceStore as preferences } from '@/stores'
 import { playback, ls, socket, http } from '@/services'
-import { focusDirective, clickawayDirective } from '@/directives'
+import { clickaway, droppable, focus } from '@/directives'
 
 export default {
   components: {
@@ -145,8 +145,9 @@ export default {
 }
 
 // …and the global directives
-Vue.directive('koel-focus', focusDirective)
-Vue.directive('koel-clickaway', clickawayDirective)
+Vue.directive('koel-focus', focus)
+Vue.directive('koel-clickaway', clickaway)
+Vue.directive('koel-droppable', droppable)
 </script>
 
 <style lang="scss">
