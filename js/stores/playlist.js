@@ -31,6 +31,7 @@ export const playlistStore = {
     return new Promise((resolve, reject) => {
       http.get(`playlist/${playlist.id}/songs`, ({ data }) => {
         playlist.songs = songStore.byIds(data)
+        playlist.populated = true
         resolve(playlist)
       }, error => reject(error))
     })
@@ -98,7 +99,11 @@ export const playlistStore = {
     })
   },
 
-  addSongs (playlist, songs) {
+  async addSongs (playlist, songs) {
+    if (!playlist.populated) {
+      await this.fetchSongs(playlist)
+    }
+
     return new Promise((resolve, reject) => {
       const count = playlist.songs.length
       playlist.songs = union(playlist.songs, songs)
