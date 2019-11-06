@@ -45,6 +45,9 @@
 
         <div class="form-row">
           <btn type="submit" class="btn-submit">Save</btn>
+          <span v-if="demo" style="font-size:.95rem; opacity:.7; margin-left:5px">
+            Changes will not be saved in the demo version.
+          </span>
         </div>
       </form>
 
@@ -131,6 +134,7 @@ export default {
 
   data () {
     return {
+      demo: NODE_ENV === 'demo',
       state: userStore.state,
       cache: userStore.stub,
       pwd: '',
