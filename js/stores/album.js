@@ -79,7 +79,7 @@ export const albumStore = {
   },
 
   getMostPlayed (n = 6) {
-    // Only non-unknown albums with actually play count are applicable.
+    // Only non-unknown albums with actual play count are applicable.
     const applicable = this.all.filter(album => album.playCount && album.id !== 1)
     return take(orderBy(applicable, 'playCount', 'desc'), n)
   },

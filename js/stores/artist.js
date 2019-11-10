@@ -84,7 +84,7 @@ export const artistStore = {
   getSongsByArtist: artist => artist.songs,
 
   getMostPlayed (n = 6) {
-    // Only non-unknown artists with actually play count are applicable.
+    // Only non-unknown artists with actual play count are applicable.
     // Also, "Various Artists" doesn't count.
     const applicable = this.all.filter(artist => {
       return artist.playCount &&
