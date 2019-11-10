@@ -26,8 +26,8 @@
         </div>
 
         <footer>
-          <button class="btn-green" type="submit">Save</button>
-          <button class="btn-white btn-cancel" @click.prevent="close">Cancel</button>
+          <btn green type="submit">Save</btn>
+          <btn white class="btn-cancel" @click.prevent="close">Cancel</btn>
         </footer>
       </form>
     </div>
@@ -41,7 +41,8 @@ export default {
   components: {
     FormBase: () => import('./form-base'),
     RuleGroup: () => import('@/components/playlist/smart-playlist/rule-group'),
-    SoundBar: () => import('@/components/ui/sound-bar')
+    SoundBar: () => import('@/components/ui/sound-bar'),
+    Btn: () => import('@/components/ui/btn')
   },
 
   props: {

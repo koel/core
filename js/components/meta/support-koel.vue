@@ -5,8 +5,8 @@
       <a href="https://github.com/users/phanan/sponsorship" target="_blank">GitHub Sponsors</a> and/or
       <a href="https://opencollective.com/koel" target="_blank">OpenCollective</a>.
     </p>
-    <button class="btn-transparent btn-rounded" @click.prevent="close">Hide</button>
-    <button class="btn-transparent btn-rounded" @click.prevent="stopBugging">Don't bug me again</button>
+    <btn transparent rounded @click.prevent="close">Hide</btn>
+    <btn transparent rounded @click.prevent="stopBugging">Don't bug me again</btn>
   </div>
 </template>
 
@@ -19,8 +19,12 @@ let supportBarTimeoutHandle
 const DELAY_UNTIL_SHOWN = 30 * 60 * 1000
 
 export default {
+  components: {
+    Btn: () => import('@/components/ui/btn')
+  },
+
   data: () => ({
-    shown: false
+    shown: true
   }),
 
   created () {

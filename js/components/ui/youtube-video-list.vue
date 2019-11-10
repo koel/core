@@ -17,7 +17,7 @@
           <p class="desc">{{ video.snippet.description }}</p>
         </div>
       </a>
-      <button @click.prevent="loadMore" v-if="!loading" class="more btn-blue">Load More</button>
+      <btn @click.prevent="loadMore" blue v-if="!loading" class="more">Load More</btn>
     </template>
 
     <p class="nope" v-else>Play a song to retrieve related YouTube videos.</p>
@@ -29,6 +29,10 @@
 import { youtube as youtubeService } from '@/services'
 
 export default {
+  components: {
+    Btn: () => import('@/components/ui/btn')
+  },
+
   props: {
     song: {
       type: Object,
