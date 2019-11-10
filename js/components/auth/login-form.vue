@@ -3,7 +3,7 @@
     <div class="logo">
       <img src="~#/../img/logo.svg" width="156" height="auto">
     </div>
-    <input v-if="isDesktopApp" v-model="url" type="url" placeholder="Koel's Host" autofocus required>
+    <input v-if="isDesktopApp" v-model="url" type="text" placeholder="Koel's Host" autofocus required>
     <input v-model="email" type="email" placeholder="Email Address" autofocus required>
     <input v-model="password" type="password" placeholder="Password" required>
     <btn type="submit">Log In</btn>
@@ -25,20 +25,26 @@ export default {
     Btn: () => import('@/components/ui/btn')
   },
 
-  data () {
-    return {
-      url: '',
-      email: NODE_ENV === 'demo' ? DEMO_ACCOUNT.email : '',
-      password: NODE_ENV === 'demo' ? DEMO_ACCOUNT.password : '',
-      failed: false,
-      isDesktopApp: KOEL_ENV === 'app'
-    }
-  },
+  data: () => ({
+    url: '',
+    email: NODE_ENV === 'demo' ? DEMO_ACCOUNT.email : '',
+    password: NODE_ENV === 'demo' ? DEMO_ACCOUNT.password : '',
+    failed: false,
+    isDesktopApp: KOEL_ENV === 'app'
+  }),
 
   methods: {
     async login () {
-      if (this.isDesktopApp) {
-        axios.defaults.baseURL = (this.url.endsWith('/') ? this.url : `${this.url}/`) + 'api'
+      if (KOEL_ENV === 'app') {
+        if (this.url.indexOf('http://') !== 0 && this.url.indexOf('https://') !== 0) {
+          this.url = `https://${this.url}`
+        }
+
+        if (!this.url.endsWith('/')) {
+          this.url = `${this.url}/`
+        }
+
+        axios.defaults.baseURL = `${this.url}api`
       }
 
       try {
@@ -48,25 +54,24 @@ export default {
         // Reset the password so that the next login will have this field empty.
         this.password = ''
 
-        if (this.isDesktopApp) {
-          ls.set('koelHost', this.url.endsWith('/') ? this.url : `${this.url}/`)
+        if (KOEL_ENV === 'app') {
+          ls.set('koelHost', this.url)
           ls.set('lastLoginEmail', this.email)
         }
 
         this.$emit('loggedin')
       } catch (err) {
         this.failed = true
+        window.setTimeout(() => (this.failed = false), 2000)
       }
     }
   },
 
   mounted () {
-    if (!this.isDesktopApp) {
-      return
+    if (KOEL_ENV === 'app') {
+      this.url = window.BASE_URL = ls.get('koelHost')
+      this.email = ls.get('lastLoginEmail')
     }
-
-    this.url = window.BASE_URL = ls.get('koelHost')
-    this.email = ls.get('lastLoginEmail')
   }
 }
 </script>
@@ -99,9 +104,10 @@ export default {
 form {
   width: 280px;
   padding: 1.8rem;
-  background: rgba(255,255,255,.08);
+  background: rgba(255, 255, 255, .08);
   border-radius: .6rem;
   border: 1px solid #333;
+  transition: .5s;
 
   &.error {
     border-color: #8e4947;
