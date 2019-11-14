@@ -17,11 +17,7 @@ export const $ = {
       return
     }
 
-    if (el.classList) {
-      el.classList.add(className)
-    } else {
-      el.className += ` ${className}`
-    }
+    el.classList.add(className)
   },
 
   removeClass: (el, className) => {
@@ -29,11 +25,7 @@ export const $ = {
       return
     }
 
-    if (el.classList) {
-      el.classList.remove(className)
-    } else {
-      el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ')
-    }
+    el.classList.remove(className)
   },
 
   scrollTo (el, to, duration, cb = null) {
