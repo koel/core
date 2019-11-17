@@ -1,20 +1,23 @@
 <template>
   <nav>
-    <ul class="menu"
+    <ul
       :class="extraClass"
-      v-show="shown"
-      tabindex="-1"
-      @contextmenu.prevent
       :style="{ top: `${top}px`, left: `${left}px` }"
+      @contextmenu.prevent
+      class="menu"
+      ref="menu"
+      tabindex="-1"
       v-koel-clickaway="close"
+      v-show="shown"
     >
-      <slot>Menu items to go here.</slot>
+      <slot>Menu items go here.</slot>
     </ul>
   </nav>
 </template>
 
 <script>
 import { event } from '@/utils'
+import Vue from 'vue'
 
 export default {
   props: {
@@ -38,22 +41,34 @@ export default {
       this.left = left
       this.shown = true
 
-      // Make sure the menu isn't off-screen
-      if (this.$el.getBoundingClientRect().bottom > window.innerHeight) {
-        this.$el.style.top = 'auto'
-        this.$el.style.bottom = 0
-      } else {
-        this.$el.style.top = this.top
-        this.$el.style.bottom = 'auto'
-      }
+      this.preventOffScreen(this.$refs.menu)
     },
 
     close () {
-      Array.from(this.$el.querySelectorAll('.submenu')).forEach(el => (el.style.display = 'none'))
+      this.closeAllSubmenus()
+      this.$refs.menu.style.top = 'auto'
+      this.$refs.menu.style.bottom = 'auto'
       this.shown = false
     },
 
-    notifyOtherInstancesToClose: () => event.emit(event.$names.CONTEXT_MENU_OPENING)
+    notifyOtherInstancesToClose: () => event.emit(event.$names.CONTEXT_MENU_OPENING),
+
+    preventOffScreen: element => {
+      Vue.nextTick(() => {
+        if (element.getBoundingClientRect().bottom > window.innerHeight) {
+          element.style.top = 'auto'
+          element.style.bottom = 0
+        } else {
+          element.style.bottom = 'auto'
+        }
+      })
+    },
+
+    closeAllSubmenus () {
+      Array.from(this.$el.querySelectorAll('.submenu')).forEach(el => {
+        el.style.display = 'none'
+      })
+    }
   },
 
   /**
@@ -69,17 +84,12 @@ export default {
         return
       }
 
-      item.addEventListener('mouseenter', e => {
+      item.addEventListener('mouseenter', () => {
         submenu.style.display = 'block'
-
-        // Make sure the submenu isn't off-screen
-        if (submenu.getBoundingClientRect().bottom > window.innerHeight) {
-          submenu.style.top = 'auto'
-          submenu.style.bottom = 0
-        }
+        this.preventOffScreen(submenu)
       })
 
-      item.addEventListener('mouseleave', e => {
+      item.addEventListener('mouseleave', () => {
         submenu.style.top = 0
         submenu.style.bottom = 'auto'
         submenu.style.display = 'none'
