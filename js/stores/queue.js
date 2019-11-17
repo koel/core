@@ -62,6 +62,7 @@ export const queueStore = {
    * @param {Object|Array.<Object>} songs The song, or an array of songs
    */
   queue (songs) {
+    this.unqueue(songs)
     this.all = union(this.all, [].concat(songs))
   },
 
