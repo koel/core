@@ -11,7 +11,7 @@ export const queueStore = {
     // How about another song then?
     //
     // LITTLE WING
-    // -- by Jimi Fucking Hendrix
+    // -- Jimi Hendrix
     //
     // Well she's walking
     // Through the clouds
