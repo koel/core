@@ -1,8 +1,8 @@
 <template>
   <div id="app" :class="{ 'standalone' : inStandaloneMode }">
     <template v-if="authenticated">
-      <div class="translucent" v-if="song" :style="{ backgroundImage: 'url('+song.album.cover+')' }">
-      </div>
+      <album-art-overlay :album="album" v-if="preferences.showAlbumArtOverlay"/>
+
       <div id="main">
         <template v-if="connected">
           <div class="details" v-if="song">
@@ -65,15 +65,18 @@
 <script>
   import nouislider from 'nouislider'
   import { socket, ls } from '@/services'
-  import { userStore } from '@/stores'
+  import { userStore, preferenceStore } from '@/stores'
   import { event } from '@/utils'
-  import loginForm from '@/components/auth/login-form'
+  import LoginForm from '@/components/auth/login-form'
 
   let volumeSlider
   const MAX_RETRIES = 10
 
   export default {
-    components: { loginForm },
+    components: {
+      LoginForm,
+      AlbumArtOverlay: () => import('@/components/ui/album-art-overlay')
+    },
 
     data () {
       return {
@@ -84,7 +87,8 @@
         connected: false,
         muted: false,
         showingVolumeSlider: false,
-        retries: 0
+        retries: 0,
+        preferences: preferenceStore.state
       }
     },
 
@@ -92,6 +96,7 @@
       connected () {
         this.$nextTick(() => {
           volumeSlider = document.getElementById('volumeSlider')
+
           nouislider.create(volumeSlider, {
             orientation: 'vertical',
             connect: [true, false],
@@ -99,6 +104,7 @@
             range: { min: 0, max: 10 },
             direction: 'rtl'
           })
+
           volumeSlider.noUiSlider.on('change', (values, handle) => {
             const volume = parseFloat(values[handle])
             this.muted = !volume
@@ -204,6 +210,10 @@
 
       maxRetriesReached () {
         return this.retries >= MAX_RETRIES
+      },
+
+      album () {
+        return this.song ? this.song.album : null
       }
     },
 
@@ -237,23 +247,6 @@
       flex-direction: column;
 
       @include vertical-center();
-    }
-
-    .translucent {
-      position: absolute;
-      top: -20px;
-      left: -20px;
-      right: -20px;
-      bottom: -20px;
-      filter: blur(20px);
-      opacity: .3;
-      z-index: 0;
-      overflow: hidden;
-      background-size: cover;
-      background-position: center;
-      transform: translateZ(0);
-      backface-visibility: hidden;
-      pointer-events: none;
     }
 
     .loader {

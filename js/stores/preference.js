@@ -18,7 +18,8 @@ export const preferenceStore = {
     albumsViewMode: null,
     selectedPreset: -1,
     transcodeOnMobile: false,
-    supportBarNoBugging: false
+    supportBarNoBugging: false,
+    showAlbumArtOverlay: true
   },
 
   init (user = null) {

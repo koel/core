@@ -70,6 +70,12 @@
             Convert and play media at 128kbps on mobile
           </label>
         </div>
+        <div class="form-row">
+          <label>
+            <input type="checkbox" name="showAlbumArtOverlay" v-model="prefs.showAlbumArtOverlay">
+            Show a translucent, blurred overlay of the current album’s art (may be CPU intensive)
+          </label>
+        </div>
       </div>
 
       <section class="lastfm" >
@@ -157,9 +163,11 @@ export default {
   methods: {
     async update () {
       this.validation.error = (this.pwd || this.confirmPwd) && this.pwd !== this.confirmPwd
+
       if (this.validation.error) {
         return
       }
+
       await userStore.updateProfile(this.pwd)
       this.pwd = ''
       this.confirmPwd = ''

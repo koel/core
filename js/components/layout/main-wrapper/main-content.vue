@@ -6,8 +6,7 @@
       For those that don't need to maintain their own UI state, we use v-if and enjoy some codesplitting juice.
     -->
     <visualizer v-if="showingVisualizer"/>
-
-    <div class="translucent" :style="{ backgroundImage: albumCover ? `url(${albumCover})` : 'none' }"></div>
+    <album-art-overlay :album="currentAlbum" v-if="preferences.showAlbumArtOverlay"/>
 
     <home-screen v-show="view === $options.views.HOME"/>
     <queue-screen v-show="view === $options.views.QUEUE"/>
@@ -29,13 +28,14 @@
 
 <script>
 import { event } from '@/utils'
-import { albumStore, sharedStore } from '@/stores'
+import { preferenceStore, sharedStore } from '@/stores'
 import { views } from '@/config'
 
 export default {
   views,
 
   components: {
+    AlbumArtOverlay: () => import('@/components/ui/album-art-overlay'),
     AlbumListScreen: () => import('@/components/screens/album-list'),
     AlbumScreen: () => import('@/components/screens/album'),
     ArtistListScreen: () => import('@/components/screens/artist-list'),
@@ -54,12 +54,13 @@ export default {
   },
 
   data: () => ({
-    view: views.DEFAULT,
-    albumCover: null,
+    currentAlbum: null,
+    preferences: preferenceStore.state,
     sharedState: sharedStore.state,
     showingVisualizer: false,
     shownArtist: null,
-    shownAlbum: null
+    shownAlbum: null,
+    view: views.DEFAULT
   }),
 
   created () {
@@ -77,13 +78,7 @@ export default {
         this.view = view
       },
 
-      /**
-       * When a new song is played, find its cover for the translucent effect.
-       */
-      [event.$names.SONG_PLAYED]: song => {
-        this.albumCover = song.album.cover === albumStore.stub.cover ? null : song.album.cover
-      },
-
+      [event.$names.SONG_PLAYED]: song => (this.currentAlbum = song.album),
       [event.$names.TOGGLE_VISUALIZER]: () => (this.showingVisualizer = !this.showingVisualizer)
     })
   }
@@ -160,23 +155,6 @@ export default {
       text-align: right;
       z-index: 2;
     }
-  }
-
-  .translucent {
-    position: fixed;
-    top: -20px;
-    left: -20px;
-    right: -20px;
-    bottom: -20px;
-    filter: blur(20px);
-    opacity: .07;
-    z-index: 10000;
-    overflow: hidden;
-    background-size: cover;
-    background-position: center;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    pointer-events: none;
   }
 
   @media only screen and (max-width: 768px) {

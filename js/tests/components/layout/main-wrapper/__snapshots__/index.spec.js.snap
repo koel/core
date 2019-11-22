@@ -5,7 +5,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
   <sidebar-stub></sidebar-stub>
   <section id="mainContent">
     <!---->
-    <div class="translucent" style="background-image: none;"></div>
+    <!---->
     <!---->
     <!---->
     <!---->
