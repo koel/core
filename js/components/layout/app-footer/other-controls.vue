@@ -1,5 +1,5 @@
 <template>
-  <div class="other-controls" :class="{ 'with-gradient': prefs.showExtraPanel }">
+  <div class="other-controls">
     <div class="wrapper" v-koel-clickaway="closeEqualizer">
       <equalizer v-if="useEqualizer" v-show="showEqualizer"/>
 
@@ -119,12 +119,8 @@ export default {
 
 .other-controls {
   @include vertical-center();
-  @include hasSoftGradientOnTop($colorMainBgr);
 
-  &.with-gradient {
-    @include hasSoftGradientOnTop($colorExtraBgr);
-  }
-
+  position: relative;
   text-transform: uppercase;
   flex: 0 0 $extraPanelWidth;
   color: $colorLink;

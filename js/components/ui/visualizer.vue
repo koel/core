@@ -1,9 +1,9 @@
 <template>
   <div
-    id="vizContainer"
-    :class="{ 'fullscreen': isFullscreen }"
-    ref="visualizerContainer"
+    :class="{ fullscreen: isFullscreen }"
     @dblclick="toggleFullscreen"
+    id="vizContainer"
+    ref="visualizerContainer"
   >
     <global-events @keyup.esc="exitFullscreen"/>
     <a @click="hide" class="close"><i class="fa fa-times"></i></a>
@@ -38,6 +38,7 @@ export default {
           this.$refs.visualizerContainer.msRequestFullscreen
         func && func.apply(this.$refs.visualizerContainer)
       }
+
       this.isFullscreen = !this.isFullscreen
     },
 
@@ -64,6 +65,10 @@ export default {
   &.fullscreen {
     // :fullscreen pseudo support is kind of buggy, so we use a class instead.
     background: $colorMainBgr;
+
+    .close {
+      opacity: 0 !important;
+    }
   }
 
   .close {

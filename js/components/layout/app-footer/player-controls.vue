@@ -67,8 +67,6 @@ export default {
   font-size: 1.8rem;
   background: $colorPlayerControlsBgr;
 
-  @include hasSoftGradientOnTop($colorSidebarBgr);
-
   .prev, .next {
     transition: .3s;
   }

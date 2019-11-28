@@ -1,5 +1,5 @@
 <template>
-  <footer id="mainFooter">
+  <footer>
     <player-controls :song="song"/>
 
     <div class="media-info-wrap">
@@ -49,13 +49,12 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "~#/partials/_vars.scss";
 
-#mainFooter {
+footer {
   background: $color2ndBgr;
   height: $footerHeight;
-  border-top: 1px solid $colorMainBgr;
   display: flex;
   position: relative;
   z-index: 9;
@@ -63,6 +62,24 @@ export default {
   .media-info-wrap {
     flex: 1;
     display: flex;
+  }
+
+  position: relative;
+
+  // Add a reverse gradient here to elimate the "hard cut" feel.
+  &::before {
+    $gradientHeight: 2 * $footerHeight / 3;
+    content: " ";
+    position: absolute;
+    width: 100%;
+    height: $gradientHeight;
+    top: -$gradientHeight;
+    left: 0;
+
+    // Safari 8 won't recognize rgba(255, 255, 255, 0) and treat it as black.
+    // rgba($colorMainBgr, 0) is a workaround.
+    background-image: linear-gradient(to bottom, rgba(#000, 0) 0%, rgba(#000, .2) 100%);
+    pointer-events: none; // click-through
   }
 
   @media only screen and (max-width: 768px) {
