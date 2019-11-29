@@ -24,7 +24,7 @@ export default {
   },
 
   data: () => ({
-    shown: true
+    shown: false
   }),
 
   created () {
