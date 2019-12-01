@@ -17,7 +17,37 @@ exports[`compoponents/layout/main-wrapper/sidebar displays YouTube menu item if 
         </a></li>
     </ul>
   </section>
-  <playlistlist-stub current-view="HOME"></playlistlist-stub>
+  <section id="playlists" current-view="HOME">
+    <h1>Playlists
+      <i role="button" title="Create a new playlist" class="fa fa-plus-circle control create"></i></h1>
+    <!---->
+    <ul>
+      <li class="playlist favorites"><a href="#!/favorites" class="">Favorites</a>
+        <!---->
+        <nav>
+          <ul tabindex="-1" class="menu playlist-item-menu" style="top: 0px; left: 0px; display: none;">
+            <li>Edit</li>
+            <li>Delete</li>
+          </ul>
+        </nav>
+      </li>
+      <li class="playlist recently-played"><a href="#!/recently-played" class="">Recently Played</a>
+        <!---->
+        <nav>
+          <ul tabindex="-1" class="menu playlist-item-menu" style="top: 0px; left: 0px; display: none;">
+            <li>Edit</li>
+            <li>Delete</li>
+          </ul>
+        </nav>
+      </li>
+    </ul>
+    <nav>
+      <ul tabindex="-1" class="menu playlist-menu" style="top: 0px; left: 0px; display: none;">
+        <li>New Playlist</li>
+        <li>New Smart Playlist</li>
+      </ul>
+    </nav>
+  </section>
   <!---->
 </nav>
 `;
@@ -39,7 +69,37 @@ exports[`compoponents/layout/main-wrapper/sidebar displays management menu items
         </a></li>
     </ul>
   </section>
-  <playlistlist-stub current-view="HOME"></playlistlist-stub>
+  <section id="playlists" current-view="HOME">
+    <h1>Playlists
+      <i role="button" title="Create a new playlist" class="fa fa-plus-circle control create"></i></h1>
+    <!---->
+    <ul>
+      <li class="playlist favorites"><a href="#!/favorites" class="">Favorites</a>
+        <!---->
+        <nav>
+          <ul tabindex="-1" class="menu playlist-item-menu" style="top: 0px; left: 0px; display: none;">
+            <li>Edit</li>
+            <li>Delete</li>
+          </ul>
+        </nav>
+      </li>
+      <li class="playlist recently-played"><a href="#!/recently-played" class="">Recently Played</a>
+        <!---->
+        <nav>
+          <ul tabindex="-1" class="menu playlist-item-menu" style="top: 0px; left: 0px; display: none;">
+            <li>Edit</li>
+            <li>Delete</li>
+          </ul>
+        </nav>
+      </li>
+    </ul>
+    <nav>
+      <ul tabindex="-1" class="menu playlist-menu" style="top: 0px; left: 0px; display: none;">
+        <li>New Playlist</li>
+        <li>New Smart Playlist</li>
+      </ul>
+    </nav>
+  </section>
   <section class="manage">
     <h1>Manage</h1>
     <ul class="menu">
@@ -67,7 +127,37 @@ exports[`compoponents/layout/main-wrapper/sidebar displays new version info 1`] 
         </a></li>
     </ul>
   </section>
-  <playlistlist-stub current-view="HOME"></playlistlist-stub>
+  <section id="playlists" current-view="HOME">
+    <h1>Playlists
+      <i role="button" title="Create a new playlist" class="fa fa-plus-circle control create"></i></h1>
+    <!---->
+    <ul>
+      <li class="playlist favorites"><a href="#!/favorites" class="">Favorites</a>
+        <!---->
+        <nav>
+          <ul tabindex="-1" class="menu playlist-item-menu" style="top: 0px; left: 0px; display: none;">
+            <li>Edit</li>
+            <li>Delete</li>
+          </ul>
+        </nav>
+      </li>
+      <li class="playlist recently-played"><a href="#!/recently-played" class="">Recently Played</a>
+        <!---->
+        <nav>
+          <ul tabindex="-1" class="menu playlist-item-menu" style="top: 0px; left: 0px; display: none;">
+            <li>Edit</li>
+            <li>Delete</li>
+          </ul>
+        </nav>
+      </li>
+    </ul>
+    <nav>
+      <ul tabindex="-1" class="menu playlist-menu" style="top: 0px; left: 0px; display: none;">
+        <li>New Playlist</li>
+        <li>New Smart Playlist</li>
+      </ul>
+    </nav>
+  </section>
   <section class="manage">
     <h1>Manage</h1>
     <ul class="menu">
@@ -93,16 +183,7 @@ exports[`compoponents/layout/main-wrapper/sidebar renders properly 1`] = `
       <!---->
     </ul>
   </section>
-  <section id="playlists" current-view="HOME">
-    <h1>Playlists
-      <i role="button" title="Create a new playlist" class="fa fa-plus-circle control create"></i></h1>
-    <!---->
-    <ul>
-      <!---->
-      <!---->
-    </ul>
-    <!---->
-  </section>
+  <!---->
   <!---->
 </nav>
 `;

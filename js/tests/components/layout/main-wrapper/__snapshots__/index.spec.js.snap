@@ -2,59 +2,9 @@
 
 exports[`component/layout/main-wrapper/index renders properly 1`] = `
 <div id="mainWrapper">
-  <sidebar-stub></sidebar-stub>
-  <section id="mainContent">
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-  </section>
-  <section id="extra" class="showing">
-    <div class="tabs">
-      <div role="tablist" class="clear"><button aria-selected="true" aria-controls="extraPanelLyrics" id="extraTabLyrics" role="tab">
-          Lyrics
-        </button> <button aria-controls="extraPanelArtist" id="extraTabArtist" role="tab">
-          Artist
-        </button> <button aria-controls="extraPanelAlbum" id="extraTabAlbum" role="tab">
-          Album
-        </button>
-        <!---->
-      </div>
-      <div class="panes">
-        <div aria-labelledby="extraTabLyrics" id="extraPanelLyrics" role="tabpanel" tabindex="0">
-          <!---->
-        </div>
-        <div aria-labelledby="extraTabArtist" id="extraPanelArtist" role="tabpanel" tabindex="0" style="display: none;">
-          <!---->
-        </div>
-        <div aria-labelledby="extraTabAlbum" id="extraPanelAlbum" role="tabpanel" tabindex="0" style="display: none;">
-          <!---->
-        </div>
-        <div aria-labelledby="extraTabAlbum" id="extraPanelAlbum" role="tabpanel" tabindex="0" style="display: none;">
-          <!---->
-        </div>
-      </div>
-    </div>
-  </section>
-  <div class="modal-wrapper">
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-  </div>
+  <!---->
+  <!---->
+  <!---->
+  <!---->
 </div>
 `;

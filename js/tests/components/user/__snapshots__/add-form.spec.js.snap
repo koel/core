@@ -12,8 +12,8 @@ exports[`components/user/add-form opens 1`] = `
       <div class="form-row"><label>Password</label> <input title="Password" type="password" name="password"></div>
     </div>
     <footer>
-      <btn-stub class="btn-add">Save</btn-stub>
-      <btn-stub white="" class="btn-cancel">Cancel</btn-stub>
+      <!---->
+      <!---->
     </footer>
   </form>
 </div>

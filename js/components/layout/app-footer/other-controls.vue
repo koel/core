@@ -54,14 +54,25 @@
       </span>
 
       <volume/>
+
+      <span
+        @click.prevent="downloadCurrentSong"
+        class="download control"
+        role="button"
+        tabindex="0"
+        title="Download the current song"
+        v-if="downloadable"
+      >
+        <i class="fa fa-download"></i>
+      </span>
     </div>
   </div>
 </template>
 
 <script>
-import { playback, socket } from '@/services'
+import { download, playback, socket } from '@/services'
 import { event, isAudioContextSupported } from '@/utils'
-import { songStore, favoriteStore, preferenceStore } from '@/stores'
+import { favoriteStore, preferenceStore, sharedStore, songStore } from '@/stores'
 
 export default {
   props: {
@@ -80,15 +91,16 @@ export default {
   data: () => ({
     prefs: preferenceStore.state,
     showEqualizer: false,
-
-    /**
-     * Indicate if we should build and use an equalizer.
-     *
-     * @type {Boolean}
-     */
+    sharedState: sharedStore.state,
     useEqualizer: isAudioContextSupported,
     visualizerActivated: false
   }),
+
+  computed: {
+    downloadable () {
+      return this.sharedState.allowDownload && this.song && this.song.id
+    }
+  },
 
   methods: {
     changeRepeatMode: () => playback.changeRepeatMode(),
@@ -108,7 +120,11 @@ export default {
       this.showEqualizer = false
     },
 
-    toggleVisualizer: () => event.emit(event.$names.TOGGLE_VISUALIZER)
+    toggleVisualizer: () => event.emit(event.$names.TOGGLE_VISUALIZER),
+
+    downloadCurrentSong () {
+      download.fromSongs(this.song)
+    }
   }
 }
 </script>
