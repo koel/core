@@ -5,7 +5,7 @@ exports[`components/ui/lyrics displays a fallback message if the song has no lyr
   <div class="content">
     <div style="display: none;">
       <div></div>
-      <div class="text-zoomer"><button title="Zoom out"><i class="fa fa-search-minus"></i></button> <button title="Zoom in"><i class="fa fa-search-plus"></i></button></div>
+      <textzoomer-stub></textzoomer-stub>
     </div>
     <p class="none">No lyrics found. Are you not listening to Bach?</p>
   </div>
@@ -17,7 +17,7 @@ exports[`components/ui/lyrics displays lyrics if the song has lyrics 1`] = `
   <div class="content">
     <div>
       <div>Foo and bar</div>
-      <!---->
+      <textzoomer-stub></textzoomer-stub>
     </div>
     <!---->
   </div>

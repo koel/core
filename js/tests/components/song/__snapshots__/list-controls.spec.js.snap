@@ -3,6 +3,6 @@
 exports[`components/song/list-controls renders properly 1`] = `
 <div class="song-list-controls">
   <!---->
-  <!---->
+  <addtomenu-stub config="[object Object]" songs=""></addtomenu-stub>
 </div>
 `;

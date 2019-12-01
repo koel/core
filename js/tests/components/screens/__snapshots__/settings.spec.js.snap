@@ -12,7 +12,7 @@ exports[`components/screens/settings renders properly 1`] = `
       </p> <input aria-describedby="mediaPathHelp" id="inputSettingsPath" type="text">
     </div>
     <div class="form-row">
-      <!---->
+      <btn-stub type="submit">Scan</btn-stub>
     </div>
   </form>
 </section>

@@ -14,15 +14,7 @@ exports[`components/layout/extra-panel does not have a YouTube tab if not using 
     </div>
     <div class="panes">
       <div aria-labelledby="extraTabLyrics" id="extraPanelLyrics" role="tabpanel" tabindex="0">
-        <article id="lyrics">
-          <div class="content">
-            <div style="display: none;">
-              <div></div>
-              <div class="text-zoomer"><button title="Zoom out"><i class="fa fa-search-minus"></i></button> <button title="Zoom in"><i class="fa fa-search-plus"></i></button></div>
-            </div>
-            <!---->
-          </div>
-        </article>
+        <lyricspane-stub song="[object Object]"></lyricspane-stub>
       </div>
       <div aria-labelledby="extraTabArtist" id="extraPanelArtist" role="tabpanel" tabindex="0" style="display: none;">
         <!---->
@@ -50,15 +42,7 @@ exports[`components/layout/extra-panel has a YouTube tab if using YouTube 1`] = 
       </button> <button aria-controls="extraPanelYouTube" id="extraTabYouTube" role="tab" title="YouTube"><i class="fa fa-youtube-play"></i></button></div>
     <div class="panes">
       <div aria-labelledby="extraTabLyrics" id="extraPanelLyrics" role="tabpanel" tabindex="0">
-        <article id="lyrics">
-          <div class="content">
-            <div style="display: none;">
-              <div></div>
-              <div class="text-zoomer"><button title="Zoom out"><i class="fa fa-search-minus"></i></button> <button title="Zoom in"><i class="fa fa-search-plus"></i></button></div>
-            </div>
-            <!---->
-          </div>
-        </article>
+        <lyricspane-stub song="[object Object]"></lyricspane-stub>
       </div>
       <div aria-labelledby="extraTabArtist" id="extraPanelArtist" role="tabpanel" tabindex="0" style="display: none;">
         <!---->
@@ -67,7 +51,10 @@ exports[`components/layout/extra-panel has a YouTube tab if using YouTube 1`] = 
         <!---->
       </div>
       <div aria-labelledby="extraTabAlbum" id="extraPanelAlbum" role="tabpanel" tabindex="0" style="display: none;">
-        <!---->
+        <div class="youtube-extra-wrapper">
+          <p class="nope">Play a song to retrieve related YouTube videos.</p>
+          <p class="nope" style="display: none;">Loading…</p>
+        </div>
       </div>
     </div>
   </div>
@@ -88,7 +75,7 @@ exports[`components/layout/extra-panel renders properly 1`] = `
     </div>
     <div class="panes">
       <div aria-labelledby="extraTabLyrics" id="extraPanelLyrics" role="tabpanel" tabindex="0">
-        <!---->
+        <lyricspane-stub song="[object Object]"></lyricspane-stub>
       </div>
       <div aria-labelledby="extraTabArtist" id="extraPanelArtist" role="tabpanel" tabindex="0" style="display: none;">
         <!---->
