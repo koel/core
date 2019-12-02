@@ -80,7 +80,7 @@ export default {
     transform-origin: 0;
     position: absolute;
     bottom: -25px;
-    border: 14px solid #333334;
+    border: 14px solid #333;
     border-left-width: 30px;
     z-index: 0;
     width: 140px;
