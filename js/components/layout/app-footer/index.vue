@@ -1,5 +1,5 @@
 <template>
-  <footer>
+  <footer id="mainFooter">
     <player-controls :song="song"/>
 
     <div class="media-info-wrap">
