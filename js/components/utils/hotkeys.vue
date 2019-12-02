@@ -44,23 +44,14 @@ let listenToGlobalShortcuts = () => {}
 
 if (KOEL_ENV === 'app') {
   listenToGlobalShortcuts = () => {
-    ipc.on(events.GLOBAL_SHORTCUT, (e, msg) => {
-      switch (msg) {
-        case 'MediaNextTrack':
-          playback.playNext()
-          break
-        case 'MediaPreviousTrack':
-          playback.playPrev()
-          break
-        case 'MediaStop':
-          playback.stop()
-          break
-        case 'MediaPlayPause':
-          const play = document.querySelector('#mainFooter .play')
-          play ? play.click() : document.querySelector('#mainFooter .pause').click()
-          break
-      }
-    })
+    const mediaFunctionMap = {
+      MediaNextTrack: () => playback.playNext(),
+      MediaPreviousTrack: () => playback.playPrev(),
+      MediaStop: () => playback.stop(),
+      MediaPlayPause: () => playback.toggle()
+    }
+
+    ipc.on(events.GLOBAL_SHORTCUT, (e, msg) => msg in mediaFunctionMap && mediaFunctionMap[msg]())
   }
 }
 
@@ -72,14 +63,11 @@ export default {
      * @param {Object} e The keydown event
      */
     togglePlayback: e => {
-      if (e && $.is(e.target, 'input,textarea,button,select')) {
+      if (e && $.is(e.target, 'input, textarea, button, select')) {
         return true
       }
 
-      // Whatever play/pause control is there, we blindly click it.
-      const play = document.querySelector('#mainFooter .play')
-      play ? play.click() : document.querySelector('#mainFooter .pause').click()
-
+      playback.toggle()
       e && e.preventDefault()
     },
 
@@ -117,7 +105,7 @@ export default {
      * @param {Object} e The keydown event
      */
     search: e => {
-      if ($.is(e.target, 'input,textarea') || e.metaKey || e.ctrlKey) {
+      if ($.is(e.target, 'input, textarea') || e.metaKey || e.ctrlKey) {
         return true
       }
 
@@ -129,7 +117,7 @@ export default {
      * Like/unlike the current song when use presses L.
      */
     toggleLike: e => {
-      if ($.is(e.target, 'input,textarea')) {
+      if ($.is(e.target, 'input, textarea')) {
         return true
       }
 

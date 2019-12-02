@@ -9,7 +9,7 @@
     ></i>
 
     <span
-      @click.prevent="resume"
+      @click.prevent="toggle"
       class="play control"
       role="button"
       v-if="song.playbackState !== 'playing'"
@@ -18,7 +18,7 @@
     >
       <i class="fa fa-play"></i>
     </span>
-    <span @click.prevent="pause" class="pause control" role="button" title="Pause" tabindex="0" v-else>
+    <span @click.prevent="toggle" class="pause control" role="button" title="Pause" tabindex="0" v-else>
       <i class="fa fa-pause"></i>
     </span>
 
@@ -48,11 +48,7 @@ export default {
 
     playNext: () => playback.playNext(),
 
-    resume () {
-      this.song.id ? playback.resume() : playback.playFirstInQueue()
-    },
-
-    pause: () => playback.pause()
+    toggle: () => playback.toggle()
   }
 }
 </script>
