@@ -93,11 +93,11 @@ export default {
   .album-thumb-wrapper {
     flex: 0 0 $footerHeight + 30px;
     height: $footerHeight + 30px;
-    transition: .4s ease-out;
+    transition: .2s ease-out;
     position: relative;
     overflow: hidden;
     border-radius: 50%;
-    border: 1px solid rgb(33, 33, 33);
+    box-shadow: 0 0 20px rgba(0, 0, 0, .2);
     margin-left: -40px;
     margin-right: -40px;
 
@@ -106,6 +106,10 @@ export default {
     &:hover {
       .album-thumb {
         transform: scale(1.1);
+
+        &::after {
+          display: block;
+        }
       }
 
       .play, .pause {
@@ -125,6 +129,17 @@ export default {
     border-radius: 50%;
     background-size: cover;
     transition: .2s ease-out;
+    overflow: hidden;
+
+    &::after {
+      content: "";
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      background: linear-gradient(135deg, rgba(235,241,246,0) 0%,rgba(255,255,255,.3) 41%,rgba(255,255,255,0) 41%);
+    }
   }
 
   .prev, .next {
@@ -133,11 +148,13 @@ export default {
   }
 
   .play, .pause {
+    @include inset-when-pressed();
+
     border-radius: 50%;
     position: absolute;
     top: 0;
     left: 0;
-    transition: .4s ease-out;
+    transition: opacity .4s ease-out;
     font-size: 3rem;
     display: inline-block;
     width: 100%;
