@@ -29,9 +29,12 @@ export default {
 @import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
+$colorPaneBgr: darken($color2ndBgr, 3);
+
 .middle-pane {
   flex: 1;
   display: flex;
+  background: $colorPaneBgr;
 
   @media only screen and (max-width: 768px) {
     width: 100%;
@@ -39,20 +42,16 @@ export default {
     top: 0;
     left: 0;
     height: 8px;
-
-    ::before {
-      display: none;
-    }
   }
 }
 
 #progressPane {
   flex: 1;
-  text-align: center;
-  padding-top: 16px;
-  line-height: 18px;
-  background: rgba(1, 1, 1, .2);
   position: relative;
+  display: flex;
+  flex-direction: column;
+  place-content: center;
+  place-items: center;
 
   .meta {
     font-size: .9rem;
@@ -75,7 +74,7 @@ export default {
   .plyr__progress {
     &--seek {
       height: 11px;
-      border-bottom: 10px solid transparent; // increase click area
+      border-bottom: 10px solid $colorPaneBgr; // increase click area
     }
   }
 
