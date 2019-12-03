@@ -94,6 +94,12 @@ $colorPaneBgr: darken($color2ndBgr, 3);
     .meta, .title {
       display: none;
     }
+
+    .plyr__progress {
+      &--seek {
+        border-bottom-color: $color2ndBgr;
+      }
+    }
   }
 }
 </style>

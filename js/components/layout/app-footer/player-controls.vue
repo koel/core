@@ -25,8 +25,6 @@
       </span>
     </span>
 
-
-
     <i
       @click.prevent="playNext"
       class="next fa fa-step-forward control"
@@ -181,6 +179,32 @@ export default {
 
     &::before {
       display: none;
+    }
+
+    .album-thumb-wrapper {
+      flex: 0 0 48px;
+      height: 48px;
+      margin-left: 12px;
+      margin-right: 12px;
+      box-shadow: 0 0 0 1px $colorLink;
+    }
+
+    .album-thumb {
+      background-image: none !important;
+
+      &::after {
+        opacity: 0;
+      }
+    }
+
+    .play, .pause {
+      line-height: 48px;
+    }
+
+    .prev, .next, .play, .pause {
+      opacity: 1;
+      font-size: 2rem;
+      color: $colorLink;
     }
   }
 }
