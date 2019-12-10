@@ -76,7 +76,7 @@ export default {
 }
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 /**
  * I like to move it move it
  * I like to move it move it
