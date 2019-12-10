@@ -5,7 +5,6 @@
     id="vizContainer"
     ref="visualizerContainer"
   >
-    <global-events @keyup.esc="exitFullscreen"/>
     <a @click="hide" class="close"><i class="fa fa-times"></i></a>
   </div>
 </template>
@@ -40,10 +39,6 @@ export default {
       }
 
       this.isFullscreen = !this.isFullscreen
-    },
-
-    exitFullScreen () {
-      this.isFullscreen && this.toggleFullscreen()
     },
 
     hide: () => event.emit(event.$names.TOGGLE_VISUALIZER)

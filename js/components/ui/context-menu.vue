@@ -45,6 +45,10 @@ export default {
     },
 
     close () {
+      if (!this.$refs.menu) {
+        return
+      }
+
       this.closeAllSubmenus()
       this.$refs.menu.style.top = 'auto'
       this.$refs.menu.style.bottom = 'auto'

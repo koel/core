@@ -43,23 +43,19 @@ class AudioAnalyser {
 
     this.bands = new Uint8Array(this.analyser.frequencyBinCount)
 
-    this.audio.addEventListener('canplay', () => {
-      this.source.connect(this.analyser)
-      this.analyser.connect(this.jsNode)
+    this.source.connect(this.analyser)
+    this.analyser.connect(this.jsNode)
 
-      this.jsNode.connect(this.context.destination)
-      this.source.connect(this.context.destination)
+    this.jsNode.connect(this.context.destination)
+    this.source.connect(this.context.destination)
 
-      const ret = this.jsNode.onaudioprocess = () => {
-        this.analyser.getByteFrequencyData(this.bands)
+    this.jsNode.onaudioprocess = () => {
+      this.analyser.getByteFrequencyData(this.bands)
 
-        if (!this.audio.paused) {
-          return (typeof this.onUpdate === 'function' ? this.onUpdate(this.bands) : undefined)
-        }
+      if (!this.audio.paused) {
+        return typeof this.onUpdate === 'function' ? this.onUpdate(this.bands) : undefined
       }
-
-      return ret
-    })
+    }
   }
 }
 
@@ -117,7 +113,7 @@ class Particle {
 
     ctx.save()
     ctx.beginPath()
-    ctx.translate(this.x + (cos(this.rotation * this.speed) * 250), this.y)
+    ctx.translate(this.x + cos(this.rotation * this.speed) * 250, this.y)
     ctx.rotate(this.rotation)
     ctx.scale(this.smoothedScale * this.level, this.smoothedScale * this.level)
     ctx.moveTo(this.size * 0.5, 0)
@@ -132,18 +128,16 @@ class Particle {
   }
 }
 
-export default function (container) {
+export default container => {
   Sketch.create({
     container,
     particles: [],
     setup () {
       // generate some particles
       let particle
-      for (let i = 0, end = NUM_PARTICLES - 1; i <= end; i++) {
-        const x = random(this.width)
-        const y = random(this.height)
 
-        particle = new Particle(x, y)
+      for (let i = 0; i < NUM_PARTICLES; i++) {
+        particle = new Particle(random(this.width), random(this.height))
         particle.energy = random(particle.band / 256)
 
         this.particles.push(particle)
@@ -153,34 +147,27 @@ export default function (container) {
       const analyser = new AudioAnalyser(NUM_BANDS, SMOOTHING)
 
       // update particles based on fft transformed audio frequencies
-      analyser.onUpdate = bands => {
-        return (() => {
-          const result = []
-          for (particle of Array.from(this.particles)) {
-            result.push(particle.energy = bands[particle.band] / 256)
-          }
-          return result
-        })()
-      }
+      analyser.onUpdate = bands => this.particles.map(particle => {
+        particle.energy = bands[particle.band] / 256
+
+        return particle
+      })
     },
 
     draw () {
       this.globalCompositeOperation = 'lighter'
 
-      return (() => {
-        const result = []
-        for (const particle of Array.from(this.particles)) {
-          if (particle.y < (-particle.size * particle.level * particle.scale * 2)) {
-            particle.reset()
-            particle.x = random(this.width)
-            particle.y = this.height + (particle.size * particle.scale * particle.level * 2)
-          }
-
-          particle.move()
-          result.push(particle.draw(this))
+      return this.particles.map(particle => {
+        if (particle.y < (-particle.size * particle.level * particle.scale * 2)) {
+          particle.reset()
+          particle.x = random(this.width)
+          particle.y = this.height + (particle.size * particle.scale * particle.level * 2)
         }
-        return result
-      })()
+
+        particle.move()
+
+        return particle.draw(this)
+      })
     }
   })
 }
