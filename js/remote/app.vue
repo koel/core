@@ -3,7 +3,7 @@
     <template v-if="authenticated">
       <album-art-overlay :album="album" v-if="preferences.showAlbumArtOverlay"/>
 
-      <div id="main">
+      <div id="main" data-cy="main">
         <template v-if="connected">
           <div class="details" v-if="song">
             <div class="cover" :style="{ backgroundImage: 'url('+song.album.cover+')' }"></div>
@@ -56,7 +56,7 @@
       </div>
     </template>
 
-    <div class="login-wrapper" v-else>
+    <div class="login-wrapper" data-cy="loginForm" v-else>
       <login-form @loggedin="onUserLoggedIn"/>
     </div>
   </div>
