@@ -59,7 +59,10 @@ describe('components/screens/queue', () => {
   })
 
   it('shuffles all available songs if there are no songs queued', () => {
-    songStore.state.songs = factory('song', 10)
+    const songs = factory('song', 10)
+    Object.defineProperty(songStore, 'all', {
+      get: () => songs
+    })
     const m = mock(playback, 'queueAndPlay')
     const c = shallow(Component, {
       data: () => ({
@@ -70,7 +73,7 @@ describe('components/screens/queue', () => {
     })
 
     c.click('a.start')
-    expect(m).toHaveBeenCalledWith(songStore.all, true)
+    expect(m).toHaveBeenCalledWith(songs, true)
   })
 
   it('clears the queue', () => {

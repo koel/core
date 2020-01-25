@@ -1,25 +1,50 @@
 <template>
   <div class="song-list-controls">
     <btn-group uppercased>
-      <btn
-        @click.prevent="shuffle"
-        class="btn-shuffle-all"
-        orange
-        title="Shuffle all"
-        v-if="fullConfig.shuffle && selectedSongs.length < 2 && songs.length"
-      >
-        <i class="fa fa-random"></i> All
-      </btn>
+      <template v-if="fullConfig.play">
+        <template v-if="altPressed">
+          <btn
+            @click.prevent="playAll"
+            class="btn-play-all"
+            orange
+            title="Play all all"
+            v-if="selectedSongs.length < 2 && songs.length"
+          >
+            <i class="fa fa-play"></i> All
+          </btn>
 
-      <btn
-        @click.prevent="shuffleSelected"
-        class="btn-shuffle-selected"
-        orange
-        title="Shuffle selected"
-        v-if="fullConfig.shuffle && selectedSongs.length > 1"
-      >
-        <i class="fa fa-random"></i> Selected
-      </btn>
+          <btn
+            @click.prevent="playSelected"
+            class="btn-play-selected"
+            orange
+            title="Play selected"
+            v-if="selectedSongs.length > 1"
+          >
+            <i class="fa fa-play"></i> Selected
+          </btn>
+        </template>
+        <template v-else>
+          <btn
+            @click.prevent="shuffle"
+            class="btn-shuffle-all"
+            orange
+            title="Shuffle all"
+            v-if="selectedSongs.length < 2 && songs.length"
+          >
+            <i class="fa fa-random"></i> All
+          </btn>
+
+          <btn
+            @click.prevent="shuffleSelected"
+            class="btn-shuffle-selected"
+            orange
+            title="Shuffle selected"
+            v-if="selectedSongs.length > 1"
+          >
+            <i class="fa fa-random"></i> Selected
+          </btn>
+        </template>
+      </template>
 
       <btn
         :title="`${showingAddToMenu ? 'Cancel' : 'Add selected songs to…'}`"
@@ -64,6 +89,8 @@
 </template>
 
 <script>
+const KEYCODE_ALT = 18
+
 export default {
   props: {
     config: Object,
@@ -85,7 +112,7 @@ export default {
 
   data: () => ({
     fullConfig: {
-      shuffle: true,
+      play: true,
       addTo: {
         queue: true,
         favorites: true,
@@ -96,7 +123,8 @@ export default {
       deletePlaylist: false
     },
     showingAddToMenu: false,
-    numberOfQueuedSongs: 0
+    numberOfQueuedSongs: 0,
+    altPressed: false
   }),
 
   computed: {
@@ -115,11 +143,19 @@ export default {
 
   methods: {
     shuffle () {
-      this.$emit('shuffleAll')
+      this.$emit('playAll', true)
     },
 
     shuffleSelected () {
-      this.$emit('shuffleSelected')
+      this.$emit('playSelected', true)
+    },
+
+    playAll () {
+      this.$emit('playAll', false)
+    },
+
+    playSelected () {
+      this.$emit('playSelected', false)
     },
 
     clearQueue () {
@@ -133,6 +169,25 @@ export default {
     closeAddToMenu () {
       this.showingAddToMenu = false
     }
+  },
+
+  mounted () {
+    this.$options.$KEYDOWN_HANDLER = window.addEventListener('keydown', e => {
+      if (e.keyCode === KEYCODE_ALT) {
+        this.altPressed = true
+      }
+    })
+
+    this.$options.$KEYUP_HANDLER = window.addEventListener('keyup', e => {
+      if (e.keyCode === KEYCODE_ALT) {
+        this.altPressed = false
+      }
+    })
+  },
+
+  unmounted () {
+    this.$options.$KEYDOWN_HANDLER = null
+    this.$options.$KEYUP_HANDLER = null
   }
 }
 </script>

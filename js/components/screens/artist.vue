@@ -38,8 +38,8 @@
 
       <song-list-controls
         v-show="artist.songs.length && (!isPhone || showingControls)"
-        @shuffleAll="shuffleAll"
-        @shuffleSelected="shuffleSelected"
+        @playAll="playAll"
+        @playSelected="playSelected"
         :songs="artist.songs"
         :config="songListControlConfig"
         :selectedSongs="selectedSongs"
@@ -61,7 +61,7 @@
 <script>
 import { pluralize } from '@/utils'
 import { sharedStore } from '@/stores'
-import { playback, download, artistInfo as artistInfoService } from '@/services'
+import { download, artistInfo as artistInfoService } from '@/services'
 import router from '@/router'
 import hasSongList from '@/mixins/has-song-list'
 import artistAttributes from '@/mixins/artist-attributes'
@@ -109,12 +109,8 @@ export default {
   },
 
   methods: {
-    /**
-     * Shuffle the songs by the current artist.
-     * Overriding the mixin.
-     */
-    shuffleAll () {
-      playback.queueAndPlay(this.artist.songs, true /* shuffled */)
+    getSongs () {
+      return this.artist.songs
     },
 
     download () {

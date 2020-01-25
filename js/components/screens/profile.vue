@@ -54,6 +54,15 @@
       <div class="preferences">
         <div class="form-row">
           <label>
+            Play button's default action:
+            <select name="defaultPlayAction" v-model="prefs.defaultPlayAction">
+              <option value="">Shuffle</option>
+              <option value="">Play in sequence</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-row">
+          <label>
             <input type="checkbox" name="notify" v-model="prefs.notify">
             Show “Now Playing” song notification
           </label>

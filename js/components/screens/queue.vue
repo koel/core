@@ -13,8 +13,8 @@
 
       <song-list-controls
         v-show="state.songs.length && (!isPhone || showingControls)"
-        @shuffleAll="shuffleAll"
-        @shuffleSelected="shuffleSelected"
+        @playAll="playAll"
+        @playSelected="playSelected"
         @clearQueue="clearQueue"
         :songs="state.songs"
         :config="songListControlConfig"
@@ -56,17 +56,11 @@ export default {
   },
 
   methods: {
-    /**
-     * Shuffle all songs we have.
-     * Overriding the mixin.
-     */
-    shuffleAll () {
-      playback.queueAndPlay(
-        this.state.songs.length ? this.state.songs : songStore.all,
-        true /* shuffled */
-      )
+    getSongs () {
+      return this.state.songs.length ? this.state.songs : songStore.all
     },
 
+    shuffleAll: () => playback.queueAndPlay(songStore.all, true),
     clearQueue: () => queueStore.clear()
   }
 }

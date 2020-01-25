@@ -28,12 +28,18 @@ export default {
   }),
 
   methods: {
-    shuffleAll () {
-      playback.queueAndPlay(this.state.songs, true /* shuffled */)
+    playAll (shuffled) {
+      if (this.state) {
+        playback.queueAndPlay(this.state.songs, shuffled)
+      } else if (typeof this.getSongs === 'function') {
+        playback.queueAndPlay(this.getSongs(), shuffled)
+      } else {
+        throw Error('Either this.state.songs or this.getSongs() should be defined and resolve into an array of songs')
+      }
     },
 
-    shuffleSelected () {
-      playback.queueAndPlay(this.selectedSongs, true /* shuffled */)
+    playSelected (shuffled) {
+      playback.queueAndPlay(this.selectedSongs, shuffled)
     },
 
     toggleControls () {

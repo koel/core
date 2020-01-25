@@ -15,7 +15,7 @@ describe('components/song/list-controls', () => {
       const wrapper = await mount(Component, { propsData: { songs, selectedSongs }})
 
       wrapper.vm.$nextTick(() => {
-        expect(wrapper.click('.btn-shuffle-all').hasEmitted('shuffleAll')).toBe(true)
+        expect(wrapper.click('.btn-shuffle-all').hasEmitted('playAll', true)).toBe(true)
         done()
       })
     })
@@ -26,7 +26,7 @@ describe('components/song/list-controls', () => {
     expect(shallow(Component, { propsData: {
       songs,
       selectedSongs: take(songs, 2)
-    }}).click('.btn-shuffle-selected').hasEmitted('shuffleSelected')).toBe(true)
+    }}).click('.btn-shuffle-selected').hasEmitted('playSelected', true)).toBe(true)
   })
 
   it('displays the "Add To" menu', () => {

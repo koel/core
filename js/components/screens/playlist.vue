@@ -20,8 +20,8 @@
 
         <song-list-controls
           v-show="!isPhone || showingControls"
-          @shuffleAll="shuffleAll"
-          @shuffleSelected="shuffleSelected"
+          @playAll="playAll"
+          @playSelected="playSelected"
           @deletePlaylist="destroy"
           :songs = "playlist.songs"
           :config="songListControlConfig"
@@ -47,7 +47,7 @@
 <script>
 import { pluralize, event } from '@/utils'
 import { playlistStore, sharedStore } from '@/stores'
-import { playback, download } from '@/services'
+import { download } from '@/services'
 import { views } from '@/config'
 import hasSongList from '@/mixins/has-song-list'
 
@@ -78,12 +78,8 @@ export default {
   },
 
   methods: {
-    /**
-     * Shuffle the songs in the current playlist.
-     * Overriding the mixin.
-     */
-    shuffleAll () {
-      playback.queueAndPlay(this.playlist.songs, true /* shuffled */)
+    getSongs () {
+      return this.playlist.songs
     },
 
     destroy () {
