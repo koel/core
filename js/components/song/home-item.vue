@@ -3,6 +3,8 @@
     :class="{ playing: song.playbackState === 'playing' || song.playbackState === 'paused' }"
     @contextmenu.prevent="contextMenu"
     @dblclick.prevent="play"
+    @dragstart="dragStart"
+    draggable="true"
     class="song-item-home"
     tabindex="0"
   >
@@ -25,7 +27,8 @@
 </template>
 
 <script>
-import { pluralize } from '@/utils'
+import { dragTypes } from '@/config'
+import { startDragging, pluralize } from '@/utils'
 import { queueStore } from '@/stores'
 import { playback } from '@/services'
 
@@ -71,6 +74,10 @@ export default {
       } else {
         playback.pause()
       }
+    },
+
+    dragStart (event) {
+      startDragging(event, this.song, dragTypes.SONGS)
     }
   }
 }

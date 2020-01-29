@@ -50,7 +50,8 @@
 <script>
 import isMobile from 'ismobilejs'
 
-import { filterBy, orderBy, event, pluralize, createGhostDragImage, $ } from '@/utils'
+import { dragTypes } from '@/config'
+import { filterBy, orderBy, event, startDragging, $ } from '@/utils'
 import { playlistStore, queueStore, songStore, favoriteStore } from '@/stores'
 import { playback } from '@/services'
 import router from '@/router'
@@ -313,17 +314,14 @@ export default {
      * Even though the event is triggered on one row only, we'll collect other
      * selected rows, if any, as well.
      */
-    dragStart (rowVm, e) {
+    dragStart (rowVm, event) {
       // If the user is dragging an unselected row, clear the current selection.
       if (!rowVm.item.selected) {
         this.clearSelection()
         rowVm.item.selected = true
       }
 
-      const songIds = this.selectedSongs.map(song => song.id)
-      e.dataTransfer.effectAllowed = 'move'
-      e.dataTransfer.setData('application/x-koel.text+plain', songIds)
-      createGhostDragImage(e, `${pluralize(songIds.length, 'song')}`)
+      startDragging(event, this.selectedSongs, dragTypes.SONGS)
     },
 
     /**

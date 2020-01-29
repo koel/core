@@ -2,8 +2,9 @@
  * Other common methods.
  */
 import select from 'select'
-import { event, use } from '@/utils'
+import { event, pluralize, use } from '@/utils'
 import { sharedStore } from '@/stores'
+import { dragTypes } from '@/config'
 
 /**
  * Load (display) a main panel (view).
@@ -61,7 +62,47 @@ export const getDefaultCover = () => `${sharedStore.state.cdnUrl}/public/img/cov
  * @param {DragEvent} event
  * @param {string} text
  */
-export const createGhostDragImage = (event, text) => use(document.querySelector('#dragGhost'), ghost => {
+const createGhostDragImage = (event, text) => use(document.querySelector('#dragGhost'), ghost => {
   ghost.innerText = text
   event.dataTransfer.setDragImage(ghost, 0, 0)
 })
+
+/**
+ * Handle song/album/artist drag start event.
+ *
+ * @param {DragEvent} event The drag event
+ * @param {Object|Array.<Object>} dragged Either an array of songs or a song/album/artist object
+ * @param {string} type The drag type (see @/config/drag-types.js)
+ */
+export const startDragging = (event, dragged, type) => {
+  let text
+  let songIds
+
+  switch (type) {
+    case dragTypes.SONGS:
+      dragged = [].concat(dragged)
+      text = dragged.length === 1
+        ? `${dragged[0].title} by ${dragged[0].artist.name}`
+        : pluralize(dragged.length, 'song')
+      songIds = dragged.map(song => song.id)
+      break
+
+    case dragTypes.ALBUM:
+      text = `All ${pluralize(dragged.songs.length, 'song')} in ${dragged.name}`
+      songIds = dragged.songs.map(song => song.id)
+      break
+
+    case dragTypes.ARTIST:
+      text = `All ${pluralize(dragged.songs.length, 'song')} by ${dragged.name}`
+      songIds = dragged.songs.map(song => song.id)
+      break
+
+    default:
+      throw Error(`Invalid drag type: ${type}`)
+  }
+
+  event.dataTransfer.setData('application/x-koel.text+plain', songIds)
+  event.dataTransfer.effectAllowed = 'move'
+
+  createGhostDragImage(event, text)
+}

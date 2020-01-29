@@ -52,7 +52,8 @@
 </template>
 
 <script>
-import { pluralize, createGhostDragImage } from '@/utils'
+import { dragTypes } from '@/config'
+import { startDragging, pluralize } from '@/utils'
 import { artistStore, sharedStore } from '@/stores'
 import { playback, download } from '@/services'
 import artistAttributes from '@/mixins/artist-attributes'
@@ -97,11 +98,8 @@ export default {
       download.fromArtist(this.artist)
     },
 
-    dragStart (e) {
-      const songIds = this.artist.songs.map(song => song.id)
-      e.dataTransfer.setData('application/x-koel.text+plain', songIds)
-      e.dataTransfer.effectAllowed = 'move'
-      createGhostDragImage(e, `All ${pluralize(songIds.length, 'song')} by ${this.artist.name}`)
+    dragStart (event) {
+      startDragging(event, this.artist, dragTypes.ARTIST)
     }
   }
 }
