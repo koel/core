@@ -20,7 +20,7 @@
         v-if="artist.info.image" :src="artist.info.image"
       >
 
-      <div class="bio" v-if="artist.info.bio.summary">
+      <div class="bio" v-if="artist.info.bio && artist.info.bio.summary">
         <div class="summary" v-show="showSummary" v-html="artist.info.bio.summary"></div>
         <div class="full" v-show="showFull" v-html="artist.info.bio.full"></div>
 

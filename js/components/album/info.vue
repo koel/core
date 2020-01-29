@@ -24,7 +24,7 @@
         </button>
       </div>
 
-      <track-list :album="album" v-if="album.info.tracks.length"/>
+      <track-list :album="album" v-if="album.info.tracks && album.info.tracks.length"/>
 
       <footer>Data &copy; <a target="_blank" :href="album.info.url">Last.fm</a></footer>
     </main>
