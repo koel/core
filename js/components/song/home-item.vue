@@ -1,6 +1,7 @@
 <template>
   <li
     :class="{ playing: song.playbackState === 'playing' || song.playbackState === 'paused' }"
+    @contextmenu.prevent="contextMenu"
     @dblclick.prevent="play"
     class="song-item-home"
     tabindex="0"
@@ -19,6 +20,7 @@
         <template v-if="showPlayCount">- {{ song.playCount | pluralize('play') }}</template>
       </span>
     </span>
+    <context-menu :songs="[song]" ref="contextMenu" />
   </li>
 </template>
 
@@ -39,6 +41,10 @@ export default {
     }
   },
 
+  components: {
+    ContextMenu: () => import('@/components/song/context-menu')
+  },
+
   filters: { pluralize },
 
   computed: {
@@ -48,6 +54,10 @@ export default {
   },
 
   methods: {
+    contextMenu (event) {
+      this.$refs.contextMenu.open(event.pageY, event.pageX)
+    },
+
     play () {
       queueStore.contains(this.song) || queueStore.queueAfterCurrent(this.song)
       playback.play(this.song)
