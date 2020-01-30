@@ -80,9 +80,10 @@ export default {
 <style lang="scss">
 #playlists {
   .control.create {
-    margin-top: 2px;
+    margin: -8px -10px -10px;
     font-size: 16px;
     transition: .3s;
+    padding: 10px;
 
     &.creating {
       transform: rotate(135deg);

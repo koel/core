@@ -14,13 +14,13 @@
         @click.prevent="toggle"
         class="play control"
         role="button"
-        v-if="song.playbackState !== 'playing'"
         tabindex="0"
         title="Play or resume"
+        v-if="song.playbackState !== 'playing'"
       >
         <i class="fa fa-play"></i>
       </span>
-      <span @click.prevent="toggle" class="pause control" role="button" title="Pause" tabindex="0" v-else>
+      <span @click.prevent="toggle" class="pause control" role="button" tabindex="0" title="Pause" v-else>
         <i class="fa fa-pause"></i>
       </span>
     </span>
@@ -143,6 +143,8 @@ export default {
   .prev, .next {
     transition: .4s ease-out;
     opacity: 0;
+    padding: 12px;
+    margin: -10px;
   }
 
   .play, .pause {
@@ -184,8 +186,6 @@ export default {
     .album-thumb-wrapper {
       flex: 0 0 48px;
       height: 48px;
-      margin-left: 12px;
-      margin-right: 12px;
       box-shadow: 0 0 0 1px $colorLink;
     }
 
