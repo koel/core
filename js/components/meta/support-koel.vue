@@ -15,7 +15,6 @@ import { event } from '@/utils'
 import { preferenceStore as preferences } from '@/stores'
 import isMobile from 'ismobilejs'
 
-let supportBarTimeoutHandle
 const DELAY_UNTIL_SHOWN = 30 * 60 * 1000
 
 export default {
@@ -41,12 +40,12 @@ export default {
 
   methods: {
     setUpShowBarTimeout () {
-      supportBarTimeoutHandle = window.setTimeout(() => (this.shown = true), DELAY_UNTIL_SHOWN)
+      this.$options.$SUPPORT_BAR_TIMEOUT_HANDLE = window.setTimeout(() => (this.shown = true), DELAY_UNTIL_SHOWN)
     },
 
     close () {
       this.shown = false
-      window.clearTimeout(supportBarTimeoutHandle)
+      window.clearTimeout(this.$options.$SUPPORT_BAR_TIMEOUT_HANDLE)
     },
 
     stopBugging () {

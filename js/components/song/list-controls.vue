@@ -168,26 +168,29 @@ export default {
 
     closeAddToMenu () {
       this.showingAddToMenu = false
+    },
+
+    registerKeydown (event) {
+      if (event.keyCode === KEYCODE_ALT) {
+        this.altPressed = true
+      }
+    },
+
+    registerKeyup (event) {
+      if (event.keyCode === KEYCODE_ALT) {
+        this.altPressed = false
+      }
     }
   },
 
   mounted () {
-    this.$options.$KEYDOWN_HANDLER = window.addEventListener('keydown', e => {
-      if (e.keyCode === KEYCODE_ALT) {
-        this.altPressed = true
-      }
-    })
-
-    this.$options.$KEYUP_HANDLER = window.addEventListener('keyup', e => {
-      if (e.keyCode === KEYCODE_ALT) {
-        this.altPressed = false
-      }
-    })
+    window.addEventListener('keydown', this.registerKeydown)
+    window.addEventListener('keyup', this.registerKeyup)
   },
 
   unmounted () {
-    this.$options.$KEYDOWN_HANDLER = null
-    this.$options.$KEYUP_HANDLER = null
+    window.removeEventListener('keydown', this.registerKeydown)
+    window.removeEventListener('keyup', this.registerKeyup)
   }
 }
 </script>
