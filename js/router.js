@@ -56,7 +56,7 @@ export default {
   },
 
   /**
-   * Navigate to a (relative, hashed) path.
+   * Navigate to a (relative, hash-bang'ed) path.
    *
    * @param  {String|Number} path
    */
