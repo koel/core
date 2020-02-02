@@ -37,6 +37,6 @@ describe('components/ui/youtube', () => {
     })
     const searchStub = mock(youtubeService, 'searchVideosRelatedToSong')
     wrapper.click('button.more')
-    expect(searchStub).toHaveBeenCalledWith(song)
+    expect(searchStub).toHaveBeenCalledWith(song, '')
   })
 })

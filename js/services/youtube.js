@@ -3,17 +3,11 @@ import { event } from '@/utils'
 import router from '@/router'
 
 export const youtube = {
-  searchVideosRelatedToSong: song => {
-    song.youtube = song.youtube || {}
-    const pageToken = song.youtube.nextPageToken || ''
-
+  searchVideosRelatedToSong: (song, nextPageToken) => {
     return new Promise((resolve, reject) => {
-      http.get(`youtube/search/song/${song.id}?pageToken=${pageToken}`,
-        ({ data: { nextPageToken, items }}) => {
-          song.youtube.nextPageToken = nextPageToken
-          song.youtube.items.push(...items)
-          resolve()
-        }, error => reject(error)
+      http.get(`youtube/search/song/${song.id}?pageToken=${nextPageToken}`,
+        ({ data: { nextPageToken, items }}) => resolve({ nextPageToken, items }),
+        error => reject(error)
       )
     })
   },

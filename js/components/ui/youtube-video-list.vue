@@ -58,8 +58,13 @@ export default {
       this.loading = true
 
       try {
-        await youtubeService.searchVideosRelatedToSong(this.song)
-        this.videos = this.song.youtube ? this.song.youtube.items : []
+        this.song.youtube = this.song.youtube || { nextPageToken: '', items: [] }
+
+        const result = await youtubeService.searchVideosRelatedToSong(this.song, this.song.youtube.nextPageToken)
+        this.song.youtube.nextPageToken = result.nextPageToken
+        this.song.youtube.items.push(...result.items)
+
+        this.videos = this.song.youtube.items
       } finally {
         this.loading = false
       }
