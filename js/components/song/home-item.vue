@@ -1,7 +1,7 @@
 <template>
   <li
     :class="{ playing: song.playbackState === 'playing' || song.playbackState === 'paused' }"
-    @contextmenu.prevent="contextMenu"
+    @contextmenu.prevent="requestContextMenu"
     @dblclick.prevent="play"
     @dragstart="dragStart"
     draggable="true"
@@ -22,13 +22,12 @@
         <template v-if="showPlayCount">- {{ song.playCount | pluralize('play') }}</template>
       </span>
     </span>
-    <context-menu :songs="[song]" ref="contextMenu" />
   </li>
 </template>
 
 <script>
 import { dragTypes } from '@/config'
-import { startDragging, pluralize } from '@/utils'
+import { event, startDragging, pluralize } from '@/utils'
 import { queueStore } from '@/stores'
 import { playback } from '@/services'
 
@@ -44,10 +43,6 @@ export default {
     }
   },
 
-  components: {
-    ContextMenu: () => import('@/components/song/context-menu')
-  },
-
   filters: { pluralize },
 
   computed: {
@@ -57,8 +52,8 @@ export default {
   },
 
   methods: {
-    contextMenu (event) {
-      this.$refs.contextMenu.open(event.pageY, event.pageX)
+    requestContextMenu (e) {
+      event.emit(event.$names.CONTEXT_MENU_REQUESTED, e, this.song)
     },
 
     play () {

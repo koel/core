@@ -1,5 +1,5 @@
 <template>
-  <footer id="mainFooter">
+  <footer id="mainFooter" @contextmenu.prevent="requestContextMenu">
     <player-controls :song="song"/>
 
     <div class="media-info-wrap">
@@ -24,6 +24,14 @@ export default {
     MiddlePane: () => import('@/components/layout/app-footer/middle-pane'),
     PlayerControls: () => import('@/components/layout/app-footer/player-controls'),
     OtherControls: () => import('@/components/layout/app-footer/other-controls')
+  },
+
+  methods: {
+    requestContextMenu (e) {
+      if (this.song.id) {
+        event.emit(event.$names.CONTEXT_MENU_REQUESTED, e, this.song)
+      }
+    }
   },
 
   created () {

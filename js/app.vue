@@ -15,6 +15,8 @@
         <login-form @loggedin="onUserLoggedIn"/>
       </div>
     </template>
+
+    <song-context-menu :songs="contextMenuSongs" ref="songContextMenu"/>
   </div>
 </template>
 
@@ -23,11 +25,11 @@ import Vue from 'vue'
 
 import AppHeader from '@/components/layout/app-header'
 import AppFooter from '@/components/layout/app-footer/index'
+import EventListeners from '@/components/utils/event-listeners'
+import Hotkeys from '@/components/utils/hotkeys'
+import LoginForm from '@/components/auth/login-form'
 import MainWrapper from '@/components/layout/main-wrapper/index'
 import Overlay from '@/components/ui/overlay'
-import LoginForm from '@/components/auth/login-form'
-import Hotkeys from '@/components/utils/hotkeys'
-import EventListeners from '@/components/utils/event-listeners'
 
 import { event, showOverlay, hideOverlay, $, app as appUtils } from '@/utils'
 import { sharedStore, favoriteStore, queueStore, preferenceStore as preferences } from '@/stores'
@@ -43,20 +45,19 @@ export default {
     Overlay,
     LoginForm,
     EventListeners,
+    SongContextMenu: () => import('@/components/song/context-menu'),
     SupportKoel: () => import('@/components/meta/support-koel')
   },
 
-  data () {
-    return {
-      authenticated: false,
-      isDesktopApp: KOEL_ENV === 'app'
-    }
-  },
+  data: () => ({
+    authenticated: false,
+    isDesktopApp: KOEL_ENV === 'app',
+    contextMenuSongs: []
+  }),
 
   mounted () {
     // The app has just been initialized, check if we can get the user data with an already existing token
-    const token = ls.get('jwt-token')
-    if (token) {
+    if (ls.get('jwt-token')) {
       this.authenticated = true
       this.init()
     }
@@ -74,6 +75,13 @@ export default {
     // Add an ugly mac/non-mac class for OS-targeting styles.
     // I'm crying inside.
     $.addClass(document.documentElement, navigator.userAgent.includes('Mac') ? 'mac' : 'non-mac')
+  },
+
+  created () {
+    event.on(event.$names.CONTEXT_MENU_REQUESTED, (clickEvent, songs) => {
+      this.contextMenuSongs = [].concat(songs)
+      this.$nextTick(() => this.$refs.songContextMenu.open(clickEvent.pageY, clickEvent.pageX))
+    })
   },
 
   methods: {

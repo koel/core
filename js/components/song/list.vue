@@ -42,8 +42,6 @@
       :renderers="renderers"
       key-field="song.id"
     />
-
-    <context-menu ref="contextMenu" :songs="selectedSongs"/>
   </div>
 </template>
 
@@ -81,8 +79,7 @@ export default {
   },
 
   components: {
-    songItem,
-    ContextMenu: () => import('@/components/song/context-menu')
+    songItem
   },
 
   data: () => ({
@@ -359,7 +356,7 @@ export default {
       return false
     },
 
-    openContextMenu (rowVm, event) {
+    openContextMenu (rowVm, e) {
       // If the user is right-clicking an unselected row,
       // clear the current selection and select it instead.
       if (!rowVm.item.selected) {
@@ -367,7 +364,7 @@ export default {
         this.toggleRow(rowVm)
       }
 
-      this.$nextTick(() => this.$refs.contextMenu.open(event.pageY, event.pageX))
+      this.$nextTick(() => event.emit(event.$names.CONTEXT_MENU_REQUESTED, e, this.selectedSongs))
     },
 
     /**
