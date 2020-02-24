@@ -1,6 +1,6 @@
 <template>
   <global-events
-    @keydown.space="togglePlayback"
+    @keydown.space = "togglePlayback"
     @keydown.j = "playNext"
     @keydown.k = "playPrev"
     @keydown.f = "search"
@@ -63,7 +63,7 @@ export default {
      * @param {Object} e The keydown event
      */
     togglePlayback: e => {
-      if (e && $.is(e.target, 'input, textarea, button, select')) {
+      if (e && $.is(e.target, 'input, textarea, button, select') && !$.is(e.target, 'input[type=range]')) {
         return true
       }
 
@@ -77,7 +77,7 @@ export default {
      * @param {Object} e The keydown event
      */
     playPrev: e => {
-      if ($.is(e.target, 'input,textarea')) {
+      if ($.is(e.target, 'input, select, textarea')) {
         return true
       }
 
@@ -91,7 +91,7 @@ export default {
      * @param {Object} e The keydown event
      */
     playNext: e => {
-      if ($.is(e.target, 'input,textarea')) {
+      if ($.is(e.target, 'input, select, textarea')) {
         return true
       }
 
@@ -105,7 +105,7 @@ export default {
      * @param {Object} e The keydown event
      */
     search: e => {
-      if ($.is(e.target, 'input, textarea') || e.metaKey || e.ctrlKey) {
+      if (($.is(e.target, 'input, select, textarea') && !$.is(e.target, 'input[type=range]')) || e.metaKey || e.ctrlKey) {
         return true
       }
 
@@ -117,7 +117,7 @@ export default {
      * Like/unlike the current song when use presses L.
      */
     toggleLike: e => {
-      if ($.is(e.target, 'input, textarea')) {
+      if ($.is(e.target, 'input, select, textarea')) {
         return true
       }
 
