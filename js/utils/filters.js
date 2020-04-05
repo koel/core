@@ -1,36 +1,21 @@
-import { isObject, isNumber, get } from 'lodash'
+import { isObject, isNumber, get } from "lodash"
 
 export const orderBy = (arr, sortKey, reverse) => {
   if (!sortKey) {
     return arr
   }
 
-  const order = (reverse && reverse < 0) ? -1 : 1
-
-  const compareRecordsByKey = (a, b, key) => {
-    let aKey = isObject(a) ? get(a, key) : a
-    let bKey = isObject(b) ? get(b, key) : b
-
-    if (isNumber(aKey) && isNumber(bKey)) {
-      return aKey === bKey ? 0 : aKey > bKey
-    }
-
-    aKey = aKey === undefined ? aKey : `${aKey}`.toLowerCase()
-    bKey = bKey === undefined ? bKey : `${bKey}`.toLowerCase()
-
-    return aKey === bKey ? 0 : aKey > bKey
-  }
+  const order = reverse && reverse < 0 ? -1 : 1
 
   // sort on a copy to avoid mutating original array
   return arr.slice().sort((a, b) => {
-    if (sortKey.constructor === Array) {
-      let diff = 0
-      for (let i = 0; i < sortKey.length; i++) {
-        diff = compareRecordsByKey(a, b, sortKey[i])
-        if (diff !== 0) {
-          break
+    if (sortKey instanceof Array) {
+      const diff = sortKey.reduce((accumulator, sort_by) => {
+        if (accumulator === 0) {
+          accumulator = compareRecordsByKey(a, b, sort_by)
         }
-      }
+        return accumulator
+      }, 0)
 
       return diff === 0 ? 0 : diff === true ? order : -order
     }
@@ -39,15 +24,35 @@ export const orderBy = (arr, sortKey, reverse) => {
     b = isObject(b) ? get(b, sortKey) : b
 
     if (isNumber(a) && isNumber(b)) {
-      return a === b ? 0 : a > b ? order : -order
+      return compareAscOrDesc(a, b, order)
     }
 
-    a = a === undefined ? a : a.toLowerCase()
-    b = b === undefined ? b : b.toLowerCase()
+    const lowercase_a = lowerCaseIfDefined(a)
+    const lowercase_b = lowerCaseIfDefined(b)
 
-    return a === b ? 0 : a > b ? order : -order
+    return compareAscOrDesc(lowercase_a, lowercase_b, order)
   })
 }
+
+const compareRecordsByKey = (a, b, key) => {
+  const aKey = isObject(a) ? get(a, key) : a
+  const bKey = isObject(b) ? get(b, key) : b
+
+  if (isNumber(aKey) && isNumber(bKey)) {
+    return aKey === bKey ? 0 : aKey > bKey
+  }
+
+  const lowercase_a = lowerCaseIfDefined(aKey)
+  const lowercase_b = lowerCaseIfDefined(bKey)
+
+  return lowercase_a === lowercase_b ? 0 : lowercase_a > lowercase_b
+}
+
+const compareAscOrDesc = (a, b, order) =>
+  a === b ? 0 : a > b ? order : -order
+
+const lowerCaseIfDefined = uppercase =>
+  uppercase === undefined ? uppercase : uppercase.toString().toLowerCase()
 
 export const limitBy = (arr, n, offset = 0) => arr.slice(offset, offset + n)
 
