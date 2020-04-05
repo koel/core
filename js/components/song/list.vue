@@ -156,6 +156,21 @@ export default {
       })
     },
 
+    defaultSort () {
+      // there are certain cirscumstances where sorting is simply disallowed, e.g. in Queue
+      if (this.sortable === false) {
+        return
+      }
+
+      // if this is an album's song list, default to sorting by track number
+      // and additionally sort by disc number
+      if (this.type === 'album') {
+        this.sortKey = ['song.disc', 'song.track']
+      }
+      this.order = 1
+      this.songRows = orderBy(this.songRows, this.sortKey, this.order)
+    },
+
     /**
      * @param  {String} key The sort key. Can be 'title', 'album', 'artist', or 'length'
      */
@@ -170,19 +185,8 @@ export default {
         this.order *= -1
       }
 
-      // if this is an album's song list, default to sorting by track number
-      // and additionally sort by disc number
-      if (this.type === 'album') {
-        this.sortKey = this.sortKey ? this.sortKey : ['song.track']
-        this.sortKey = [].concat(this.sortKey)
-        if (!this.sortKey.includes('song.disc')) {
-          this.sortKey.push('song.disc')
-        }
-      }
-
       this.sortingByAlbum = this.sortKey[0] === 'song.album.name'
       this.sortingByArtist = this.sortKey[0] === 'song.album.artist.name'
-
       this.songRows = orderBy(this.songRows, this.sortKey, this.order)
     },
 
@@ -394,6 +398,7 @@ export default {
   mounted () {
     if (this.items) {
       this.render()
+      this.defaultSort()
     }
   },
 
