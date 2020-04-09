@@ -16,7 +16,7 @@ import { userStore } from '@/stores'
 import { ls } from '@/services'
 
 const DEMO_ACCOUNT = {
-  email: 'demo@koel.phanan.net',
+  email: 'demo@koel.dev',
   password: 'demo'
 }
 
