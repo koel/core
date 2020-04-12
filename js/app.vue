@@ -93,9 +93,9 @@ export default {
       // Afterwards, init all mandatory stores and services.
       try {
         await sharedStore.init()
-        playback.init()
 
         window.setTimeout(() => {
+          playback.init()
           hideOverlay()
 
           this.requestNotifPermission()
