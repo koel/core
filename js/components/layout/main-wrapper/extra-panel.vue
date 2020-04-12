@@ -135,19 +135,6 @@ export default {
     }
   },
 
-  mounted: () => {
-    // On ready, add 'with-extra-panel' class.
-    if (!isMobile.any) {
-      $.addClass(document.documentElement, 'with-extra-panel')
-    }
-
-    if (isMobile.phone) {
-      // On a mobile device, we always hide the panel initially regardless of
-      // the saved preference.
-      preferences.showExtraPanel = false
-    }
-  },
-
   methods: {
     resetState () {
       this.currentTab = EXTRA_PANEL_TABS.DEFAULT
@@ -165,7 +152,18 @@ export default {
 
   created () {
     event.on({
-      [event.$names.SONG_PLAYED]: song => this.fetchSongInfo(song)
+      [event.$names.SONG_PLAYED]: song => this.fetchSongInfo(song),
+      [event.$names.LOAD_MAIN_CONTENT]: () => {
+        // On ready, add 'with-extra-panel' class.
+        if (!isMobile.any) {
+          $.addClass(document.documentElement, 'with-extra-panel')
+        }
+
+        // Hide the extra panel if on mobile
+        if (isMobile.phone) {
+          this.state.showExtraPanel = false
+        }
+      }
     })
   }
 }
