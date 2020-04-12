@@ -30,24 +30,33 @@
 import { event } from '@/utils'
 import { preferenceStore, sharedStore } from '@/stores'
 import { views } from '@/config'
+import HomeScreen from '@/components/screens/home'
+import QueueScreen from '@/components/screens/queue'
+import AlbumListScreen from '@/components/screens/album-list'
+import ArtistListScreen from '@/components/screens/artist-list'
+import AllSongsScreen from '@/components/screens/all-songs'
+import PlaylistScreen from '@/components/screens/playlist'
+import FavoritesScreen from '@/components/screens/favorites'
+import RecentlyPlayedScreen from '@/components/screens/recently-played'
+import UserListScreen from '@/components/screens/user-list'
 
 export default {
   views,
 
   components: {
+    HomeScreen,
+    QueueScreen,
+    AllSongsScreen,
+    AlbumListScreen,
+    ArtistListScreen,
+    PlaylistScreen,
+    FavoritesScreen,
+    RecentlyPlayedScreen,
+    UserListScreen,
     AlbumArtOverlay: () => import('@/components/ui/album-art-overlay'),
-    AlbumListScreen: () => import('@/components/screens/album-list'),
     AlbumScreen: () => import('@/components/screens/album'),
-    ArtistListScreen: () => import('@/components/screens/artist-list'),
     ArtistScreen: () => import('@/components/screens/artist'),
-    AllSongsScreen: () => import('@/components/screens/all-songs'),
     SettingsScreen: () => import('@/components/screens/settings'),
-    UserListScreen: () => import('@/components/screens/user-list'),
-    HomeScreen: () => import('@/components/screens/home'),
-    QueueScreen: () => import('@/components/screens/queue'),
-    PlaylistScreen: () => import('@/components/screens/playlist'),
-    FavoritesScreen: () => import('@/components/screens/favorites'),
-    RecentlyPlayedScreen: () => import('@/components/screens/recently-played'),
     ProfileScreen: () => import('@/components/screens/profile'),
     YoutubeScreen: () => import('@/components/screens/youtube'),
     Visualizer: () => import('@/components/ui/visualizer')

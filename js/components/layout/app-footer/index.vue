@@ -13,6 +13,7 @@
 import { event } from '@/utils'
 import { songStore } from '@/stores'
 import { views } from '@/config'
+import OtherControls from '@/components/layout/app-footer/other-controls'
 
 export default {
   data: () => ({
@@ -23,7 +24,7 @@ export default {
   components: {
     MiddlePane: () => import('@/components/layout/app-footer/middle-pane'),
     PlayerControls: () => import('@/components/layout/app-footer/player-controls'),
-    OtherControls: () => import('@/components/layout/app-footer/other-controls')
+    OtherControls
   },
 
   methods: {

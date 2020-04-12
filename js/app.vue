@@ -55,11 +55,11 @@ export default {
     contextMenuSongs: []
   }),
 
-  mounted () {
+  async mounted () {
     // The app has just been initialized, check if we can get the user data with an already existing token
     if (ls.get('jwt-token')) {
       this.authenticated = true
-      this.init()
+      await this.init()
     }
 
     // Create the element to be the ghost drag image.
@@ -94,31 +94,35 @@ export default {
       try {
         await sharedStore.init()
         playback.init()
-        hideOverlay()
 
-        this.requestNotifPermission()
+        window.setTimeout(() => {
+          hideOverlay()
 
-        // To confirm or not to confirm closing, it's a question.
-        window.onbeforeunload = e => {
-          if (!preferences.confirmClosing) {
-            return
+          this.requestNotifPermission()
+
+          // To confirm or not to confirm closing, it's a question.
+          window.onbeforeunload = e => {
+            if (!preferences.confirmClosing) {
+              return
+            }
+
+            // Notice that a custom message like this has ceased to be supported
+            // starting from Chrome 51.
+            return 'You asked Koel to confirm before closing, so here it is.'
           }
 
-          // Notice that a custom message like this has ceased to be supported
-          // starting from Chrome 51.
-          return 'You asked Koel to confirm before closing, so here it is.'
-        }
+          // Ping the server everytime the window is focused, so that we don't have those
+          // "sudden" logout.
+          window.addEventListener('focus', () => http.get('/ping'))
 
-        // Ping the server everytime the window is focused, so that we don't have those
-        // "sudden" logout.
-        window.addEventListener('focus', () => http.get('/ping'))
+          this.subscribeToBroadcastedEvents()
 
-        this.subscribeToBroadcastedEvents()
-
-        // Let all other components know we're ready.
-        event.emit(event.$names.KOEL_READY)
+          // Let all other components know we're ready.
+          event.emit(event.$names.KOEL_READY)
+        }, 0)
       } catch (err) {
         this.authenticated = false
+        throw err
       }
     },
 

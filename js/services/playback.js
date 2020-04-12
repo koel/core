@@ -21,6 +21,7 @@ import router from '@/router'
  */
 const PRELOAD_BUFFER = 30
 const DEFAULT_VOLUME_VALUE = 7
+const VOLUME_INPUT_SELECTOR = '#volumeRange'
 
 let mainWin
 if (KOEL_ENV === 'app') {
@@ -43,8 +44,7 @@ export const playback = {
       controls: []
     })[0]
 
-    this.volumeInput = document.getElementById('volumeRange')
-
+    this.volumeInput = document.querySelector(VOLUME_INPUT_SELECTOR)
     this.listenToMediaEvents(this.player.media)
 
     // On init, set the volume to the value found in the local storage.
