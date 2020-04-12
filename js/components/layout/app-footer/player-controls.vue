@@ -99,6 +99,11 @@ export default {
     margin-left: -40px;
     margin-right: -40px;
 
+    @media (hover: none) {
+      margin-left: 12px;
+      margin-right: 12px;
+    }
+
     @include vertical-center();
 
     &:hover {
