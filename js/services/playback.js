@@ -40,7 +40,7 @@ export const playback = {
       return
     }
 
-    this.player = plyr.setup({
+    this.player = plyr.setup(document.querySelector('.plyr'), {
       controls: []
     })[0]
 
