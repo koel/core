@@ -56,7 +56,7 @@
     "eslint-plugin-vue": "^2.0.0",
     "expect": "^21.2.1",
     "factoria": "^1.0.1",
-    "file-loader": "^1.1.6",
+    "file-loader": "^6.0.0",
     "font-awesome": "^4.7.0",
     "jest": "^23.6.0",
     "jest-each": "^23.6.0",
@@ -70,7 +70,7 @@
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.5.0",
     "vue-test-helpers": "^2.0.0",
-    "webpack": "^3.6.0",
+    "webpack": "^4.42.1",
     "webpack-node-externals": "^1.6.0"
   },
   "scripts": {

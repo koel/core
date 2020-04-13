@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="login" :class="{ error: failed }" data-cy="loginForm">
     <div class="logo">
-      <img src="~#/../img/logo.svg" width="156" height="auto">
+      <img src="../../../img/logo.svg" width="156" height="auto">
     </div>
     <input v-if="isDesktopApp" v-model="url" type="text" placeholder="Koel's Host" autofocus required>
     <input v-model="email" type="email" placeholder="Email Address" autofocus required>

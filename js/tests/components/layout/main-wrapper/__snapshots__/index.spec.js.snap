@@ -3,24 +3,7 @@
 exports[`component/layout/main-wrapper/index renders properly 1`] = `
 <div id="mainWrapper">
   <sidebar-stub></sidebar-stub>
-  <section id="mainContent">
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-    <!---->
-  </section>
+  <div></div>
   <section id="extra" class="showing">
     <div class="tabs">
       <div role="tablist" class="clear"><button aria-selected="true" aria-controls="extraPanelLyrics" id="extraTabLyrics" role="tab">
