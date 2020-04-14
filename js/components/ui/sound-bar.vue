@@ -1,6 +1,6 @@
 <template functional>
   <div class="bars">
-    <img src="../../../img/bars.gif" alt="Sound bars" height="13" width="auto">
+    <img src="@/../img/bars.gif" alt="Sound bars" height="13" width="auto">
   </div>
 </template>
 
