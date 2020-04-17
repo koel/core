@@ -65,6 +65,7 @@ export default {
   padding: 4px 16px;
   display: flex;
   color: rgba(255, 255, 255, .6);
+  z-index: 9;
 
   p {
     flex: 1;
