@@ -54,7 +54,8 @@ export default {
   data: () => ({
     playlistState: playlistStore.state,
     sharedState: sharedStore.state,
-    copyable: isClipboardSupported
+    copyable: isClipboardSupported,
+    userState: userStore.state
   }),
 
   computed: {
@@ -70,7 +71,9 @@ export default {
       return this.playlistState.playlists.filter(playlist => !playlist.is_smart)
     },
 
-    isAdmin: () => userStore.current.is_admin
+    isAdmin () {
+      return this.userState.current.is_admin
+    }
   },
 
   methods: {
