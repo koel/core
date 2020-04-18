@@ -6,7 +6,7 @@
 
     <main>
       <div class="logo">
-        <img src="~#/../img/logo.svg" width="128" height="auto">
+        <img src="@/../img/logo.svg" width="128" height="auto">
       </div>
 
       <p class="current-version">{{ sharedState.currentVersion }}</p>
