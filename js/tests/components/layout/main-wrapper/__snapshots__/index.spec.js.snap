@@ -7,7 +7,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
     <!---->
     <!---->
     <section id="homeWrapper">
-      <h1 class="heading"><span>Hey, !</span></h1>
+      <h1 class="heading"><span>Oh hai!</span></h1>
       <div class="main-scroll-wrap">
         <div class="two-cols">
           <section style="display: none;">
