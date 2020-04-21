@@ -146,7 +146,6 @@ export default {
   }
 
   li {
-    background: rgba(255, 255, 255, .2);
     height: $itemHeight;
     line-height: $itemHeight;
     padding: 0 8px;
@@ -155,7 +154,8 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     border-radius: 3px;
-    background: #fff;
+    background: lighten($colorMenuBgr, 8%);
+    cursor: pointer;
 
     &:hover {
       background: $colorHighlight;
@@ -170,7 +170,7 @@ export default {
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-bottom: 10px solid rgb(232, 232, 232);
+    border-bottom: 10px solid $colorMenuBgr;
     position: absolute;
     top: -7px;
     left: calc(50% - 10px);

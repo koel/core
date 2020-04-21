@@ -133,7 +133,7 @@ export default {
     &.separator {
       pointer-events: none;
       padding: 1px 0;
-      background: #ccc;
+      background: lighten($colorMenuBgr, 10%);
     }
 
     &.has-sub {
@@ -143,7 +143,8 @@ export default {
         position: absolute;
         right: 12px;
         top: 4px;
-        content: "▸";
+        content: "‎▶";
+        font-size: .9rem;
         width: 16px;
         text-align: right;
       }
