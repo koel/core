@@ -8,7 +8,7 @@
       </p>
 
       <div class="plyr">
-        <audio crossorigin="anonymous" loop></audio>
+        <audio crossorigin="anonymous" controls></audio>
       </div>
     </div>
   </div>
