@@ -6,7 +6,10 @@
         <text-zoomer :target="textZoomTarget"/>
       </div>
       <p class="none" v-if="song.id && !song.lyrics">
-        <a @click.prevent="showEditSongForm">Click here</a> to add lyrics.
+        <template v-if="isAdmin">
+          No lyrics found. <a @click.prevent="showEditSongForm">Click here</a> to add lyrics.
+        </template>
+        <span v-else>No lyrics available. Are you listening to Bach?</span>
       </p>
     </div>
   </article>
@@ -14,6 +17,7 @@
 
 <script>
 import { event } from '@/utils'
+import { userStore } from '@/stores'
 
 export default {
   props: {
@@ -28,12 +32,19 @@ export default {
   },
 
   data: () => ({
-    textZoomTarget: null
+    textZoomTarget: null,
+    userState: userStore.state
   }),
 
   methods: {
     showEditSongForm () {
       event.emit(event.$names.MODAL_SHOW_EDIT_SONG_FORM, this.song, 'lyrics')
+    }
+  },
+
+  computed: {
+    isAdmin () {
+      return this.userState.current.is_admin
     }
   },
 
