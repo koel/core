@@ -3,7 +3,7 @@ import plyr from 'plyr'
 import Vue from 'vue'
 import isMobile from 'ismobilejs'
 
-import { event, isMediaSessionSupported } from '@/utils'
+import { event, isMediaSessionSupported, isAudioContextSupported } from '@/utils'
 import {
   queueStore,
   sharedStore,
@@ -47,11 +47,14 @@ export const playback = {
     this.volumeInput = document.querySelector(VOLUME_INPUT_SELECTOR)
     this.listenToMediaEvents(this.player.media)
 
-    // On init, set the volume to the value found in the local storage.
-    this.setVolume(preferences.volume)
+    if (isAudioContextSupported) {
+      try {
+        this.setVolume(preferences.volume)
+      } catch (e) {}
 
-    audioService.init(this.player.media)
-    event.emit(event.$names.INIT_EQUALIZER)
+      audioService.init(this.player.media)
+      event.emit(event.$names.INIT_EQUALIZER)
+    }
 
     if (isMediaSessionSupported) {
       this.setMediaSessionActionHandlers()
@@ -160,6 +163,9 @@ export const playback = {
       return
     }
 
+    document.title = `${song.title} ♫ ${app.name}`
+    document.querySelector('.plyr audio').setAttribute('title', `${song.artist.name} - ${song.title}`)
+
     if (queueStore.current) {
       queueStore.current.playbackState = 'stopped'
     }
@@ -171,12 +177,13 @@ export const playback = {
     // the audio media object and cause our equalizer to malfunction.
     this.player.media.src = songStore.getSourceUrl(song)
 
-    document.title = `${song.title} ♫ ${app.name}`
-    document.querySelector('.plyr audio').setAttribute('title', `${song.artist.name} - ${song.title}`)
-
     // We'll just "restart" playing the song, which will handle notification, scrobbling etc.
     // Fixes #898
-    audioService.context.resume().then(() => this.restart())
+    if (isAudioContextSupported) {
+      audioService.getContext().resume().then(() => this.restart())
+    } else {
+      this.restart()
+    }
   },
 
   showNotification: song => {
