@@ -146,6 +146,7 @@ export default {
         this.song = await songInfo.fetch(song)
       } catch (err) {
         this.song = song
+        console.error(err)
       }
     }
   },

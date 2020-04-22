@@ -112,7 +112,7 @@ export default {
           }
 
           // Ping the server everytime the window is focused, so that we don't have those
-          // "sudden" logout.
+          // "suddent" logout.
           window.addEventListener('focus', () => http.get('/ping'))
 
           this.subscribeToBroadcastedEvents()

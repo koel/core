@@ -87,7 +87,7 @@
               v-show="currentView === 'lyrics'"
             >
               <div class="form-row">
-                <textarea title="Lyrics" name="lyrics" v-model="formData.lyrics"></textarea>
+                <textarea title="Lyrics" name="lyrics" v-model="formData.lyrics" v-koel-focus></textarea>
               </div>
             </div>
           </div>
@@ -127,6 +127,12 @@ export default {
     songs: {
       required: true,
       type: [Array, Object]
+    },
+
+    initialTab: {
+      type: String,
+      default: 'details',
+      validator: value => ['details', 'lyrics'].includes(value)
     }
   },
 
@@ -217,7 +223,7 @@ export default {
   methods: {
     async open () {
       this.mutatedSongs = [].concat(this.songs)
-      this.currentView = 'details'
+      this.currentView = this.initialTab
 
       if (this.editingOnlyOneSong) {
         this.formData.title = this.mutatedSongs[0].title
@@ -259,10 +265,12 @@ export default {
             chk.checked = true
             chk.indeterminate = false
             break
+
           case COMPILATION_STATES.NONE:
             chk.checked = false
             chk.indeterminate = false
             break
+
           default:
             chk.checked = false
             chk.indeterminate = true

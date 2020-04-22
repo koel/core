@@ -4,7 +4,12 @@
     <edit-smart-playlist-form v-if="showingModalName === 'edit-smart-playlist-form'" @close="close" :playlist="boundData.playlist"/>
     <add-user-form v-if="showingModalName === 'add-user-form'" @close="close"/>
     <edit-user-form v-if="showingModalName === 'edit-user-form'" :user="boundData.user" @close="close"/>
-    <edit-song-form v-if="showingModalName === 'edit-song-form'" :songs="boundData.songs" @close="close"/>
+    <edit-song-form
+      :songs="boundData.songs"
+      :initialTab="boundData.initialTab"
+      @close="close"
+      v-if="showingModalName === 'edit-song-form'"
+    />
     <about-dialog v-if="showingModalName === 'about-dialog'" @close="close"/>
   </div>
 </template>
@@ -54,8 +59,9 @@ export default {
         this.showingModalName = 'edit-user-form'
       },
 
-      [event.$names.MODAL_SHOW_EDIT_SONG_FORM]: songs => {
+      [event.$names.MODAL_SHOW_EDIT_SONG_FORM]: (songs, initialTab = 'details') => {
         this.boundData.songs = songs
+        this.boundData.initialTab = initialTab
         this.showingModalName = 'edit-song-form'
       },
 

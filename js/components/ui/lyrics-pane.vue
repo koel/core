@@ -5,12 +5,16 @@
         <div ref="lyricsContainer" v-html="song.lyrics"></div>
         <text-zoomer :target="textZoomTarget"/>
       </div>
-      <p class="none" v-if="song.id && !song.lyrics">No lyrics found. Are you not listening to Bach?</p>
+      <p class="none" v-if="song.id && !song.lyrics">
+        <a @click.prevent="showEditSongForm">Click here</a> to add lyrics.
+      </p>
     </div>
   </article>
 </template>
 
 <script>
+import { event } from '@/utils'
+
 export default {
   props: {
     song: {
@@ -27,17 +31,33 @@ export default {
     textZoomTarget: null
   }),
 
+  methods: {
+    showEditSongForm () {
+      event.emit(event.$names.MODAL_SHOW_EDIT_SONG_FORM, this.song, 'lyrics')
+    }
+  },
+
   mounted () {
-    // Since Vue's $refs are not reactive, we workaround by assigning to a data property
+    // Since Vue's $refs are not reactive, we work around by assigning to a data property
     this.textZoomTarget = this.$refs.lyricsContainer
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "~#/partials/_vars.scss";
+
 .content {
   line-height: 1.6;
   position: relative;
+
+  .none a {
+    color: $colorLinkHovered;
+
+    &:hover {
+      color: $colorHighlight;
+    }
+  }
 
   .text-zoomer {
     opacity: 0;
