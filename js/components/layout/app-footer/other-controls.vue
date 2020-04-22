@@ -73,6 +73,7 @@
 import { download, playback, socket } from '@/services'
 import { event, isAudioContextSupported } from '@/utils'
 import { favoriteStore, preferenceStore, sharedStore, songStore } from '@/stores'
+import { views } from '@/config'
 
 export default {
   props: {
@@ -93,7 +94,8 @@ export default {
     showEqualizer: false,
     sharedState: sharedStore.state,
     useEqualizer: isAudioContextSupported,
-    visualizerActivated: false
+    visualizerActivated: false,
+    viewingQueue: false
   }),
 
   computed: {
@@ -125,6 +127,10 @@ export default {
     downloadCurrentSong () {
       download.fromSongs(this.song)
     }
+  },
+
+  created () {
+    event.on(event.$names.LOAD_MAIN_CONTENT, view => { this.viewingQueue = view === views.QUEUE })
   }
 }
 </script>
