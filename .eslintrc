@@ -4,7 +4,8 @@
   "globals": {
     "KOEL_ENV": true,
     "NODE_ENV": true,
-    "HTMLElement": true
+    "HTMLElement": true,
+    "FileReader": true
   },
   "rules": {
     "camelcase": 0,

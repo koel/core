@@ -287,7 +287,7 @@
   }
 
   &.full {
-    img.cover, img.cool-guys-posing {
+    .cover {
       width: 300px;
       max-width: 100%;
       float: left;

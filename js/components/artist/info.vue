@@ -13,27 +13,22 @@
     </h1>
 
     <main v-if="artist.info">
-      <img
-        alt="Artist's photo"
-        class="cool-guys-posing cover"
-        title="They see me posin, they hatin"
-        v-if="artist.info.image" :src="artist.info.image"
-      >
+      <artist-thumbnail :entity="artist"/>
 
-      <div class="bio" v-if="artist.info.bio && artist.info.bio.summary">
-        <div class="summary" v-show="showSummary" v-html="artist.info.bio.summary"></div>
-        <div class="full" v-show="showFull" v-html="artist.info.bio.full"></div>
+      <template v-if="artist.info">
+        <div class="bio" v-if="artist.info.bio && artist.info.bio.summary">
+          <div class="summary" v-show="showSummary" v-html="artist.info.bio.summary"></div>
+          <div class="full" v-show="showFull" v-html="artist.info.bio.full"></div>
 
-        <button class="more" v-show="showSummary" @click.prevent="showingFullBio = true">
-          Full Bio
-        </button>
-      </div>
-      <p class="none" v-else>This artist has no Last.fm biography – yet.</p>
+          <button class="more" v-show="showSummary" @click.prevent="showingFullBio = true">
+            Full Bio
+          </button>
+        </div>
+        <p class="none" v-else>This artist has no Last.fm biography – yet.</p>
 
-      <footer>Data &copy; <a target="_blank" :href="artist.info.url">Last.fm</a></footer>
+        <footer>Data &copy; <a target="_blank" :href="artist.info.url">Last.fm</a></footer>
+      </template>
     </main>
-
-    <p class="none" v-else>Nothing can be found. This artist is a mystery.</p>
   </article>
 </template>
 
@@ -48,6 +43,10 @@ export default {
       default: 'sidebar',
       validator: value => ['sidebar', 'full'].includes(value)
     }
+  },
+
+  components: {
+    ArtistThumbnail: () => import('@/components/ui/album-artist-thumbnail.vue')
   },
 
   data: () => ({

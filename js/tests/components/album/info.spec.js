@@ -1,9 +1,10 @@
-import AlbumInfo from '@/components/album/info'
+import Component from '@/components/album/info'
+import AlbumThumbnail from '@/components/ui/album-artist-thumbnail'
 import factory from '@/tests/factory'
 
 describe('components/album/info', () => {
   it('displays the info as a sidebar by default', () => {
-    const wrapper = shallow(AlbumInfo, {
+    const wrapper = shallow(Component, {
       propsData: {
         album: factory('album')
       }
@@ -13,7 +14,7 @@ describe('components/album/info', () => {
   })
 
   it('can display the info in full mode', () => {
-    const wrapper = shallow(AlbumInfo, {
+    const wrapper = shallow(Component, {
       propsData: {
         album: factory('album'),
         mode: 'full'
@@ -25,19 +26,21 @@ describe('components/album/info', () => {
 
   it('triggers showing full wiki', () => {
     const album = factory('album')
-    const wrapper = shallow(AlbumInfo, {
+    const wrapper = shallow(Component, {
       propsData: { album }
     })
     wrapper.click('.wiki button.more')
     expect(wrapper.html()).toMatch(album.info.wiki.full)
   })
 
-  it('displays a message if the album has no info', () => {
-    const wrapper = mount(AlbumInfo, {
-      propsData: {
-        album: factory('album', { info: null })
-      }
+  it('shows the album thumbnail', async done => {
+    const album = factory('album')
+    const wrapper = await mount(Component, {
+      propsData: { album }
     })
-    expect(wrapper.html()).toMatch('No album information found.')
+    wrapper.vm.$nextTick(() => {
+      expect(wrapper.has(AlbumThumbnail)).toBe(true)
+      done()
+    })
   })
 })

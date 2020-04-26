@@ -1,10 +1,18 @@
 <template>
-  <span class="cover" :style="{ backgroundImage: `url(${backgroundImageUrl})` }">
+  <span
+    :style="{ backgroundImage: `url(${backgroundImageUrl})` }"
+    class="cover"
+    :class="{ droppable }"
+  >
     <a
       @click.prevent="playOrQueue"
       class="control control-play font-size-0"
       href
       role="button"
+      @dragenter.prevent="onDragEnter"
+      @dragleave.prevent="onDragLeave"
+      @drop.stop.prevent="onDrop"
+      @dragover.prevent
     >
       {{ buttonLabel }}
     </a>
@@ -13,9 +21,11 @@
 
 <script>
 import { orderBy } from 'lodash'
-import { queueStore } from '@/stores'
+import { queueStore, albumStore, artistStore, userStore } from '@/stores'
 import { playback } from '@/services'
-import { getDefaultCover } from '@/utils'
+import { getDefaultCover, fileReader } from '@/utils'
+
+const VALID_IMAGE_TYPES = ['image/jpeg', 'image/gif', 'image/png']
 
 export default {
   props: {
@@ -24,6 +34,11 @@ export default {
       required: true
     }
   },
+
+  data: () => ({
+    droppable: false,
+    userState: userStore.state
+  }),
 
   computed: {
     forAlbum () {
@@ -52,6 +67,10 @@ export default {
 
     playbackFunc () {
       return this.forAlbum ? playback.playAllInAlbum : playback.playAllByArtist
+    },
+
+    allowsUpload () {
+      return this.userState.current.is_admin
     }
   },
 
@@ -62,6 +81,61 @@ export default {
       } else {
         this.playbackFunc.call(playback, this.entity, false)
       }
+    },
+
+    onDragEnter (e) {
+      this.droppable = this.allowsUpload && true
+    },
+
+    onDragLeave (e) {
+      this.droppable = false
+    },
+
+    async onDrop (e) {
+      this.droppable = false
+
+      if (!this.allowsUpload) {
+        return false
+      }
+
+      if (!this.validImageDropEvent(e)) {
+        return
+      }
+
+      try {
+        const fileData = await fileReader.readAsDataUrl(e.dataTransfer.items[0].getAsFile())
+
+        if (this.forAlbum) {
+          // Replace the image right away to create a swift effect
+          this.entity.cover = fileData
+          albumStore.uploadCover(this.entity, fileData)
+        } else {
+          this.entity.image = fileData
+          artistStore.uploadImage(this.entity, fileData)
+        }
+      } catch (exception) {
+        console.error(exception)
+      }
+    },
+
+    validImageDropEvent: e => {
+      if (!e.dataTransfer.items) {
+        return false
+      }
+
+      if (e.dataTransfer.items.length !== 1) {
+        return false
+      }
+
+      if (e.dataTransfer.items[0].kind !== 'file') {
+        return false
+      }
+
+      if (!VALID_IMAGE_TYPES.includes(e.dataTransfer.items[0].getAsFile().type)) {
+        return false
+      }
+
+      return true
     }
   }
 }
@@ -132,6 +206,27 @@ export default {
       &::after {
         transform: scale(.9);
       }
+    }
+  }
+
+  .drop-zone {
+    font-size: 4rem;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    place-content: center;
+    place-items: center;
+    background: rgba(0, 0, 0, .7);
+    display: none;
+  }
+
+  &.droppable {
+    border: 2px dotted rgba(255, 255, 255, 1);
+    filter: brightness(0.4);
+
+    .control {
+      opacity: 0;
     }
   }
 }

@@ -12,24 +12,25 @@
       </a>
     </h1>
 
-    <main v-if="album.info">
-      <img v-if="album.info.image" :src="album.info.image" class="cover" alt="Album's cover">
+    <main>
+      <album-thumbnail :entity="album"/>
 
-      <div class="wiki" v-if="album.info.wiki && album.info.wiki.summary">
-        <div class="summary" v-show="showSummary" v-html="album.info.wiki.summary"></div>
-        <div class="full" v-show="showFull" v-html="album.info.wiki.full"></div>
+      <template v-if="album.info">
+        <div class="wiki" v-if="album.info.wiki && album.info.wiki.summary">
+          <div class="summary" v-show="showSummary" v-html="album.info.wiki.summary"></div>
+          <div class="full" v-show="showFull" v-html="album.info.wiki.full"></div>
 
-        <button class="more" v-if="showSummary" @click.prevent="showingFullWiki = true">
-          Full Wiki
-        </button>
-      </div>
+          <button class="more" v-if="showSummary" @click.prevent="showingFullWiki = true">
+            Full Wiki
+          </button>
+        </div>
 
-      <track-list :album="album" v-if="album.info.tracks && album.info.tracks.length"/>
+        <track-list :album="album" v-if="album.info.tracks && album.info.tracks.length"/>
 
-      <footer>Data &copy; <a target="_blank" :href="album.info.url">Last.fm</a></footer>
+        <footer>Data &copy; <a target="_blank" :href="album.info.url">Last.fm</a></footer>
+      </template>
     </main>
 
-    <p class="none" v-else>No album information found.</p>
   </article>
 </template>
 
@@ -48,7 +49,8 @@ export default {
   },
 
   components: {
-    TrackList: () => import('./track-list')
+    TrackList: () => import('./track-list'),
+    AlbumThumbnail: () => import('@/components/ui/album-artist-thumbnail.vue')
   },
 
   data: () => ({

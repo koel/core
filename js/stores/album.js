@@ -5,6 +5,7 @@ import { union, difference, take, orderBy } from 'lodash'
 
 import stub from '@/stubs/album'
 import { artistStore } from '.'
+import { http } from '@/services'
 
 export const albumStore = {
   stub,
@@ -87,5 +88,18 @@ export const albumStore = {
   getRecentlyAdded (n = 6) {
     const applicable = this.all.filter(album => album.id !== 1)
     return take(orderBy(applicable, 'created_at', 'desc'), n)
-  }
+  },
+
+  /**
+   * Upload a cover for an album.
+   *
+   * @param {Objeft} album The album object
+   * @param {String} cover The content data string of the cover file
+   */
+  uploadCover: (album, cover) => new Promise((resolve, reject) => {
+    http.put(`album/${album.id}/cover`, { cover }, ({ data }) => {
+      album.cover = data.coverUrl
+      resolve(data.coverUrl)
+    }, error => reject(error))
+  })
 }

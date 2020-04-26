@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import { union, difference, take, orderBy } from 'lodash'
 
+import { http } from '@/services'
 import stub from '@/stubs/artist'
 
 const UNKNOWN_ARTIST_ID = 1
@@ -93,5 +94,18 @@ export const artistStore = {
     })
 
     return take(orderBy(applicable, 'playCount', 'desc'), n)
-  }
+  },
+
+  /**
+   * Upload an image for an artist.
+   *
+   * @param {Objeft} artist The artist object
+   * @param {String} image The content data string of the image
+   */
+  uploadImage: (artist, image) => new Promise((resolve, reject) => {
+    http.put(`artist/${artist.id}/image`, { image }, ({ data }) => {
+      artist.image = data.imageUrl
+      resolve(data.imageUrl)
+    }, error => reject(error))
+  })
 }

@@ -1,4 +1,5 @@
 import Component from '@/components/artist/info'
+import ArtistThumbnail from '@/components/ui/album-artist-thumbnail'
 import factory from '@/tests/factory'
 
 describe('components/artist/info', () => {
@@ -32,12 +33,14 @@ describe('components/artist/info', () => {
     expect(wrapper.html()).toMatch(artist.info.bio.full)
   })
 
-  it('displays a message if the artist has no info', () => {
-    const wrapper = mount(Component, {
-      propsData: {
-        artist: factory('artist', { info: null })
-      }
+  it('shows the artist thumbnail', async done => {
+    const artist = factory('artist')
+    const wrapper = await mount(Component, {
+      propsData: { artist }
     })
-    expect(wrapper.html()).toMatch('Nothing can be found. This artist is a mystery.')
+    wrapper.vm.$nextTick(() => {
+      expect(wrapper.has(ArtistThumbnail)).toBe(true)
+      done()
+    })
   })
 })
