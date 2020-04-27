@@ -20,7 +20,7 @@
       <p class="author">
         Made with ❤️ by <a href="https://github.com/phanan" target="_blank">Phan An</a>
         and quite a few <a href="https://github.com/koel/core/graphs/contributors" target="_blank">awesome</a>
-        <a href="https://github.com/phanan/koel/graphs/contributors" target="_blank">contributors</a>.
+        <a href="https://github.com/koel/koel/graphs/contributors" target="_blank">contributors</a>.
       </p>
 
       <p class="demo-credits" v-if="demo">
