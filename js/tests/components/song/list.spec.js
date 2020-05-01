@@ -6,6 +6,8 @@ import { event } from '@/utils'
 import { songStore, queueStore } from '@/stores'
 import { playback } from '@/services'
 import { mock } from '@/tests/__helpers__'
+import { shallowMount } from '@vue/test-utils'
+import * as filters from '@/utils/filters.js'
 
 describe('components/song/list', () => {
   let songs
@@ -135,5 +137,128 @@ describe('components/song/list', () => {
     }})
     wrapper.find('.song-list-wrap').trigger('keydown.a', { ctrlKey: true })
     wrapper.vm.filteredItems.forEach(item => expect(item.selected).toBe(true))
+  })
+
+  describe(`mounted()`, () => {
+    let orderBy
+    beforeEach(() => {
+      orderBy = jest.spyOn(filters, "orderBy")
+    })
+
+    it(`does not sort when sorting is disallowed`, () => {
+      shallowMount(Component, {
+        propsData: {
+          items: songs,
+          type: "queue",
+          sortable: false
+        }
+      })
+
+      expect(orderBy).not.toHaveBeenCalled()
+    })
+
+    it(`will not sort songs by default`, () => {
+      shallowMount(Component, {
+        propsData: {
+          items: songs,
+          type: "all-songs"
+        }
+      })
+
+      expect(orderBy).toHaveBeenCalledWith(expect.any(Array), "", 1)
+    })
+
+    it('sorts songs by track and disc number in album song list', () => {
+      shallowMount(Component, {
+        propsData: {
+          items: songs,
+          type: "album"
+        }
+      })
+
+      expect(orderBy).toHaveBeenCalledWith(
+        expect.any(Array),
+        ["song.disc", "song.track"],
+        1
+      )
+    })
+  })
+
+  describe(`sort()`, () => {
+    let orderBy
+    beforeEach(() => {
+      orderBy = jest.spyOn(filters, "orderBy")
+    })
+
+    it(`does not sort when sorting is disallowed`, () => {
+      const wrapper = shallowMount(Component, {
+        propsData: {
+          items: songs,
+          type: "queue",
+          sortable: false
+        }
+      })
+
+      wrapper.vm.sort()
+
+      expect(orderBy).not.toHaveBeenCalled()
+    })
+
+    it(`sorts song rows by data's sortKey and inverts order`, () => {
+      const wrapper = shallowMount(Component, {
+        propsData: {
+          items: songs,
+          type: "all-songs"
+        }
+      })
+      wrapper.setData({ sortKey: "song.track" })
+
+      wrapper.vm.sort()
+
+      expect(orderBy).toHaveBeenCalledWith(expect.any(Array), "song.track", 1)
+    })
+
+    it(`toggles sortingByAlbum if sortKey's first part is 'song.album.name'`, () => {
+      const wrapper = shallowMount(Component, {
+        propsData: {
+          items: songs,
+          type: "all-songs"
+        }
+      })
+      wrapper.setData({ sortKey: ["song.album.name", "song.track"] })
+
+      wrapper.vm.sort()
+
+      expect(wrapper.vm.sortingByAlbum).toBe(true)
+    })
+
+    it(`toggles sortingByArtist if sortKey's first part is 'song.album.artist.name'`, () => {
+      const wrapper = shallowMount(Component, {
+        propsData: {
+          items: songs,
+          type: "all-songs"
+        }
+      })
+      wrapper.setData({
+        sortKey: ["song.album.artist.name", "song.album.name", "song.track"]
+      })
+
+      wrapper.vm.sort()
+
+      expect(wrapper.vm.sortingByArtist).toBe(true)
+    })
+
+    it(`sets the key parameter as sortKey and inverts order`, () => {
+      const wrapper = shallowMount(Component, {
+        propsData: {
+          items: songs,
+          type: "all-songs"
+        }
+      })
+
+      wrapper.vm.sort("song.title")
+
+      expect(orderBy).toHaveBeenCalledWith(expect.any(Array), "song.title", -1)
+    })
   })
 })
