@@ -6,7 +6,7 @@ import { event } from '@/utils'
 import { songStore, queueStore } from '@/stores'
 import { playback } from '@/services'
 import { mock } from '@/tests/__helpers__'
-import { shallowMount } from "@vue/test-utils"
+import { shallowMount } from '@vue/test-utils'
 import * as filters from '@/utils/filters.js'
 
 describe('components/song/list', () => {
@@ -145,7 +145,7 @@ describe('components/song/list', () => {
       orderBy = jest.spyOn(filters, "orderBy")
     })
 
-    it(`when sorting is disallowed, it will not sort`, () => {
+    it(`does not sort when sorting is disallowed`, () => {
       shallowMount(Component, {
         propsData: {
           items: songs,
@@ -168,8 +168,7 @@ describe('components/song/list', () => {
       expect(orderBy).toHaveBeenCalledWith(expect.any(Array), "", 1)
     })
 
-    it(`when it's an album's song list,
-      it will sort songs by track number and then disc number`, () => {
+    it('sorts songs by track and disc number in album song list', () => {
       shallowMount(Component, {
         propsData: {
           items: songs,
@@ -191,7 +190,7 @@ describe('components/song/list', () => {
       orderBy = jest.spyOn(filters, "orderBy")
     })
 
-    it(`when sorting is disallowed, it will do nothing`, () => {
+    it(`does not sort when sorting is disallowed`, () => {
       const wrapper = shallowMount(Component, {
         propsData: {
           items: songs,
@@ -205,7 +204,7 @@ describe('components/song/list', () => {
       expect(orderBy).not.toHaveBeenCalled()
     })
 
-    it(`will sort song rows by data's sortKey and invert order`, () => {
+    it(`sorts song rows by data's sortKey and inverts order`, () => {
       const wrapper = shallowMount(Component, {
         propsData: {
           items: songs,
@@ -219,7 +218,7 @@ describe('components/song/list', () => {
       expect(orderBy).toHaveBeenCalledWith(expect.any(Array), "song.track", 1)
     })
 
-    it(`will toggle sortingByAlbum if sortKey's first part is 'song.album.name'`, () => {
+    it(`toggles sortingByAlbum if sortKey's first part is 'song.album.name'`, () => {
       const wrapper = shallowMount(Component, {
         propsData: {
           items: songs,
@@ -233,7 +232,7 @@ describe('components/song/list', () => {
       expect(wrapper.vm.sortingByAlbum).toBe(true)
     })
 
-    it(`will toggle sortingByArtist if sortKey's first part is 'song.album.artist.name'`, () => {
+    it(`toggles sortingByArtist if sortKey's first part is 'song.album.artist.name'`, () => {
       const wrapper = shallowMount(Component, {
         propsData: {
           items: songs,
@@ -249,7 +248,7 @@ describe('components/song/list', () => {
       expect(wrapper.vm.sortingByArtist).toBe(true)
     })
 
-    it(`when called with a key parameter, it will set it as sortKey and invert order`, () => {
+    it(`sets the key parameter as sortKey and inverts order`, () => {
       const wrapper = shallowMount(Component, {
         propsData: {
           items: songs,

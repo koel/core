@@ -1,4 +1,4 @@
-import { isObject, isNumber, get } from "lodash"
+import { isObject, isNumber, get } from 'lodash'
 
 export const orderBy = (arr, sortKey, reverse) => {
   if (!sortKey) {
