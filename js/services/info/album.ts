@@ -2,27 +2,24 @@ import { secondsToHis } from '@/utils'
 import { http } from '..'
 
 export const albumInfo = {
-  fetch (album) {
-    return new Promise((resolve, reject) => {
+  fetch (album: Album): Promise<Album> {
+    return new Promise((resolve, reject): void => {
       if (album.info) {
         resolve(album)
         return
       }
 
-      http.get(`album/${album.id}/info`, ({ data }) => {
+      http.get(`album/${album.id}/info`, ({ data }: { data: AlbumInfo | null }): void => {
         data && this.merge(album, data)
         resolve(album)
-      }, error => reject(error))
+      }, (error: any) => reject(error))
     })
   },
 
   /**
    * Merge the (fetched) info into an album.
-   *
-   * @param  {Object} album
-   * @param  {Object} info
    */
-  merge: (album, info) => {
+  merge: (album: Album, info: AlbumInfo): void => {
     // Convert the duration into i:s
     info.tracks && info.tracks.forEach(track => (track.fmtLength = secondsToHis(track.length)))
 
@@ -32,8 +29,8 @@ export const albumInfo = {
     }
 
     // Set the album cover on the client side to the retrieved image from server.
-    if (info.cover) {
-      album.cover = info.cover
+    if (info.image) {
+      album.cover = info.image
     }
 
     album.info = info

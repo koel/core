@@ -1,24 +1,24 @@
 import { isObject, isNumber, get } from 'lodash'
 
-export const orderBy = (arr, sortKey, reverse) => {
+export const orderBy = <T>(arr: T[], sortKey?: string[] | string | null, reverse?: number): T[] => {
   if (!sortKey) {
     return arr
   }
 
   const order = (reverse && reverse < 0) ? -1 : 1
 
-  const compareRecordsByKey = (a, b, key) => {
+  const compareRecordsByKey = (a: any, b: any, key: string): number => {
     let aKey = isObject(a) ? get(a, key) : a
     let bKey = isObject(b) ? get(b, key) : b
 
     if (isNumber(aKey) && isNumber(bKey)) {
-      return aKey === bKey ? 0 : aKey > bKey
+      return aKey === bKey ? 0 : Number(aKey > bKey)
     }
 
     aKey = aKey === undefined ? aKey : `${aKey}`.toLowerCase()
     bKey = bKey === undefined ? bKey : `${bKey}`.toLowerCase()
 
-    return aKey === bKey ? 0 : aKey > bKey
+    return aKey === bKey ? 0 : Number(aKey > bKey)
   }
 
   // sort on a copy to avoid mutating original array
@@ -32,7 +32,7 @@ export const orderBy = (arr, sortKey, reverse) => {
         }
       }
 
-      return diff === 0 ? 0 : diff === true ? order : -order
+      return diff === 0 ? 0 : diff ? order : -order
     }
 
     a = isObject(a) ? get(a, sortKey) : a
@@ -49,23 +49,23 @@ export const orderBy = (arr, sortKey, reverse) => {
   })
 }
 
-export const limitBy = (arr, n, offset = 0) => arr.slice(offset, offset + n)
+export const limitBy = <T>(arr: T[], n: number, offset: number = 0): T[] => arr.slice(offset, offset + n)
 
-export const filterBy = (arr, search, ...keys) => {
+export const filterBy = <T>(arr: T[], search: string, ...keys: string[]): T[] => {
   if (!search) {
     return arr
   }
 
   search = `${search}`.toLowerCase()
 
-  return arr.reduce((res, item) => {
+  return arr.reduce((res: T[], item: T) => {
     // use .some() because it will stop at a truthy value (res.push(item) will be truthy)
     keys.some(key => `${get(item, key)}`.toLowerCase().includes(search) && res.push(item))
     return res
   }, [])
 }
 
-export const pluralize = (...args) => {
+export const pluralize = (...args: any[]): string => {
   if (!args[0] || args[0] > 1) {
     return `${args[0]} ${args[1]}s`
   }

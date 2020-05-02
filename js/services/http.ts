@@ -1,31 +1,31 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import NProgress from 'nprogress'
 
-import { event } from '@/utils'
+import { event } from '@/utils/index'
 import { ls } from '@/services'
 
 export const http = {
-  request: (method, url, data, successCb = null, errorCb = null) => {
+  request: (method: string, url: string, data: object, successCb: any, errorCb: any): void => {
     axios.request({ url, data, method: method.toLowerCase() }).then(successCb).catch(errorCb)
   },
 
-  get (url, successCb = null, errorCb = null) {
-    return this.request('get', url, {}, successCb, errorCb)
+  get (url: string, successCb: any = null, errorCb: any = null): void {
+    this.request('get', url, {}, successCb, errorCb)
   },
 
-  post (url, data, successCb = null, errorCb = null) {
-    return this.request('post', url, data, successCb, errorCb)
+  post (url: string, data: object, successCb: any = null, errorCb = null): void {
+    this.request('post', url, data, successCb, errorCb)
   },
 
-  put (url, data, successCb = null, errorCb = null) {
-    return this.request('put', url, data, successCb, errorCb)
+  put (url: string, data: object, successCb: any = null, errorCb = null): void {
+    this.request('put', url, data, successCb, errorCb)
   },
 
-  delete (url, data = {}, successCb = null, errorCb = null) {
-    return this.request('delete', url, data, successCb, errorCb)
+  delete (url: string, data: object = {}, successCb: any = null, errorCb: any | null = null): void {
+    this.request('delete', url, data, successCb, errorCb)
   },
 
-  init: () => {
+  init: (): void => {
     axios.defaults.baseURL = KOEL_ENV === 'app' ? `${ls.get('koelHost')}api` : `${window.BASE_URL}api`
 
     // Intercept the request to make sure the token is injected into the header.

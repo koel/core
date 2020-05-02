@@ -1,7 +1,8 @@
+/// <reference path=".d.ts"/>
 import './static-loader'
 import Vue from 'vue'
 import App from './app.vue'
-import { http } from './services'
+import { http } from './services/index'
 import { VirtualScroller } from 'vue-virtual-scroller/dist/vue-virtual-scroller'
 import GlobalEvents from 'vue-global-events'
 

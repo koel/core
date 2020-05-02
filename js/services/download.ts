@@ -2,37 +2,41 @@ import { playlistStore, favoriteStore } from '@/stores'
 import { ls } from '.'
 import { alerts } from '@/utils'
 
-let events
+interface Download {
+  fromSongs(songs: Song | Song[]): void
+  fromAlbum(album: Album): void
+  fromArtist(artist: Artist): void
+  fromPlaylist(playlist: Playlist): void
+  fromFavorites(): void
+  trigger(uri: string): void
+}
+
+let events: any
+
 if (KOEL_ENV === 'app') {
   events = require('&/events').default
 }
 
-export const download = {
-  /**
-   * @param {Array.<Object>|Object} songs
-   */
-  fromSongs (songs) {
-    const query = [].concat(songs).reduce((q, song) => `songs[]=${song.id}&${q}`, '')
-    return this.trigger(`songs?${query}`)
+export const download: Download = {
+  fromSongs (songs: Song | Song[]): void {
+    const query = ([] as Song[]).concat(songs).reduce((q, song) => `songs[]=${song.id}&${q}`, '')
+    this.trigger(`songs?${query}`)
   },
 
-  fromAlbum (album) {
-    return this.trigger(`album/${album.id}`)
+  fromAlbum (album: Album): void {
+    this.trigger(`album/${album.id}`)
   },
 
-  fromArtist (artist) {
-    // It's safe to assume an artist always has songs.
-    // After all, what's an artist without her songs?
-    // (See what I did there? Yes, I'm advocating for women's rights).
-    return this.trigger(`artist/${artist.id}`)
+  fromArtist (artist: Artist): void {
+    this.trigger(`artist/${artist.id}`)
   },
 
-  fromPlaylist (playlist) {
-    return playlistStore.getSongs(playlist).length ? this.trigger(`playlist/${playlist.id}`) : null
+  fromPlaylist (playlist: Playlist): void {
+    playlistStore.getSongs(playlist).length ? this.trigger(`playlist/${playlist.id}`) : void
   },
 
-  fromFavorites () {
-    return favoriteStore.all.length ? this.trigger('favorites') : null
+  fromFavorites (): void {
+    favoriteStore.all.length ? this.trigger('favorites') : void
   },
 
   /**
@@ -41,9 +45,10 @@ export const download = {
    * @param  {string} uri The uri segment, corresponding to the song(s),
    *                      artist, playlist, or album.
    */
-  trigger: uri => {
+  trigger: (uri: string) => {
     const sep = uri.includes('?') ? '&' : '?'
     const url = `${window.BASE_URL}api/download/${uri}${sep}jwt-token=${ls.get('jwt-token')}`
+
     if (KOEL_ENV === 'app') {
       require('electron').ipcRenderer.send(events.DOWNLOAD, url)
       alerts.success('Download started!')

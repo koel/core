@@ -17,12 +17,12 @@ export const settingStore = {
     return this.state.settings
   },
 
-  update () {
-    return new Promise((resolve, reject) => {
-      http.post('settings', this.all, ({ data }) => {
+  update (): Promise<any> {
+    return new Promise((resolve, reject): void => {
+      http.post('settings', this.all, ({ data } : { data: any }) => {
         alerts.success('Settings saved.')
         resolve(data)
-      }, error => reject(error))
+      }, (error: any) => reject(error))
     })
   }
 }

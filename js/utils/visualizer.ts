@@ -1,6 +1,7 @@
 /* eslint no-undef: 0 */
 import Sketch from 'sketch-js'
 import { audio as audioService } from '@/services'
+import { random, sample } from 'lodash'
 
 // Audio visualization originally created by Justin Windle (@soulwire)
 // as seen on https://codepen.io/soulwire/pen/Dscga
@@ -26,8 +27,19 @@ const COLORS = [
   '#0CCABA',
   '#FF006F'
 ]
+const TWO_PI = Math.PI * 2
 
 class AudioAnalyser {
+  numBands: number
+  smoothing: number
+  audio: HTMLElement
+  context: AudioContext
+  source: any
+  jsNode: any
+  analyser: any
+  bands: Uint8Array
+  onUpdate: any
+
   constructor (numBands = 256, smoothing = 0.3) {
     this.numBands = numBands
     this.smoothing = smoothing
@@ -60,23 +72,40 @@ class AudioAnalyser {
 }
 
 class Particle {
+  x: number
+  y: number
+  level: any
+  scale: any
+  alpha: any
+  speed: any
+  color: any
+  size: any
+  spin: any
+  band: any
+  smoothedScale: number = 0
+  smoothedAlpha: number = 0
+  decayScale: number = 0
+  decayAlpha: number = 0
+  rotation: any = 0
+  energy: number = 0
+
   constructor (x = 0, y = 0) {
     this.x = x
     this.y = y
     this.reset()
   }
 
-  reset () {
-    this.level = 1 + floor(random(4))
+  reset (): number {
+    this.level = 1 + Math.floor(Math.random(4))
     this.scale = random(SCALE.MIN, SCALE.MAX)
     this.alpha = random(ALPHA.MIN, ALPHA.MAX)
     this.speed = random(SPEED.MIN, SPEED.MAX)
-    this.color = random(COLORS)
+    this.color = sample(COLORS)
     this.size = random(SIZE.MIN, SIZE.MAX)
     this.spin = random(SPIN.MAX, SPIN.MAX)
-    this.band = floor(random(NUM_BANDS))
+    this.band = Math.floor(random(NUM_BANDS))
 
-    if (random() < 0.5) {
+    if (Math.random() < 0.5) {
       this.spin = -this.spin
     }
 
@@ -90,20 +119,20 @@ class Particle {
     return this.energy
   }
 
-  move () {
+  move (): number {
     this.rotation += this.spin
     this.y -= this.speed * this.level
 
     return this.y
   }
 
-  draw (ctx) {
-    const power = exp(this.energy)
+  draw (ctx: any) {
+    const power = Math.exp(this.energy)
     const scale = this.scale * power
     const alpha = this.alpha * this.energy * 2
 
-    this.decayScale = max(this.decayScale, scale)
-    this.decayAlpha = max(this.decayAlpha, alpha)
+    this.decayScale = Math.max(this.decayScale, scale)
+    this.decayAlpha = Math.max(this.decayAlpha, alpha)
 
     this.smoothedScale += (this.decayScale - this.smoothedScale) * 0.3
     this.smoothedAlpha += (this.decayAlpha - this.smoothedAlpha) * 0.3
@@ -128,16 +157,14 @@ class Particle {
   }
 }
 
-export default container => {
+export default (container: HTMLElement): void => {
   Sketch.create({
     container,
     particles: [],
     setup () {
       // generate some particles
-      let particle
-
       for (let i = 0; i < NUM_PARTICLES; i++) {
-        particle = new Particle(random(this.width), random(this.height))
+        let particle = new Particle(random(this.width), random(this.height))
         particle.energy = random(particle.band / 256)
 
         this.particles.push(particle)
@@ -147,7 +174,7 @@ export default container => {
       const analyser = new AudioAnalyser(NUM_BANDS, SMOOTHING)
 
       // update particles based on fft transformed audio frequencies
-      analyser.onUpdate = bands => this.particles.map(particle => {
+      analyser.onUpdate = (bands: Uint8Array) => this.particles.map((particle: Particle) => {
         particle.energy = bands[particle.band] / 256
 
         return particle
@@ -157,7 +184,7 @@ export default container => {
     draw () {
       this.globalCompositeOperation = 'lighter'
 
-      return this.particles.map(particle => {
+      return this.particles.map((particle: Particle) => {
         if (particle.y < (-particle.size * particle.level * particle.scale * 2)) {
           particle.reset()
           particle.x = random(this.width)

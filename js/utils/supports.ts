@@ -2,28 +2,26 @@ import isMobile from 'ismobilejs'
 
 /**
  * Check if AudioContext is supported by the current browser.
- *
- * @return {Boolean}
  */
-export const isAudioContextSupported = (() => {
-  // Apple device just doesn't love AudioContext that much.
+export const isAudioContextSupported: boolean = ((): boolean => {
+  // Apple devices just don't love AudioContext that much.
   if (isMobile.apple.device) {
     return false
   }
 
-  const AudioContext = (window.AudioContext ||
+  const ContextClass = window.AudioContext ||
     window.webkitAudioContext ||
     window.mozAudioContext ||
     window.oAudioContext ||
-    window.msAudioContext)
+    window.msAudioContext
 
-  if (!AudioContext) {
+  if (!ContextClass) {
     return false
   }
 
   // Safari (MacOS & iOS alike) has webkitAudioContext, but is buggy.
   // @link http://caniuse.com/#search=audiocontext
-  if (!(new AudioContext()).createMediaElementSource) {
+  if (!(new ContextClass()).createMediaElementSource) {
     return false
   }
 
@@ -32,12 +30,10 @@ export const isAudioContextSupported = (() => {
 
 /**
  * Checks if HTML5 clipboard can be used.
- * @return {Boolean}
  */
-export const isClipboardSupported = 'execCommand' in document
+export const isClipboardSupported: boolean = 'execCommand' in document
 
 /**
  * Checks if Media Session API is supported.
- * @return {Boolean}
  */
-export const isMediaSessionSupported = 'mediaSession' in navigator
+export const isMediaSessionSupported: boolean = 'mediaSession' in navigator

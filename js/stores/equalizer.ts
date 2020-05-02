@@ -1,6 +1,21 @@
 import { preferenceStore } from '.'
 
-export const equalizerStore = {
+interface EqualizerPreset {
+  id: number
+  name: string
+  preamp: number
+  gains: number[]
+}
+
+interface EqualizerStore {
+  presets: EqualizerPreset[]
+
+  getPresetById(id: number): EqualizerPreset
+  get(): EqualizerPreset
+  set(preamp: number, gains: number[]): void
+}
+
+export const equalizerStore: EqualizerStore = {
   presets: [
     {
       id: 0,
@@ -88,8 +103,8 @@ export const equalizerStore = {
     }
   ],
 
-  getPresetById (id) {
-    return this.presets.find(preset => preset.id === id)
+  getPresetById (id: number): EqualizerPreset {
+    return this.presets.find(preset => preset.id === id) as EqualizerPreset
   },
 
   /**
@@ -97,7 +112,7 @@ export const equalizerStore = {
    *
    * @return {Object}
    */
-  get () {
+  get (): EqualizerPreset {
     if (!this.presets[preferenceStore.selectedPreset]) {
       return preferenceStore.equalizer
     }
@@ -109,10 +124,10 @@ export const equalizerStore = {
   /**
    * Save the current equalizer config.
    *
-   * @param  {Number} preamp The preamp value (dB)
-   * @param  {Array.<Number>} gains  The band's gain value (dB)
+   * @param  {number} preamp The preamp value (dB)
+   * @param  {number[]} gains  The band's gain value (dB)
    */
-  set: (preamp, gains) => {
+  set: (preamp: number, gains: number[]): void => {
     preferenceStore.equalizer = { preamp, gains }
   }
 }

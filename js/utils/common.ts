@@ -12,13 +12,14 @@ import { dragTypes } from '@/config'
  * @param {String} view   The view, which can be found under components/main-wrapper/main-content.
  * @param {...*}      Extra data to attach to the view.
  */
-export const loadMainView = (view, ...args) => event.emit(event.$names.LOAD_MAIN_CONTENT, view, ...args)
+export const loadMainView = (view: string, ...args: any[]): void =>
+  event.emit(event.$names.LOAD_MAIN_CONTENT, view, ...args)
 
 /**
  * Force reloading window regardless of "Confirm before reload" setting.
  * This is handy for certain cases, for example Last.fm connect/disconnect.
  */
-export const forceReloadWindow = () => {
+export const forceReloadWindow = (): void => {
   if (window.__UNIT_TESTING__) {
     return
   }
@@ -29,43 +30,39 @@ export const forceReloadWindow = () => {
 
 /**
  * Show the overlay.
- *
- * @param  {String}  message
- * @param  {String}  type
- * @param  {Boolean} dismissable
  */
-export const showOverlay = (message = 'Just a little patience…', type = 'loading', dismissable = false) =>
+export const showOverlay = (message = 'Just a little patience…', type = 'loading', dismissable = false): void =>
   event.emit(event.$names.SHOW_OVERLAY, { message, type, dismissable })
 
 /**
  * Hide the overlay.
  */
-export const hideOverlay = () => event.emit(event.$names.HIDE_OVERLAY)
+export const hideOverlay = (): void => event.emit(event.$names.HIDE_OVERLAY)
 
 /**
  * Copy a text into clipboard.
  *
  * @param  {string} txt
  */
-export const copyText = text => use(document.querySelector('#copyArea'), copyArea => {
-  copyArea.style.top = `${window.pageYOffset || document.documentElement.scrollTop}px`
-  copyArea.value = text
-  select(copyArea)
-  document.execCommand('copy')
-})
+export const copyText = (text: string): void =>
+  use(document.querySelector('#copyArea'), (copyArea: HTMLTextAreaElement): void => {
+    copyArea.style.top = `${window.pageYOffset || document.documentElement.scrollTop}px`
+    copyArea.value = text
+    select(copyArea)
+    document.execCommand('copy')
+  }
+)
 
-export const getDefaultCover = () => `${sharedStore.state.cdnUrl}/public/img/covers/unknown-album.png`
+export const getDefaultCover = (): string => `${sharedStore.state.cdnUrl}/public/img/covers/unknown-album.png`
 
 /**
  * Create a fancy ghost drag image.
- *
- * @param {DragEvent} event
- * @param {string} text
  */
-const createGhostDragImage = (event, text) => use(document.querySelector('#dragGhost'), ghost => {
-  ghost.innerText = text
-  event.dataTransfer.setDragImage(ghost, 0, 0)
-})
+const createGhostDragImage = (event: DragEvent, text: string): void =>
+  use(document.querySelector('#dragGhost'), (ghost: HTMLElement): void => {
+    ghost.innerText = text
+    event.dataTransfer!.setDragImage(ghost, 0, 0)
+  })
 
 /**
  * Handle song/album/artist drag start event.
@@ -74,13 +71,13 @@ const createGhostDragImage = (event, text) => use(document.querySelector('#dragG
  * @param {Object|Array.<Object>} dragged Either an array of songs or a song/album/artist object
  * @param {string} type The drag type (see @/config/drag-types.js)
  */
-export const startDragging = (event, dragged, type) => {
+export const startDragging = (event: DragEvent, dragged: Song | Song[] | Album | Artist, type: string): void => {
   let text
   let songIds
 
   switch (type) {
     case dragTypes.SONGS:
-      dragged = [].concat(dragged)
+      dragged = ([] as Song[]).concat(dragged as Song)
       text = dragged.length === 1
         ? `${dragged[0].title} by ${dragged[0].artist.name}`
         : pluralize(dragged.length, 'song')
@@ -88,11 +85,13 @@ export const startDragging = (event, dragged, type) => {
       break
 
     case dragTypes.ALBUM:
+      dragged = dragged as Album
       text = `All ${pluralize(dragged.songs.length, 'song')} in ${dragged.name}`
       songIds = dragged.songs.map(song => song.id)
       break
 
     case dragTypes.ARTIST:
+      dragged = dragged as Artist
       text = `All ${pluralize(dragged.songs.length, 'song')} by ${dragged.name}`
       songIds = dragged.songs.map(song => song.id)
       break
@@ -101,8 +100,8 @@ export const startDragging = (event, dragged, type) => {
       throw Error(`Invalid drag type: ${type}`)
   }
 
-  event.dataTransfer.setData('application/x-koel.text+plain', songIds)
-  event.dataTransfer.effectAllowed = 'move'
+  event.dataTransfer!.setData('application/x-koel.text+plain', songIds.join(','))
+  event.dataTransfer!.effectAllowed = 'move'
 
   createGhostDragImage(event, text)
 }

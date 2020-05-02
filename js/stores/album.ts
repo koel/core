@@ -7,24 +7,40 @@ import stub from '@/stubs/album'
 import { artistStore } from '.'
 import { http } from '@/services'
 
-export const albumStore = {
+interface AlbumStore {
+  stub: Object
+  cache: { [id: number]: Album }
+  state: {
+    albums: Album[]
+  }
+  all: Album[]
+
+  init(albums: Album[]): void
+  setupAlbum(album: Album, artist?: Artist): void
+  byId(id: number): Album
+  add(album: Album | Album[]): void
+  purify(): void
+  compact(): void
+  getMostPlayed(n: number): Album[]
+  getRecentlyAdded(n: number): Album[]
+  uploadCover(album: Album, cover: string): Promise<string>
+}
+
+export const albumStore: AlbumStore = {
   stub,
-  cache: [],
+  cache: {},
 
   state: {
     albums: [stub]
   },
 
-  /**
-   * @param  {Array.<Object>} albums The array of album objects
-   */
-  init (albums) {
+  init (albums: Album[]) {
     // Traverse through the artists array and add their albums into our master album list.
     this.all = albums
     this.all.forEach(album => this.setupAlbum(album))
   },
 
-  setupAlbum (album) {
+  setupAlbum (album: Album): void {
     const artist = artistStore.byId(album.artist_id)
     artist.albums = union(artist.albums, [album])
 
@@ -34,8 +50,6 @@ export const albumStore = {
     Vue.set(album, 'playCount', 0)
 
     this.cache[album.id] = album
-
-    return album
   },
 
   get all () {
@@ -46,30 +60,27 @@ export const albumStore = {
     this.state.albums = value
   },
 
-  byId (id) {
+  byId (id: number): Album {
     return this.cache[id]
   },
 
-  /**
-   * @param  {Array.<Object>|Object} albums
-   */
-  add (albums) {
-    [].concat(albums).forEach(album => {
+  add (albums: Album | Album[]): void {
+    ([] as Album[]).concat(albums).forEach(album => {
       this.setupAlbum(album, album.artist)
       album.playCount = album.songs.reduce((count, song) => count + song.playCount, 0)
     })
 
-    this.all = union(this.all, albums)
+    this.all = union(this.all, albums as Album[])
   },
 
-  purify () {
+  purify (): void {
     this.compact()
   },
 
   /**
    * Remove empty albums from the store.
    */
-  compact () {
+  compact (): void {
     const emptyAlbums = this.all.filter(album => album.songs.length === 0)
     if (!emptyAlbums.length) {
       return
@@ -79,13 +90,13 @@ export const albumStore = {
     emptyAlbums.forEach(album => delete this.cache[album.id])
   },
 
-  getMostPlayed (n = 6) {
+  getMostPlayed (n: number = 6): Album[] {
     // Only non-unknown albums with actual play count are applicable.
     const applicable = this.all.filter(album => album.playCount && album.id !== 1)
     return take(orderBy(applicable, 'playCount', 'desc'), n)
   },
 
-  getRecentlyAdded (n = 6) {
+  getRecentlyAdded (n: number = 6): Album[] {
     const applicable = this.all.filter(album => album.id !== 1)
     return take(orderBy(applicable, 'created_at', 'desc'), n)
   },
@@ -93,13 +104,13 @@ export const albumStore = {
   /**
    * Upload a cover for an album.
    *
-   * @param {Objeft} album The album object
-   * @param {String} cover The content data string of the cover file
+   * @param {Album} album The album object
+   * @param {string} cover The content data string of the cover
    */
-  uploadCover: (album, cover) => new Promise((resolve, reject) => {
-    http.put(`album/${album.id}/cover`, { cover }, ({ data }) => {
-      album.cover = data.coverUrl
-      resolve(data.coverUrl)
-    }, error => reject(error))
+  uploadCover: (album: Album, cover: string): Promise<string> => new Promise((resolve, reject) => {
+    http.put(`album/${album.id}/cover`, { cover }, ({ data: { coverUrl } } : { data: { coverUrl: string }}): void => {
+      album.cover = coverUrl
+      resolve(coverUrl)
+    }, (error: any) => reject(error))
   })
 }

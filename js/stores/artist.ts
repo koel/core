@@ -6,10 +6,31 @@ import { union, difference, take, orderBy } from 'lodash'
 import { http } from '@/services'
 import stub from '@/stubs/artist'
 
+interface ArtistStore {
+  stub: Object
+  cache: { [id: number]: Artist }
+  state: {
+    artists: Artist[]
+  }
+  all: Artist[]
+
+  init(artists: Artist[]): void
+  setupArtist(artist: Artist): void
+  byId(id: number): Artist
+  add(artists: Artist | Artist[]): void
+  compact(): void
+  purify(): void
+  isUnknownArtist(artist: Artist): boolean
+  isVariousArtists(artist: Artist): boolean
+  getSongsByArtist(artist: Artist): Song[]
+  getMostPlayed(n: number): Artist[]
+  uploadImage(artist: Artist, image: string): Promise<string>
+}
+
 const UNKNOWN_ARTIST_ID = 1
 const VARIOUS_ARTISTS_ID = 2
 
-export const artistStore = {
+export const artistStore: ArtistStore = {
   stub,
   cache: [],
 
@@ -17,22 +38,20 @@ export const artistStore = {
     artists: []
   },
 
-  init (artists) {
+  init (artists: Artist[]): void {
     this.all = artists
 
     // Traverse through artists array to get the cover and number of songs for each.
     this.all.forEach(artist => this.setupArtist(artist))
   },
 
-  setupArtist (artist) {
+  setupArtist (artist: Artist): void {
     Vue.set(artist, 'playCount', 0)
     Vue.set(artist, 'info', null)
     Vue.set(artist, 'albums', [])
     Vue.set(artist, 'songs', [])
 
     this.cache[artist.id] = artist
-
-    return artist
   },
 
   get all () {
@@ -43,33 +62,29 @@ export const artistStore = {
     this.state.artists = value
   },
 
-  byId (id) {
+  byId (id: number): Artist {
     return this.cache[id]
   },
 
-  /**
-   * Adds an artist/artists into the current collection.
-   *
-   * @param  {Array.<Object>|Object} artists
-   */
-  add (artists) {
-    [].concat(artists).forEach(artist => {
+  add (artists: Artist | Artist[]) {
+    ([] as Artist[]).concat(artists).forEach(artist => {
       this.setupArtist(artist)
       artist.playCount = artist.songs.reduce((count, song) => count + song.playCount, 0)
     })
 
-    this.all = union(this.all, artists)
+    this.all = union(this.all, artists as Artist[])
   },
 
-  purify () {
+  purify (): void {
     this.compact()
   },
 
   /**
    * Remove empty artists from the store.
    */
-  compact () {
+  compact (): void {
     const emptyArtists = this.all.filter(artist => artist.songs.length === 0)
+
     if (!emptyArtists.length) {
       return
     }
@@ -78,13 +93,13 @@ export const artistStore = {
     emptyArtists.forEach(artist => delete this.cache[artist.id])
   },
 
-  isVariousArtists: artist => artist.id === VARIOUS_ARTISTS_ID,
+  isVariousArtists: (artist: Artist) => artist.id === VARIOUS_ARTISTS_ID,
 
-  isUnknownArtist: artist => artist.id === UNKNOWN_ARTIST_ID,
+  isUnknownArtist: (artist: Artist) => artist.id === UNKNOWN_ARTIST_ID,
 
-  getSongsByArtist: artist => artist.songs,
+  getSongsByArtist: (artist: Artist) => artist.songs,
 
-  getMostPlayed (n = 6) {
+  getMostPlayed (n: number = 6): Artist[] {
     // Only non-unknown artists with actual play count are applicable.
     // Also, "Various Artists" doesn't count.
     const applicable = this.all.filter(artist => {
@@ -99,13 +114,13 @@ export const artistStore = {
   /**
    * Upload an image for an artist.
    *
-   * @param {Objeft} artist The artist object
-   * @param {String} image The content data string of the image
+   * @param {Artist} artist The artist object
+   * @param {string} image The content data string of the image
    */
-  uploadImage: (artist, image) => new Promise((resolve, reject) => {
-    http.put(`artist/${artist.id}/image`, { image }, ({ data }) => {
-      artist.image = data.imageUrl
-      resolve(data.imageUrl)
-    }, error => reject(error))
+  uploadImage: (artist: Artist, image: string): Promise<string> => new Promise((resolve, reject) => {
+    http.put(`artist/${artist.id}/image`, { image }, ({ data: { imageUrl }} : { data: { imageUrl: string }}): void => {
+      artist.image = imageUrl
+      resolve(imageUrl)
+    }, (error: any) => reject(error))
   })
 }

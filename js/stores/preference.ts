@@ -1,7 +1,18 @@
 import { userStore } from '.'
 import { ls } from '@/services'
 
-export const preferenceStore = {
+interface PreferenceStore {
+  storeKey: string
+  state: { [key: string]: any }
+
+  init(user?: User | null): void
+  setupProxy(): void
+  get(key: string): any
+  set(key: string, value: any): void
+  save(): void
+}
+
+export const preferenceStore: PreferenceStore = {
   storeKey: '',
 
   state: {
@@ -22,9 +33,9 @@ export const preferenceStore = {
     showAlbumArtOverlay: true
   },
 
-  init (user = null) {
+  init (user: User | null = null): void {
     user = user || userStore.current
-    this.storeKey = `preferences_${user.id}`
+    this.storeKey = `preferences_${user!.id}`
     this.state = Object.assign(this.state, ls.get(this.storeKey, this.state))
     this.setupProxy()
   },
@@ -32,7 +43,7 @@ export const preferenceStore = {
   /**
    * Proxy the state properties, so that each can be directly accessed using the key.
    */
-  setupProxy () {
+  setupProxy (): void {
     Object.keys(this.state).forEach(key => {
       Object.defineProperty(this, key, {
         get: () => this.get(key),
@@ -42,16 +53,16 @@ export const preferenceStore = {
     })
   },
 
-  set (key, val) {
+  set (key: string, val: any): void {
     this.state[key] = val
     this.save()
   },
 
-  get (key) {
+  get (key: string): any {
     return this.state.hasOwnProperty(key) ? this.state[key] : null
   },
 
-  save () {
+  save (): void {
     ls.set(this.storeKey, this.state)
   }
 }
