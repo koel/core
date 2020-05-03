@@ -75,6 +75,7 @@
     "regenerator-runtime": "^0.12.1",
     "sass-loader": "^6.0.6",
     "ts-jest": "^25.4.0",
+    "typescript": "^3.8.3",
     "vue-jest": "^3.0.0",
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.5.0",
