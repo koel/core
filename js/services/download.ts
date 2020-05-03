@@ -32,11 +32,15 @@ export const download: Download = {
   },
 
   fromPlaylist (playlist: Playlist): void {
-    playlistStore.getSongs(playlist).length ? this.trigger(`playlist/${playlist.id}`) : void
+    if (playlistStore.getSongs(playlist).length) {
+      this.trigger(`playlist/${playlist.id}`)
+    }
   },
 
   fromFavorites (): void {
-    favoriteStore.all.length ? this.trigger('favorites') : void
+    if (favoriteStore.all.length) {
+      this.trigger('favorites')
+    }
   },
 
   /**

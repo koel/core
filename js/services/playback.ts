@@ -126,10 +126,11 @@ export const playback: Playback = {
   },
 
   setMediaSessionActionHandlers (): void {
-    navigator.mediaSession.setActionHandler('play', () => this.resume())
-    navigator.mediaSession.setActionHandler('pause', () => this.pause())
-    navigator.mediaSession.setActionHandler('previoustrack', () => this.playPrev())
-    navigator.mediaSession.setActionHandler('nexttrack', () => this.playNext())
+    // workaround for "TS2339: Property 'mediaSession' does not exist on type 'Navigator'" error
+    ;(<any>navigator).mediaSession.setActionHandler('play', () => this.resume())
+    ;(<any>navigator).mediaSession.setActionHandler('pause', () => this.pause())
+    ;(<any>navigator).mediaSession.setActionHandler('previoustrack', () => this.playPrev())
+    ;(<any>navigator).mediaSession.setActionHandler('nexttrack', () => this.playNext())
   },
 
   listenToMediaEvents (mediaElement: HTMLMediaElement): void {
@@ -242,7 +243,7 @@ export const playback: Playback = {
     }
 
     if (isMediaSessionSupported) {
-      navigator.mediaSession.metadata = new window.MediaMetadata({
+      ;(<any>navigator).mediaSession.metadata = new window.MediaMetadata({
         title: song.title,
         artist: song.artist.name,
         album: song.album.name,

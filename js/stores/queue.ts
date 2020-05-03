@@ -90,7 +90,7 @@ export const queueStore: QueueStore = {
    * @param {Song|Song[]} songs The song, or an array of songs
    */
   queueToTop (songs: Song | Song[]): void {
-    this.all = union(<Song[]>[]).concat(songs), this.all)
+    this.all = union((<Song[]>[]).concat(songs), this.all)
   },
 
   /**

@@ -25,7 +25,6 @@ interface SharedState {
   latestVersion: string
   originalMediaPath: string | undefined
   playlists: Playlist[]
-  preferences: object
   queued: Song[]
   recentlyPlayed: string[]
   settings: Settings
@@ -78,7 +77,7 @@ export const sharedStore: SharedStore = {
         // If this is a new user, initialize his preferences to be an empty object.
         this.state.currentUser!.preferences = this.state.currentUser!.preferences || {}
 
-        userStore.init(this.state.users, this.state.currentUser)
+        userStore.init(this.state.users, this.state.currentUser!)
         preferenceStore.init(this.state.currentUser)
         artistStore.init(this.state.artists)
         albumStore.init(this.state.albums)

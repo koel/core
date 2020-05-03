@@ -1,24 +1,24 @@
 import { isObject, isNumber, get } from 'lodash'
 
-export const orderBy = <T>(arr: T[], sortKey?: string[] | string | null, reverse?: number): T[] => {
+export const orderBy = <T>(arr: T[], sortKey?: string | string[], reverse?: number): T[] => {
   if (!sortKey) {
     return arr
   }
 
   const order = (reverse && reverse < 0) ? -1 : 1
 
-  const compareRecordsByKey = (a: T, b: T, key: string): number => {
+  const compareRecordsByKey = (a: T, b: T, key: any): number => {
     let aKey = isObject(a) ? get(a, key) : a
     let bKey = isObject(b) ? get(b, key) : b
 
     if (isNumber(aKey) && isNumber(bKey)) {
-      return aKey === bKey ? 0 : Number(aKey > bKey)
+      return aKey === bKey ? 0 : aKey > bKey ? 1 : -1
     }
 
     aKey = aKey === undefined ? aKey : `${aKey}`.toLowerCase()
     bKey = bKey === undefined ? bKey : `${bKey}`.toLowerCase()
 
-    return aKey === bKey ? 0 : Number(aKey > bKey)
+    return aKey === bKey ? 0 : aKey > bKey ? 1 : -1
   }
 
   // sort on a copy to avoid mutating original array
@@ -32,11 +32,11 @@ export const orderBy = <T>(arr: T[], sortKey?: string[] | string | null, reverse
         }
       }
 
-      return diff === 0 ? 0 : diff ? order : -order
+      return diff === 0 ? 0 : diff > 0 ? order : -order
     }
 
-    let aSortKey = isObject(a) ? get(a, sortKey) : a
-    let bSortKey = isObject(b) ? get(b, sortKey) : b
+    let aSortKey: any = isObject(a) ? get(a, sortKey) : a
+    let bSortKey: any = isObject(b) ? get(b, sortKey) : b
 
     if (isNumber(aSortKey) && isNumber(bSortKey)) {
       return aSortKey === bSortKey ? 0 : aSortKey > bSortKey ? order : -order

@@ -46,6 +46,12 @@ declare module 'plyr' {
   function setup(el: HTMLMediaElement | HTMLMediaElement[], options: object): Plyr[]
 }
 
+declare module 'ismobilejs' {
+  const apple: { device: boolean }
+  const any: boolean
+  const phone: boolean
+}
+
 declare const KOEL_ENV: string
 
 declare module '*.vue' {

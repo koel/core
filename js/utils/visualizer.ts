@@ -96,7 +96,7 @@ class Particle {
   }
 
   reset (): number {
-    this.level = 1 + Math.floor(Math.random(4))
+    this.level = 1 + Math.floor(random(4))
     this.scale = random(SCALE.MIN, SCALE.MAX)
     this.alpha = random(ALPHA.MIN, ALPHA.MAX)
     this.speed = random(SPEED.MIN, SPEED.MAX)
@@ -142,7 +142,7 @@ class Particle {
 
     ctx.save()
     ctx.beginPath()
-    ctx.translate(this.x + cos(this.rotation * this.speed) * 250, this.y)
+    ctx.translate(this.x + Math.cos(this.rotation * this.speed) * 250, this.y)
     ctx.rotate(this.rotation)
     ctx.scale(this.smoothedScale * this.level, this.smoothedScale * this.level)
     ctx.moveTo(this.size * 0.5, 0)

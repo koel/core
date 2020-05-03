@@ -41,8 +41,6 @@ export const hideOverlay = (): void => event.emit(event.$names.HIDE_OVERLAY)
 
 /**
  * Copy a text into clipboard.
- *
- * @param  {string} txt
  */
 export const copyText = (text: string): void =>
   use(<HTMLTextAreaElement>document.querySelector('#copyArea'), (copyArea: HTMLTextAreaElement): void => {
