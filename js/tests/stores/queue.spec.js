@@ -76,17 +76,17 @@ describe('stores/queue', () => {
     expect(queueStore.next.title).toBe('Wisemen')
   })
 
-  it('returns null as next song if at end of queue', () => {
+  it('returns undefined as next song if at end of queue', () => {
     queueStore.current = queueStore.state.songs[queueStore.state.songs.length - 1]
-    expect(queueStore.next).toBeNull()
+    expect(queueStore.next).toBeUndefined
   })
 
   it('gets the previous song in queue', () => {
     expect(queueStore.previous.title).toBe('No bravery')
   })
 
-  it('returns null as previous song if at beginning of queue', () => {
+  it('returns undefined as previous song if at beginning of queue', () => {
     queueStore.current = queueStore.state.songs[0]
-    expect(queueStore.previous).toBeNull()
+    expect(queueStore.previous).toBeUndefined
   })
 })

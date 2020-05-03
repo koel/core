@@ -33,8 +33,10 @@
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/blueimp-md5": "^2.7.0",
+    "@types/jest": "^25.2.1",
     "@types/local-storage": "^1.4.0",
     "@types/lodash": "^4.14.150",
+    "@types/node": "^13.13.4",
     "@types/nprogress": "^0.2.0",
     "@types/pusher-js": "^4.2.2",
     "@vue/test-utils": "^1.0.0-beta.25",
@@ -72,6 +74,7 @@
     "pusher-js": "^4.1.0",
     "regenerator-runtime": "^0.12.1",
     "sass-loader": "^6.0.6",
+    "ts-jest": "^25.4.0",
     "vue-jest": "^3.0.0",
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.5.0",
