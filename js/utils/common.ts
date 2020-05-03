@@ -2,7 +2,7 @@
  * Other common methods.
  */
 import select from 'select'
-import { event, pluralize, use } from '@/utils'
+import { event, noop, pluralize, use } from '@/utils'
 import { sharedStore } from '@/stores'
 import { dragTypes } from '@/config'
 
@@ -24,7 +24,7 @@ export const forceReloadWindow = (): void => {
     return
   }
 
-  window.onbeforeunload = () => {}
+  window.onbeforeunload = noop
   window.location.reload()
 }
 

@@ -5,3 +5,5 @@ export const use = <T>(value: T, cb: (arg: T) => void): void => {
 
   cb(value)
 }
+
+export const noop = () => {}
