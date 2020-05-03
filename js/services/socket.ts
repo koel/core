@@ -7,7 +7,7 @@ interface Socket {
   pusher: Pusher.Pusher | null
   channel: Pusher.Channel | null
   init(): Promise<void>
-  broadcast(eventName: string, data?: Object): Socket
+  broadcast(eventName: string, data?: object): Socket
   listen(eventName: string, cb: Function): Socket
 }
 

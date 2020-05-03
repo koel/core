@@ -12,7 +12,7 @@ import {
   recentlyPlayedStore,
   preferenceStore as preferences
 } from '@/stores'
-import { socket, Audio } from '.'
+import { socket, audio as audioService } from '.'
 import { app } from '@/config'
 import router from '@/router'
 
@@ -24,7 +24,6 @@ interface Playback {
   volumeInput: HTMLInputElement | null
   repeatModes: String[]
   initialized: boolean
-  audio: Audio | null
   mainWin: any
 
   init(): void
@@ -35,7 +34,7 @@ interface Playback {
   toggle(): void
   playNext(): void
   playPrev(): void
-  play(song: Song): void
+  play(song: Song | undefined): void
   restart(): void
   resume(): void
   pause(): void
@@ -66,7 +65,6 @@ export const playback: Playback = {
   repeatModes: REPEAT_MODES,
   initialized: false,
   mainWin: null,
-  audio: null,
 
   init () {
     if (KOEL_ENV === 'app') {
@@ -78,7 +76,7 @@ export const playback: Playback = {
       return
     }
 
-    this.player = plyr.setup(document.querySelector('.plyr') as HTMLMediaElement, {
+    this.player = plyr.setup(<HTMLMediaElement>document.querySelector('.plyr'), {
       controls: []
     })[0]
 
@@ -90,7 +88,7 @@ export const playback: Playback = {
         this.setVolume(preferences.volume)
       } catch (e) {}
 
-      this.audio = new Audio(this.player.media)
+      audioService.init(this.player.media)
       event.emit(event.$names.INIT_EQUALIZER)
     }
 
@@ -111,8 +109,9 @@ export const playback: Playback = {
       .listen(event.$names.SOCKET_PLAY_NEXT, () => this.playNext())
       .listen(event.$names.SOCKET_PLAY_PREV, () => this.playPrev())
       .listen(event.$names.SOCKET_GET_STATUS, () => {
-        const data = queueStore.current ? songStore.generateDataToBroadcast(queueStore.current) : {}
-        data.volume = this.volumeInput!.value
+        const data = queueStore.current ? songStore.generateDataToBroadcast(queueStore.current) : {
+          volume: this.volumeInput!.value
+        }
         socket.broadcast(event.$names.SOCKET_STATUS, data)
       })
       .listen(event.$names.SOCKET_GET_CURRENT_SONG, () => {
@@ -138,14 +137,14 @@ export const playback: Playback = {
 
     mediaElement.addEventListener('ended', () => {
       if (sharedStore.state.useLastfm && userStore.current.preferences.lastfm_session_key) {
-        songStore.scrobble(queueStore.current)
+        songStore.scrobble(queueStore.current!)
       }
 
       preferences.repeatMode === 'REPEAT_ONE' ? this.restart() : this.playNext()
     })
 
     mediaElement.addEventListener('timeupdate', throttle((): void => {
-      const currentSong = queueStore.current
+      const currentSong = queueStore.current!
 
       if (!currentSong.playCountRegistered && !this.isTranscoding) {
         // if we've passed 25% of the song, it's safe to say the song has been "played".
@@ -194,7 +193,7 @@ export const playback: Playback = {
    * So many dreams swinging out of the blue
    * We'll let them come true
    */
-  play (song: Song | null): void {
+  play (song: Song | undefined): void {
     if (!song) {
       return
     }
@@ -216,7 +215,7 @@ export const playback: Playback = {
     // We'll just "restart" playing the song, which will handle notification, scrobbling etc.
     // Fixes #898
     if (isAudioContextSupported) {
-      this.audio!.getContext().resume().then(() => this.restart())
+      audioService.getContext().resume().then(() => this.restart())
     } else {
       this.restart()
     }
@@ -255,7 +254,7 @@ export const playback: Playback = {
   },
 
   restart () {
-    const song = queueStore.current
+    const song = queueStore.current!
 
     this.showNotification(song)
 
@@ -321,7 +320,7 @@ export const playback: Playback = {
   playPrev (): void {
     // If the song's duration is greater than 5 seconds and we've passed 5 seconds into it,
     // restart playing instead.
-    if (this.player!.media.currentTime > 5 && queueStore.current.length > 5) {
+    if (this.player!.media.currentTime > 5 && queueStore.current!.length > 5) {
       this.player!.restart()
 
       return
@@ -330,7 +329,7 @@ export const playback: Playback = {
     const prev = this.previous
     !prev && preferences.repeatMode === 'NO_REPEAT'
       ? this.stop()
-      : this.play(prev!)
+      : this.play(prev)
   },
 
   /**
@@ -341,7 +340,7 @@ export const playback: Playback = {
     const next = this.next
     !next && preferences.repeatMode === 'NO_REPEAT'
       ? this.stop() //  Nothing lasts forever, even cold November rain.
-      : this.play(next!)
+      : this.play(next)
   },
 
   /**
@@ -385,15 +384,15 @@ export const playback: Playback = {
 
   pause () {
     this.player!.pause()
-    queueStore.current.playbackState = 'paused'
-    socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current))
+    queueStore.current!.playbackState = 'paused'
+    socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current!))
   },
 
   resume () {
     this.player!.play()
-    queueStore.current.playbackState = 'playing'
+    queueStore.current!.playbackState = 'playing'
     event.emit(event.$names.SONG_PLAYED, queueStore.current)
-    socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current))
+    socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current!))
   },
 
   toggle () {
@@ -416,7 +415,7 @@ export const playback: Playback = {
    * @param {?Song[]} songs  An array of song objects. Defaults to all songs if null.
    * @param {Boolean=false}   shuffled Whether to shuffle the songs before playing.
    */
-  queueAndPlay (songs: Song[] | null = null, shuffled = false): void {
+  queueAndPlay (songs?: Song[], shuffled: boolean = false): void {
     if (!songs) {
       songs = shuffle(songStore.all)
     }

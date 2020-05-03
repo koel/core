@@ -8,21 +8,67 @@ import { http, ls } from '@/services'
 import { sharedStore, favoriteStore, albumStore, artistStore, preferenceStore } from '.'
 import stub from '@/stubs/song'
 
-export const songStore = {
+interface BroadcastedSongData {
+  song: {
+    id: string
+    title: string
+    liked: boolean
+    playbackState: string
+    album: {
+      name: string
+      cover: string
+    }
+    artist: {
+      name: string
+    }
+  }
+}
+
+interface SongStore {
+  stub: Song
+  albums: Album[]
+  cache: { [id: string]: Song }
+  state: {
+    songs: Song[]
+    recentlyPlayed: Song[]
+  }
+  all: Song[]
+  recentlyPlayed: Song[]
+
+  init(songs: Song[]): void
+  setupSong(song: Song): void
+  byId(id: string): Song
+  byIds(ids: string[]): Song[]
+  initInteractions(interactions: Interaction[]): void
+  getLength(songs: Song[], formatted: boolean): number|string
+  getFormattedLength(songs: Song[]): string
+  guess(title: string, album: Album): Song | null
+  registerPlay(song: Song): Promise<Interaction>
+  scrobble(song: Song): Promise<any>
+  update(songs: Song[], data: Object): Promise<Song[]>
+  getSourceUrl(song: Song): string
+  getShareableUrl(song: Song): string
+  getMostPlayed(n: number): Song[]
+  getRecentlyAdded(n: number): Song[]
+  generateDataToBroadcast(song: Song): BroadcastedSongData
+}
+
+export const songStore: SongStore = {
   stub,
   albums: [],
   cache: {},
 
   state: {
-    songs: [stub]
+    songs: [stub],
+    recentlyPlayed: []
   },
 
-  init (songs) {
+  init (songs: Song[]): void {
     this.all = songs
     this.all.forEach(song => this.setupSong(song))
   },
 
-  setupSong (song) {
+  setupSong (song: Song): void {
     song.fmtLength = secondsToHis(song.length)
 
     const album = albumStore.byId(song.album_id)
@@ -47,16 +93,14 @@ export const songStore = {
 
     // Cache the song, so that byId() is faster
     this.cache[song.id] = song
-
-    return song
   },
 
   /**
    * Initializes the interaction (like/play count) information.
    *
-   * @param  {Array.<Object>} interactions The array of interactions of the current user
+   * @param  {Interaction[]} interactions The array of interactions of the current user
    */
-  initInteractions (interactions) {
+  initInteractions (interactions: Interaction[]): void {
     favoriteStore.clear()
 
     interactions.forEach(interaction => {
@@ -78,90 +122,82 @@ export const songStore = {
   /**
    * Get the total duration of some songs.
    *
-   * @param {Array.<Object>}  songs
-   * @param {Boolean}     toHis Whether to convert the duration into H:i:s format
-   *
-   * @return {Float|String}
+   * @param {Boolean} formatted Whether to convert the duration into H:i:s format
    */
-  getLength: (songs, toHis = false) => {
+  getLength: (songs: Song[], formatted: boolean = false): number | string => {
     const duration = songs.reduce((length, song) => length + song.length, 0)
 
-    return toHis ? secondsToHis(duration) : duration
+    return formatted ? secondsToHis(duration) : duration
   },
 
-  getFormattedLength (songs) {
-    return this.getLength(songs, true /* toHis */)
+  getFormattedLength (songs: Song[]): string {
+    return <string>this.getLength(songs, true)
   },
 
   get all () {
     return this.state.songs
   },
 
-  set all (value) {
+  set all (value: Song[]) {
     this.state.songs = value
   },
 
-  byId (id) {
+  byId (id: string) {
     return this.cache[id]
   },
 
-  byIds (ids) {
+  byIds (ids: string[]) {
     return ids.map(id => this.byId(id))
   },
 
   /**
    * Guess a song by its title and album.
    * Forget about Levenshtein distance, this implementation is good enough.
-   *
-   * @param  {string} title
-   * @param  {Object} album
-   *
-   * @return {Object|false}
    */
-  guess: (title, album) => {
+  guess: (title: string, album: Album): Song | null => {
     title = slugify(title.toLowerCase())
-    let found = false
-    album.songs.forEach(song => {
-      if (slugify(song.title.toLowerCase()) === title) {
-        found = song
-      }
-    })
 
-    return found
+    for (let song of album.songs) {
+      if (slugify(song.title.toLowerCase()) === title) {
+        return song
+      }
+    }
+
+    return null
   },
 
   /**
    * Increase a play count for a song.
    */
-  registerPlay: song => {
-    return new Promise((resolve, reject) => {
+  registerPlay: (song: Song): Promise<Interaction>  => {
+    return new Promise((resolve, reject): void => {
       const oldCount = song.playCount
 
-      http.post('interaction/play', { song: song.id }, ({ data }) => {
+      http.post('interaction/play', { song: song.id }, ({ data } : { data: Interaction }): void => {
         // Use the data from the server to make sure we don't miss a play from another device.
         song.playCount = data.play_count
         song.album.playCount += song.playCount - oldCount
         song.artist.playCount += song.playCount - oldCount
 
         resolve(data)
-      }, error => reject(error))
+      }, (error: any) => reject(error))
     })
   },
 
-  scrobble: song => {
-    return new Promise((resolve, reject) => {
-      http.post(`${song.id}/scrobble/${song.playStartTime}`, {}, ({ data }) => {
-        resolve(data)
-      }, error => reject(error))
+  scrobble: (song: Song): Promise<any> => {
+    return new Promise((resolve, reject): void => {
+      http.post(`${song.id}/scrobble/${song.playStartTime}`, {}, (): void => {
+        resolve()
+      }, (error: any) => reject(error))
     })
   },
 
-  update (songs, data) {
+  update (songs: Song[], data: any): Promise<Song[]> {
     return new Promise((resolve, reject) => {
       http.put('songs', {
         data,
         songs: songs.map(song => song.id)
-      }, ({ data: { songs, artists, albums }}) => {
+      }, ({ data: { songs, artists, albums }} : { data: { songs: Song[], artists: Artist[], albums: Album[] }}) => {
         // Add the artist and album into stores if they're new
         artists.forEach(artist => !artistStore.byId(artist.id) && artistStore.add(artist))
         albums.forEach(album => !albumStore.byId(album.id) && albumStore.add(album))
@@ -189,18 +225,18 @@ export const songStore = {
 
         alerts.success(`Updated ${pluralize(songs.length, 'song')}.`)
         resolve(songs)
-      }, error => reject(error))
+      }, (error: any) => reject(error))
     })
   },
 
-  getSourceUrl: song => {
+  getSourceUrl: (song: Song): string => {
     if (isMobile.any && preferenceStore.transcodeOnMobile) {
       return `${sharedStore.state.cdnUrl}api/${song.id}/play/1/128?jwt-token=${ls.get('jwt-token')}`
     }
     return `${sharedStore.state.cdnUrl}api/${song.id}/play?jwt-token=${ls.get('jwt-token')}`
   },
 
-  getShareableUrl: song => {
+  getShareableUrl: (song: Song): string => {
     const baseUrl = KOEL_ENV === 'app' ? ls.get('koelHost') : window.BASE_URL
     return `${baseUrl}#!/song/${song.id}`
   },
@@ -209,7 +245,7 @@ export const songStore = {
     return this.state.recentlyPlayed
   },
 
-  getMostPlayed (n = 10) {
+  getMostPlayed (n = 10): Song[] {
     const songs = take(orderBy(this.all, 'playCount', 'desc'), n)
 
     // Remove those with playCount=0
@@ -222,21 +258,19 @@ export const songStore = {
     return take(orderBy(this.all, 'created_at', 'desc'), n)
   },
 
-  generateDataToBroadcast: song => {
-    return {
-      song: {
-        id: song.id,
-        title: song.title,
-        liked: song.liked,
-        playbackState: song.playbackState,
-        album: {
-          name: song.album.name,
-          cover: song.album.cover
-        },
-        artist: {
-          name: song.artist.name
-        }
+  generateDataToBroadcast: (song: Song): BroadcastedSongData => ({
+    song: {
+      id: song.id,
+      title: song.title,
+      liked: song.liked,
+      playbackState: song.playbackState,
+      album: {
+        name: song.album.name,
+        cover: song.album.cover
+      },
+      artist: {
+        name: song.artist.name
       }
     }
-  }
+  })
 }

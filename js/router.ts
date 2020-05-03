@@ -6,7 +6,19 @@ import { playback } from './services'
 import { views } from '@/config'
 import { use } from '@/utils'
 
-export default {
+interface Routes {
+  [path: string]: Function
+}
+
+interface Router {
+  routes: Routes
+
+  init(): void
+  loadState(): void
+  go(path: string | number): void
+}
+
+const router: Router = {
   routes: {
     '/home': () => loadMainView(views.HOME),
     '/queue': () => loadMainView(views.QUEUE),
@@ -20,17 +32,17 @@ export default {
     '/youtube': () => loadMainView(views.YOUTUBE),
     '/visualizer': () => loadMainView(views.VISUALIZER),
     '/profile': () => loadMainView(views.PROFILE),
-    '/album/(\\d+)': id => use(albumStore.byId(~~id), album => loadMainView(views.ALBUM, album)),
-    '/artist/(\\d+)': id => use(artistStore.byId(~~id), artist => loadMainView(views.ARTIST, artist)),
-    '/playlist/(\\d+)': id => use(playlistStore.byId(~~id), playlist => loadMainView(views.PLAYLIST, playlist)),
+    '/album/(\\d+)': (id: number) => use(albumStore.byId(~~id), album => loadMainView(views.ALBUM, album)),
+    '/artist/(\\d+)': (id: number) => use(artistStore.byId(~~id), artist => loadMainView(views.ARTIST, artist)),
+    '/playlist/(\\d+)': (id: number) => use(playlistStore.byId(~~id), playlist => loadMainView(views.PLAYLIST, playlist)),
 
-    '/song/([a-z0-9]{32})': id => use(songStore.byId(id), song => {
+    '/song/([a-z0-9]{32})': (id: string) => use(songStore.byId(id), song => {
       if (isMobile.apple.device) {
         // Mobile Safari doesn't allow autoplay, so we just queue.
         queueStore.queue(song)
         loadMainView(views.QUEUE)
       } else {
-        playback.queueAndPlay(song)
+        playback.queueAndPlay([song])
       }
     })
   },
@@ -57,15 +69,13 @@ export default {
 
   /**
    * Navigate to a (relative, hash-bang'ed) path.
-   *
-   * @param  {String|Number} path
    */
-  go: path => {
+  go: (path: string | number): void => {
     if (window.__UNIT_TESTING__) {
       return
     }
 
-    if (path instanceof Number) {
+    if (typeof path === 'number') {
       window.history.go(path)
       return
     }
@@ -82,3 +92,5 @@ export default {
     document.location.href = `${document.location.origin}${document.location.pathname}${path}`
   }
 }
+
+export default router

@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
+    "@types/blueimp-md5": "^2.7.0",
     "@types/local-storage": "^1.4.0",
     "@types/lodash": "^4.14.150",
     "@types/nprogress": "^0.2.0",

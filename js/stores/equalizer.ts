@@ -104,13 +104,11 @@ export const equalizerStore: EqualizerStore = {
   ],
 
   getPresetById (id: number): EqualizerPreset {
-    return this.presets.find(preset => preset.id === id) as EqualizerPreset
+    return <EqualizerPreset>this.presets.find(preset => preset.id === id)
   },
 
   /**
    * Get the current equalizer config.
-   *
-   * @return {Object}
    */
   get (): EqualizerPreset {
     if (!this.presets[preferenceStore.selectedPreset]) {

@@ -9,7 +9,7 @@ interface YouTube {
 
 interface YouTubeSearchResult {
   nextPageToken: string
-  items: Object[]
+  items: object[]
 }
 
 export const youtube: YouTube = {

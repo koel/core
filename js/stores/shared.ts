@@ -13,7 +13,35 @@ import {
   settingStore
 } from '.'
 
-export const sharedStore = {
+interface SharedState {
+  albums: Album[]
+  allowDownload: boolean
+  artists: Artist[]
+  cdnUrl: string
+  currentUser: User | null
+  currentVersion: string
+  favorites: Song[]
+  interactions: Interaction[]
+  latestVersion: string
+  originalMediaPath: string | undefined
+  playlists: Playlist[]
+  preferences: object
+  queued: Song[]
+  recentlyPlayed: string[]
+  settings: Settings
+  songs: Song[]
+  useiTunes: boolean
+  useLastfm: boolean
+  users: User[]
+  useYouTube: boolean
+}
+
+interface SharedStore {
+  state: SharedState
+  init(): Promise<SharedState>
+}
+
+export const sharedStore: SharedStore = {
   state: {
     albums: [],
     allowDownload: false,
@@ -36,22 +64,22 @@ export const sharedStore = {
     useYouTube: false
   },
 
-  init () {
+  init (): Promise<SharedState> {
     return new Promise((resolve, reject) => {
-      http.get('data', ({ data }) => {
+      http.get('data', ({ data } : { data : SharedState }) => {
         this.state = Object.assign(this.state, data)
 
         // Don't allow downloading on mobile devices
-        this.state.allowDownload &= !isMobile.any
+        this.state.allowDownload = this.state.allowDownload && !isMobile.any
 
         // Always disable YouTube integration on mobile.
-        this.state.useYouTube &= !isMobile.phone
+        this.state.useYouTube = this.state.useYouTube && !isMobile.phone
 
         // If this is a new user, initialize his preferences to be an empty object.
-        this.state.currentUser.preferences = this.state.currentUser.preferences || {}
+        this.state.currentUser!.preferences = this.state.currentUser!.preferences || {}
 
         userStore.init(this.state.users, this.state.currentUser)
-        preferenceStore.init(this.state.preferences)
+        preferenceStore.init(this.state.currentUser)
         artistStore.init(this.state.artists)
         albumStore.init(this.state.albums)
         songStore.init(this.state.songs)
@@ -65,7 +93,7 @@ export const sharedStore = {
         this.state.originalMediaPath = this.state.settings.media_path
 
         resolve(this.state)
-      }, error => reject(error))
+      }, (error: any) => reject(error))
     })
   }
 }

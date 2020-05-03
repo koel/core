@@ -5,22 +5,18 @@ export const $ = {
   is: (el: Element, selector: string): boolean => el.matches(selector),
 
   addClass: (el: HTMLElement | null, className: string): void => {
-    if (!el) {
-      return
+    if (el) {
+      el.classList.add(className)
     }
-
-    el.classList.add(className)
   },
 
   removeClass: (el: HTMLElement | null, className: string): void => {
-    if (!el) {
-      return
+    if (el) {
+      el.classList.remove(className)
     }
-
-    el.classList.remove(className)
   },
 
-  scrollTo (el: HTMLElement, to: number, duration: number, cb: Function | null = null): void {
+  scrollTo (el: HTMLElement, to: number, duration: number, cb?: Function): void {
     if (duration <= 0 || !el) {
       return
     }

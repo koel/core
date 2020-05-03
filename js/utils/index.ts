@@ -1,5 +1,4 @@
-export { event } from './event'
-
+export * from './event'
 export * from './alerts'
 export * from './filters'
 export * from './formatters'

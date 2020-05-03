@@ -2,11 +2,22 @@ import { http } from '@/services'
 import { alerts } from '@/utils'
 import stub from '@/stubs/settings'
 
-export const settingStore = {
+interface SettingStore {
+  stub: Settings
+  state: {
+    settings: Settings
+  }
+  all: Settings
+
+  init(settings: Settings): void
+  update(): Promise<any>
+}
+
+export const settingStore: SettingStore = {
   stub,
 
   state: {
-    settings: []
+    settings: {}
   },
 
   init (settings) {
@@ -17,11 +28,11 @@ export const settingStore = {
     return this.state.settings
   },
 
-  update (): Promise<any> {
+  update (): Promise<undefined> {
     return new Promise((resolve, reject): void => {
-      http.post('settings', this.all, ({ data } : { data: any }) => {
+      http.post('settings', this.all, (): void => {
         alerts.success('Settings saved.')
-        resolve(data)
+        resolve()
       }, (error: any) => reject(error))
     })
   }

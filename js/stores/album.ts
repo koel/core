@@ -8,7 +8,7 @@ import { artistStore } from '.'
 import { http } from '@/services'
 
 interface AlbumStore {
-  stub: Object
+  stub: Album
   cache: { [id: number]: Album }
   state: {
     albums: Album[]
@@ -65,12 +65,12 @@ export const albumStore: AlbumStore = {
   },
 
   add (albums: Album | Album[]): void {
-    ([] as Album[]).concat(albums).forEach(album => {
+    (<Album[]>[]).concat(albums).forEach(album => {
       this.setupAlbum(album, album.artist)
       album.playCount = album.songs.reduce((count, song) => count + song.playCount, 0)
     })
 
-    this.all = union(this.all, albums as Album[])
+    this.all = union(this.all, <Album[]>albums)
   },
 
   purify (): void {
@@ -107,7 +107,7 @@ export const albumStore: AlbumStore = {
    * @param {Album} album The album object
    * @param {string} cover The content data string of the cover
    */
-  uploadCover: (album: Album, cover: string): Promise<string> => new Promise((resolve, reject) => {
+  uploadCover: (album: Album, cover: string): Promise<string> => new Promise((resolve, reject): void => {
     http.put(`album/${album.id}/cover`, { cover }, ({ data: { coverUrl } } : { data: { coverUrl: string }}): void => {
       album.cover = coverUrl
       resolve(coverUrl)

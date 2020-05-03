@@ -1,5 +1,4 @@
 /* eslint-disable camelcase */
-
 import { http, albumInfo, artistInfo } from '..'
 
 export const songInfo = {
@@ -11,22 +10,22 @@ export const songInfo = {
       }
 
       http.get(`${song.id}/info`, (
-          {
-            data: {
-              artist_info,
-              album_info,
-              youtube,
-              lyrics
-            }
-          } : {
-            data: {
-              artist_info: ArtistInfo,
-              album_info: AlbumInfo,
-              youtube: JSON,
-              lyrics: string
-            }
+        {
+          data: {
+            artist_info,
+            album_info,
+            youtube,
+            lyrics
           }
-        ) => {
+        } : {
+          data: {
+            artist_info: ArtistInfo,
+            album_info: AlbumInfo,
+            youtube: object,
+            lyrics: string
+          }
+        }
+      ): void => {
         song.lyrics = lyrics
         artist_info && artistInfo.merge(song.artist, artist_info)
         album_info && albumInfo.merge(song.album, album_info)

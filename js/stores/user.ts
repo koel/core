@@ -7,7 +7,28 @@ import { http } from '@/services'
 import { alerts } from '@/utils'
 import stub from '@/stubs/user'
 
-export const userStore = {
+interface UserStore {
+  stub: User
+  state: {
+    users: User[]
+    current: User
+  }
+  all: User[]
+  current: User
+
+  init(users: User[], currentUser: User): void
+  setAvatar(user?: User | null): void
+  byId(id: number): User
+  login(email: string, password: string): Promise<User>
+  logout(): Promise<undefined>
+  getProfile(): Promise<User>
+  updateProfile(password: string): Promise<User>
+  store(name: string, email: string, password: string): Promise<User>
+  update(user: User, name: string, email: string, password: string): Promise<User>
+  destroy(user: User): Promise<undefined>
+}
+
+export const userStore: UserStore = {
   stub,
 
   state: {
@@ -34,103 +55,102 @@ export const userStore = {
     this.state.users = value
   },
 
-  byId (id) {
-    return this.all.find(user => user.id === id)
+  byId (id: number): User {
+    return <User>this.all.find(user => user.id === id)
   },
 
   get current () {
     return this.state.current
   },
 
-  set current (user) {
+  set current (user: User) {
     this.state.current = user
-    return this.state.current
   },
 
   /**
    * Set a user's avatar using Gravatar's service.
    *
-   * @param {?Object} user The user. If null, the current user.
+   * @param {?User} user The user. If null, the current user.
    */
-  setAvatar (user = null) {
+  setAvatar (user?: User): void {
     user = user || this.current
     Vue.set(user, 'avatar', `https://www.gravatar.com/avatar/${md5(user.email)}?s=256`)
   },
 
-  login: (email, password) => {
+  login: (email: string, password: string): Promise<User> => {
     NProgress.start()
 
-    return new Promise((resolve, reject) => {
-      http.post('me', { email, password }, ({ data }) => {
+    return new Promise((resolve, reject): void => {
+      http.post('me', { email, password }, ({ data } : { data: User }): void => {
         resolve(data)
-      }, error => reject(error))
+      }, (error: any) => reject(error))
     })
   },
 
-  logout: () => {
+  logout: (): Promise<undefined> => {
     return new Promise((resolve, reject) => {
-      http.delete('me', {}, ({ data }) => {
-        resolve(data)
-      }, error => reject(error))
+      http.delete('me', {}, (): void => {
+        resolve()
+      }, (error: any) => reject(error))
     })
   },
 
-  getProfile: () => {
-    return new Promise((resolve, reject) => {
-      http.get('me', ({ data }) => {
+  getProfile: (): Promise<User> => {
+    return new Promise((resolve, reject): void => {
+      http.get('me', ({ data } : { data: User }) => {
         resolve(data)
-      }, error => reject(error))
+      }, (error: any) => reject(error))
     })
   },
 
-  updateProfile (password) {
+  updateProfile (password: string): Promise<User> {
     NProgress.start()
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject): void => {
       http.put('me', {
         password,
         name: this.current.name,
         email: this.current.email
-      }, () => {
+      }, (): void => {
         this.setAvatar()
         alerts.success('Profile updated.')
         resolve(this.current)
       },
-      error => reject(error))
+      (error: any) => reject(error))
     })
   },
 
-  store (name, email, password) {
+  store (name: string, email: string, password: string): Promise<User> {
     NProgress.start()
 
-    return new Promise((resolve, reject) => {
-      http.post('user', { name, email, password }, ({ data: user }) => {
+    return new Promise((resolve, reject): void => {
+      http.post('user', { name, email, password }, ({ data: user } : { data: User }): void => {
         this.setAvatar(user)
         this.all.unshift(user)
         alerts.success(`New user &quot;${name}&quot; created.`)
         resolve(user)
-      }, error => reject(error))
+      }, (error: any) => reject(error))
     })
   },
 
-  update (user, name, email, password) {
+  update (user: User, name: string, email: string, password: string): Promise<User> {
     NProgress.start()
 
-    return new Promise((resolve, reject) => {
-      http.put(`user/${user.id}`, { name, email, password }, () => {
+    return new Promise((resolve, reject): void => {
+      http.put(`user/${user.id}`, { name, email, password }, (): void => {
         this.setAvatar(user);
         [user.name, user.email, user.password] = [name, email, '']
         alerts.success('User profile updated.')
         resolve(user)
-      }, error => reject(error))
+      }, (error: any) => reject(error))
     })
   },
 
-  destroy (user) {
+  destroy (user: User): Promise<undefined> {
     NProgress.start()
 
-    return new Promise((resolve, reject) => {
-      http.delete(`user/${user.id}`, {}, ({ data }) => {
+    return new Promise((resolve, reject): void => {
+      http.delete(`user/${user.id}`, {}, (): void => {
         this.all = without(this.all, user)
         alerts.success(`User &quot;${user.name}&quot; deleted.`)
 
@@ -156,8 +176,8 @@ export const userStore = {
         /**
          * Brian May enters the stage.
          */
-        resolve(data)
-      }, error => reject(error))
+        resolve()
+      }, (error: any) => reject(error))
     })
   }
 }

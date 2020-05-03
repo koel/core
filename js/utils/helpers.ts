@@ -1,1 +1,7 @@
-export const use = (value: any, cb: Function): void => typeof value !== 'undefined' && value !== null && cb(value)
+export const use = <T>(value: T, cb: (arg: T) => void): void => {
+  if (typeof value === 'undefined' || value === null) {
+    return
+  }
+
+  cb(value)
+}

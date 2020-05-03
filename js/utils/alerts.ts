@@ -2,9 +2,11 @@ import alertify from 'alertify.js'
 
 export const alerts = {
   alert: (msg: string): void => alertify.alert(msg),
-  confirm: (msg: string, okFunc: Function, cancelFunc = null): void => alertify.confirm(msg, okFunc, cancelFunc),
+  confirm: (msg: string, okFunc: Function, cancelFunc?: Function): void => {
+    alertify.confirm(msg, okFunc, cancelFunc)
+  },
 
-  log: (msg: string, type: string, cb: Function | null = null): void => {
+  log: (msg: string, type: string, cb?: Function): void => {
     alertify.logPosition('top right')
     alertify.closeLogOnClick(true)
 
@@ -21,11 +23,11 @@ export const alerts = {
     }
   },
 
-  success (msg: string, cb: Function | null = null): void {
+  success (msg: string, cb?: Function): void {
     this.log(msg, 'success', cb)
   },
 
-  error (msg: string, cb: Function | null = null): void {
+  error (msg: string, cb?: Function): void {
     this.log(msg, 'error', cb)
   }
 }

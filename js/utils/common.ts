@@ -10,7 +10,7 @@ import { dragTypes } from '@/config'
  * Load (display) a main panel (view).
  *
  * @param {String} view   The view, which can be found under components/main-wrapper/main-content.
- * @param {...*}      Extra data to attach to the view.
+ * @param {...*} args     Extra data to attach to the view.
  */
 export const loadMainView = (view: string, ...args: any[]): void =>
   event.emit(event.$names.LOAD_MAIN_CONTENT, view, ...args)
@@ -45,7 +45,7 @@ export const hideOverlay = (): void => event.emit(event.$names.HIDE_OVERLAY)
  * @param  {string} txt
  */
 export const copyText = (text: string): void =>
-  use(document.querySelector('#copyArea'), (copyArea: HTMLTextAreaElement): void => {
+  use(<HTMLTextAreaElement>document.querySelector('#copyArea'), (copyArea: HTMLTextAreaElement): void => {
     copyArea.style.top = `${window.pageYOffset || document.documentElement.scrollTop}px`
     copyArea.value = text
     select(copyArea)
@@ -59,16 +59,17 @@ export const getDefaultCover = (): string => `${sharedStore.state.cdnUrl}/public
  * Create a fancy ghost drag image.
  */
 const createGhostDragImage = (event: DragEvent, text: string): void =>
-  use(document.querySelector('#dragGhost'), (ghost: HTMLElement): void => {
+  use(<HTMLElement>document.querySelector('#dragGhost'), (ghost: HTMLElement): void => {
     ghost.innerText = text
     event.dataTransfer!.setDragImage(ghost, 0, 0)
   })
+
 
 /**
  * Handle song/album/artist drag start event.
  *
  * @param {DragEvent} event The drag event
- * @param {Object|Array.<Object>} dragged Either an array of songs or a song/album/artist object
+ * @param {Song|Song[]} dragged Either an array of songs or a song/album/artist object
  * @param {string} type The drag type (see @/config/drag-types.js)
  */
 export const startDragging = (event: DragEvent, dragged: Song | Song[] | Album | Artist, type: string): void => {
@@ -77,7 +78,7 @@ export const startDragging = (event: DragEvent, dragged: Song | Song[] | Album |
 
   switch (type) {
     case dragTypes.SONGS:
-      dragged = ([] as Song[]).concat(dragged as Song)
+      dragged = (<Song[]>[]).concat(<Song>dragged)
       text = dragged.length === 1
         ? `${dragged[0].title} by ${dragged[0].artist.name}`
         : pluralize(dragged.length, 'song')
@@ -85,13 +86,13 @@ export const startDragging = (event: DragEvent, dragged: Song | Song[] | Album |
       break
 
     case dragTypes.ALBUM:
-      dragged = dragged as Album
+      dragged = <Album>dragged
       text = `All ${pluralize(dragged.songs.length, 'song')} in ${dragged.name}`
       songIds = dragged.songs.map(song => song.id)
       break
 
     case dragTypes.ARTIST:
-      dragged = dragged as Artist
+      dragged = <Artist>dragged
       text = `All ${pluralize(dragged.songs.length, 'song')} by ${dragged.name}`
       songIds = dragged.songs.map(song => song.id)
       break

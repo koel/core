@@ -20,8 +20,6 @@ export const secondsToHis = (d: number): string => {
 
 /**
  * Parse the validation error from the server into a flattened array of messages.
- *
- * @param  {Object}  error  The error object in JSON format.
  */
 export const parseValidationError = (error: any): string[] =>
   Object.keys(error).reduce((messages, field) => messages.concat(error[field]), [])

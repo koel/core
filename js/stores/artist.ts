@@ -7,7 +7,7 @@ import { http } from '@/services'
 import stub from '@/stubs/artist'
 
 interface ArtistStore {
-  stub: Object
+  stub: Artist
   cache: { [id: number]: Artist }
   state: {
     artists: Artist[]
@@ -67,12 +67,12 @@ export const artistStore: ArtistStore = {
   },
 
   add (artists: Artist | Artist[]) {
-    ([] as Artist[]).concat(artists).forEach(artist => {
+    (<Artist[]>[]).concat(artists).forEach(artist => {
       this.setupArtist(artist)
       artist.playCount = artist.songs.reduce((count, song) => count + song.playCount, 0)
     })
 
-    this.all = union(this.all, artists as Artist[])
+    this.all = union(this.all, <Artist[]>artists)
   },
 
   purify (): void {

@@ -53,14 +53,14 @@ export const favoriteStore: FavoriteStore = {
    * Add a song/songs into the store.
    */
   add (songs: Song | Song[]): void {
-    this.all = union(this.all, ([] as Song[]).concat(songs))
+    this.all = union(this.all, (<Song[]>[]).concat(songs))
   },
 
   /**
    * Remove a song/songs from the store.
    */
   remove (songs: Song | Song[]): void {
-    this.all = difference(this.all, ([] as Song[]).concat(songs))
+    this.all = difference(this.all, (<Song[]>[]).concat(songs))
   },
 
   clear (): void {

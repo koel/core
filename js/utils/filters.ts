@@ -7,7 +7,7 @@ export const orderBy = <T>(arr: T[], sortKey?: string[] | string | null, reverse
 
   const order = (reverse && reverse < 0) ? -1 : 1
 
-  const compareRecordsByKey = (a: any, b: any, key: string): number => {
+  const compareRecordsByKey = (a: T, b: T, key: string): number => {
     let aKey = isObject(a) ? get(a, key) : a
     let bKey = isObject(b) ? get(b, key) : b
 
@@ -22,7 +22,7 @@ export const orderBy = <T>(arr: T[], sortKey?: string[] | string | null, reverse
   }
 
   // sort on a copy to avoid mutating original array
-  return arr.slice().sort((a, b) => {
+  return arr.slice().sort((a: T, b: T): number => {
     if (sortKey.constructor === Array) {
       let diff = 0
       for (let i = 0; i < sortKey.length; i++) {
@@ -35,17 +35,17 @@ export const orderBy = <T>(arr: T[], sortKey?: string[] | string | null, reverse
       return diff === 0 ? 0 : diff ? order : -order
     }
 
-    a = isObject(a) ? get(a, sortKey) : a
-    b = isObject(b) ? get(b, sortKey) : b
+    let aSortKey = isObject(a) ? get(a, sortKey) : a
+    let bSortKey = isObject(b) ? get(b, sortKey) : b
 
-    if (isNumber(a) && isNumber(b)) {
-      return a === b ? 0 : a > b ? order : -order
+    if (isNumber(aSortKey) && isNumber(bSortKey)) {
+      return aSortKey === bSortKey ? 0 : aSortKey > bSortKey ? order : -order
     }
 
-    a = a === undefined ? a : a.toLowerCase()
-    b = b === undefined ? b : b.toLowerCase()
+    aSortKey = aSortKey === undefined ? aSortKey : aSortKey.toLowerCase()
+    bSortKey = bSortKey === undefined ? bSortKey : bSortKey.toLowerCase()
 
-    return a === b ? 0 : a > b ? order : -order
+    return aSortKey === bSortKey ? 0 : aSortKey > bSortKey ? order : -order
   })
 }
 

@@ -19,7 +19,7 @@ if (KOEL_ENV === 'app') {
 
 export const download: Download = {
   fromSongs (songs: Song | Song[]): void {
-    const query = ([] as Song[]).concat(songs).reduce((q, song) => `songs[]=${song.id}&${q}`, '')
+    const query = (<Song[]>[]).concat(songs).reduce((q, song) => `songs[]=${song.id}&${q}`, '')
     this.trigger(`songs?${query}`)
   },
 

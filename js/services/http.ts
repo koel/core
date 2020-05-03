@@ -9,19 +9,19 @@ export const http = {
     axios.request({ url, data, method: method.toLowerCase() }).then(successCb).catch(errorCb)
   },
 
-  get (url: string, successCb: any = null, errorCb: any = null): void {
+  get (url: string, successCb?: any, errorCb?: any): void {
     this.request('get', url, {}, successCb, errorCb)
   },
 
-  post (url: string, data: object, successCb: any = null, errorCb = null): void {
+  post (url: string, data: object, successCb?: any, errorCb?: any): void {
     this.request('post', url, data, successCb, errorCb)
   },
 
-  put (url: string, data: object, successCb: any = null, errorCb = null): void {
+  put (url: string, data: object, successCb?: any, errorCb?: any): void {
     this.request('put', url, data, successCb, errorCb)
   },
 
-  delete (url: string, data: object = {}, successCb: any = null, errorCb: any | null = null): void {
+  delete (url: string, data: object = {}, successCb?: any, errorCb?: any): void {
     this.request('delete', url, data, successCb, errorCb)
   },
 

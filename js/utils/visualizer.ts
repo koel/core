@@ -32,7 +32,7 @@ const TWO_PI = Math.PI * 2
 class AudioAnalyser {
   numBands: number
   smoothing: number
-  audio: HTMLElement
+  audio: HTMLMediaElement
   context: AudioContext
   source: any
   jsNode: any
@@ -174,7 +174,7 @@ export default (container: HTMLElement): void => {
       const analyser = new AudioAnalyser(NUM_BANDS, SMOOTHING)
 
       // update particles based on fft transformed audio frequencies
-      analyser.onUpdate = (bands: Uint8Array) => this.particles.map((particle: Particle) => {
+      analyser.onUpdate = (bands: Uint8Array) => this.particles.map((particle: Particle): Particle => {
         particle.energy = bands[particle.band] / 256
 
         return particle

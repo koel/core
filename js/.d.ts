@@ -8,16 +8,18 @@ declare module 'vue-global-events' {
 }
 
 declare module '@phanan/vuebus' {
-  import Vue, { VNode } from 'vue'
-  export default Vue
+  function emit(eventName: string, ...data: any[]): void
+  function on(eventName: string, handler: Function): void
+  function on(handlers: { [key: string]: Function }): void
+  const $names: { [key: string]: string }
 }
 
 declare module 'alertify.js' {
   function alert(msg: string): void
-  function confirm(msg: string, okFunc: Function, cancelFunc: Function | null): void
-  function success(msg: string, cb: Function | null): void
-  function error(msg: string, cb: Function | null): void
-  function log(msg: string, cb: Function | null): void
+  function confirm(msg: string, okFunc: Function, cancelFunc?: Function): void
+  function success(msg: string, cb?: Function): void
+  function error(msg: string, cb?: Function): void
+  function log(msg: string, cb?: Function): void
   function logPosition(position: string): void
   function closeLogOnClick(close: boolean): void
 }
@@ -25,6 +27,10 @@ declare module 'alertify.js' {
 declare module 'select' {
   function select(el: HTMLElement): void
   export default select
+}
+
+declare module 'sketch-js' {
+  function create(o: { [key: string]: any }): any
 }
 
 interface Plyr {
@@ -37,7 +43,7 @@ interface Plyr {
 }
 
 declare module 'plyr' {
-  function setup(el: HTMLMediaElement | HTMLMediaElement[], options: Object): Plyr[]
+  function setup(el: HTMLMediaElement | HTMLMediaElement[], options: object): Plyr[]
 }
 
 declare const KOEL_ENV: string
@@ -52,15 +58,15 @@ interface Constructable<T> {
 }
 
 interface Window {
-  BASE_URL: string
+  readonly BASE_URL: string
   __UNIT_TESTING__: boolean
-  PUSHER_APP_KEY: string
-  PUSHER_APP_CLUSTER: string
-  webkitAudioContext: Constructable<AudioContext>
-  mozAudioContext: Constructable<AudioContext>
-  oAudioContext: Constructable<AudioContext>
-  msAudioContext: Constructable<AudioContext>
-  MediaMetadata: Constructable<Object>
+  readonly PUSHER_APP_KEY: string
+  readonly PUSHER_APP_CLUSTER: string
+  readonly webkitAudioContext: Constructable<AudioContext>
+  readonly mozAudioContext: Constructable<AudioContext>
+  readonly oAudioContext: Constructable<AudioContext>
+  readonly msAudioContext: Constructable<AudioContext>
+  readonly MediaMetadata: Constructable<object>
 }
 
 interface Artist {
@@ -71,9 +77,12 @@ interface Artist {
   songs: Song[]
   info: ArtistInfo | null
   playCount: number
+  length: number
+  fmtLength: string
 }
 
 interface Album {
+  is_compilation: any
   readonly id: number
   artist_id: number
   artist: Artist
@@ -82,6 +91,8 @@ interface Album {
   songs: Song[]
   info: AlbumInfo | null
   playCount: number
+  length: number
+  fmtLength: string
 }
 
 interface Song {
@@ -95,13 +106,15 @@ interface Song {
   track: number
   disc: number
   lyrics: string
-  youtube: JSON,
+  youtube: object,
   playCountRegistered: boolean
   preloaded: boolean
   playbackState: string
   infoRetrieved: boolean
   playCount: number
   liked: boolean
+  playStartTime: number
+  fmtLength: string
 }
 
 interface AlbumInfo {
@@ -119,25 +132,43 @@ interface ArtistInfo {
   image: string | null
 }
 
+interface SmartPlaylistRule extends Object {}
+
 interface Playlist {
-  id: number
+  readonly id: number
   name: string
   songs: Song[]
+  populated: boolean
+  is_smart: boolean
+  rules: SmartPlaylistRule[]
 }
 
 interface Video {
-  id: {
+  readonly id: {
     videoId: string
   }
 
-  snippet: {
+  readonly snippet: {
     title: string
   }
 }
 
 interface User {
-  id: number
+  readonly id: number
   name: string
   email: string
-  is_admin: boolean
+  password: string
+  readonly is_admin: boolean
+  preferences: { [key: string]: any }
+  avatar: string
+}
+
+interface Settings extends Object {
+  media_path?: string
+}
+
+interface Interaction {
+  readonly song_id: string
+  liked: boolean
+  play_count: number
 }

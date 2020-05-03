@@ -6,14 +6,35 @@ import { http } from '@/services'
 import { alerts, pluralize } from '@/utils'
 import { songStore } from '.'
 
-export const playlistStore = {
+interface PlaylistStore {
+  stub: Playlist
+  state: {
+    playlists: Playlist[]
+  }
+  all: Playlist[]
+
+  init(playlists: Playlist[]): void
+  fetchSongs(playlist: Playlist): Promise<Playlist>
+  byId(id: number): Playlist
+  populateContent(playlist: Playlist): void
+  getSongs(playlist: Playlist): Song[]
+  add(playlists: Playlist | Playlist[]): void
+  remove(playlists: Playlist | Playlist[]): void
+  store(name: string, songs: Song[], rules: SmartPlaylistRule[]): Promise<Playlist>
+  delete(playlist: Playlist): Promise<any>
+  addSongs(playlist: Playlist, songs: Song[]): Promise<Playlist>
+  removeSongs(playlist: Playlist, songs: Song[]): Promise<Playlist>
+  update(playlist: Playlist): Promise<Playlist>
+}
+
+export const playlistStore: PlaylistStore = {
   stub,
 
   state: {
     playlists: []
   },
 
-  init (playlists) {
+  init (playlists: Playlist[]) {
     this.all = playlists
   },
 
@@ -25,86 +46,79 @@ export const playlistStore = {
     this.state.playlists = value
   },
 
-  fetchSongs: playlist => {
+  fetchSongs: (playlist: Playlist): Promise<Playlist> => {
     NProgress.start()
 
-    return new Promise((resolve, reject) => {
-      http.get(`playlist/${playlist.id}/songs`, ({ data }) => {
+    return new Promise((resolve, reject): void => {
+      http.get(`playlist/${playlist.id}/songs`, ({ data } : { data: string[] }) => {
         playlist.songs = songStore.byIds(data)
         playlist.populated = true
         resolve(playlist)
-      }, error => reject(error))
+      }, (error: any) => reject(error))
     })
   },
 
-  byId (id) {
-    return this.all.find(song => song.id === id)
+  byId (id: number): Playlist {
+    return <Playlist>this.all.find(song => song.id === id)
   },
 
   /**
    * Populate the playlist content by "objectifying" all songs in the playlist.
    * (Initially, a playlist only contain the song IDs).
-   *
-   * @param  {Object} playlist
    */
-  populateContent: playlist => (playlist.songs = songStore.byIds(playlist.songs)),
+  populateContent: (playlist: Playlist): void => {
+    playlist.songs = songStore.byIds(<string[]><unknown>playlist.songs)
+  },
 
-  getSongs: playlist => playlist.songs,
+  getSongs: (playlist: Playlist): Song[] => playlist.songs,
 
   /**
    * Add a playlist/playlists into the store.
-   *
-   * @param {Array.<Object>|Object} playlists
    */
-  add (playlists) {
-    this.all = union(this.all, [].concat(playlists))
+  add (playlists: Playlist | Playlist[]) {
+    this.all = union(this.all, (<Playlist[]>[]).concat(playlists))
   },
 
   /**
    * Remove a playlist/playlists from the store.
-   *
-   * @param  {Array.<Object>|Object} playlists
    */
-  remove (playlists) {
-    this.all = difference(this.all, [].concat(playlists))
+  remove (playlists: Playlist | Playlist[]) {
+    this.all = difference(this.all, (<Playlist[]>[]).concat(playlists))
   },
 
-  store (name, songs = [], rules = null) {
-    if (songs.length) {
-      // Extract the IDs from the song objects.
-      songs = songs.map(song => song.id)
-    }
+  store (name: string, songs: Song[] = [], rules: SmartPlaylistRule[] = []): Promise<Playlist> {
+    let songIds = songs.map(song => song.id)
 
     NProgress.start()
 
-    return new Promise((resolve, reject) => {
-      http.post('playlist', { name, songs, rules }, ({ data: playlist }) => {
+    return new Promise((resolve, reject): void => {
+      http.post('playlist', { name, songs: songIds, rules }, ({ data: playlist } : { data: Playlist }) => {
         playlist.songs = songs
         this.populateContent(playlist)
         this.add(playlist)
         alerts.success(`Created playlist &quot;${playlist.name}&quot;.`)
         resolve(playlist)
-      }, error => reject(error))
+      }, (error: any) => reject(error))
     })
   },
 
-  delete (playlist) {
+  delete (playlist: Playlist): Promise<any> {
     NProgress.start()
 
-    return new Promise((resolve, reject) => {
-      http.delete(`playlist/${playlist.id}`, {}, ({ data }) => {
+    return new Promise((resolve, reject): void => {
+      http.delete(`playlist/${playlist.id}`, {}, ({ data } : { data: any }) => {
         this.remove(playlist)
         resolve(data)
-      }, error => reject(error))
+      }, (error: any) => reject(error))
     })
   },
 
-  async addSongs (playlist, songs) {
+  async addSongs (playlist: Playlist, songs: Song[]): Promise<Playlist> {
     if (!playlist.populated) {
       await this.fetchSongs(playlist)
     }
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject): void => {
       const count = playlist.songs.length
       playlist.songs = union(playlist.songs, songs)
 
@@ -115,7 +129,7 @@ export const playlistStore = {
 
       NProgress.start()
 
-      http.put(`playlist/${playlist.id}/sync`, { songs: playlist.songs.map(song => song.id) }, () => {
+      http.put(`playlist/${playlist.id}/sync`, { songs: playlist.songs.map(song => song.id) }, (): void => {
         alerts.success(`Added ${pluralize(songs.length, 'song')} into &quot;${playlist.name}&quot;.`)
 
         // Playlist's songs are not reactive right away for some reason.
@@ -124,39 +138,39 @@ export const playlistStore = {
         playlist.name = playlist.name.trim()
 
         resolve(playlist)
-      }, error => reject(error))
+      }, (error: any) => reject(error))
     })
   },
 
-  removeSongs: (playlist, songs) => {
-    if (playlist.is_smart) {
-      return
-    }
-
-    NProgress.start()
-
-    playlist.songs = difference(playlist.songs, songs)
-
+  removeSongs: (playlist: Playlist, songs: Song[]): Promise<Playlist> => {
     return new Promise((resolve, reject) => {
-      http.put(`playlist/${playlist.id}/sync`, { songs: playlist.songs.map(song => song.id) }, () => {
+      if (playlist.is_smart) {
+        resolve(playlist)
+        return
+      }
+
+      NProgress.start()
+
+      playlist.songs = difference(playlist.songs, songs)
+      http.put(`playlist/${playlist.id}/sync`, { songs: playlist.songs.map(song => song.id) }, (): void => {
         alerts.success(`Removed ${pluralize(songs.length, 'song')} from &quot;${playlist.name}&quot;.`)
         resolve(playlist)
-      }, error => reject(error))
+      }, (error: any) => reject(error))
     })
   },
 
-  update: playlist => {
-    NProgress.start()
+  update: (playlist: Playlist): Promise<Playlist> => {
+    return new Promise((resolve, reject): void => {
+      NProgress.start()
 
-    return new Promise((resolve, reject) => {
       http.put(
         `playlist/${playlist.id}`,
         { name: playlist.name, rules: playlist.rules },
-        () => {
+        (): void => {
           alerts.success(`Updated playlist &quot;${playlist.name}&quot;.`)
           resolve(playlist)
         },
-        error => reject(error)
+        (error: any) => reject(error)
       )
     })
   }
