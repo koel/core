@@ -9,24 +9,25 @@
   >
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
 import { playlistStore } from '@/stores'
 
-export default {
+export default Vue.extend({
   props: {
     playlist: {
       type: Object,
       required: true
-    }
+    } as PropOptions<Playlist>
   },
 
   data: () => ({
-    mutatedPlaylist: null,
+    mutatedPlaylist: {} as Playlist,
     updating: false
   }),
 
   methods: {
-    async update () {
+    async update (): Promise<void> {
       this.mutatedPlaylist.name = this.mutatedPlaylist.name.trim()
 
       if (!this.mutatedPlaylist.name) {
@@ -50,13 +51,13 @@ export default {
       this.$emit('updated', this.mutatedPlaylist)
     },
 
-    cancel () {
+    cancel (): void {
       this.$emit('cancelled')
     }
   },
 
-  created () {
+  created (): void {
     this.mutatedPlaylist = Object.assign({}, this.playlist)
   }
-}
+})
 </script>

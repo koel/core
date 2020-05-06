@@ -23,7 +23,7 @@ interface PlaylistStore {
   getSongs(playlist: Playlist): Song[]
   add(playlists: Playlist | Playlist[]): void
   remove(playlists: Playlist | Playlist[]): void
-  store(name: string, songs: Song[], rules: SmartPlaylistRuleGroup[]): Promise<Playlist>
+  store(name: string, songs?: Song[], rules?: SmartPlaylistRuleGroup[]): Promise<Playlist>
   delete(playlist: Playlist): Promise<any>
   addSongs(playlist: Playlist, songs: Song[]): Promise<Playlist>
   removeSongs(playlist: Playlist, songs: Song[]): Promise<Playlist>

@@ -5,33 +5,39 @@
   </base-context-menu>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { event } from '@/utils'
 
-export default {
+interface PlaylistMenuBaseRef extends Vue {
+  open(top: number, left: number): void
+  close(): void
+}
+
+export default Vue.extend({
   components: {
-    BaseContextMenu: () => import('@/components/ui/context-menu')
+    BaseContextMenu: () => import('@/components/ui/context-menu.vue')
   },
 
   methods: {
-    open (top, left) {
-      this.$refs.base.open(top, left)
+    open (top: number, left: number): void {
+      (this.$refs.base as PlaylistMenuBaseRef).open(top, left)
     },
 
-    close () {
-      this.$refs.base.close()
+    close (): void {
+      (this.$refs.base as PlaylistMenuBaseRef).close()
     },
 
-    createPlaylist () {
+    createPlaylist (): void {
       this.$emit('createPlaylist')
       this.close()
     },
 
-    createSmartPlaylist () {
+    createSmartPlaylist (): void {
       event.emit(event.$names.MODAL_SHOW_CREATE_SMART_PLAYLIST_FORM)
       this.close()
     }
   }
-}
+})
 </script>
 

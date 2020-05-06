@@ -51,7 +51,7 @@ export default Vue.extend({
   }),
 
   watch: {
-    options () {
+    options (): void {
       if (this.selectedModel.name === this.mutatedRule.model.name) {
         this.selectedOperator = this.options.find(o => o.operator === this.mutatedRule.operator)
       } else {
@@ -70,7 +70,7 @@ export default Vue.extend({
         return []
       }
 
-      const inputs = []
+      const inputs: Array<{ id: string, value: string }> = []
 
       for (let i = 0, inputCount = this.selectedOperator.inputs || 1; i < inputCount; ++i) {
         inputs.push({

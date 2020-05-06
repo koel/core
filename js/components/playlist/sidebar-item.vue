@@ -20,25 +20,30 @@
   </li>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
 import { event } from '@/utils'
 import router from '@/router'
 import { songStore, playlistStore, favoriteStore } from '@/stores'
 import { views } from '@/config'
 
+interface ContextMenuRef extends Vue {
+  open(y: number, x: number): void
+}
+
 const VALID_PLAYLIST_TYPES = ['playlist', 'favorites', 'recently-played']
 
-export default {
+export default Vue.extend({
   components: {
-    ContextMenu: () => import('@/components/playlist/item-context-menu'),
-    NameEditor: () => import('@/components/playlist/name-editor')
+    ContextMenu: () => import('@/components/playlist/item-context-menu.vue'),
+    NameEditor: () => import('@/components/playlist/name-editor.vue')
   },
 
   props: {
     playlist: {
       type: Object,
       required: true
-    },
+    } as PropOptions<Playlist>,
     type: {
       type: String,
       default: 'playlist',
@@ -52,7 +57,7 @@ export default {
   }),
 
   computed: {
-    url () {
+    url (): string {
       switch (this.type) {
         case 'playlist':
           return `#!/playlist/${this.playlist.id}`
@@ -65,11 +70,11 @@ export default {
       }
     },
 
-    nameEditable () {
+    nameEditable (): boolean {
       return this.type === 'playlist'
     },
 
-    contentEditable () {
+    contentEditable (): boolean {
       if (this.playlist.is_smart) {
         return false
       }
@@ -77,13 +82,13 @@ export default {
       return this.type === 'playlist' || this.type === 'favorites'
     },
 
-    hasContextMenu () {
+    hasContextMenu (): boolean {
       return this.type === 'playlist'
     }
   },
 
   methods: {
-    makeEditable () {
+    makeEditable (): void {
       if (!this.nameEditable) {
         return
       }
@@ -93,17 +98,13 @@ export default {
 
     /**
      * Handle songs dropped to our favorite or playlist menu item.
-     *
-     * @param  {Object}   e    The event
-     *
-     * @return {Boolean}
      */
-    handleDrop (e) {
+    handleDrop (e: DragEvent): boolean {
       if (!this.contentEditable) {
         return false
       }
 
-      if (!e.dataTransfer.getData('application/x-koel.text+plain')) {
+      if (!e.dataTransfer || !e.dataTransfer.getData('application/x-koel.text+plain')) {
         return false
       }
 
@@ -122,25 +123,25 @@ export default {
       return false
     },
 
-    openContextMenu (event) {
+    openContextMenu (event: MouseEvent): void {
       if (this.hasContextMenu) {
         router.go(`/playlist/${this.playlist.id}`)
-        this.$refs.contextMenu.open(event.pageY, event.pageX)
+        ;(this.$refs.contextMenu as ContextMenuRef).open(event.pageY, event.pageX)
       }
     },
 
-    cancelEditing () {
+    cancelEditing (): void {
       this.editing = false
     },
 
-    onPlaylistNameUpdated (mutatedPlaylist) {
+    onPlaylistNameUpdated (mutatedPlaylist: Playlist): void {
       this.playlist.name = mutatedPlaylist.name
       this.editing = false
     }
   },
 
   created () {
-    event.on(event.$names.LOAD_MAIN_CONTENT, (view, playlist) => {
+    event.on(event.$names.LOAD_MAIN_CONTENT, (view: string, playlist: Playlist): void => {
       switch (view) {
         case views.FAVORITES:
           this.active = this.type === 'favorites'
@@ -157,7 +158,7 @@ export default {
       }
     })
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
