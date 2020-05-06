@@ -14,15 +14,17 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
+
+export default Vue.extend({
   props: {
     song: {
       required: true,
       type: Object
-    }
+    } as PropOptions<Song>
   }
-}
+})
 </script>
 
 <style lang="scss">/* no scoping here because we're overriding some plyr classes */

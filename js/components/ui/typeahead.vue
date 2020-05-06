@@ -49,7 +49,7 @@ export default {
   },
 
   methods: {
-    down (e) {
+    down () {
       const selected = this.$el.querySelector('.result li.selected')
 
       if (!selected || !selected.nextElementSibling) {

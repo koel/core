@@ -10,25 +10,28 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import isMobile from 'ismobilejs'
+import Vue from 'vue'
 import { event } from '@/utils'
 import { preferenceStore as preferences } from '@/stores'
-import isMobile from 'ismobilejs'
 
-const DELAY_UNTIL_SHOWN = 30 * 60 * 1000
+const DELAY_UNTIL_SHOWN: number = 30 * 60 * 1000
+let SUPPORT_BAR_TIMEOUT_HANDLE: number = 0
 
-export default {
+export default Vue.extend({
   components: {
-    Btn: () => import('@/components/ui/btn')
+    Btn: () => import('@/components/ui/btn.vue')
   },
 
   data: () => ({
-    shown: false
+    shown: false,
+    $SUPPORT_BAR_TIMEOUT_HANDLE: null
   }),
 
   created () {
     event.on({
-      [event.$names.KOEL_READY]: () => {
+      [event.$names.KOEL_READY]: (): void => {
         if (isMobile.any || preferences.supportBarNoBugging) {
           return
         }
@@ -39,21 +42,21 @@ export default {
   },
 
   methods: {
-    setUpShowBarTimeout () {
-      this.$options.$SUPPORT_BAR_TIMEOUT_HANDLE = window.setTimeout(() => (this.shown = true), DELAY_UNTIL_SHOWN)
+    setUpShowBarTimeout (): void {
+      SUPPORT_BAR_TIMEOUT_HANDLE = window.setTimeout(() => (this.shown = true), DELAY_UNTIL_SHOWN)
     },
 
-    close () {
+    close (): void {
       this.shown = false
-      window.clearTimeout(this.$options.$SUPPORT_BAR_TIMEOUT_HANDLE)
+      window.clearTimeout(SUPPORT_BAR_TIMEOUT_HANDLE)
     },
 
-    stopBugging () {
+    stopBugging (): void {
       preferences.supportBarNoBugging = true
       this.close()
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

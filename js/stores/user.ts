@@ -20,12 +20,12 @@ interface UserStore {
   setAvatar(user?: User | null): void
   byId(id: number): User
   login(email: string, password: string): Promise<User>
-  logout(): Promise<undefined>
+  logout(): Promise<void>
   getProfile(): Promise<User>
   updateProfile(password: string): Promise<User>
   store(name: string, email: string, password: string): Promise<User>
   update(user: User, name: string, email: string, password: string): Promise<User>
-  destroy(user: User): Promise<undefined>
+  destroy(user: User): Promise<void>
 }
 
 export const userStore: UserStore = {
@@ -87,7 +87,7 @@ export const userStore: UserStore = {
     })
   },
 
-  logout: (): Promise<undefined> => {
+  logout: (): Promise<void> => {
     return new Promise((resolve, reject) => {
       http.delete('me', {}, (): void => {
         resolve()
@@ -146,7 +146,7 @@ export const userStore: UserStore = {
     })
   },
 
-  destroy (user: User): Promise<undefined> {
+  destroy (user: User): Promise<void> {
     NProgress.start()
 
     return new Promise((resolve, reject): void => {

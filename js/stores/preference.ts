@@ -35,8 +35,8 @@ export const preferenceStore: PreferenceStore = {
   },
 
   init (user?: User): void {
-    user = user || userStore.current
-    this.storeKey = `preferences_${user!.id}`
+    const initUser = user || userStore.current
+    this.storeKey = `preferences_${initUser.id}`
     this.state = Object.assign(this.state, ls.get(this.storeKey, this.state))
     this.setupProxy()
   },

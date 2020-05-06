@@ -1,4 +1,4 @@
-export default [
+const models: SmartPlaylistModel[] = [
   {
     name: 'title',
     type: 'text',
@@ -43,3 +43,5 @@ export default [
     label: 'Date Modified'
   }
 ]
+
+export default models

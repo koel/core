@@ -7,15 +7,17 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
   components: {
-    Sidebar: () => import('@/components/layout/main-wrapper/sidebar'),
-    MainContent: () => import('@/components/layout/main-wrapper/main-content'),
-    ExtraPanel: () => import('@/components/layout/main-wrapper/extra-panel'),
-    ModalWrapper: () => import('@/components/layout/modal-wrapper')
+    Sidebar: () => import('@/components/layout/main-wrapper/sidebar.vue'),
+    MainContent: () => import('@/components/layout/main-wrapper/main-content.vue'),
+    ExtraPanel: () => import('@/components/layout/main-wrapper/extra-panel.vue'),
+    ModalWrapper: () => import('@/components/layout/modal-wrapper.vue')
   }
-}
+})
 </script>
 
 <style lang="scss">

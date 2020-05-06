@@ -40,13 +40,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import compareVersions from 'compare-versions'
 import { sharedStore, userStore } from '@/stores'
 
-export default {
+export default Vue.extend({
   components: {
-    Btn: () => import('@/components/ui/btn')
+    Btn: () => import('@/components/ui/btn.vue')
   },
 
   data: () => ({
@@ -56,25 +57,25 @@ export default {
   }),
 
   computed: {
-    latestVersionUrl () {
+    latestVersionUrl (): string {
       return `https://github.com/phanan/koel/releases/tag/${this.sharedState.latestVersion}`
     },
 
-    shouldDisplayVersionUpdate () {
+    shouldDisplayVersionUpdate (): boolean {
       return this.userState.current.is_admin
     },
 
-    hasNewVersion () {
+    hasNewVersion (): boolean {
       return compareVersions.compare(this.sharedState.latestVersion, this.sharedState.currentVersion, '>')
     }
   },
 
   methods: {
-    close () {
+    close (): void {
       this.$emit('close')
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

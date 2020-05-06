@@ -101,7 +101,7 @@ export default {
           this.requestNotifPermission()
 
           // To confirm or not to confirm closing, it's a question.
-          window.onbeforeunload = e => {
+          window.onbeforeunload = () => {
             if (!preferences.confirmClosing) {
               return
             }

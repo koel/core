@@ -56,11 +56,16 @@ export const getDefaultCover = (): string => `${sharedStore.state.cdnUrl}/public
 /**
  * Create a fancy ghost drag image.
  */
-const createGhostDragImage = (event: DragEvent, text: string): void =>
+const createGhostDragImage = (event: DragEvent, text: string): void => {
   use(<HTMLElement>document.querySelector('#dragGhost'), (ghost: HTMLElement): void => {
+    if (!event.dataTransfer) {
+      return
+    }
+
     ghost.innerText = text
-    event.dataTransfer!.setDragImage(ghost, 0, 0)
+    event.dataTransfer.setDragImage(ghost, 0, 0)
   })
+}
 
 
 /**
@@ -71,6 +76,10 @@ const createGhostDragImage = (event: DragEvent, text: string): void =>
  * @param {string} type The drag type (see @/config/drag-types.js)
  */
 export const startDragging = (event: DragEvent, dragged: Song | Song[] | Album | Artist, type: string): void => {
+  if (!event.dataTransfer) {
+    return
+  }
+
   let text
   let songIds
 
@@ -99,8 +108,8 @@ export const startDragging = (event: DragEvent, dragged: Song | Song[] | Album |
       throw Error(`Invalid drag type: ${type}`)
   }
 
-  event.dataTransfer!.setData('application/x-koel.text+plain', songIds.join(','))
-  event.dataTransfer!.effectAllowed = 'move'
+  event.dataTransfer.setData('application/x-koel.text+plain', songIds.join(','))
+  event.dataTransfer.effectAllowed = 'move'
 
   createGhostDragImage(event, text)
 }

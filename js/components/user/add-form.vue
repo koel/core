@@ -29,19 +29,20 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { clone } from 'lodash'
 import { userStore } from '@/stores'
 
-export default {
+export default Vue.extend({
   components: {
-    Btn: () => import('@/components/ui/btn'),
-    SoundBar: () => import('@/components/ui/sound-bar')
+    Btn: () => import('@/components/ui/btn.vue'),
+    SoundBar: () => import('@/components/ui/sound-bar.vue')
   },
 
   data: () => ({
     loading: false,
-    newUser: null
+    newUser: clone(userStore.stub)
   }),
 
   methods: {
@@ -52,13 +53,9 @@ export default {
       this.close()
     },
 
-    close () {
+    close (): void {
       this.$emit('close')
     }
-  },
-
-  created () {
-    this.newUser = clone(userStore.stub)
   }
-}
+})
 </script>

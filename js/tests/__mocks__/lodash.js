@@ -1,3 +1,4 @@
+/* eslint @typescript-eslint/no-unused-vars: 0 */
 const _ = require('lodash')
 
 _.orderBy = jest.fn((collection, order) => collection)

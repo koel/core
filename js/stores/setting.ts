@@ -28,7 +28,7 @@ export const settingStore: SettingStore = {
     return this.state.settings
   },
 
-  update (): Promise<undefined> {
+  update (): Promise<void> {
     return new Promise((resolve, reject): void => {
       http.post('settings', this.all, (): void => {
         alerts.success('Settings saved.')

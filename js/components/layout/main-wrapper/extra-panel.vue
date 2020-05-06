@@ -3,8 +3,8 @@
     <div class="tabs">
       <div class="clear" role="tablist">
         <button
-          :aria-selected="currentTab === $options.tabs.LYRICS"
-          @click.prevent="currentTab = $options.tabs.LYRICS"
+          :aria-selected="currentTab === tabs.LYRICS"
+          @click.prevent="currentTab = tabs.LYRICS"
           aria-controls="extraPanelLyrics"
           id="extraTabLyrics"
           role="tab"
@@ -12,8 +12,8 @@
           Lyrics
         </button>
         <button
-          :aria-selected="currentTab === $options.tabs.ARTIST"
-          @click.prevent="currentTab = $options.tabs.ARTIST"
+          :aria-selected="currentTab === tabs.ARTIST"
+          @click.prevent="currentTab = tabs.ARTIST"
           aria-controls="extraPanelArtist"
           id="extraTabArtist"
           role="tab"
@@ -21,8 +21,8 @@
           Artist
         </button>
         <button
-          :aria-selected="currentTab === $options.tabs.ALBUM"
-          @click.prevent="currentTab = $options.tabs.ALBUM"
+          :aria-selected="currentTab === tabs.ALBUM"
+          @click.prevent="currentTab = tabs.ALBUM"
           aria-controls="extraPanelAlbum"
           id="extraTabAlbum"
           role="tab"
@@ -30,8 +30,8 @@
           Album
         </button>
         <button
-          :aria-selected="currentTab === $options.tabs.YOUTUBE"
-          @click.prevent="currentTab = $options.tabs.YOUTUBE"
+          :aria-selected="currentTab === tabs.YOUTUBE"
+          @click.prevent="currentTab = tabs.YOUTUBE"
           aria-controls="extraPanelYouTube"
           id="extraTabYouTube"
           role="tab"
@@ -48,7 +48,7 @@
           id="extraPanelLyrics"
           role="tabpanel"
           tabindex="0"
-          v-show="currentTab === $options.tabs.LYRICS"
+          v-show="currentTab === tabs.LYRICS"
         >
           <lyrics-pane :song="song" />
         </div>
@@ -58,7 +58,7 @@
           id="extraPanelArtist"
           role="tabpanel"
           tabindex="0"
-          v-show="currentTab === $options.tabs.ARTIST"
+          v-show="currentTab === tabs.ARTIST"
         >
           <artist-info v-if="song.artist.id" :artist="song.artist" mode="sidebar"/>
         </div>
@@ -68,7 +68,7 @@
           id="extraPanelAlbum"
           role="tabpanel"
           tabindex="0"
-          v-show="currentTab === $options.tabs.ALBUM"
+          v-show="currentTab === tabs.ALBUM"
         >
           <album-info v-if="song.album.id" :album="song.album" mode="sidebar"/>
         </div>
@@ -78,7 +78,7 @@
           id="extraPanelAlbum"
           role="tabpanel"
           tabindex="0"
-          v-show="currentTab === $options.tabs.YOUTUBE"
+          v-show="currentTab === tabs.YOUTUBE"
         >
           <you-tube-video-list v-if="sharedState.useYouTube" :song="song" :youtube="song.youtube"/>
         </div>
@@ -87,9 +87,9 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import isMobile from 'ismobilejs'
-
+import Vue from 'vue'
 import { event, $ } from '@/utils'
 import { sharedStore, songStore, preferenceStore as preferences } from '@/stores'
 import { songInfo } from '@/services'
@@ -98,27 +98,27 @@ const EXTRA_PANEL_TABS = {
   LYRICS: 'LYRICS',
   ARTIST: 'ARTIST',
   ALBUM: 'ALBUM',
-  YOUTUBE: 'YOUTUBE'
+  YOUTUBE: 'YOUTUBE',
+  DEFAULT: ''
 }
 
 EXTRA_PANEL_TABS.DEFAULT = EXTRA_PANEL_TABS.LYRICS
 
-export default {
+export default Vue.extend({
   components: {
-    LyricsPane: () => import('@/components/ui/lyrics-pane'),
-    ArtistInfo: () => import('@/components/artist/info'),
-    AlbumInfo: () => import('@/components/album/info'),
-    YouTubeVideoList: () => import('@/components/ui/youtube-video-list')
+    LyricsPane: () => import('@/components/ui/lyrics-pane.vue'),
+    ArtistInfo: () => import('@/components/artist/info.vue'),
+    AlbumInfo: () => import('@/components/album/info.vue'),
+    YouTubeVideoList: () => import('@/components/ui/youtube-video-list.vue')
   },
 
   data: () => ({
     song: songStore.stub,
     state: preferences.state,
     sharedState: sharedStore.state,
-    currentTab: EXTRA_PANEL_TABS.DEFAULT
+    currentTab: EXTRA_PANEL_TABS.DEFAULT,
+    tabs: EXTRA_PANEL_TABS
   }),
-
-  tabs: EXTRA_PANEL_TABS,
 
   watch: {
     /**
@@ -126,7 +126,7 @@ export default {
      * to/from the html tag.
      * Some element's CSS can then be controlled based on this class.
      */
-    'state.showExtraPanel': showingExtraPanel => {
+    'state.showExtraPanel': (showingExtraPanel: boolean): void => {
       if (showingExtraPanel && !isMobile.any) {
         $.addClass(document.documentElement, 'with-extra-panel')
       } else {
@@ -136,25 +136,25 @@ export default {
   },
 
   methods: {
-    resetState () {
+    resetState (): void {
       this.currentTab = EXTRA_PANEL_TABS.DEFAULT
       this.song = songStore.stub
     },
 
-    async fetchSongInfo (song) {
+    async fetchSongInfo (song: Song): Promise<void> {
       try {
         this.song = await songInfo.fetch(song)
       } catch (err) {
         this.song = song
-        console.error(err)
+        throw err
       }
     }
   },
 
   created () {
     event.on({
-      [event.$names.SONG_PLAYED]: song => this.fetchSongInfo(song),
-      [event.$names.LOAD_MAIN_CONTENT]: () => {
+      [event.$names.SONG_PLAYED]: async (song: Song): Promise<void> => await this.fetchSongInfo(song),
+      [event.$names.LOAD_MAIN_CONTENT]: (): void => {
         // On ready, add 'with-extra-panel' class.
         if (!isMobile.any) {
           $.addClass(document.documentElement, 'with-extra-panel')
@@ -167,7 +167,7 @@ export default {
       }
     })
   }
-}
+})
 </script>
 
 <style lang="scss">

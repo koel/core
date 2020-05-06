@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * A fork of https://github.com/simplesmiler/vue-clickaway.
  * Trigger a function if the user clicks out of the bound element.

@@ -12,7 +12,7 @@ global.noop = noop
 
 // Stubs so that rendering will not yell at us.
 global.Vue.component('virtual-scroller', {
-  render: h => noop
+  render: () => noop
 })
 
 global.Vue.directive('koel-focus', focus)

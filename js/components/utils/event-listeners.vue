@@ -9,7 +9,7 @@ import { playlistStore, preferenceStore, userStore } from '@/stores'
 import { alerts, event, forceReloadWindow } from '@/utils'
 
 export default {
-  render: h => null,
+  render: () => null,
 
   created () {
     event.on({

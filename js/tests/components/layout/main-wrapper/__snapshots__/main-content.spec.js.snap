@@ -3,7 +3,7 @@
 exports[`components/layout/main-wrapper/main-content has a translucent image per song/album 1`] = `
 <section id="mainContent">
   <!---->
-  <albumartoverlay-stub album="[object Object]"></albumartoverlay-stub>
+  <!---->
   <homescreen-stub></homescreen-stub>
   <queuescreen-stub style="display: none;"></queuescreen-stub>
   <allsongsscreen-stub style="display: none;"></allsongsscreen-stub>

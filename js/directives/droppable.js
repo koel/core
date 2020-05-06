@@ -1,7 +1,7 @@
 import { $ } from '@/utils'
 
 export const droppable = {
-  update: (el, { value, arg }) => {
+  update: (el, { value }) => {
     el.addEventListener('dragenter', event => {
       event.preventDefault()
       $.addClass(el, 'droppable')

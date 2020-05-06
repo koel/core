@@ -4,6 +4,11 @@
   </button>
 </template>
 
+<script lang="ts">
+export default {
+}
+</script>
+
 <style lang="scss" scoped>
 @import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";

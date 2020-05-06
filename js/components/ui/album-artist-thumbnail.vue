@@ -83,11 +83,11 @@ export default {
       }
     },
 
-    onDragEnter (e) {
+    onDragEnter () {
       this.droppable = this.allowsUpload && true
     },
 
-    onDragLeave (e) {
+    onDragLeave () {
       this.droppable = false
     },
 
@@ -114,6 +114,7 @@ export default {
           artistStore.uploadImage(this.entity, fileData)
         }
       } catch (exception) {
+        /* eslint no-console: 0 */
         console.error(exception)
       }
     },

@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   // Since we don't have anything here, let us sing a song instead.
   //

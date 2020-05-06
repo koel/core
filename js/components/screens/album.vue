@@ -111,7 +111,7 @@ export default {
   },
 
   methods: {
-    getSongs (shuffled) {
+    getSongs () {
       return this.album.songs
     },
 

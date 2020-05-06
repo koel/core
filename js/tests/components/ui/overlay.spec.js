@@ -26,7 +26,7 @@ describe('components/shared/overlay', () => {
     })
   })
 
-  each([['show', true], ['hide', false]]).test('%ss', (methodName, visible) => {
+  each([['show', true], ['hide', false]]).test('%ss', (methodName) => {
     const wrapper = mount(Component)
     wrapper.vm[methodName]()
     expect(wrapper).toMatchSnapshot()

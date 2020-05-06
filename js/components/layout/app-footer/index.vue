@@ -9,15 +9,16 @@
   </footer>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { event } from '@/utils'
 import { songStore } from '@/stores'
 import { views } from '@/config'
-import OtherControls from '@/components/layout/app-footer/other-controls'
-import MiddlePane from '@/components/layout/app-footer/middle-pane'
-import PlayerControls from '@/components/layout/app-footer/player-controls'
+import OtherControls from '@/components/layout/app-footer/other-controls.vue'
+import MiddlePane from '@/components/layout/app-footer/middle-pane.vue'
+import PlayerControls from '@/components/layout/app-footer/player-controls.vue'
 
-export default {
+export default Vue.extend({
   data: () => ({
     song: songStore.stub,
     viewingQueue: false
@@ -30,7 +31,7 @@ export default {
   },
 
   methods: {
-    requestContextMenu (e) {
+    requestContextMenu (e: MouseEvent): void {
       if (this.song.id) {
         event.emit(event.$names.CONTEXT_MENU_REQUESTED, e, this.song)
       }
@@ -41,12 +42,8 @@ export default {
     event.on({
       /**
        * Listen to song:played event to set the current playing song.
-       *
-       * @param  {Object} song
-       *
-       * @return {Boolean}
        */
-      [event.$names.SONG_PLAYED]: song => {
+      [event.$names.SONG_PLAYED]: (song: Song): void => {
         this.song = song
       },
 
@@ -54,10 +51,12 @@ export default {
        * Listen to main-content-view:load event and highlight the Queue icon if
        * the Queue screen is being loaded.
        */
-      [event.$names.LOAD_MAIN_CONTENT]: view => (this.viewingQueue = view === views.QUEUE)
+      [event.$names.LOAD_MAIN_CONTENT]: (view: string): void => {
+        this.viewingQueue = view === views.QUEUE
+      }
     })
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -35,32 +35,33 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
 import { playback } from '@/services'
 import { getDefaultCover } from '@/utils'
 
-export default {
+export default Vue.extend({
   props: {
     song: {
       required: true,
       type: Object
-    }
+    } as PropOptions<Song>
   },
 
   computed: {
-    cover () {
+    cover (): string {
       return this.song.album.cover ? this.song.album.cover : getDefaultCover()
     }
   },
 
   methods: {
-    playPrev: () => playback.playPrev(),
+    playPrev: (): void => playback.playPrev(),
 
-    playNext: () => playback.playNext(),
+    playNext: (): void => playback.playNext(),
 
-    toggle: () => playback.toggle()
+    toggle: (): void => playback.toggle()
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

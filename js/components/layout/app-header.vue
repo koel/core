@@ -24,14 +24,15 @@
 
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { app as appConfig } from '@/config'
 import { event, app } from '@/utils'
 
-export default {
+export default Vue.extend({
   components: {
-    SearchForm: () => import('@/components/ui/search-form'),
-    UserBadge: () => import('@/components/user/badge')
+    SearchForm: () => import('@/components/ui/search-form.vue'),
+    UserBadge: () => import('@/components/user/badge.vue')
   },
 
   data: () => ({
@@ -39,12 +40,12 @@ export default {
   }),
 
   methods: {
-    toggleSidebar: () => event.emit(event.$names.TOGGLE_SIDEBAR),
-    toggleSearchForm: () => event.emit(event.$names.TOGGLE_SEARCH_FORM),
-    triggerMaximize: () => app.triggerMaximize(),
-    showAboutDialog: () => event.emit(event.$names.MODAL_SHOW_ABOUT_DIALOG)
+    toggleSidebar: (): void => event.emit(event.$names.TOGGLE_SIDEBAR),
+    toggleSearchForm: (): void => event.emit(event.$names.TOGGLE_SEARCH_FORM),
+    triggerMaximize: (): void => app.triggerMaximize(),
+    showAboutDialog: (): void => event.emit(event.$names.MODAL_SHOW_ABOUT_DIALOG)
   }
-}
+})
 </script>
 
 <style lang="scss">

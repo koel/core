@@ -12,8 +12,10 @@ import {
   notInLast
 } from '@/config/smart-playlist/operators'
 
-export default {
+const types: SmartPlaylistTypes = {
   text: [is, isNot, contains, notContain, beginsWith, endsWith],
   number: [is, isNot, isGreaterThan, isLessThan, isBetween],
   date: [is, isNot, inLast, notInLast, isBetween]
 }
+
+export default types

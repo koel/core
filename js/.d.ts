@@ -53,6 +53,7 @@ declare module 'ismobilejs' {
 }
 
 declare const KOEL_ENV: string
+declare const NODE_ENV: string
 
 declare module '*.vue' {
   import Vue, { VNode } from 'vue'
@@ -138,7 +139,43 @@ interface ArtistInfo {
   image: string | null
 }
 
-interface SmartPlaylistRule extends Object {}
+interface SmartPlaylistRule {
+  id: number
+  model: SmartPlaylistModel
+  operator: string
+  value: any[]
+}
+
+interface SerializedSmartPlaylistRule {
+  id: number
+  model: string
+  operator: string
+  value: any[]
+}
+
+interface SmartPlaylistRuleGroup {
+  id: number
+  rules: SmartPlaylistRule[]
+}
+
+interface SmartPlaylistModel {
+  name: string
+  type: string
+  label: string
+  unit?: string
+}
+
+interface SmartPlaylistTypes {
+  [propName: string]: any[]
+}
+
+interface SmartPlaylistOperator {
+  operator: string
+  label: string
+  type?: string
+  unit?: string
+  inputs?: number
+}
 
 interface Playlist {
   readonly id: number
@@ -146,7 +183,7 @@ interface Playlist {
   songs: Song[]
   populated: boolean
   is_smart: boolean
-  rules: SmartPlaylistRule[]
+  rules: SmartPlaylistRuleGroup[]
 }
 
 interface Video {

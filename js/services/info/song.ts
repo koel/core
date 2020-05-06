@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { http, albumInfo, artistInfo } from '..'
 
 export const songInfo = {

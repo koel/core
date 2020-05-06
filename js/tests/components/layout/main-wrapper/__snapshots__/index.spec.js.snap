@@ -108,20 +108,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
         to this list.
       </div>
     </section>
-    <section id="recentlyPlayedWrapper" style="display: none;">
-      <h1 class="heading"><span>Recently Played
-      <!----> <span class="meta" style="display: none;">
-        0 songs
-        •
-        00:00
-      </span></span>
-        <!---->
-      </h1>
-      <!---->
-      <div class="none">
-        This playlist will be automatically filled with the songs you most recently played, so start playing!
-      </div>
-    </section>
+    <!---->
     <!---->
     <!---->
     <!---->

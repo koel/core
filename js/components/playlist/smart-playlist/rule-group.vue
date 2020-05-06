@@ -17,20 +17,20 @@
   </div>
 </template>
 
-<script>
-import models from '@/config/smart-playlist/models'
-import operators from '@/config/smart-playlist/operators'
+<script lang="ts">
+import Vue from 'vue'
+import { playlistStore } from '@/stores'
 
-export default {
+export default Vue.extend({
   props: ['group', 'isFirstGroup'],
 
   components: {
-    Btn: () => import('@/components/ui/btn'),
-    Rule: () => import('@/components/playlist/smart-playlist/rule')
+    Btn: () => import('@/components/ui/btn.vue'),
+    Rule: () => import('@/components/playlist/smart-playlist/rule.vue')
   },
 
   data: () => ({
-    mutatedGroup: {}
+    mutatedGroup: {} as SmartPlaylistRuleGroup
   }),
 
   created () {
@@ -38,33 +38,27 @@ export default {
   },
 
   methods: {
-    onRuleChanged (data) {
-      const changedRule = this.mutatedGroup.rules.find(r => r.id === data.id)
-      Object.assign(changedRule, data)
+    onRuleChanged (data: SmartPlaylistRule): void {
+      Object.assign(this.mutatedGroup.rules.find(r => r.id === data.id), data)
       this.notifyParentForUpdate()
     },
 
-    addRule () {
-      this.mutatedGroup.rules.push(this.$options.createRule())
+    addRule (): void {
+      this.mutatedGroup.rules.push(this.createRule())
     },
 
-    removeRule (rule) {
+    removeRule (rule: SmartPlaylistRule): void {
       this.mutatedGroup.rules = this.mutatedGroup.rules.filter(r => r.id !== rule.id)
       this.notifyParentForUpdate()
     },
 
-    notifyParentForUpdate () {
+    notifyParentForUpdate (): void {
       this.$emit('input', this.mutatedGroup)
-    }
-  },
+    },
 
-  createRule: () => ({
-    id: (new Date()).getTime(),
-    model: models[0].name,
-    operator: operators[0].operator,
-    value: ['']
-  })
-}
+    createRule: (): SmartPlaylistRule => playlistStore.createEmptySmartPlaylistRule()
+  }
+})
 </script>
 
 <style lang="scss" scoped>

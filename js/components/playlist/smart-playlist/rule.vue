@@ -22,29 +22,37 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
 import models from '@/config/smart-playlist/models'
 import types from '@/config/smart-playlist/types'
 
-export default {
+export default Vue.extend({
+  name: 'SmartPlaylistRule',
+
   components: {
-    Btn: () => import('@/components/ui/btn'),
-    RuleInput: () => import('@/components/playlist/smart-playlist/rule-input')
+    Btn: () => import('@/components/ui/btn.vue'),
+    RuleInput: () => import('@/components/playlist/smart-playlist/rule-input.vue')
   },
 
-  props: ['rule'],
+  props: {
+    rule: {
+      type: Object,
+      required: true
+    } as PropOptions<SmartPlaylistRule>
+  },
 
   data: () => ({
     models,
-    selectedModel: null,
-    selectedOperator: null,
+    selectedModel: {} as SmartPlaylistModel,
+    selectedOperator: {} as SmartPlaylistOperator,
     inputValues: [],
-    mutatedRule: {}
+    mutatedRule: {} as SmartPlaylistRule
   }),
 
   watch: {
     options () {
-      if (this.selectedModel === this.mutatedRule.model) {
+      if (this.selectedModel.name === this.mutatedRule.model.name) {
         this.selectedOperator = this.options.find(o => o.operator === this.mutatedRule.operator)
       } else {
         this.selectedOperator = this.options[0]
@@ -53,11 +61,11 @@ export default {
   },
 
   computed: {
-    options () {
+    options (): any[] {
       return this.selectedModel ? types[this.selectedModel.type] : []
     },
 
-    availableInputs () {
+    availableInputs (): any[] {
       if (!this.selectedOperator) {
         return []
       }
@@ -66,7 +74,7 @@ export default {
 
       for (let i = 0, inputCount = this.selectedOperator.inputs || 1; i < inputCount; ++i) {
         inputs.push({
-          id: `${this.mutatedRule.model.name}_${this.selectedOperator.operator}_${i}`,
+          id: `${this.mutatedRule.model}_${this.selectedOperator.operator}_${i}`,
           value: this.isOriginalOperatorSelected ? this.mutatedRule.value[i] : ''
         })
       }
@@ -74,33 +82,35 @@ export default {
       return inputs
     },
 
-    isOriginalOperatorSelected () {
-      return this.selectedModel === this.mutatedRule.model &&
+    isOriginalOperatorSelected (): boolean {
+      return this.selectedModel.name === this.mutatedRule.model.name &&
         this.selectedOperator.operator === this.mutatedRule.operator
     }
   },
 
   created () {
     this.mutatedRule = Object.assign({}, this.rule)
-    this.mutatedRule.model = this.selectedModel = this.models.find(m => m.name === this.mutatedRule.model)
+    this.mutatedRule.model =
+      this.selectedModel =
+      this.models.find(m => m.name === this.mutatedRule.model.name) as SmartPlaylistModel
     this.selectedOperator = this.options.find(o => o.operator === this.mutatedRule.operator)
   },
 
   methods: {
-    onInput () {
+    onInput (): void {
       this.$emit('input', {
         id: this.mutatedRule.id,
-        model: this.selectedModel.name,
+        model: this.selectedModel,
         operator: this.selectedOperator.operator,
         value: this.availableInputs.map(input => input.value)
-      })
+      } as SmartPlaylistRule)
     },
 
-    removeRule () {
+    removeRule (): void {
       this.$emit('remove')
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

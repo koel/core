@@ -69,24 +69,25 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
 import { download, playback, socket } from '@/services'
 import { event, isAudioContextSupported } from '@/utils'
 import { favoriteStore, preferenceStore, sharedStore, songStore } from '@/stores'
 import { views } from '@/config'
 
-export default {
+export default Vue.extend({
   props: {
     song: {
       required: true,
       type: Object
-    }
+    } as PropOptions<Song>
   },
 
   components: {
-    Equalizer: () => import('@/components/ui/equalizer'),
-    SoundBar: () => import('@/components/ui/sound-bar'),
-    Volume: () => import('@/components/ui/volume')
+    Equalizer: () => import('@/components/ui/equalizer.vue'),
+    SoundBar: () => import('@/components/ui/sound-bar.vue'),
+    Volume: () => import('@/components/ui/volume.vue')
   },
 
   data: () => ({
@@ -99,40 +100,42 @@ export default {
   }),
 
   computed: {
-    downloadable () {
-      return this.sharedState.allowDownload && this.song && this.song.id
+    downloadable (): boolean {
+      return Boolean(this.sharedState.allowDownload && this.song && this.song.id)
     }
   },
 
   methods: {
-    changeRepeatMode: () => playback.changeRepeatMode(),
+    changeRepeatMode: (): void => playback.changeRepeatMode(),
 
-    like () {
+    like (): void {
       if (this.song.id) {
         favoriteStore.toggleOne(this.song)
         socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(this.song))
       }
     },
 
-    toggleExtraPanel () {
+    toggleExtraPanel (): void {
       preferenceStore.set('showExtraPanel', !this.prefs.showExtraPanel)
     },
 
-    closeEqualizer () {
+    closeEqualizer (): void {
       this.showEqualizer = false
     },
 
-    toggleVisualizer: () => event.emit(event.$names.TOGGLE_VISUALIZER),
+    toggleVisualizer: (): void => event.emit(event.$names.TOGGLE_VISUALIZER),
 
-    downloadCurrentSong () {
+    downloadCurrentSong (): void {
       download.fromSongs(this.song)
     }
   },
 
   created () {
-    event.on(event.$names.LOAD_MAIN_CONTENT, view => { this.viewingQueue = view === views.QUEUE })
+    event.on(event.$names.LOAD_MAIN_CONTENT, (view: string) => {
+      this.viewingQueue = view === views.QUEUE
+    })
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

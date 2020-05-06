@@ -1,57 +1,57 @@
-export const is = {
+export const is: SmartPlaylistOperator = {
   operator: 'is',
   label: 'is'
 }
 
-export const isNot = {
+export const isNot: SmartPlaylistOperator = {
   operator: 'isNot',
   label: 'is not'
 }
 
-export const contains = {
+export const contains: SmartPlaylistOperator = {
   operator: 'contains',
   label: 'contains'
 }
 
-export const notContain = {
+export const notContain: SmartPlaylistOperator = {
   operator: 'notContain',
   label: 'does not contain'
 }
 
-export const isBetween = {
+export const isBetween: SmartPlaylistOperator = {
   operator: 'isBetween',
   label: 'is between',
   inputs: 2
 }
 
-export const isGreaterThan = {
+export const isGreaterThan: SmartPlaylistOperator = {
   operator: 'isGreaterThan',
   label: 'is greater than'
 }
 
-export const isLessThan = {
+export const isLessThan: SmartPlaylistOperator = {
   operator: 'isLessThan',
   label: 'is less than'
 }
 
-export const beginsWith = {
+export const beginsWith: SmartPlaylistOperator = {
   operator: 'beginsWith',
   label: 'begins with'
 }
 
-export const endsWith = {
+export const endsWith: SmartPlaylistOperator = {
   operator: 'endsWith',
   label: 'ends with'
 }
 
-export const inLast = {
+export const inLast: SmartPlaylistOperator = {
   operator: 'inLast',
   label: 'in the last',
   type: 'number', // overriding
   unit: 'days'
 }
 
-export const notInLast = {
+export const notInLast: SmartPlaylistOperator = {
   operator: 'notInLast',
   label: 'not in the last',
   type: 'number', // overriding

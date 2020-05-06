@@ -5,6 +5,8 @@ import stub from '@/stubs/playlist'
 import { http } from '@/services'
 import { alerts, pluralize } from '@/utils'
 import { songStore } from '.'
+import models from '@/config/smart-playlist/models'
+import operators from '@/config/smart-playlist/operators'
 
 interface PlaylistStore {
   stub: Playlist
@@ -14,17 +16,21 @@ interface PlaylistStore {
   all: Playlist[]
 
   init(playlists: Playlist[]): void
+  setupSmartPlaylist(playlist: Playlist): void
   fetchSongs(playlist: Playlist): Promise<Playlist>
   byId(id: number): Playlist
   populateContent(playlist: Playlist): void
   getSongs(playlist: Playlist): Song[]
   add(playlists: Playlist | Playlist[]): void
   remove(playlists: Playlist | Playlist[]): void
-  store(name: string, songs: Song[], rules: SmartPlaylistRule[]): Promise<Playlist>
+  store(name: string, songs: Song[], rules: SmartPlaylistRuleGroup[]): Promise<Playlist>
   delete(playlist: Playlist): Promise<any>
   addSongs(playlist: Playlist, songs: Song[]): Promise<Playlist>
   removeSongs(playlist: Playlist, songs: Song[]): Promise<Playlist>
   update(playlist: Playlist): Promise<Playlist>
+  createEmptySmartPlaylistRule(): SmartPlaylistRule
+  createEmptySmartPlaylistRuleGroup(): SmartPlaylistRuleGroup
+  serializeSmartPlaylistRulesForStorage(ruleGroups: SmartPlaylistRuleGroup[]): object[] | null
 }
 
 export const playlistStore: PlaylistStore = {
@@ -36,6 +42,26 @@ export const playlistStore: PlaylistStore = {
 
   init (playlists: Playlist[]) {
     this.all = playlists
+    this.all.filter(playlist => playlist.is_smart).forEach(this.setupSmartPlaylist)
+  },
+
+  /**
+   * Set up a smart playlist by properly construct its structure from serialized database values.
+   */
+  setupSmartPlaylist: (playlist: Playlist): void => {
+    playlist.rules.forEach(group => {
+      group.rules.forEach(rule => {
+        const model = models.find(model => model.name === rule.model as unknown as string)
+
+        if (!model) {
+          /* eslint no-console: 0 */
+          console.error(`Invalid model ${rule.model} found in smart playlist ${playlist.name} (ID ${playlist.id})`)
+          return
+        }
+
+        rule.model = model
+      })
+    })
   },
 
   get all () {
@@ -50,7 +76,7 @@ export const playlistStore: PlaylistStore = {
     NProgress.start()
 
     return new Promise((resolve, reject): void => {
-      http.get(`playlist/${playlist.id}/songs`, ({ data } : { data: string[] }) => {
+      http.get(`playlist/${playlist.id}/songs`, ({ data }: { data: string[] }) => {
         playlist.songs = songStore.byIds(data)
         playlist.populated = true
         resolve(playlist)
@@ -86,20 +112,27 @@ export const playlistStore: PlaylistStore = {
     this.all = difference(this.all, (<Playlist[]>[]).concat(playlists))
   },
 
-  store (name: string, songs: Song[] = [], rules: SmartPlaylistRule[] = []): Promise<Playlist> {
-    let songIds = songs.map(song => song.id)
+  store (name: string, songs: Song[] = [], rules: SmartPlaylistRuleGroup[] = []): Promise<Playlist> {
+    const songIds = songs.map(song => song.id)
+    const serializedRules = this.serializeSmartPlaylistRulesForStorage(rules)
 
     NProgress.start()
 
-    return new Promise((resolve, reject): void => {
-      http.post('playlist', { name, songs: songIds, rules }, ({ data: playlist } : { data: Playlist }) => {
+    return new Promise((resolve, reject): void => http.post(
+      'playlist',
+      { name, songs: songIds, rules: serializedRules }, ({ data: playlist }: { data: Playlist }) => {
         playlist.songs = songs
         this.populateContent(playlist)
         this.add(playlist)
         alerts.success(`Created playlist &quot;${playlist.name}&quot;.`)
+
+        if (playlist.is_smart) {
+          this.setupSmartPlaylist(playlist)
+        }
+
         resolve(playlist)
       }, (error: any) => reject(error))
-    })
+    )
   },
 
   delete (playlist: Playlist): Promise<any> {
@@ -159,19 +192,50 @@ export const playlistStore: PlaylistStore = {
     })
   },
 
-  update: (playlist: Playlist): Promise<Playlist> => {
-    return new Promise((resolve, reject): void => {
-      NProgress.start()
+  update (playlist: Playlist): Promise<Playlist> {
+    const serializedRules = this.serializeSmartPlaylistRulesForStorage(playlist.rules)
 
-      http.put(
-        `playlist/${playlist.id}`,
-        { name: playlist.name, rules: playlist.rules },
-        (): void => {
-          alerts.success(`Updated playlist &quot;${playlist.name}&quot;.`)
-          resolve(playlist)
-        },
-        (error: any) => reject(error)
-      )
+    NProgress.start()
+
+    return new Promise((resolve, reject): void => http.put(
+      `playlist/${playlist.id}`,
+      { name: playlist.name, rules: serializedRules },
+      (): void => {
+        alerts.success(`Updated playlist &quot;${playlist.name}&quot;.`)
+        resolve(playlist)
+      },
+      (error: any) => reject(error)
+    ))
+  },
+
+  createEmptySmartPlaylistRule: (): SmartPlaylistRule => ({
+    id: (new Date()).getTime(),
+    model: models[0],
+    operator: operators[0].operator,
+    value: ['']
+  }),
+
+  createEmptySmartPlaylistRuleGroup: (): SmartPlaylistRuleGroup => ({
+    id: (new Date()).getTime(),
+    rules: []
+  }),
+
+  /**
+   * Serialize the rule (groups) to be ready for database.
+   */
+  serializeSmartPlaylistRulesForStorage: (ruleGroups: SmartPlaylistRuleGroup[]): object[] | null => {
+    if (!ruleGroups || !ruleGroups.length) {
+      return null
+    }
+
+    const serializedGroups = JSON.parse(JSON.stringify(ruleGroups))
+
+    serializedGroups.forEach((group: any): void => {
+      group.rules.forEach((rule: any) => {
+        rule.model = rule.model.name
+      })
     })
+
+    return serializedGroups
   }
 }
