@@ -259,7 +259,9 @@ interface SongListMeta {
 }
 
 declare module 'koel/types/ui' {
-  import Vue, { VueConstructor, ComponentOptions } from 'vue'
+  import Vue from 'vue'
+  import { Component } from 'vue/types/options'
+
 
   export interface BaseContextMenu extends Vue {
     open(y: number, x: number): void
@@ -272,7 +274,7 @@ declare module 'koel/types/ui' {
     close(): void
   }
 
-  export type SongListComponent = (VueConstructor | ComponentOptions<never>) & {
+  export type SongListComponent = Component & {
     rowClicked(songItem: Vue, event: MouseEvent): void
     openContextMenu(songItem: Vue, event: MouseEvent): void
     removeDroppableState(event: DragEvent): void
@@ -280,4 +282,14 @@ declare module 'koel/types/ui' {
     allowDrop(event: DragEvent): void
     dragStart(songItem: Vue, event: DragEvent): void
   }
+
+  export type SongListRowComponent = Component & {
+    item: SongProxy
+  }
+}
+
+interface SongProxy {
+  song: Song
+  selected: boolean
+  type: string
 }

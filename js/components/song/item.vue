@@ -31,10 +31,6 @@ import { queueStore } from '@/stores'
 import $ from 'vuequery'
 import { SongListComponent } from 'koel/types/ui'
 
-interface SongItem {
-  song: Song
-}
-
 interface ItemData {
   parentSongList: SongListComponent | null
 }
@@ -45,7 +41,7 @@ export default Vue.extend({
     item: {
       type: Object,
       required: true
-    } as PropOptions<SongItem>
+    } as PropOptions<SongProxy>
   },
 
   data: () => ({
