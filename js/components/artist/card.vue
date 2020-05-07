@@ -51,58 +51,45 @@
   </article>
 </template>
 
-<script>
+<script lang="ts">
+import mixins from 'vue-typed-mixins'
 import { dragTypes } from '@/config'
 import { startDragging, pluralize } from '@/utils'
 import { artistStore, sharedStore } from '@/stores'
 import { playback, download } from '@/services'
-import artistAttributes from '@/mixins/artist-attributes'
+import artistAttributes from '@/mixins/artist-attributes.ts'
 
-export default {
-  props: {
-    artist: {
-      type: Object,
-      required: true
-    }
-  },
-
+export default mixins(artistAttributes).extend({
   components: {
-    ArtistThumbnail: () => import('@/components/ui/album-artist-thumbnail')
+    ArtistThumbnail: () => import('@/components/ui/album-artist-thumbnail.vue')
   },
 
   filters: { pluralize },
-  mixins: [artistAttributes],
 
   data: () => ({
     sharedState: sharedStore.state
   }),
 
   computed: {
-    /**
-     * Determine if the artist item should be shown.
-     * We're not showing those without any songs, or the special "Various Artists".
-     *
-     * @return {Boolean}
-     */
-    showing () {
-      return this.artist.songs.length && !artistStore.isVariousArtists(this.artist)
+    showing (): boolean {
+      return Boolean(this.artist.songs.length && !artistStore.isVariousArtists(this.artist))
     }
   },
 
   methods: {
-    shuffle () {
+    shuffle (): void {
       playback.playAllByArtist(this.artist, true /* shuffled */)
     },
 
-    download () {
+    download (): void {
       download.fromArtist(this.artist)
     },
 
-    dragStart (event) {
+    dragStart (event: DragEvent): void {
       startDragging(event, this.artist, dragTypes.ARTIST)
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

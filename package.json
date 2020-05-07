@@ -39,6 +39,7 @@
     "@types/node": "^13.13.4",
     "@types/nprogress": "^0.2.0",
     "@types/pusher-js": "^4.2.2",
+    "@types/youtube-player": "^5.5.2",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
     "@vue/test-utils": "^1.0.0-beta.25",
@@ -82,6 +83,7 @@
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.5.0",
     "vue-test-helpers": "^2.0.0",
+    "vue-typed-mixins": "^0.2.0",
     "webpack": "^3.6.0",
     "webpack-node-externals": "^1.6.0"
   },

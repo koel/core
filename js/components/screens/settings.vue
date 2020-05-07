@@ -29,14 +29,15 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { settingStore, sharedStore } from '@/stores'
 import { parseValidationError, forceReloadWindow, showOverlay, hideOverlay, alerts } from '@/utils'
 import router from '@/router'
 
-export default {
+export default Vue.extend({
   components: {
-    Btn: () => import('@/components/ui/btn')
+    Btn: () => import('@/components/ui/btn.vue')
   },
 
   data () {
@@ -47,15 +48,18 @@ export default {
   },
 
   computed: {
-    shouldWarn () {
+    shouldWarn (): boolean {
       // Warn the user if the media path is not empty and about to change.
-      return this.sharedState.originalMediaPath &&
-        this.sharedState.originalMediaPath !== this.state.settings.media_path.trim()
+      if (!this.sharedState.originalMediaPath || !this.state.settings.media_path) {
+        return false
+      }
+
+      return this.sharedState.originalMediaPath !== this.state.settings.media_path.trim()
     }
   },
 
   methods: {
-    confirmThenSave () {
+    confirmThenSave (): void {
       if (this.shouldWarn) {
         alerts.confirm('Warning: Changing the media path will essentially remove all existing data – songs, artists, \
           albums, favorites, everything – and empty your playlists! Sure you want to proceed?', this.save)
@@ -64,7 +68,7 @@ export default {
       }
     },
 
-    save: async () => {
+    save: async (): Promise<void> => {
       showOverlay()
 
       try {
@@ -84,7 +88,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

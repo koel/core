@@ -34,14 +34,14 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import mixins from 'vue-typed-mixins'
 import { pluralize } from '@/utils'
 import { queueStore, songStore } from '@/stores'
 import { playback } from '@/services'
-import hasSongList from '@/mixins/has-song-list'
+import hasSongList from '@/mixins/has-song-list.ts'
 
-export default {
-  mixins: [hasSongList],
+export default mixins(hasSongList).extend({
   filters: { pluralize },
 
   data: () => ({
@@ -52,18 +52,18 @@ export default {
   }),
 
   computed: {
-    shouldShowShufflingAllLink: () => songStore.all.length > 0
+    shouldShowShufflingAllLink: (): boolean => songStore.all.length > 0
   },
 
   methods: {
-    getSongs () {
+    getSongs (): Song[] {
       return this.state.songs.length ? this.state.songs : songStore.all
     },
 
-    shuffleAll: () => playback.queueAndPlay(songStore.all, true),
-    clearQueue: () => queueStore.clear()
+    shuffleAll: (): void => playback.queueAndPlay(songStore.all, true),
+    clearQueue: (): void => queueStore.clear()
   }
-}
+})
 </script>
 
 <style lang="scss">

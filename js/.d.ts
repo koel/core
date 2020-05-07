@@ -33,6 +33,11 @@ declare module 'sketch-js' {
   function create(o: { [key: string]: any }): any
 }
 
+declare module 'youtube-player' {
+  function createYouTubePlayer(name: string, options: { [propName: string]: any }): YouTubePlayer
+  export default createYouTubePlayer
+}
+
 interface Plyr {
   media: HTMLMediaElement
   restart(): void
@@ -214,4 +219,14 @@ interface Interaction {
   readonly song_id: string
   liked: boolean
   play_count: number
+}
+
+interface SongListState {
+  songs: Song[]
+  [propName: string]: any
+}
+
+interface SongListMeta {
+  songCount: number
+  totalLength: string
 }

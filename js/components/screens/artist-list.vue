@@ -12,61 +12,63 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import mixins from 'vue-typed-mixins'
 import { filterBy, limitBy, event } from '@/utils'
 import { artistStore } from '@/stores'
+import infiniteScroll from '@/mixins/infinite-scroll.ts'
 
-import infiniteScroll from '@/mixins/infinite-scroll'
-
-export default {
-  mixins: [infiniteScroll],
+export default mixins(infiniteScroll).extend({
   components: {
-    ArtistCard: () => import('@/components/artist/card'),
-    ViewModeSwitch: () => import('@/components/ui/view-mode-switch')
+    ArtistCard: () => import('@/components/artist/card.vue'),
+    ViewModeSwitch: () => import('@/components/ui/view-mode-switch.vue')
   },
 
   data: () => ({
     perPage: 9,
     numOfItems: 9,
     q: '',
-    viewMode: null,
-    artists: []
+    viewMode: '',
+    artists: [] as Artist[]
   }),
 
   computed: {
-    displayedItems () {
+    displayedItems (): Artist[] {
       return limitBy(this.filteredItems, this.numOfItems)
     },
 
-    filteredItems () {
+    filteredItems (): Artist[] {
       return filterBy(this.artists, this.q, 'name')
     }
   },
 
   methods: {
-    changeViewMode (mode) {
+    changeViewMode (mode: string): void {
       this.viewMode = mode
     }
   },
 
   created () {
     event.on({
-      [event.$names.KOEL_READY]: () => {
+      [event.$names.KOEL_READY]: (): void => {
         this.artists = artistStore.all
 
         // #1086 solving not scrollable issue on very big screens
         if (this.$refs.scroller) {
-          this.$nextTick(() => this.makeScrollable(this.$refs.scroller, this.artists.length))
+          this.$nextTick((): void => this.makeScrollable(this.$refs.scroller as HTMLElement, this.artists.length))
         }
       },
-      [event.$names.FILTER_CHANGED]: q => (this.q = q)
+
+      [event.$names.FILTER_CHANGED]: (q: string) => {
+        this.q = q
+      }
     })
   },
 
-  mounted () {
-    this.makeScrollable(this.$refs.scroller, this.artists.length)
+  mounted (): void {
+    this.makeScrollable(this.$refs.scroller as HTMLElement, this.artists.length)
   }
-}
+})
 </script>
 
 <style lang="scss">

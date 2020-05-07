@@ -44,15 +44,15 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import mixins from 'vue-typed-mixins'
 import { pluralize, event } from '@/utils'
 import { playlistStore, sharedStore } from '@/stores'
 import { download } from '@/services'
 import { views } from '@/config'
-import hasSongList from '@/mixins/has-song-list'
+import hasSongList from '@/mixins/has-song-list.ts'
 
-export default {
-  mixins: [hasSongList],
+export default mixins(hasSongList).extend({
   filters: { pluralize },
 
   data: () => ({
@@ -63,43 +63,47 @@ export default {
     }
   }),
 
-  created () {
+  created (): void {
     /**
      * Listen to 'main-content-view:load' event to load the requested
      * playlist into view if applicable.
      */
-    event.on(event.$names.LOAD_MAIN_CONTENT, (view, playlist) => {
+    event.on(event.$names.LOAD_MAIN_CONTENT, (view: string, playlist: Playlist): void => {
       if (view !== views.PLAYLIST) {
         return
       }
 
-      playlist.populated ? (this.playlist = playlist) : this.populate(playlist)
+      if (playlist.populated) {
+        this.playlist = playlist
+      } else {
+        this.populate(playlist)
+      }
     })
   },
 
   methods: {
-    getSongs () {
+    getSongs (): Song[] {
       return this.playlist.songs
     },
 
-    destroy () {
+    destroy (): void {
       event.emit(event.$names.PLAYLIST_DELETE, this.playlist)
     },
 
-    download () {
+    download (): void {
       return download.fromPlaylist(this.playlist)
     },
 
     /**
      * Fetch a playlist's content from the server, populate it, and use it afterwards.
      */
-    async populate (playlist) {
+    async populate (playlist: Playlist): Promise<void> {
       await playlistStore.fetchSongs(playlist)
       this.playlist = playlist
-      this.$nextTick(() => this.$refs.songList && this.$refs.songList.sort())
+      this.$nextTick(() => this.$refs.songList && (this.$refs.songList as any).sort())
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

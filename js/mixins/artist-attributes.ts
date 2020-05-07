@@ -1,22 +1,30 @@
+import Vue, { PropOptions } from 'vue'
 import { getDefaultCover, secondsToHis } from '@/utils'
 
-export default {
+export default Vue.extend({
+  props: {
+    artist: {
+      type: Object,
+      required: true
+    } as PropOptions<Artist>
+  },
+
   computed: {
-    length () {
+    length (): number {
       return this.artist.songs.reduce((acc, song) => acc + song.length, 0)
     },
 
-    fmtLength () {
+    fmtLength (): string {
       return secondsToHis(this.length)
     },
 
-    image () {
+    image (): string {
       if (!this.artist.image) {
         this.artist.image = getDefaultCover()
 
         this.artist.albums.every(album => {
           // If there's a "real" cover, use it.
-          if (album.image !== getDefaultCover()) {
+          if (album.cover !== getDefaultCover()) {
             this.artist.image = album.cover
             // I want to break free.
             return false
@@ -27,4 +35,4 @@ export default {
       return this.artist.image
     }
   }
-}
+})

@@ -137,14 +137,15 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { userStore, preferenceStore, sharedStore } from '@/stores'
 import { forceReloadWindow } from '@/utils'
 import { http, ls } from '@/services'
 
-export default {
+export default Vue.extend({
   components: {
-    Btn: () => import('@/components/ui/btn')
+    Btn: () => import('@/components/ui/btn.vue')
   },
 
   data () {
@@ -164,14 +165,14 @@ export default {
 
   watch: {
     prefs: {
-      handler: () => preferenceStore.save(),
+      handler: (): void => preferenceStore.save(),
       deep: true
     }
   },
 
   methods: {
-    async update () {
-      this.validation.error = (this.pwd || this.confirmPwd) && this.pwd !== this.confirmPwd
+    async update (): Promise<void> {
+      this.validation.error = Boolean((this.pwd || this.confirmPwd) && this.pwd !== this.confirmPwd)
 
       if (this.validation.error) {
         return
@@ -187,7 +188,7 @@ export default {
      * This method opens a new window.
      * Koel will reload once the connection is successful.
      */
-    connectToLastfm: () => {
+    connectToLastfm: (): void => {
       window.open(
         `${window.BASE_URL}api/lastfm/connect?jwt-token=${ls.get('jwt-token')}`,
         '_blank',
@@ -199,9 +200,9 @@ export default {
      * Disconnect the current user from Last.fm.
      * Oh God why.
      */
-    disconnectFromLastfm: () => http.delete('lastfm/disconnect', {}, forceReloadWindow)
+    disconnectFromLastfm: (): void => http.delete('lastfm/disconnect', {}, forceReloadWindow)
   }
-}
+})
 </script>
 
 <style lang="scss">

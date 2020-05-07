@@ -10,14 +10,16 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { YouTubePlayer } from 'youtube-player/dist/types'
 import { event } from '@/utils'
 import { playback } from '@/services'
-import YouTubePlayer from 'youtube-player'
+import createYouTubePlayer from 'youtube-player'
 
-export default {
-  player: null,
+let player: YouTubePlayer
 
+export default Vue.extend({
   data: () => ({
     title: 'YouTube Video'
   }),
@@ -26,35 +28,43 @@ export default {
     /**
      * Initialize the YouTube player. This should only be called once.
      */
-    initPlayer () {
-      if (!this.$options.player) {
-        this.$options.player = YouTubePlayer('player', {
+    initPlayer (): void {
+      if (!player) {
+        player = createYouTubePlayer('player', {
           width: '100%',
           height: '100%'
         })
 
         // Pause song playback when video is played
-        this.$options.player.on('stateChange', event => event.data === 1 && playback.pause())
+        player.on('stateChange', (event: any): void => {
+          if (event.data === 1) {
+            playback.pause()
+          }
+        })
       }
     }
   },
 
-  created () {
+  created (): void {
     event.on({
-      [event.$names.PLAY_YOUTUBE_VIDEO]: ({ id, title }) => {
+      [event.$names.PLAY_YOUTUBE_VIDEO]: ({ id, title }: { id: string, title: string }): void => {
         this.title = title
         this.initPlayer()
-        this.$options.player.loadVideoById(id)
-        this.$options.player.playVideo()
+        player.loadVideoById(id)
+        player.playVideo()
       },
 
       /**
        * Stop video playback when a song is played/resumed.
        */
-      [event.$names.SONG_PLAYED]: () => this.$options.player && this.$options.player.pauseVideo()
+      [event.$names.SONG_PLAYED]: (): void => {
+        if (player) {
+          player.pauseVideo()
+        }
+      }
     })
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

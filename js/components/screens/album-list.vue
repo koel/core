@@ -12,39 +12,38 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import mixins from 'vue-typed-mixins'
 import { filterBy, limitBy, event } from '@/utils'
 import { albumStore } from '@/stores'
-import infiniteScroll from '@/mixins/infinite-scroll'
+import infiniteScroll from '@/mixins/infinite-scroll.ts'
 
-export default {
-  mixins: [infiniteScroll],
-
+export default mixins(infiniteScroll).extend({
   components: {
-    AlbumCard: () => import('@/components/album/card'),
-    ViewModeSwitch: () => import('@/components/ui/view-mode-switch')
+    AlbumCard: () => import('@/components/album/card.vue'),
+    ViewModeSwitch: () => import('@/components/ui/view-mode-switch.vue')
   },
 
   data: () => ({
     perPage: 9,
     numOfItems: 9,
     q: '',
-    viewMode: null,
-    albums: []
+    viewMode: '',
+    albums: [] as Album[]
   }),
 
   computed: {
-    displayedItems () {
+    displayedItems (): Album[] {
       return limitBy(this.filteredItems, this.numOfItems)
     },
 
-    filteredItems () {
+    filteredItems (): Album[] {
       return filterBy(this.albums, this.q, 'name', 'artist.name')
     }
   },
 
   methods: {
-    changeViewMode (mode) {
+    changeViewMode (mode: string): void {
       this.viewMode = mode
     }
   },
@@ -55,17 +54,19 @@ export default {
         this.albums = albumStore.all
 
         if (this.$refs.scroller) {
-          this.$nextTick(() => this.makeScrollable(this.$refs.scroller, this.albums.length))
+          this.$nextTick(() => this.makeScrollable(this.$refs.scroller as HTMLElement, this.albums.length))
         }
       },
-      [event.$names.FILTER_CHANGED]: q => (this.q = q)
+      [event.$names.FILTER_CHANGED]: (q: string): void => {
+        this.q = q
+      }
     })
   },
 
-  mounted () {
-    this.makeScrollable(this.$refs.scroller, this.albums.length)
+  mounted (): void {
+    this.makeScrollable(this.$refs.scroller as HTMLElement, this.albums.length)
   }
-}
+})
 </script>
 
 <style lang="scss">

@@ -149,6 +149,11 @@
   dependencies:
     "@types/yargs-parser" "*"
 
+"@types/youtube-player@^5.5.2":
+  version "5.5.2"
+  resolved "https://registry.yarnpkg.com/@types/youtube-player/-/youtube-player-5.5.2.tgz#2a3d3cdf12a053673c1553bd244f80ef64bf34b7"
+  integrity sha512-DhNohNA+WU96TuVgDuLXiZ/NJdUGAFNir50q5xPgyyVHh+BqehCa0cj55m5BBucoQeC+aga5oGiDWWW2GUfzag==
+
 "@typescript-eslint/eslint-plugin@^2.30.0":
   version "2.30.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-2.30.0.tgz#312a37e80542a764d96e8ad88a105316cdcd7b05"
@@ -9560,6 +9565,11 @@ vue-test-helpers@^2.0.0:
   integrity sha512-dYdp8qIBbBVxX0KROp2XaiFaJcF/ImU36pLEsbBWL5qBt5oNh4pBuNNK2xxCqfn9ZbiZcHRh8Kv5pANGUltZ1Q==
   dependencies:
     np "^2.18.3"
+
+vue-typed-mixins@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/vue-typed-mixins/-/vue-typed-mixins-0.2.0.tgz#d369c186a392780bbbe9f1b28a4cdcf62bec9053"
+  integrity sha512-0OxuinandPWv3nm5k/reYkuKtX3jjPZ40Sy9roJz0ih8PUzmI7zSRiXFEJ62LsyRegw9Tqy+qMkajk7ipKP8Vg==
 
 vue-virtual-scroller@^0.5.0:
   version "0.5.5"
