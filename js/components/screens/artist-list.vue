@@ -2,7 +2,7 @@
   <section id="artistsWrapper">
     <h1 class="heading">
       <span>Artists</span>
-      <view-mode-switch :mode="viewMode" for="artists" @viewModeChanged="changeViewMode"/>
+      <view-mode-switch for="artists" @viewModeChanged="changeViewMode"/>
     </h1>
 
     <div ref="scroller" class="artists main-scroll-wrap" :class="`as-${viewMode}`" @scroll="scrolling">

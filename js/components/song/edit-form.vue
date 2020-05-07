@@ -102,13 +102,23 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { union } from 'lodash'
 
 import { br2nl } from '@/utils'
 import { songInfo } from '@/services/info'
 import { artistStore, albumStore, songStore } from '@/stores'
 import { getDefaultCover } from '@/utils'
+import Vue, { PropOptions } from 'vue'
+
+interface EditFormData {
+  title: string
+  albumName: string
+  artistName: string
+  lyrics: string
+  track: number | null
+  compilationState: number
+}
 
 const COMPILATION_STATES = {
   NONE: 0, // No songs belong to a compilation album
@@ -116,28 +126,28 @@ const COMPILATION_STATES = {
   SOME: 2 // Some of the songs belong to compilation album(s)
 }
 
-export default {
+export default Vue.extend({
   components: {
-    Btn: () => import('@/components/ui/btn'),
-    SoundBar: () => import('@/components/ui/sound-bar'),
-    Typeahead: () => import('@/components/ui/typeahead')
+    Btn: () => import('@/components/ui/btn.vue'),
+    SoundBar: () => import('@/components/ui/sound-bar.vue'),
+    Typeahead: () => import('@/components/ui/typeahead.vue')
   },
 
   props: {
     songs: {
       required: true,
       type: [Array, Object]
-    },
+    } as PropOptions<Song | Song[]>,
 
     initialTab: {
       type: String,
       default: 'details',
-      validator: value => ['details', 'lyrics'].includes(value)
+      validator: (value: string): boolean => ['details', 'lyrics'].includes(value)
     }
   },
 
   data: () => ({
-    mutatedSongs: [],
+    mutatedSongs: [] as Song[],
     currentView: '',
     loading: true,
 
@@ -158,39 +168,37 @@ export default {
     /**
      * In order not to mess up the original songs, we manually assign and manipulate
      * their attributes.
-     *
-     * @type {Object}
      */
     formData: {
       title: '',
       albumName: '',
       artistName: '',
       lyrics: '',
-      track: '',
-      compilationState: null
-    }
+      track: null,
+      compilationState: 0
+    } as EditFormData
   }),
 
   computed: {
-    editingOnlyOneSong () {
+    editingOnlyOneSong (): boolean {
       return this.mutatedSongs.length === 1
     },
 
-    allSongsAreFromSameArtist () {
-      return this.mutatedSongs.every(song => song.artist.id === this.mutatedSongs[0].artist.id)
+    allSongsAreFromSameArtist (): boolean {
+      return this.mutatedSongs.every((song: Song): boolean => song.artist.id === this.mutatedSongs[0].artist.id)
     },
 
-    allSongsAreInSameAlbum () {
-      return this.mutatedSongs.every(song => song.album.id === this.mutatedSongs[0].album.id)
+    allSongsAreInSameAlbum (): boolean {
+      return this.mutatedSongs.every((song: Song): boolean => song.album.id === this.mutatedSongs[0].album.id)
     },
 
-    coverUrl () {
+    coverUrl (): string {
       return this.allSongsAreInSameAlbum ? this.mutatedSongs[0].album.cover : getDefaultCover()
     },
 
-    compilationState () {
-      const albums = this.mutatedSongs.reduce((acc, song) => union(acc, [song.album]), [])
-      const compiledAlbums = albums.filter(album => album.is_compilation)
+    compilationState (): number {
+      const albums = this.mutatedSongs.reduce((acc: Album[], song: Song): Album[] => union(acc, [song.album]), [])
+      const compiledAlbums = albums.filter((album: Album): boolean => album.is_compilation)
 
       if (!compiledAlbums.length) {
         this.formData.compilationState = COMPILATION_STATES.NONE
@@ -203,17 +211,17 @@ export default {
       return this.formData.compilationState
     },
 
-    displayedTitle () {
+    displayedTitle (): string {
       return this.editingOnlyOneSong ? this.formData.title : `${this.mutatedSongs.length} songs selected`
     },
 
-    displayedArtistName () {
+    displayedArtistName (): string {
       return this.allSongsAreFromSameArtist || this.formData.artistName
         ? this.formData.artistName
         : 'Mixed Artists'
     },
 
-    displayedAlbumName () {
+    displayedAlbumName (): string {
       return this.allSongsAreInSameAlbum || this.formData.albumName
         ? this.formData.albumName
         : 'Mixed Albums'
@@ -222,7 +230,7 @@ export default {
 
   methods: {
     async open () {
-      this.mutatedSongs = [].concat(this.songs)
+      this.mutatedSongs = ([] as Song[]).concat(this.songs)
       this.currentView = this.initialTab
 
       if (this.editingOnlyOneSong) {
@@ -238,12 +246,12 @@ export default {
           await songInfo.fetch(this.mutatedSongs[0])
           this.loading = false
           this.formData.lyrics = br2nl(this.mutatedSongs[0].lyrics)
-          this.formData.track = this.mutatedSongs[0].track || ''
+          this.formData.track = this.mutatedSongs[0].track || null
           this.initCompilationStateCheckbox()
         } else {
           this.loading = false
           this.formData.lyrics = br2nl(this.mutatedSongs[0].lyrics)
-          this.formData.track = this.mutatedSongs[0].track || ''
+          this.formData.track = this.mutatedSongs[0].track || null
           this.initCompilationStateCheckbox()
         }
       } else {
@@ -254,26 +262,26 @@ export default {
       }
     },
 
-    initCompilationStateCheckbox () {
+    initCompilationStateCheckbox (): void {
       // This must be wrapped in a $nextTick callback, because the form is dynamically
       // attached into DOM in conjunction with `this.loading` data binding.
-      this.$nextTick(() => {
-        const chk = this.$refs.compilationStateChk
+      this.$nextTick((): void => {
+        const checkbox = this.$refs.compilationStateChk as HTMLInputElement
 
         switch (this.compilationState) {
           case COMPILATION_STATES.ALL:
-            chk.checked = true
-            chk.indeterminate = false
+            checkbox.checked = true
+            checkbox.indeterminate = false
             break
 
           case COMPILATION_STATES.NONE:
-            chk.checked = false
-            chk.indeterminate = false
+            checkbox.checked = false
+            checkbox.indeterminate = false
             break
 
           default:
-            chk.checked = false
-            chk.indeterminate = true
+            checkbox.checked = false
+            checkbox.indeterminate = true
             break
         }
       })
@@ -285,15 +293,16 @@ export default {
      * Also, following iTunes style, we don't support circular switching of the states -
      * once the user clicks the checkbox, there's no going back to indeterminate state.
      */
-    changeCompilationState (e) {
-      this.formData.compilationState = e.target.checked ? COMPILATION_STATES.ALL : COMPILATION_STATES.NONE
+    changeCompilationState (): void {
+      const checkbox = this.$refs.compilationStateChk as HTMLInputElement
+      this.formData.compilationState = checkbox.checked ? COMPILATION_STATES.ALL : COMPILATION_STATES.NONE
     },
 
-    close () {
+    close (): void {
       this.$emit('close')
     },
 
-    async submit () {
+    async submit (): Promise<void> {
       this.loading = true
 
       try {
@@ -305,10 +314,10 @@ export default {
     }
   },
 
-  async created () {
+  async created (): Promise<void> {
     await this.open()
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

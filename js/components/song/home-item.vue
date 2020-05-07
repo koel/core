@@ -25,18 +25,20 @@
   </li>
 </template>
 
-<script>
+<script lang="ts">
 import { dragTypes } from '@/config'
 import { event, startDragging, pluralize } from '@/utils'
 import { queueStore } from '@/stores'
 import { playback } from '@/services'
+import Vue, { PropOptions } from 'vue'
 
-export default {
+export default Vue.extend({
   props: {
     song: {
       type: Object,
       required: true
-    },
+    } as PropOptions<Song>,
+
     topPlayCount: {
       type: Number,
       default: 0
@@ -46,22 +48,22 @@ export default {
   filters: { pluralize },
 
   computed: {
-    showPlayCount () {
-      return this.topPlayCount && this.song.playCount
+    showPlayCount (): boolean {
+      return Boolean(this.topPlayCount && this.song.playCount)
     }
   },
 
   methods: {
-    requestContextMenu (e) {
+    requestContextMenu (e: MouseEvent): void {
       event.emit(event.$names.CONTEXT_MENU_REQUESTED, e, this.song)
     },
 
-    play () {
+    play (): void {
       queueStore.contains(this.song) || queueStore.queueAfterCurrent(this.song)
       playback.play(this.song)
     },
 
-    changeSongState () {
+    changeSongState (): void {
       if (this.song.playbackState === 'stopped') {
         this.play()
       } else if (this.song.playbackState === 'paused') {
@@ -71,11 +73,11 @@ export default {
       }
     },
 
-    dragStart (event) {
+    dragStart (event: DragEvent): void {
       startDragging(event, this.song, dragTypes.SONGS)
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -57,11 +57,38 @@ declare module 'ismobilejs' {
   const phone: boolean
 }
 
+declare module 'vuequery' {
+  import Vue from 'vue'
+
+  interface VueQuery {
+    vm: Vue
+    _isVueQuery: true
+    children(selector: null | string): VueQuery[]
+    closest(selector: string | Vue | VueQuery): VueQuery | null
+    find(selector: string | Vue | VueQuery): VueQuery[]
+    has(selector: string | Vue | VueQuery): boolean
+    is(selector: string | Vue | VueQuery | Array<string | Vue | VueQuery>): boolean
+    next(selector: null | string | Vue | VueQuery): VueQuery | null
+    nextAll(selector: null | string | Vue | VueQuery): VueQuery[]
+    nextUntil(selector: null | string | Vue | VueQuery, filter: null | String | Vue | VueQuery): VueQuery[]
+    prev(selector: null | string | Vue | VueQuery): VueQuery | null
+    prevAll(selector: null | string | Vue | VueQuery): VueQuery[]
+    prevUntil(selector: null | string | Vue | VueQuery, filter: null | String | Vue | VueQuery): VueQuery[]
+    parent(selector: null | string | Vue | VueQuery): VueQuery | null
+    parents(selector: null | string | Vue | VueQuery): VueQuery[]
+    parentsUntil(selector: null | string | Vue | VueQuery, filter: null | String | Vue | VueQuery): VueQuery[]
+    siblings(selector: null | string | Vue | VueQuery): VueQuery[]
+  }
+
+  function $(vm: Vue): VueQuery
+  export default $
+}
+
 declare const KOEL_ENV: string
 declare const NODE_ENV: string
 
 declare module '*.vue' {
-  import Vue, { VNode } from 'vue'
+  import Vue from 'vue'
   export default Vue
 }
 
@@ -229,4 +256,28 @@ interface SongListState {
 interface SongListMeta {
   songCount: number
   totalLength: string
+}
+
+declare module 'koel/types/ui' {
+  import Vue, { VueConstructor, ComponentOptions } from 'vue'
+
+  export interface BaseContextMenu extends Vue {
+    open(y: number, x: number): void
+    close(): void
+  }
+
+
+  export interface BasePlaylistMenu extends Vue {
+    open(top: number, left: number): void
+    close(): void
+  }
+
+  export type SongListComponent = (VueConstructor | ComponentOptions<never>) & {
+    rowClicked(songItem: Vue, event: MouseEvent): void
+    openContextMenu(songItem: Vue, event: MouseEvent): void
+    removeDroppableState(event: DragEvent): void
+    handleDrop(songItem: Vue, event: DragEvent): void
+    allowDrop(event: DragEvent): void
+    dragStart(songItem: Vue, event: DragEvent): void
+  }
 }

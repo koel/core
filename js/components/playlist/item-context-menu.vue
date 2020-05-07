@@ -7,12 +7,8 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
+import { BasePlaylistMenu } from 'koel/types/ui'
 import { event } from '@/utils'
-
-interface PlaylistMenuBaseRef extends Vue {
-  open(top: number, left: number): void
-  close(): void
-}
 
 export default Vue.extend({
   components: {
@@ -28,11 +24,11 @@ export default Vue.extend({
 
   methods: {
     open (top: number, left: number): void {
-      (this.$refs.base as PlaylistMenuBaseRef).open(top, left)
+      (this.$refs.base as BasePlaylistMenu).open(top, left)
     },
 
     close (): void {
-      (this.$refs.base as PlaylistMenuBaseRef).close()
+      (this.$refs.base as BasePlaylistMenu).close()
     },
 
     editPlaylist (): void {

@@ -31,24 +31,18 @@
   </base-context-menu>
 </template>
 
-<script>
-import songMenuMethods from '@/mixins/song-menu-methods'
+<script lang="ts">
+import mixins from 'vue-typed-mixins'
+import { BaseContextMenu } from 'koel/types/ui'
 import { event, isClipboardSupported, copyText } from '@/utils'
 import { sharedStore, songStore, queueStore, userStore, playlistStore } from '@/stores'
 import { playback, download } from '@/services'
 import router from '@/router'
+import songMenuMethods from '@/mixins/song-menu-methods.ts'
 
-export default {
-  props: {
-    songs: {
-      type: Array,
-      required: true
-    }
-  },
-  mixins: [songMenuMethods],
-
+export default mixins(songMenuMethods).extend({
   components: {
-    BaseContextMenu: () => import('@/components/ui/context-menu')
+    BaseContextMenu: () => import('@/components/ui/context-menu.vue')
   },
 
   data: () => ({
@@ -59,37 +53,37 @@ export default {
   }),
 
   computed: {
-    onlyOneSongSelected () {
+    onlyOneSongSelected (): boolean {
       return this.songs.length === 1
     },
 
-    firstSongPlaying () {
+    firstSongPlaying (): boolean {
       return this.songs[0] ? this.songs[0].playbackState === 'playing' : false
     },
 
-    normalPlaylists () {
+    normalPlaylists (): Playlist[] {
       return this.playlistState.playlists.filter(playlist => !playlist.is_smart)
     },
 
-    isAdmin () {
+    isAdmin (): boolean {
       return this.userState.current.is_admin
     }
   },
 
   methods: {
-    open (top, left) {
+    open (top: number, left: number): void {
       if (!this.songs.length) {
         return
       }
 
-      this.$refs.base.open(top, left)
+      (this.$refs.base as BaseContextMenu).open(top, left)
     },
 
-    close () {
-      this.$refs.base.close()
+    close (): void {
+      (this.$refs.base as BaseContextMenu).close()
     },
 
-    doPlayback () {
+    doPlayback (): void {
       switch (this.songs[0].playbackState) {
         case 'playing':
           playback.pause()
@@ -102,33 +96,37 @@ export default {
           playback.play(this.songs[0])
           break
       }
+
       this.close()
     },
 
-    openEditForm () {
-      this.songs.length && event.emit(event.$names.MODAL_SHOW_EDIT_SONG_FORM, this.songs)
+    openEditForm (): void {
+      if (this.songs.length) {
+        event.emit(event.$names.MODAL_SHOW_EDIT_SONG_FORM, this.songs)
+      }
+
       this.close()
     },
 
-    viewAlbumDetails (album) {
+    viewAlbumDetails (album: Album): void {
       router.go(`album/${album.id}`)
       this.close()
     },
 
-    viewArtistDetails (artist) {
+    viewArtistDetails (artist: Artist): void {
       router.go(`artist/${artist.id}`)
       this.close()
     },
 
-    download () {
+    download (): void {
       download.fromSongs(this.songs)
       this.close()
     },
 
-    copyUrl () {
+    copyUrl (): void {
       copyText(songStore.getShareableUrl(this.songs[0]))
       this.close()
     }
   }
-}
+})
 </script>

@@ -38,12 +38,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { BaseContextMenu } from 'koel/types/ui'
 import { playlistStore, favoriteStore, recentlyPlayedStore } from '@/stores'
 import router from '@/router'
-
-interface ContextMenuRef extends Vue {
-  open(y: number, x: number): void
-}
 
 export default Vue.extend({
   components: {
@@ -74,7 +71,7 @@ export default Vue.extend({
         if (this.creating) {
           this.creating = false
         } else {
-          (this.$refs.contextMenu as ContextMenuRef).open(event.pageY, event.pageX)
+          (this.$refs.contextMenu as BaseContextMenu).open(event.pageY, event.pageX)
         }
       })
     }

@@ -22,14 +22,11 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
+import { BaseContextMenu } from 'koel/types/ui'
 import { event } from '@/utils'
 import router from '@/router'
 import { songStore, playlistStore, favoriteStore } from '@/stores'
 import { views } from '@/config'
-
-interface ContextMenuRef extends Vue {
-  open(y: number, x: number): void
-}
 
 const VALID_PLAYLIST_TYPES = ['playlist', 'favorites', 'recently-played']
 
@@ -126,7 +123,7 @@ export default Vue.extend({
     openContextMenu (event: MouseEvent): void {
       if (this.hasContextMenu) {
         router.go(`/playlist/${this.playlist.id}`)
-        ;(this.$refs.contextMenu as ContextMenuRef).open(event.pageY, event.pageX)
+        ;(this.$refs.contextMenu as BaseContextMenu).open(event.pageY, event.pageX)
       }
     },
 

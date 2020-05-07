@@ -2,7 +2,7 @@
   <section id="albumsWrapper">
     <h1 class="heading">
       <span>Albums</span>
-      <view-mode-switch :mode="viewMode" for="albums" @viewModeChanged="changeViewMode"/>
+      <view-mode-switch for="albums" @viewModeChanged="changeViewMode"/>
     </h1>
 
     <div ref="scroller" class="albums main-scroll-wrap" :class="`as-${viewMode}`" @scroll="scrolling">
@@ -57,6 +57,7 @@ export default mixins(infiniteScroll).extend({
           this.$nextTick(() => this.makeScrollable(this.$refs.scroller as HTMLElement, this.albums.length))
         }
       },
+
       [event.$names.FILTER_CHANGED]: (q: string): void => {
         this.q = q
       }
