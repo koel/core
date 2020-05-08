@@ -5,10 +5,11 @@
   </span>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import isMobile from 'ismobilejs'
 
-export default {
+export default Vue.extend({
   props: {
     showingControls: {
       type: Boolean,
@@ -21,11 +22,11 @@ export default {
   }),
 
   methods: {
-    toggleControls () {
+    toggleControls (): void {
       this.$emit('toggleControls')
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

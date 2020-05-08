@@ -1,12 +1,5 @@
 import { preferenceStore } from '.'
 
-interface EqualizerPreset {
-  id: number
-  name: string
-  preamp: number
-  gains: number[]
-}
-
 interface EqualizerStore {
   presets: EqualizerPreset[]
 

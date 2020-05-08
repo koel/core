@@ -15,7 +15,11 @@
       <div class="info">
         <a class="name" :href="`#!/album/${album.id}`">{{ album.name }}</a>
         <span class="sep">by</span>
-        <a class="artist" v-if="isNormalArtist" :href="`#!/artist/${album.artist.id}`">{{ album.artist.name }}</a>
+        <a
+          class="artist"
+          v-if="isNormalArtist"
+          :href="`#!/artist/${album.artist.id}`"
+        >{{ album.artist.name }}</a>
         <span class="artist nope" v-else>{{ album.artist.name }}</span>
       </div>
       <p class="meta">

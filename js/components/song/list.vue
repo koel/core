@@ -1,5 +1,7 @@
 <template>
-  <div class="song-list-wrap main-scroll-wrap" :class="type"
+  <div
+    class="song-list-wrap main-scroll-wrap"
+    :class="type"
     ref="wrapper"
     tabindex="0"
     @keydown.delete.prevent.stop="handleDelete"
@@ -9,23 +11,31 @@
     <table class="song-list-header" :class="sortable ? 'sortable' : 'unsortable'">
       <thead>
         <tr>
-          <th @click="sort('song.track')" class="track-number">#
+          <th @click="sort('song.track')" class="track-number">
+            #
             <i class="fa fa-angle-down" v-show="sortKey === 'song.track' && order > 0"></i>
             <i class="fa fa-angle-up" v-show="sortKey === 'song.track' && order < 0"></i>
           </th>
-          <th @click="sort('song.title')" class="title">Title
+          <th @click="sort('song.title')" class="title">
+            Title
             <i class="fa fa-angle-down" v-show="sortKey === 'song.title' && order > 0"></i>
             <i class="fa fa-angle-up" v-show="sortKey === 'song.title' && order < 0"></i>
           </th>
-          <th @click="sort(['song.album.artist.name', 'song.album.name', 'song.track'])" class="artist">Artist
+          <th
+            @click="sort(['song.album.artist.name', 'song.album.name', 'song.track'])"
+            class="artist"
+          >
+            Artist
             <i class="fa fa-angle-down" v-show="sortingByArtist && order > 0"></i>
             <i class="fa fa-angle-up" v-show="sortingByArtist && order < 0"></i>
           </th>
-          <th @click="sort(['song.album.name', 'song.track'])" class="album">Album
+          <th @click="sort(['song.album.name', 'song.track'])" class="album">
+            Album
             <i class="fa fa-angle-down" v-show="sortingByAlbum && order > 0"></i>
             <i class="fa fa-angle-up" v-show="sortingByAlbum && order < 0"></i>
           </th>
-          <th @click="sort('song.length')" class="time">Time
+          <th @click="sort('song.length')" class="time">
+            Time
             <i class="fa fa-angle-down" v-show="sortKey === 'song.length' && order > 0"></i>
             <i class="fa fa-angle-up" v-show="sortKey === 'song.length' && order < 0"></i>
           </th>
@@ -452,7 +462,8 @@ export default Vue.extend({
     border-bottom-color: $colorGreen;
   }
 
-  td, th {
+  td,
+  th {
     text-align: left;
     padding: 8px;
     vertical-align: middle;
@@ -529,11 +540,14 @@ export default Vue.extend({
   }
 
   @media only screen and (max-width: 768px) {
-    table, tbody, tr {
+    table,
+    tbody,
+    tr {
       display: block;
     }
 
-    thead, tfoot {
+    thead,
+    tfoot {
       display: none;
     }
 
@@ -563,13 +577,15 @@ export default Vue.extend({
       vertical-align: bottom;
       color: $colorMainText;
 
-      &.album, &.time, &.track-number {
+      &.album,
+      &.time,
+      &.track-number {
         display: none;
       }
 
       &.artist {
         color: $color2ndText;
-        font-size: .9rem;
+        font-size: 0.9rem;
         padding: 0 4px;
       }
     }

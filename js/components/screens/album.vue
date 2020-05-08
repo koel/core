@@ -3,7 +3,7 @@
     <h1 class="heading">
       <span class="overview">
         <span class="thumbnail-wrapper">
-          <album-thumbnail :entity="album" />
+          <album-thumbnail :entity="album"/>
         </span>
 
         {{ album.name }}

@@ -57,6 +57,19 @@ declare module 'ismobilejs' {
   const phone: boolean
 }
 
+declare module 'nouislider' {
+  function create(el: HTMLElement, config: {
+    connect: boolean[]
+    start: number
+    range: {
+      min: number
+      max: number
+    }
+    orientation: 'horizontal' | 'vertical'
+    direction: 'ltr' | 'rtl'
+  }): void
+}
+
 declare module 'vuequery' {
   import Vue from 'vue'
 
@@ -292,4 +305,11 @@ interface SongProxy {
   song: Song
   selected: boolean
   type: string
+}
+
+interface EqualizerPreset {
+  id: number
+  name: string
+  preamp: number
+  gains: number[]
 }

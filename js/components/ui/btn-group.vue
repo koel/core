@@ -8,12 +8,14 @@
   </span>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
   components: {
-    Btn: () => import('@/components/ui/btn')
+    Btn: () => import('@/components/ui/btn.vue')
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

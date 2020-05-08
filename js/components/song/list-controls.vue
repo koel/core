@@ -88,26 +88,29 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
+
 const KEYCODE_ALT = 18
 
-export default {
+export default Vue.extend({
   props: {
     config: Object,
     songs: {
       type: Array,
-      default: () => []
-    },
+      default: []
+    } as PropOptions<Song[]>,
+
     selectedSongs: {
       type: Array,
-      default: () => []
-    }
+      default: []
+    } as PropOptions<Song[]>
   },
 
   components: {
-    AddToMenu: () => import('./add-to-menu'),
-    Btn: () => import('@/components/ui/btn'),
-    BtnGroup: () => import('@/components/ui/btn-group')
+    AddToMenu: () => import('./add-to-menu.vue'),
+    Btn: () => import('@/components/ui/btn.vue'),
+    BtnGroup: () => import('@/components/ui/btn-group.vue')
   },
 
   data: () => ({
@@ -128,71 +131,71 @@ export default {
   }),
 
   computed: {
-    showClearQueueButton () {
+    showClearQueueButton (): boolean {
       return this.fullConfig.clearQueue
     },
 
-    showDeletePlaylistButton () {
+    showDeletePlaylistButton (): boolean {
       return this.fullConfig.deletePlaylist
     }
   },
 
-  created () {
+  created (): void {
     this.fullConfig = Object.assign(this.fullConfig, this.config)
   },
 
   methods: {
-    shuffle () {
+    shuffle (): void {
       this.$emit('playAll', true)
     },
 
-    shuffleSelected () {
+    shuffleSelected (): void {
       this.$emit('playSelected', true)
     },
 
-    playAll () {
+    playAll (): void {
       this.$emit('playAll', false)
     },
 
-    playSelected () {
+    playSelected (): void {
       this.$emit('playSelected', false)
     },
 
-    clearQueue () {
+    clearQueue (): void {
       this.$emit('clearQueue')
     },
 
-    deletePlaylist () {
+    deletePlaylist (): void {
       this.$emit('deletePlaylist')
     },
 
-    closeAddToMenu () {
+    closeAddToMenu (): void {
       this.showingAddToMenu = false
     },
 
-    registerKeydown (event) {
+    registerKeydown (event: KeyboardEvent): void {
       if (event.keyCode === KEYCODE_ALT) {
         this.altPressed = true
       }
     },
 
-    registerKeyup (event) {
+    registerKeyup (event: KeyboardEvent): void {
       if (event.keyCode === KEYCODE_ALT) {
         this.altPressed = false
       }
     }
   },
 
-  mounted () {
+  mounted (): void {
     window.addEventListener('keydown', this.registerKeydown)
     window.addEventListener('keyup', this.registerKeyup)
   },
 
-  unmounted () {
+  destroyed (): void {
     window.removeEventListener('keydown', this.registerKeydown)
     window.removeEventListener('keyup', this.registerKeyup)
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
