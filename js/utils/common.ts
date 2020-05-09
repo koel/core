@@ -4,7 +4,6 @@
 import select from 'select'
 import { event, noop, pluralize, use } from '@/utils'
 import { sharedStore } from '@/stores'
-import { dragTypes } from '@/config'
 
 /**
  * Load (display) a main panel (view).
@@ -70,12 +69,9 @@ const createGhostDragImage = (event: DragEvent, text: string): void => {
 
 /**
  * Handle song/album/artist drag start event.
- *
- * @param {DragEvent} event The drag event
  * @param {Song|Song[]} dragged Either an array of songs or a song/album/artist object
- * @param {string} type The drag type (see @/config/drag-types.js)
  */
-export const startDragging = (event: DragEvent, dragged: Song | Song[] | Album | Artist, type: string): void => {
+export const startDragging = (event: DragEvent, dragged: Song | Song[] | Album | Artist, type: DragType): void => {
   if (!event.dataTransfer) {
     return
   }
@@ -84,7 +80,7 @@ export const startDragging = (event: DragEvent, dragged: Song | Song[] | Album |
   let songIds
 
   switch (type) {
-    case dragTypes.SONGS:
+    case DragType.Song:
       dragged = (<Song[]>[]).concat(<Song>dragged)
       text = dragged.length === 1
         ? `${dragged[0].title} by ${dragged[0].artist.name}`
@@ -92,13 +88,13 @@ export const startDragging = (event: DragEvent, dragged: Song | Song[] | Album |
       songIds = dragged.map(song => song.id)
       break
 
-    case dragTypes.ALBUM:
+    case DragType.Album:
       dragged = <Album>dragged
       text = `All ${pluralize(dragged.songs.length, 'song')} in ${dragged.name}`
       songIds = dragged.songs.map(song => song.id)
       break
 
-    case dragTypes.ARTIST:
+    case DragType.Artist:
       dragged = <Artist>dragged
       text = `All ${pluralize(dragged.songs.length, 'song')} by ${dragged.name}`
       songIds = dragged.songs.map(song => song.id)

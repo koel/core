@@ -58,7 +58,6 @@
 <script lang="ts">
 import isMobile from 'ismobilejs'
 
-import { dragTypes } from '@/config'
 import { filterBy, orderBy, event, startDragging, $ } from '@/utils'
 import { playlistStore, queueStore, songStore, favoriteStore } from '@/stores'
 import { playback } from '@/services'
@@ -347,7 +346,7 @@ export default Vue.extend({
         rowVm.item.selected = true
       }
 
-      startDragging(event, this.selectedSongs, dragTypes.SONGS)
+      startDragging(event, this.selectedSongs, DragType.Song)
     },
 
     /**
@@ -358,7 +357,7 @@ export default Vue.extend({
         return
       }
 
-      $.addClass((event.target as Element).parentElement, 'droppable')
+      $.addClass((event.currentTarget as Element).parentElement, 'droppable')
       event.dataTransfer!.dropEffect = 'move'
 
       return false
@@ -381,7 +380,7 @@ export default Vue.extend({
     },
 
     removeDroppableState: (event: DragEvent): boolean => {
-      $.removeClass((event.target as Element).parentElement, 'droppable')
+      $.removeClass((event.currentTarget as Element).parentElement, 'droppable')
       return false
     },
 

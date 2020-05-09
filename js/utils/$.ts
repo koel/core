@@ -2,7 +2,9 @@
  * A utility that aims to replace jQuery for the most basic DOM methods.
  */
 export const $ = {
-  is: (el: Element, selector: string): boolean => el.matches(selector),
+  is: (el: Element, selector: string): boolean => {
+    return el.matches(selector)
+  },
 
   addClass: (el: Element | null, className: string): void => {
     if (el) {

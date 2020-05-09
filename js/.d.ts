@@ -97,7 +97,7 @@ declare module 'vuequery' {
   export default $
 }
 
-declare const KOEL_ENV: string
+declare const KOEL_ENV: 'app' | 'web'
 declare const NODE_ENV: string
 
 declare module '*.vue' {
@@ -321,4 +321,29 @@ interface EqualizerPreset {
   name: string
   preamp: number
   gains: number[]
+}
+
+declare const enum DragType {
+  Song = 'Song',
+  Album = 'Album',
+  Artist = 'Artist'
+}
+
+declare const enum MainView {
+  HOME,
+  DEFAULT,
+  QUEUE,
+  SONGS,
+  ALBUMS,
+  ARTISTS,
+  FAVORITES,
+  RECENTLY_PLAYED,
+  SETTINGS,
+  USERS,
+  YOUTUBE,
+  VISUALIZER,
+  PROFILE,
+  ALBUM,
+  ARTIST,
+  PLAYLIST,
 }

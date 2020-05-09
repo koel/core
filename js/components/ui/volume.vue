@@ -51,7 +51,7 @@ export default Vue.extend({
     },
 
     setVolume (e: InputEvent): void {
-      const volume = parseFloat((e.target as HTMLInputElement).value)
+      const volume = parseFloat((<HTMLInputElement>e.currentTarget).value)
       playback.setVolume(volume)
       this.muted = volume === 0
     },
@@ -59,8 +59,8 @@ export default Vue.extend({
     /**
      * Broadcast the volume changed event to remote controller.
      */
-    broadcastVolume: (e: InputEvent) => {
-      socket.broadcast(event.$names.SOCKET_VOLUME_CHANGED, parseFloat((e.target as HTMLInputElement).value))
+    broadcastVolume: (e: InputEvent): void => {
+      socket.broadcast(event.$names.SOCKET_VOLUME_CHANGED, parseFloat((<HTMLInputElement>e.currentTarget).value))
     }
   }
 })

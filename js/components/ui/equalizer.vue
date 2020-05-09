@@ -48,7 +48,7 @@ interface Band {
   filter: BiquadFilterNode
 }
 
-let context: AudioContext | null = null
+let context: AudioContext
 
 export default Vue.extend({
   data: () => ({
@@ -96,12 +96,12 @@ export default Vue.extend({
       const source = audioService.getSource()
       source.connect(this.preampGainNode)
 
-      let prevFilter: BiquadFilterNode | null = null
+      let prevFilter: BiquadFilterNode
 
       // Create 10 bands with the frequencies similar to those of Winamp and connect them together.
       const frequencies = [60, 170, 310, 600, 1000, 3000, 6000, 12000, 14000, 16000]
       frequencies.forEach((frequency: number, i: number): void => {
-        const filter = context!.createBiquadFilter()
+        const filter = context.createBiquadFilter()
 
         if (i === 0) {
           filter.type = 'lowshelf'
@@ -111,9 +111,9 @@ export default Vue.extend({
           filter.type = 'peaking'
         }
 
-        filter.gain.setTargetAtTime(0, context!.currentTime, 0.01)
-        filter.Q.setTargetAtTime(1, context!.currentTime, 0.01)
-        filter.frequency.setTargetAtTime(frequency, context!.currentTime, 0.01)
+        filter.gain.setTargetAtTime(0, context.currentTime, 0.01)
+        filter.Q.setTargetAtTime(1, context.currentTime, 0.01)
+        filter.frequency.setTargetAtTime(frequency, context.currentTime, 0.01)
 
         prevFilter ? prevFilter.connect(filter) : this.preampGainNode.connect(filter)
         prevFilter = filter
@@ -174,11 +174,11 @@ export default Vue.extend({
 
     changePreampGain (dbValue: number): void {
       this.preampGainValue = dbValue
-      this.preampGainNode.gain.setTargetAtTime(Math.pow(10, dbValue / 20), context!.currentTime, 0.01)
+      this.preampGainNode.gain.setTargetAtTime(Math.pow(10, dbValue / 20), context.currentTime, 0.01)
     },
 
     changeFilterGain: (filter: BiquadFilterNode, value: number): void => {
-      filter.gain.setTargetAtTime(value, context!.currentTime, 0.01)
+      filter.gain.setTargetAtTime(value, context.currentTime, 0.01)
     },
 
     loadPreset (preset: EqualizerPreset) {

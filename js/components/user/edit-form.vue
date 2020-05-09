@@ -34,30 +34,30 @@
   </div>
 </template>
 
-<script>
-import { clone } from 'lodash'
+<script lang="ts">
 import { userStore } from '@/stores'
+import Vue, { PropOptions } from 'vue'
 
-export default {
+export default Vue.extend({
   components: {
-    Btn: () => import('@/components/ui/btn'),
-    SoundBar: () => import('@/components/ui/sound-bar')
+    Btn: () => import('@/components/ui/btn.vue'),
+    SoundBar: () => import('@/components/ui/sound-bar.vue')
   },
 
   props: {
     user: {
       type: Object,
       required: true
-    }
+    } as PropOptions<User>
   },
 
   data: () => ({
     loading: false,
-    mutatedUser: null
+    mutatedUser: <User><unknown>null
   }),
 
   methods: {
-    async submit () {
+    async submit (): Promise<void> {
       this.loading = true
       await userStore.update(this.user, this.mutatedUser.name, this.mutatedUser.email, this.mutatedUser.password)
       this.loading = false
@@ -70,7 +70,7 @@ export default {
   },
 
   created () {
-    this.mutatedUser = clone(this.user)
+    this.mutatedUser = Object.assign({}, this.user)
   }
-}
+})
 </script>

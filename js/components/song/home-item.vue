@@ -26,7 +26,6 @@
 </template>
 
 <script lang="ts">
-import { dragTypes } from '@/config'
 import { event, startDragging, pluralize } from '@/utils'
 import { queueStore } from '@/stores'
 import { playback } from '@/services'
@@ -74,7 +73,7 @@ export default Vue.extend({
     },
 
     dragStart (event: DragEvent): void {
-      startDragging(event, this.song, dragTypes.SONGS)
+      startDragging(event, this.song, DragType.Song)
     }
   }
 })

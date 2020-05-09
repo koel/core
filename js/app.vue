@@ -20,23 +20,23 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
 
-import AppHeader from '@/components/layout/app-header'
-import AppFooter from '@/components/layout/app-footer/index'
-import EventListeners from '@/components/utils/event-listeners'
-import Hotkeys from '@/components/utils/hotkeys'
-import LoginForm from '@/components/auth/login-form'
-import MainWrapper from '@/components/layout/main-wrapper/index'
-import Overlay from '@/components/ui/overlay'
+import AppHeader from '@/components/layout/app-header.vue'
+import AppFooter from '@/components/layout/app-footer/index.vue'
+import EventListeners from '@/components/utils/event-listeners.vue'
+import Hotkeys from '@/components/utils/hotkeys.vue'
+import LoginForm from '@/components/auth/login-form.vue'
+import MainWrapper from '@/components/layout/main-wrapper/index.vue'
+import Overlay from '@/components/ui/overlay.vue'
 
 import { event, showOverlay, hideOverlay, $, app as appUtils } from '@/utils'
 import { sharedStore, favoriteStore, queueStore, preferenceStore as preferences } from '@/stores'
 import { playback, ls, socket, http } from '@/services'
 import { clickaway, droppable, focus } from '@/directives'
 
-export default {
+export default Vue.extend({
   components: {
     Hotkeys,
     AppHeader,
@@ -45,17 +45,17 @@ export default {
     Overlay,
     LoginForm,
     EventListeners,
-    SongContextMenu: () => import('@/components/song/context-menu'),
-    SupportKoel: () => import('@/components/meta/support-koel')
+    SongContextMenu: () => import('@/components/song/context-menu.vue'),
+    SupportKoel: () => import('@/components/meta/support-koel.vue')
   },
 
   data: () => ({
     authenticated: false,
     isDesktopApp: KOEL_ENV === 'app',
-    contextMenuSongs: []
+    contextMenuSongs: [] as Song[]
   }),
 
-  async mounted () {
+  async mounted (): Promise<void> {
     // The app has just been initialized, check if we can get the user data with an already existing token
     if (ls.get('jwt-token')) {
       this.authenticated = true
@@ -78,14 +78,15 @@ export default {
   },
 
   created () {
-    event.on(event.$names.CONTEXT_MENU_REQUESTED, (clickEvent, songs) => {
-      this.contextMenuSongs = [].concat(songs)
-      this.$nextTick(() => this.$refs.songContextMenu.open(clickEvent.pageY, clickEvent.pageX))
+    event.on(event.$names.CONTEXT_MENU_REQUESTED, (e: MouseEvent, songs: Song[]): void => {
+      this.contextMenuSongs = (<Song[]>[]).concat(songs)
+      // @ts-ignore because of .open()
+      this.$nextTick((): void => this.$refs.songContextMenu.open(e.pageY, e.pageX))
     })
   },
 
   methods: {
-    async init () {
+    async init (): Promise<void> {
       showOverlay()
       await socket.init()
 
@@ -101,19 +102,18 @@ export default {
           this.requestNotifPermission()
 
           // To confirm or not to confirm closing, it's a question.
-          window.onbeforeunload = () => {
+          window.addEventListener('beforeunload', (e: BeforeUnloadEvent): void => {
             if (!preferences.confirmClosing) {
               return
             }
 
-            // Notice that a custom message like this has ceased to be supported
-            // starting from Chrome 51.
-            return 'You asked Koel to confirm before closing, so here it is.'
-          }
+            e.preventDefault()
+            e.returnValue = ''
+          })
 
           // Ping the server everytime the window is focused, so that we don't have those
           // "suddent" logout.
-          window.addEventListener('focus', () => http.get('/ping'))
+          window.addEventListener('focus', (): void => http.get('/ping'))
 
           this.subscribeToBroadcastedEvents()
 
@@ -129,16 +129,18 @@ export default {
     /**
      * Request for notification permission if it's not provided and the user is OK with notifs.
      */
-    requestNotifPermission () {
+    requestNotifPermission (): void {
       if (window.Notification && preferences.notify && window.Notification.permission !== 'granted') {
-        window.Notification.requestPermission(result => (result === 'denied' && (preferences.notify = false)))
+        window.Notification.requestPermission().then((result: string) => {
+          preferences.notify = result === 'denied'
+        })
       }
     },
 
     /**
      * When the user logs in, set the whole app to be "authenticated" and initialize it.
      */
-    onUserLoggedIn () {
+    onUserLoggedIn (): void {
       this.authenticated = true
       this.init()
     },
@@ -146,15 +148,17 @@ export default {
     /**
      * Subscribes to the events broadcasted e.g. from the remote controller.
      */
-    subscribeToBroadcastedEvents () {
-      socket.listen(event.$names.SOCKET_TOGGLE_FAVORITE, () => {
-        queueStore.current && favoriteStore.toggleOne(queueStore.current)
+    subscribeToBroadcastedEvents (): void {
+      socket.listen(event.$names.SOCKET_TOGGLE_FAVORITE, (): void => {
+        if (queueStore.current) {
+          favoriteStore.toggleOne(queueStore.current)
+        }
       })
     },
 
     triggerMaximize: () => appUtils.triggerMaximize()
   }
-}
+})
 
 // …and the global directives
 Vue.directive('koel-focus', focus)
@@ -166,7 +170,6 @@ Vue.directive('koel-droppable', droppable)
 @import "~#/app.scss";
 
 #dragGhost {
-  position: absolute;
   display: inline-block;
   background: $colorGreen;
   padding: .8rem;
@@ -175,8 +178,10 @@ Vue.directive('koel-droppable', droppable)
   font-family: $fontFamily;
   font-size: 1rem;
   font-weight: $fontWeight_Thin;
-  top: -100px;
-  left: 0px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
 
   /**
    * We can totally hide this element on touch devices, because there's

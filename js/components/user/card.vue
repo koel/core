@@ -22,21 +22,22 @@
   </article>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
 import { userStore } from '@/stores'
 import router from '@/router'
 import { alerts } from '@/utils'
 
-export default {
+export default Vue.extend({
   components: {
-    Btn: () => import('@/components/ui/btn')
+    Btn: () => import('@/components/ui/btn.vue')
   },
 
   props: {
     user: {
       type: Object,
       required: true
-    }
+    } as PropOptions<User>
   },
 
   data: () => ({
@@ -44,7 +45,7 @@ export default {
   }),
 
   computed: {
-    isCurrentUser () {
+    isCurrentUser (): boolean {
       return this.user.id === userStore.current.id
     }
   },
@@ -54,19 +55,19 @@ export default {
      * Trigger editing a user.
      * If the user is the current logged-in user, redirect to the profile screen instead.
      */
-    edit () {
+    edit (): void {
       this.isCurrentUser ? router.go('profile') : this.$emit('editUser', this.user)
     },
 
-    confirmDelete () {
+    confirmDelete (): void {
       alerts.confirm(`You’re about to unperson ${this.user.name}. Are you sure?`, this.destroy)
     },
 
-    destroy () {
+    destroy (): void {
       userStore.destroy(this.user)
       this.$destroy()
     }
   }
-}
+})
 </script>
 

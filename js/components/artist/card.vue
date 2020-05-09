@@ -53,7 +53,6 @@
 
 <script lang="ts">
 import mixins from 'vue-typed-mixins'
-import { dragTypes } from '@/config'
 import { startDragging, pluralize } from '@/utils'
 import { artistStore, sharedStore } from '@/stores'
 import { playback, download } from '@/services'
@@ -86,7 +85,7 @@ export default mixins(artistAttributes).extend({
     },
 
     dragStart (event: DragEvent): void {
-      startDragging(event, this.artist, dragTypes.ARTIST)
+      startDragging(event, this.artist, DragType.Artist)
     }
   }
 })
