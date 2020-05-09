@@ -4,7 +4,7 @@ import router from '@/router'
 
 interface YouTube {
   searchVideosRelatedToSong: (song: Song, nextPageToken: string) => Promise<YouTubeSearchResult>
-  play: (video: Video) => void
+  play: (video: YouTubeVideo) => void
 }
 
 interface YouTubeSearchResult {
@@ -22,7 +22,7 @@ export const youtube: YouTube = {
     })
   },
 
-  play: (video: Video): void => {
+  play: (video: YouTubeVideo): void => {
     event.emit(event.$names.PLAY_YOUTUBE_VIDEO, {
       id: video.id.videoId,
       title: video.snippet.title

@@ -158,15 +158,18 @@ interface Song {
   track: number
   disc: number
   lyrics: string
-  youtube: object,
-  playCountRegistered: boolean
-  preloaded: boolean
-  playbackState: string
-  infoRetrieved: boolean
+  youtube?: {
+    items: YouTubeVideo[]
+    nextPageToken: string
+  },
+  playCountRegistered?: boolean
+  preloaded?: boolean
+  playbackState?: 'stopped' | 'playing' | 'paused'
+  infoRetrieved?: boolean
   playCount: number
   liked: boolean
-  playStartTime: number
-  fmtLength: string
+  playStartTime?: number
+  fmtLength?: string
 }
 
 interface AlbumInfo {
@@ -231,7 +234,7 @@ interface Playlist {
   rules: SmartPlaylistRuleGroup[]
 }
 
-interface Video {
+interface YouTubeVideo {
   readonly id: {
     videoId: string
   }
@@ -298,6 +301,12 @@ declare module 'koel/types/ui' {
 
   export type SongListRowComponent = Component & {
     item: SongProxy
+  }
+
+  export interface TypeAheadConfig {
+    displayKey: string
+    filterKey: string
+    name: string
   }
 }
 

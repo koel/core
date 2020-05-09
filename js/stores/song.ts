@@ -13,7 +13,7 @@ interface BroadcastedSongData {
     id: string
     title: string
     liked: boolean
-    playbackState: string
+    playbackState: 'stopped' | 'playing' | 'paused'
     album: {
       name: string
       cover: string
@@ -263,7 +263,7 @@ export const songStore: SongStore = {
       id: song.id,
       title: song.title,
       liked: song.liked,
-      playbackState: song.playbackState,
+      playbackState: song.playbackState || 'stopped',
       album: {
         name: song.album.name,
         cover: song.album.cover

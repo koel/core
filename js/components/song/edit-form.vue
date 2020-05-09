@@ -52,7 +52,7 @@
                 <label>Artist</label>
                 <typeahead
                   :items="artistState.artists"
-                  :options="artistTypeaheadOptions"
+                  :config="artistTypeAheadConfig"
                   v-model="formData.artistName"/>
               </div>
 
@@ -60,7 +60,7 @@
                 <label>Album</label>
                 <typeahead
                   :items="albumState.albums"
-                  :options="albumTypeaheadOptions"
+                  :config="albumTypeAheadConfig"
                   v-model="formData.albumName"/>
               </div>
 
@@ -110,6 +110,7 @@ import { songInfo } from '@/services/info'
 import { artistStore, albumStore, songStore } from '@/stores'
 import { getDefaultCover } from '@/utils'
 import Vue, { PropOptions } from 'vue'
+import { TypeAheadConfig } from 'koel/types/ui'
 
 interface EditFormData {
   title: string
@@ -152,18 +153,18 @@ export default Vue.extend({
     loading: true,
 
     artistState: artistStore.state,
-    artistTypeaheadOptions: {
+    artistTypeAheadConfig: {
       displayKey: 'name',
       filterKey: 'name',
       name: 'artist'
-    },
+    } as TypeAheadConfig,
 
     albumState: albumStore.state,
-    albumTypeaheadOptions: {
+    albumTypeAheadConfig: {
       displayKey: 'name',
       filterKey: 'name',
       name: 'album'
-    },
+    } as TypeAheadConfig,
 
     /**
      * In order not to mess up the original songs, we manually assign and manipulate

@@ -1,4 +1,5 @@
 import { http, albumInfo, artistInfo } from '..'
+import { YouTubePlayer } from 'youtube-player/dist/types'
 
 export const songInfo = {
   fetch: (song: Song): Promise<Song> => {
@@ -20,7 +21,10 @@ export const songInfo = {
           data: {
             artist_info: ArtistInfo,
             album_info: AlbumInfo,
-            youtube: object,
+            youtube: {
+              items: YouTubeVideo[],
+              nextPageToken: string
+            },
             lyrics: string
           }
         }

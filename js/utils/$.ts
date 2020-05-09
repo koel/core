@@ -2,21 +2,21 @@
  * A utility that aims to replace jQuery for the most basic DOM methods.
  */
 export const $ = {
-  is: (el: HTMLElement, selector: string): boolean => el.matches(selector),
+  is: (el: Element, selector: string): boolean => el.matches(selector),
 
-  addClass: (el: HTMLElement | null, className: string): void => {
+  addClass: (el: Element | null, className: string): void => {
     if (el) {
       el.classList.add(className)
     }
   },
 
-  removeClass: (el: HTMLElement | null, className: string): void => {
+  removeClass: (el: Element | null, className: string): void => {
     if (el) {
       el.classList.remove(className)
     }
   },
 
-  scrollTo (el: HTMLElement, to: number, duration: number, cb?: Function): void {
+  scrollTo (el: Element, to: number, duration: number, cb?: Function): void {
     if (duration <= 0 || !el) {
       return
     }

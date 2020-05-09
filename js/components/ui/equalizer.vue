@@ -55,7 +55,7 @@ export default Vue.extend({
     bands: [] as Band[],
     preampGainValue: 0,
     selectedPresetIndex: -1,
-    preampGainNode: {} as GainNode
+    preampGainNode: <GainNode><unknown>null
   }),
 
   computed: {

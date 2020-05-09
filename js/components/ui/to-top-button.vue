@@ -8,26 +8,29 @@
   </transition>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { $ } from '@/utils'
 
-export default {
+export default Vue.extend({
   data: () => ({
     showing: false
   }),
 
   methods: {
-    scrollToTop () {
-      $.scrollTo(this.$el.parentNode, 0, 500, () => (this.showing = false))
+    scrollToTop (): void {
+      $.scrollTo(this.$el.parentElement!, 0, 500, (): void => {
+        this.showing = false
+      })
     }
   },
 
-  mounted () {
-    this.$el.parentNode && this.$el.parentNode.addEventListener('scroll', e => {
-      this.showing = e.target.scrollTop > 64
+  mounted (): void {
+    this.$el.parentElement && this.$el.parentElement.addEventListener('scroll', (e: Event): void => {
+      this.showing = (<HTMLElement>e.target).scrollTop > 64
     })
   }
-}
+})
 </script>
 
 <style lang="scss">

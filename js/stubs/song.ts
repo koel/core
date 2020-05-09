@@ -8,7 +8,6 @@ const song: Song = {
   artist_id: artist.id,
   track: 1,
   disc: 0,
-  youtube: {},
   album_id: album.id,
   title: '',
   length: 0,

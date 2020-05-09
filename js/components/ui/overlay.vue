@@ -14,13 +14,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { assign } from 'lodash'
 import { event } from '@/utils'
 
-export default {
+export default Vue.extend({
   components: {
-    SoundBar: () => import('@/components/ui/sound-bar')
+    SoundBar: () => import('@/components/ui/sound-bar.vue')
   },
 
   data: () => ({
@@ -30,8 +31,6 @@ export default {
       /**
        * Either 'loading', 'success', 'info', 'warning', or 'error'.
        * This dictates the icon as well as possibly other visual appearances.
-       *
-       * @type {String}
        */
       type: 'loading',
       message: ''
@@ -39,7 +38,7 @@ export default {
   }),
 
   methods: {
-    show (options) {
+    show (options: object) {
       assign(this.state, options)
       this.state.showing = true
     },
@@ -51,11 +50,11 @@ export default {
 
   created () {
     event.on({
-      [event.$names.SHOW_OVERLAY]: options => this.show(options),
-      [event.$names.HIDE_OVERLAY]: () => this.hide()
+      [event.$names.SHOW_OVERLAY]: (options: object): void => this.show(options),
+      [event.$names.HIDE_OVERLAY]: (): void => this.hide()
     })
   }
-}
+})
 </script>
 
 <style lang="scss">

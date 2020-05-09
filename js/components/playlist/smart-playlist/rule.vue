@@ -44,16 +44,16 @@ export default Vue.extend({
 
   data: () => ({
     models,
-    selectedModel: {} as SmartPlaylistModel,
-    selectedOperator: {} as SmartPlaylistOperator,
+    selectedModel: <SmartPlaylistModel><unknown>null,
+    selectedOperator: <SmartPlaylistOperator><unknown>null,
     inputValues: [],
-    mutatedRule: {} as SmartPlaylistRule
+    mutatedRule: <SmartPlaylistRule><unknown>null
   }),
 
   watch: {
     options (): void {
       if (this.selectedModel.name === this.mutatedRule.model.name) {
-        this.selectedOperator = this.options.find(o => o.operator === this.mutatedRule.operator)
+        this.selectedOperator = this.options.find(o => o.operator === this.mutatedRule.operator)!
       } else {
         this.selectedOperator = this.options[0]
       }
@@ -61,11 +61,11 @@ export default Vue.extend({
   },
 
   computed: {
-    options (): any[] {
+    options (): SmartPlaylistOperator[] {
       return this.selectedModel ? types[this.selectedModel.type] : []
     },
 
-    availableInputs (): any[] {
+    availableInputs (): { id: string, value: any }[] {
       if (!this.selectedOperator) {
         return []
       }
@@ -88,12 +88,24 @@ export default Vue.extend({
     }
   },
 
-  created () {
+  created (): void {
     this.mutatedRule = Object.assign({}, this.rule)
-    this.mutatedRule.model =
-      this.selectedModel =
-      this.models.find(m => m.name === this.mutatedRule.model.name) as SmartPlaylistModel
-    this.selectedOperator = this.options.find(o => o.operator === this.mutatedRule.operator)
+
+    const model = this.models.find((m: SmartPlaylistModel) => m.name === this.mutatedRule.model.name)
+
+    if (!model) {
+      throw new Error(`Invalid smart playlist model: ${this.mutatedRule.model.name}`)
+    }
+
+    this.mutatedRule.model = this.selectedModel = model
+
+    const operator = this.options.find(o => o.operator === this.mutatedRule.operator)
+
+    if (!operator) {
+      throw new Error(`Invalid smart playlist operator: ${this.mutatedRule.operator}`)
+    }
+
+    this.selectedOperator = operator
   },
 
   methods: {

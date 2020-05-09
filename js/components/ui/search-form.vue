@@ -13,36 +13,39 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import isMobile from 'ismobilejs'
 import { debounce } from 'lodash'
 
 import { event } from '@/utils'
 
-export default {
-  data () {
-    return {
-      q: '',
-      showing: !isMobile.phone
-    }
-  },
+export default Vue.extend({
+  data: () => ({
+    q: '',
+    showing: !isMobile.phone
+  }),
 
   methods: {
-    filter: debounce(function () {
+    filter: debounce(function (): void {
+      // @ts-ignore because of `this`
       event.emit(event.$names.FILTER_CHANGED, this.q.trim())
     }, 200)
   },
 
   created () {
     event.on({
-      [event.$names.TOGGLE_SEARCH_FORM]: () => (this.showing = !this.showing),
-      [event.$names.FOCUS_SEARCH_FIELD]: () => {
-        this.$refs.input.focus()
-        this.$refs.input.select()
+      [event.$names.TOGGLE_SEARCH_FORM]: (): void => {
+        this.showing = !this.showing
+      },
+
+      [event.$names.FOCUS_SEARCH_FIELD]: (): void => {
+        ;(<HTMLInputElement>this.$refs.input).focus()
+        ;(<HTMLInputElement>this.$refs.input).select()
       }
     })
   }
-}
+})
 </script>
 
 <style lang="scss">

@@ -9,45 +9,34 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import initVisualizer from '@/utils/visualizer'
 import { event } from '@/utils'
 
-export default {
+export default Vue.extend({
   data: () => ({
     isFullscreen: false
   }),
 
   methods: {
-    toggleFullscreen () {
+    toggleFullscreen (): void {
       if (this.isFullscreen) {
-        const func =
-          document.exitFullscreen ||
-          document.webkitExitFullscreen ||
-          document.mozExitFullScreen || // notice the uppercase S
-          document.mozExitFullscreen ||
-          document.msExitFullscreen
-        func && func.apply(document)
+        document.exitFullscreen()
       } else {
-        const func =
-          this.$refs.visualizerContainer.requestFullscreen ||
-          this.$refs.visualizerContainer.webkitRequestFullscreen ||
-          this.$refs.visualizerContainer.mozRequestFullScreen ||
-          this.$refs.visualizerContainer.mozRequestFullscreen ||
-          this.$refs.visualizerContainer.msRequestFullscreen
-        func && func.apply(this.$refs.visualizerContainer)
+        (this.$refs.visualizerContainer as HTMLElement).requestFullscreen()
       }
 
       this.isFullscreen = !this.isFullscreen
     },
 
-    hide: () => event.emit(event.$names.TOGGLE_VISUALIZER)
+    hide: (): void => event.emit(event.$names.TOGGLE_VISUALIZER)
   },
 
-  mounted () {
-    initVisualizer(this.$refs.visualizerContainer)
+  mounted (): void {
+    initVisualizer(this.$refs.visualizerContainer as HTMLElement)
   }
-}
+})
 </script>
 
 <style lang="scss">

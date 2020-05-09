@@ -7,7 +7,7 @@ interface Socket {
   pusher: Pusher.Pusher | null
   channel: Pusher.Channel | null
   init(): Promise<void>
-  broadcast(eventName: string, data?: object): Socket
+  broadcast(eventName: string, data?: any): Socket
   listen(eventName: string, cb: Function): Socket
 }
 
@@ -38,7 +38,7 @@ export const socket: Socket = {
     })
   },
 
-  broadcast (eventName: string, data = {}): Socket {
+  broadcast (eventName: string, data: any = {}): Socket {
     this.channel && this.channel.trigger(`client-${eventName}.${userStore.current.id}`, data)
     return this
   },
