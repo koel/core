@@ -13,14 +13,14 @@
 import Vue from 'vue'
 import { event } from '@/utils'
 import { songStore } from '@/stores'
-import { views } from '@/config'
+import { MainView } from '@/config'
 import OtherControls from '@/components/layout/app-footer/other-controls.vue'
 import MiddlePane from '@/components/layout/app-footer/middle-pane.vue'
 import PlayerControls from '@/components/layout/app-footer/player-controls.vue'
 
 export default Vue.extend({
   data: () => ({
-    song: songStore.stub,
+    song: <Song><unknown>null,
     viewingQueue: false
   }),
 
@@ -51,8 +51,8 @@ export default Vue.extend({
        * Listen to main-content-view:load event and highlight the Queue icon if
        * the Queue screen is being loaded.
        */
-      [event.$names.LOAD_MAIN_CONTENT]: (view: string): void => {
-        this.viewingQueue = view === views.QUEUE
+      [event.$names.LOAD_MAIN_CONTENT]: (view: MainView): void => {
+        this.viewingQueue = view === MainView.Queue
       }
     })
   }

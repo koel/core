@@ -16,7 +16,7 @@
         role="button"
         tabindex="0"
         title="Play or resume"
-        v-if="song.playbackState !== 'playing'"
+        v-if="song && song.playbackState !== 'playing'"
       >
         <i class="fa fa-play"></i>
       </span>
@@ -43,22 +43,19 @@ import { getDefaultCover } from '@/utils'
 export default Vue.extend({
   props: {
     song: {
-      required: true,
       type: Object
     } as PropOptions<Song>
   },
 
   computed: {
     cover (): string {
-      return this.song.album.cover ? this.song.album.cover : getDefaultCover()
+      return this.song && this.song.album.cover ? this.song.album.cover : getDefaultCover()
     }
   },
 
   methods: {
     playPrev: (): void => playback.playPrev(),
-
     playNext: (): void => playback.playNext(),
-
     toggle: (): void => playback.toggle()
   }
 })

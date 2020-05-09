@@ -49,7 +49,7 @@ import mixins from 'vue-typed-mixins'
 import { pluralize, event } from '@/utils'
 import { playlistStore, sharedStore } from '@/stores'
 import { download } from '@/services'
-import { views } from '@/config'
+import { MainView } from '@/config'
 import hasSongList from '@/mixins/has-song-list.ts'
 
 export default mixins(hasSongList).extend({
@@ -68,8 +68,8 @@ export default mixins(hasSongList).extend({
      * Listen to 'main-content-view:load' event to load the requested
      * playlist into view if applicable.
      */
-    event.on(event.$names.LOAD_MAIN_CONTENT, (view: string, playlist: Playlist): void => {
-      if (view !== views.PLAYLIST) {
+    event.on(event.$names.LOAD_MAIN_CONTENT, (view: MainView, playlist: Playlist): void => {
+      if (view !== MainView.Playlist) {
         return
       }
 

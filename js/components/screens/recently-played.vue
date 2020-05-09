@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { views } from '@/config'
+import { MainView } from '@/config'
 import { event, pluralize } from '@/utils'
 import { recentlyPlayedStore } from '@/stores'
 import hasSongList from '@/mixins/has-song-list.ts'
@@ -45,8 +45,8 @@ export default mixins(hasSongList).extend({
 
   created (): void {
     event.on({
-      [event.$names.LOAD_MAIN_CONTENT]: (view: string) => {
-        if (view === views.RECENTLY_PLAYED) {
+      [event.$names.LOAD_MAIN_CONTENT]: (view: MainView) => {
+        if (view === MainView.RecentlyPlayed) {
           recentlyPlayedStore.fetchAll()
         }
       }

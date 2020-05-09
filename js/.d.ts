@@ -328,22 +328,3 @@ declare const enum DragType {
   Album = 'Album',
   Artist = 'Artist'
 }
-
-declare const enum MainView {
-  HOME,
-  DEFAULT,
-  QUEUE,
-  SONGS,
-  ALBUMS,
-  ARTISTS,
-  FAVORITES,
-  RECENTLY_PLAYED,
-  SETTINGS,
-  USERS,
-  YOUTUBE,
-  VISUALIZER,
-  PROFILE,
-  ALBUM,
-  ARTIST,
-  PLAYLIST,
-}

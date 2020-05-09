@@ -26,7 +26,7 @@ import { BaseContextMenu } from 'koel/types/ui'
 import { event } from '@/utils'
 import router from '@/router'
 import { songStore, playlistStore, favoriteStore } from '@/stores'
-import { views } from '@/config'
+import { MainView } from '@/config'
 
 const VALID_PLAYLIST_TYPES = ['playlist', 'favorites', 'recently-played']
 
@@ -138,15 +138,15 @@ export default Vue.extend({
   },
 
   created () {
-    event.on(event.$names.LOAD_MAIN_CONTENT, (view: string, playlist: Playlist): void => {
+    event.on(event.$names.LOAD_MAIN_CONTENT, (view: MainView, playlist: Playlist): void => {
       switch (view) {
-        case views.FAVORITES:
+        case MainView.Favorites:
           this.active = this.type === 'favorites'
           break
-        case views.RECENTLY_PLAYED:
+        case MainView.RecentlyPlayed:
           this.active = this.type === 'recently-played'
           break
-        case views.PLAYLIST:
+        case MainView.Playlist:
           this.active = this.playlist === playlist
           break
         default:

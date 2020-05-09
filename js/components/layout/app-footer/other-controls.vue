@@ -4,14 +4,14 @@
       <equalizer v-if="useEqualizer" v-show="showEqualizer"/>
 
       <a @click.prevent="toggleVisualizer" title="Click for a marvelous visualizer!" role="button" tabindex="0">
-        <sound-bar v-if="song.playbackState === 'playing'"/>
+        <sound-bar v-if="song && song.playbackState === 'playing'"/>
       </a>
 
       <i
         :class="{ liked: song.liked }"
         @click.prevent="like"
         class="like control fa fa-heart"
-        v-if="song.id"
+        v-if="song"
         role="button"
         tabindex="0"
         :title="`${ song.liked ? 'Unlike' : 'Like' } current song`"
@@ -74,12 +74,11 @@ import Vue, { PropOptions } from 'vue'
 import { download, playback, socket } from '@/services'
 import { event, isAudioContextSupported } from '@/utils'
 import { favoriteStore, preferenceStore, sharedStore, songStore } from '@/stores'
-import { views } from '@/config'
+import { MainView } from '@/config'
 
 export default Vue.extend({
   props: {
     song: {
-      required: true,
       type: Object
     } as PropOptions<Song>
   },
@@ -131,8 +130,8 @@ export default Vue.extend({
   },
 
   created () {
-    event.on(event.$names.LOAD_MAIN_CONTENT, (view: string) => {
-      this.viewingQueue = view === views.QUEUE
+    event.on(event.$names.LOAD_MAIN_CONTENT, (view: MainView) => {
+      this.viewingQueue = view === MainView.Queue
     })
   }
 })

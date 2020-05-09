@@ -4,14 +4,14 @@
 import select from 'select'
 import { event, noop, pluralize, use } from '@/utils'
 import { sharedStore } from '@/stores'
+import { MainView } from '@/config'
 
 /**
  * Load (display) a main panel (view).
  *
- * @param {String} view   The view, which can be found under components/main-wrapper/main-content.
  * @param {...*} args     Extra data to attach to the view.
  */
-export const loadMainView = (view: string, ...args: any[]): void =>
+export const loadMainView = (view: MainView, ...args: any[]): void =>
   event.emit(event.$names.LOAD_MAIN_CONTENT, view, ...args)
 
 /**

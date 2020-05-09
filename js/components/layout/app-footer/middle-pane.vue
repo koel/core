@@ -1,11 +1,13 @@
 <template>
   <div class="middle-pane">
     <div class="progress" id="progressPane">
-      <h3 class="title">{{ song.title }}</h3>
-      <p class="meta">
-        <a class="artist" :href="`#!/artist/${song.artist.id}`">{{ song.artist.name }}</a> –
-        <a class="album" :href="`#!/album/${song.album.id}`">{{ song.album.name }}</a>
-      </p>
+      <template v-if="song">
+        <h3 class="title">{{ song.title }}</h3>
+        <p class="meta">
+          <a class="artist" :href="`#!/artist/${song.artist.id}`">{{ song.artist.name }}</a> –
+          <a class="album" :href="`#!/album/${song.album.id}`">{{ song.album.name }}</a>
+        </p>
+      </template>
 
       <div class="plyr">
         <audio crossorigin="anonymous" controls></audio>
@@ -20,7 +22,6 @@ import Vue, { PropOptions } from 'vue'
 export default Vue.extend({
   props: {
     song: {
-      required: true,
       type: Object
     } as PropOptions<Song>
   }

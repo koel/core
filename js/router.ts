@@ -3,7 +3,7 @@ import isMobile from 'ismobilejs'
 import { loadMainView } from './utils'
 import { artistStore, albumStore, songStore, queueStore, playlistStore, userStore } from './stores'
 import { playback } from './services'
-import { views } from '@/config'
+import { MainView } from '@/config'
 import { use } from '@/utils'
 
 interface Routes {
@@ -20,49 +20,58 @@ interface Router {
 
 const router: Router = {
   routes: {
-    '/home': () => loadMainView(views.HOME),
-    '/queue': () => loadMainView(views.QUEUE),
-    '/songs': () => loadMainView(views.SONGS),
-    '/albums': () => loadMainView(views.ALBUMS),
-    '/artists': () => loadMainView(views.ARTISTS),
-    '/favorites': () => loadMainView(views.FAVORITES),
-    '/recently-played': () => loadMainView(views.RECENTLY_PLAYED),
-    '/settings': () => userStore.current.is_admin && loadMainView(views.SETTINGS),
-    '/users': () => userStore.current.is_admin && loadMainView(views.USERS),
-    '/youtube': () => loadMainView(views.YOUTUBE),
-    '/visualizer': () => loadMainView(views.VISUALIZER),
-    '/profile': () => loadMainView(views.PROFILE),
-    '/album/(\\d+)': (id: number) => use(albumStore.byId(~~id), album => loadMainView(views.ALBUM, album)),
-    '/artist/(\\d+)': (id: number) => use(artistStore.byId(~~id), artist => loadMainView(views.ARTIST, artist)),
-    '/playlist/(\\d+)': (id: number) => use(playlistStore.byId(~~id), playlist => loadMainView(views.PLAYLIST, playlist)),
+    '/home': () => loadMainView(MainView.Home),
+    '/queue': () => loadMainView(MainView.Queue),
+    '/songs': () => loadMainView(MainView.Songs),
+    '/albums': () => loadMainView(MainView.Albums),
+    '/artists': () => loadMainView(MainView.Artists),
+    '/favorites': () => loadMainView(MainView.Favorites),
+    '/recently-played': () => loadMainView(MainView.RecentlyPlayed),
+    '/settings': () => userStore.current.is_admin && loadMainView(MainView.Settings),
+    '/users': () => userStore.current.is_admin && loadMainView(MainView.Users),
+    '/youtube': () => loadMainView(MainView.YouTube),
+    '/visualizer': () => loadMainView(MainView.Visualizer),
+    '/profile': () => loadMainView(MainView.Profile),
 
-    '/song/([a-z0-9]{32})': (id: string) => use(songStore.byId(id), song => {
+    '/album/(\\d+)': (id: number) => use(albumStore.byId(~~id), (album: Album): void => {
+      loadMainView(MainView.Album, album)
+    }),
+
+    '/artist/(\\d+)': (id: number) => use(artistStore.byId(~~id), (artist: Artist): void => {
+      loadMainView(MainView.Artist, artist)
+    }),
+
+    '/playlist/(\\d+)': (id: number) => use(playlistStore.byId(~~id), (playlist: Playlist): void => {
+      loadMainView(MainView.Playlist, playlist)
+    }),
+
+    '/song/([a-z0-9]{32})': (id: string): void => use(songStore.byId(id), (song: Song): void => {
       if (isMobile.apple.device) {
         // Mobile Safari doesn't allow autoplay, so we just queue.
         queueStore.queue(song)
-        loadMainView(views.QUEUE)
+        loadMainView(MainView.Queue)
       } else {
         playback.queueAndPlay([song])
       }
     })
   },
 
-  init () {
+  init (): void {
     this.loadState()
-    window.addEventListener('popstate', () => this.loadState(), true)
+    window.addEventListener('popstate', (): void => this.loadState(), true)
   },
 
-  loadState () {
+  loadState (): void {
     if (!window.location.hash) {
       return this.go('home')
     }
 
-    Object.keys(this.routes).forEach(route => {
+    Object.keys(this.routes).forEach((route: string): void => {
       const matches = window.location.hash.match(new RegExp(`^#!${route}$`))
+
       if (matches) {
         const [, ...params] = matches
         this.routes[route](...params)
-        return false
       }
     })
   },
