@@ -164,7 +164,7 @@ interface Song {
   },
   playCountRegistered?: boolean
   preloaded?: boolean
-  playbackState?: 'stopped' | 'playing' | 'paused'
+  playbackState?: import('@/config').PlaybackState
   infoRetrieved?: boolean
   playCount: number
   liked: boolean

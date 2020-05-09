@@ -1,6 +1,6 @@
 <template>
   <li
-    :class="{ playing: song.playbackState === 'playing' || song.playbackState === 'paused' }"
+    :class="{ playing: song.playbackState === PlaybackState.Playing || song.playbackState === PlaybackState.Paused }"
     @contextmenu.prevent="requestContextMenu"
     @dblclick.prevent="play"
     @dragstart="dragStart"
@@ -10,7 +10,7 @@
   >
     <span class="cover" :style="{ backgroundImage: `url(${song.album.cover})` }">
       <a class="control" @click.prevent="changeSongState">
-        <i class="fa fa-play" v-if="song.playbackState !== 'playing'"></i>
+        <i class="fa fa-play" v-if="song.playbackState !== PlaybackState.Playing"></i>
         <i class="fa fa-pause" v-else></i>
       </a>
     </span>
@@ -29,6 +29,7 @@
 import { event, startDragging, pluralize } from '@/utils'
 import { queueStore } from '@/stores'
 import { playback } from '@/services'
+import { PlaybackState } from '@/config'
 import Vue, { PropOptions } from 'vue'
 
 export default Vue.extend({
@@ -43,6 +44,10 @@ export default Vue.extend({
       default: 0
     }
   },
+
+  data: () => ({
+    PlaybackState
+  }),
 
   filters: { pluralize },
 
@@ -63,9 +68,9 @@ export default Vue.extend({
     },
 
     changeSongState (): void {
-      if (this.song.playbackState === 'stopped') {
+      if (this.song.playbackState === PlaybackState.Stopped) {
         this.play()
-      } else if (this.song.playbackState === 'paused') {
+      } else if (this.song.playbackState === PlaybackState.Paused) {
         playback.resume()
       } else {
         playback.pause()

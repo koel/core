@@ -4,6 +4,7 @@ import { without, take, remove, orderBy, unionBy } from 'lodash'
 import isMobile from 'ismobilejs'
 
 import { secondsToHis, alerts, pluralize } from '@/utils'
+import { PlaybackState } from '@/config'
 import { http, ls } from '@/services'
 import { sharedStore, favoriteStore, albumStore, artistStore, preferenceStore } from '.'
 import stub from '@/stubs/song'
@@ -13,7 +14,7 @@ interface BroadcastedSongData {
     id: string
     title: string
     liked: boolean
-    playbackState: 'stopped' | 'playing' | 'paused'
+    playbackState: PlaybackState
     album: {
       name: string
       cover: string
@@ -80,7 +81,7 @@ export const songStore: SongStore = {
     Vue.set(song, 'artist', artist)
     Vue.set(song, 'liked', song.liked || false)
     Vue.set(song, 'lyrics', song.lyrics || null)
-    Vue.set(song, 'playbackState', song.playbackState || 'stopped')
+    Vue.set(song, 'playbackState', song.playbackState || PlaybackState.Stopped)
 
     artist.songs = unionBy(artist.songs || [], [song], 'id')
     album.songs = unionBy(album.songs || [], [song], 'id')
@@ -263,7 +264,7 @@ export const songStore: SongStore = {
       id: song.id,
       title: song.title,
       liked: song.liked,
-      playbackState: song.playbackState || 'stopped',
+      playbackState: song.playbackState || PlaybackState.Stopped,
       album: {
         name: song.album.name,
         cover: song.album.cover

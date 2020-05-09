@@ -1,5 +1,6 @@
 import album from './album'
 import artist from './artist'
+import { PlaybackState } from '@/config'
 
 const song: Song = {
   id: '00000000000000000000000000000000',
@@ -15,7 +16,7 @@ const song: Song = {
   lyrics: '',
   liked: false,
   playCount: 0,
-  playbackState: 'stopped',
+  playbackState: PlaybackState.Stopped,
   playCountRegistered: false,
   preloaded: false,
   infoRetrieved: true,
