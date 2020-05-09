@@ -5,28 +5,28 @@
 
       <ul class="menu">
         <li>
-          <a :class="['home', currentView === views.Home ? 'active' : '']" href="#!/home">Home</a>
+          <a :class="['home', currentView === MainView.Home ? 'active' : '']" href="#!/home">Home</a>
         </li>
         <li>
           <a
-            :class="['queue', currentView === views.Queue ? 'active' : '']"
+            :class="['queue', currentView === MainView.Queue ? 'active' : '']"
             href="#!/queue"
             v-koel-droppable="handleDrop"
           >Current Queue</a>
         </li>
         <li>
-          <a :class="['songs', currentView === views.Songs ? 'active' : '']" href="#!/songs">All Songs</a>
+          <a :class="['songs', currentView === MainView.Songs ? 'active' : '']" href="#!/songs">All Songs</a>
         </li>
         <li>
-          <a :class="['albums', currentView === views.Albums ? 'active' : '']" href="#!/albums">Albums</a>
+          <a :class="['albums', currentView === MainView.Albums ? 'active' : '']" href="#!/albums">Albums</a>
         </li>
         <li>
-          <a :class="['artists', currentView === views.Artists ? 'active' : '']" href="#!/artists">
+          <a :class="['artists', currentView === MainView.Artists ? 'active' : '']" href="#!/artists">
             Artists
           </a>
         </li>
         <li v-if="sharedState.useYouTube">
-          <a :class="['youtube', currentView === views.YouTube ? 'active' : '']" href="#!/youtube">
+          <a :class="['youtube', currentView === MainView.YouTube ? 'active' : '']" href="#!/youtube">
             YouTube Video
           </a>
         </li>
@@ -40,10 +40,10 @@
 
       <ul class="menu">
         <li>
-          <a :class="['settings', currentView === views.Settings ? 'active' : '']" href="#!/settings">Settings</a>
+          <a :class="['settings', currentView === MainView.Settings ? 'active' : '']" href="#!/settings">Settings</a>
         </li>
         <li>
-          <a :class="['users', currentView === views.Users ? 'active' : '']" href="#!/users">Users</a>
+          <a :class="['users', currentView === MainView.Users ? 'active' : '']" href="#!/users">Users</a>
         </li>
       </ul>
     </section>
@@ -64,7 +64,7 @@ export default Vue.extend({
   },
 
   data: () => ({
-    views: MainView,
+    MainView,
     currentView: MainView.Home,
     userState: userStore.state,
     showing: !isMobile.phone,

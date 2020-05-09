@@ -20,18 +20,29 @@ interface Router {
 
 const router: Router = {
   routes: {
-    '/home': () => loadMainView(MainView.Home),
-    '/queue': () => loadMainView(MainView.Queue),
-    '/songs': () => loadMainView(MainView.Songs),
-    '/albums': () => loadMainView(MainView.Albums),
-    '/artists': () => loadMainView(MainView.Artists),
-    '/favorites': () => loadMainView(MainView.Favorites),
-    '/recently-played': () => loadMainView(MainView.RecentlyPlayed),
-    '/settings': () => userStore.current.is_admin && loadMainView(MainView.Settings),
-    '/users': () => userStore.current.is_admin && loadMainView(MainView.Users),
-    '/youtube': () => loadMainView(MainView.YouTube),
-    '/visualizer': () => loadMainView(MainView.Visualizer),
-    '/profile': () => loadMainView(MainView.Profile),
+    '/home': (): void => loadMainView(MainView.Home),
+    '/queue': (): void => loadMainView(MainView.Queue),
+    '/songs': (): void => loadMainView(MainView.Songs),
+    '/albums': (): void => loadMainView(MainView.Albums),
+    '/artists': (): void => loadMainView(MainView.Artists),
+    '/favorites': (): void => loadMainView(MainView.Favorites),
+    '/recently-played': (): void => loadMainView(MainView.RecentlyPlayed),
+
+    '/settings': (): void => {
+      if (userStore.current.is_admin) {
+        loadMainView(MainView.Settings)
+      }
+    },
+
+    '/users': (): void => {
+      if (userStore.current.is_admin) {
+        loadMainView(MainView.Users)
+      }
+    },
+
+    '/youtube': (): void => loadMainView(MainView.YouTube),
+    '/visualizer': (): void => loadMainView(MainView.Visualizer),
+    '/profile': (): void => loadMainView(MainView.Profile),
 
     '/album/(\\d+)': (id: number) => use(albumStore.byId(~~id), (album: Album): void => {
       loadMainView(MainView.Album, album)

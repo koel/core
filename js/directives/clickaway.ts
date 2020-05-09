@@ -10,6 +10,6 @@ export const clickaway = {
       return
     }
 
-    document.addEventListener('click', (e: MouseEvent): void => el.contains(e.currentTarget as Node) || value())
+    document.addEventListener('click', (e: MouseEvent): void => el.contains(e.target as Node) || value())
   }
 }

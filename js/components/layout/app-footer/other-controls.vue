@@ -1,7 +1,7 @@
 <template>
   <div class="other-controls">
     <div class="wrapper" v-koel-clickaway="closeEqualizer">
-      <equalizer v-if="useEqualizer" v-show="showEqualizer"/>
+      <equalizer v-show="showEqualizer" v-if="useEqualizer"/>
 
       <a @click.prevent="toggleVisualizer" title="Click for a marvelous visualizer!" role="button" tabindex="0">
         <sound-bar v-if="song && song.playbackState === 'playing'"/>
@@ -30,7 +30,7 @@
 
       <i
         :class="{ active: showEqualizer }"
-        @click="showEqualizer = !showEqualizer"
+        @click="toggleEqualizer"
         class="fa fa-sliders control equalizer"
         v-if="useEqualizer"
         role="button"
@@ -94,7 +94,6 @@ export default Vue.extend({
     showEqualizer: false,
     sharedState: sharedStore.state,
     useEqualizer: isAudioContextSupported,
-    visualizerActivated: false,
     viewingQueue: false
   }),
 
@@ -116,6 +115,10 @@ export default Vue.extend({
 
     toggleExtraPanel (): void {
       preferenceStore.set('showExtraPanel', !this.prefs.showExtraPanel)
+    },
+
+    toggleEqualizer (): void {
+      this.showEqualizer = !this.showEqualizer
     },
 
     closeEqualizer (): void {

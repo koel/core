@@ -8,21 +8,21 @@
     <visualizer v-if="showingVisualizer"/>
     <album-art-overlay :album="currentAlbum" v-if="preferences.showAlbumArtOverlay"/>
 
-    <home-screen v-show="view === views.Home"/>
-    <queue-screen v-show="view === views.Queue"/>
-    <all-songs-screen v-show="view === views.Songs"/>
-    <album-list-screen v-show="view === views.Albums"/>
-    <artist-list-screen v-show="view === views.Artists"/>
-    <playlist-screen v-show="view === views.Playlist"/>
-    <favorites-screen v-show="view === views.Favorites"/>
-    <recently-played-screen v-show="view === views.RecentlyPlayed"/>
+    <home-screen v-show="view === MainView.Home"/>
+    <queue-screen v-show="view === MainView.Queue"/>
+    <all-songs-screen v-show="view === MainView.Songs"/>
+    <album-list-screen v-show="view === MainView.Albums"/>
+    <artist-list-screen v-show="view === MainView.Artists"/>
+    <playlist-screen v-show="view === MainView.Playlist"/>
+    <favorites-screen v-show="view === MainView.Favorites"/>
+    <recently-played-screen v-show="view === MainView.RecentlyPlayed"/>
 
-    <album-screen v-if="view === views.Album" :album="shownAlbum"/>
-    <artist-screen v-if="view === views.Artist" :artist="shownArtist"/>
-    <settings-screen v-if="view === views.Settings"/>
-    <profile-screen v-if="view === views.Profile"/>
-    <user-list-screen v-if="view === views.Users"/>
-    <youtube-screen v-if="sharedState.useYouTube" v-show="view === views.YouTube"/>
+    <album-screen v-if="view === MainView.Album" :album="shownAlbum"/>
+    <artist-screen v-if="view === MainView.Artist" :artist="shownArtist"/>
+    <settings-screen v-if="view === MainView.Settings"/>
+    <profile-screen v-if="view === MainView.Profile"/>
+    <user-list-screen v-if="view === MainView.Users"/>
+    <youtube-screen v-if="sharedState.useYouTube" v-show="view === MainView.YouTube"/>
   </section>
 </template>
 
@@ -60,7 +60,7 @@ export default Vue.extend({
   },
 
   data: () => ({
-    views: MainView,
+    MainView,
     currentAlbum: albumStore.stub,
     preferences: preferenceStore.state,
     sharedState: sharedStore.state,
