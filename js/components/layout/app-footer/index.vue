@@ -12,7 +12,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import { event } from '@/utils'
-import { songStore } from '@/stores'
 import { MainView } from '@/config'
 import OtherControls from '@/components/layout/app-footer/other-controls.vue'
 import MiddlePane from '@/components/layout/app-footer/middle-pane.vue'
@@ -20,7 +19,7 @@ import PlayerControls from '@/components/layout/app-footer/player-controls.vue'
 
 export default Vue.extend({
   data: () => ({
-    song: <Song><unknown>null,
+    song: null as unknown as Song,
     viewingQueue: false
   }),
 

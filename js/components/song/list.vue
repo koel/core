@@ -104,10 +104,6 @@ export default Vue.extend({
     } as PropOptions<Playlist>
   },
 
-  components: {
-    songItemComponent
-  },
-
   data: () => ({
     renderers: Object.freeze({
       song: songItemComponent

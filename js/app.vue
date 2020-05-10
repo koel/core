@@ -79,7 +79,7 @@ export default Vue.extend({
 
   created () {
     event.on(event.$names.CONTEXT_MENU_REQUESTED, (e: MouseEvent, songs: Song[]): void => {
-      this.contextMenuSongs = (<Song[]>[]).concat(songs)
+      this.contextMenuSongs = ([] as Song[]).concat(songs)
       // @ts-ignore because of .open()
       this.$nextTick((): void => this.$refs.songContextMenu.open(e.pageY, e.pageX))
     })

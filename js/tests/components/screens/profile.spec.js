@@ -15,7 +15,7 @@ describe('components/screens/profile', () => {
   })
 
   it('renders properly', () => {
-    expect(shallow(Profile)).toMatchSnapshot
+    expect(shallow(Profile)).toMatchSnapshot()
   })
 
   each([

@@ -15,7 +15,7 @@ describe('components/ui/album-art-overlay', () => {
   ]
 
   each(cases).test('matches what we expect with %s', (description, album) => {
-    const wrapper = mount(Component, { propsData: { album }})
+    const wrapper = mount(Component, { propsData: { album } })
     expect(wrapper).toMatchSnapshot()
   })
 })

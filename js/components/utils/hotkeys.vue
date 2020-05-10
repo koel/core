@@ -118,10 +118,12 @@ export default Vue.extend({
       if (
         !(e.currentTarget instanceof Document) &&
         ($.is(e.currentTarget as Element, 'input, select, textarea') &&
-        !$.is(e.currentTarget as Element, 'input[type=range]')) ||
-        e.metaKey ||
-        e.ctrlKey
+        !$.is(e.currentTarget as Element, 'input[type=range]'))
       ) {
+        return true
+      }
+
+      if (e.metaKey || e.ctrlKey) {
         return true
       }
 

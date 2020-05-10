@@ -60,7 +60,7 @@ export default Vue.extend({
      * Broadcast the volume changed event to remote controller.
      */
     broadcastVolume: (e: InputEvent): void => {
-      socket.broadcast(event.$names.SOCKET_VOLUME_CHANGED, parseFloat((<HTMLInputElement>e.currentTarget).value))
+      socket.broadcast(event.$names.SOCKET_VOLUME_CHANGED, parseFloat((e.currentTarget as HTMLInputElement).value))
     }
   }
 })

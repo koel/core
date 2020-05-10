@@ -40,4 +40,3 @@ describe('components/ui/volume', () => {
     expect(m).toHaveBeenCalledWith('SOCKET_VOLUME_CHANGED', 4.2)
   })
 })
-

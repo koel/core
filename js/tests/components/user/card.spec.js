@@ -22,7 +22,7 @@ describe('components/user/card', () => {
   })
 
   it('renders properly', () => {
-    const wrapper = shallow(Component, { propsData: { user }})
+    const wrapper = shallow(Component, { propsData: { user } })
     const html = wrapper.html()
     expect(html).toMatch(user.email)
     expect(html).toMatch(user.avatar)
@@ -33,7 +33,7 @@ describe('components/user/card', () => {
 
   it('has different behaviors if current user', () => {
     userStore.current.id = user.id
-    const wrapper = shallow(Component, { propsData: { user }})
+    const wrapper = shallow(Component, { propsData: { user } })
     expect(wrapper.has('.btn-delete')).toBe(false)
     expect(wrapper.find('.btn-edit').text()).toBe('Update Profile')
   })
@@ -41,7 +41,7 @@ describe('components/user/card', () => {
   it('redirects to update profile if attempting to edit current user', async done => {
     const goStub = mock(router, 'go')
     userStore.current.id = user.id
-    const wrapper = await mount(Component, { propsData: { user }})
+    const wrapper = await mount(Component, { propsData: { user } })
 
     wrapper.vm.$nextTick(() => {
       wrapper.click('.btn-edit')
@@ -51,7 +51,7 @@ describe('components/user/card', () => {
   })
 
   it('edits user', async done => {
-    const wrapper = await mount(Component, { propsData: { user }})
+    const wrapper = await mount(Component, { propsData: { user } })
 
     wrapper.vm.$nextTick(() => {
       expect(wrapper.click('.btn-edit').hasEmitted('editUser', user)).toBe(true)
@@ -61,7 +61,7 @@ describe('components/user/card', () => {
 
   it('triggers deleting user', async done => {
     const confirmStub = mock(alerts, 'confirm')
-    const wrapper = await mount(Component, { propsData: { user }})
+    const wrapper = await mount(Component, { propsData: { user } })
 
     wrapper.vm.$nextTick(() => {
       wrapper.click('.btn-delete')
@@ -75,7 +75,7 @@ describe('components/user/card', () => {
 
   it('deletes user', () => {
     const destroyStub = mock(userStore, 'destroy')
-    shallow(Component, { propsData: { user }}).vm.destroy()
+    shallow(Component, { propsData: { user } }).vm.destroy()
     expect(destroyStub).toHaveBeenCalledWith(user)
   })
 })

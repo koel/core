@@ -22,7 +22,6 @@ export default Vue.extend({
 
         if (!playlist.songs.length) {
           destroy()
-          return
         } else {
           alerts.confirm(`Delete the playlist &quot;${playlist.name}&quot?`, destroy)
         }

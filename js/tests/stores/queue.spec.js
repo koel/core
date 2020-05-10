@@ -78,7 +78,7 @@ describe('stores/queue', () => {
 
   it('returns undefined as next song if at end of queue', () => {
     queueStore.current = queueStore.state.songs[queueStore.state.songs.length - 1]
-    expect(queueStore.next).toBeUndefined
+    expect(queueStore.next).toBeUndefined()
   })
 
   it('gets the previous song in queue', () => {
@@ -87,6 +87,6 @@ describe('stores/queue', () => {
 
   it('returns undefined as previous song if at beginning of queue', () => {
     queueStore.current = queueStore.state.songs[0]
-    expect(queueStore.previous).toBeUndefined
+    expect(queueStore.previous).toBeUndefined()
   })
 })

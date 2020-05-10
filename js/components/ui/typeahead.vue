@@ -117,7 +117,7 @@ export default Vue.extend({
       this.showingResult = true
     },
 
-    change (e: InputEvent): void {
+    change (): void {
       this.apply()
       this.hideResults()
     },

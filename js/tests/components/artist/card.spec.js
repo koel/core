@@ -23,7 +23,7 @@ describe('components/artist/card', () => {
   })
 
   it('renders properly', async done => {
-    const wrapper = await mount(Component, { propsData: { artist }})
+    const wrapper = await mount(Component, { propsData: { artist } })
 
     wrapper.vm.$nextTick(() => {
       expect(wrapper.has(Thumbnail)).toBe(true)
@@ -37,7 +37,7 @@ describe('components/artist/card', () => {
   })
 
   it('shuffles', () => {
-    const wrapper = shallow(Component, { propsData: { artist }})
+    const wrapper = shallow(Component, { propsData: { artist } })
     const playStub = mock(playback, 'playAllByArtist')
 
     wrapper.click('.shuffle-artist')
@@ -45,7 +45,7 @@ describe('components/artist/card', () => {
   })
 
   it('downloads', () => {
-    const wrapper = shallow(Component, { propsData: { artist }})
+    const wrapper = shallow(Component, { propsData: { artist } })
     const downloadStub = mock(download, 'fromArtist')
 
     wrapper.click('.download-artist')

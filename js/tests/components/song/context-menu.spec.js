@@ -35,7 +35,7 @@ describe('components/song/context-menu', () => {
       '.top-queue',
       '.favorite'
     ]
-    expect(shallow(Component, { propsData: { songs }}).hasAll(...selectors)).toBe(true)
+    expect(shallow(Component, { propsData: { songs } }).hasAll(...selectors)).toBe(true)
   })
 
   each([

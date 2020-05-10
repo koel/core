@@ -57,7 +57,7 @@ export default Vue.extend({
     meta: {
       loading: false
     },
-    mutatedPlaylist: <Playlist><unknown>null
+    mutatedPlaylist: null as unknown as Playlist
   }),
 
   methods: {

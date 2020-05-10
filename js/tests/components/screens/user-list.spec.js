@@ -40,4 +40,3 @@ describe('components/screens/user-list', () => {
     expect(emitMock).toHaveBeenCalledWith('MODAL_SHOW_EDIT_USER_FORM', userStore.all[0])
   })
 })
-

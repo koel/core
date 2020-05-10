@@ -22,7 +22,7 @@ export default Vue.extend({
   },
 
   data: () => ({
-    mutatedPlaylist: <Playlist><unknown>null,
+    mutatedPlaylist: null as unknown as Playlist,
     updating: false
   }),
 

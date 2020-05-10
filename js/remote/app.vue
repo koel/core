@@ -63,178 +63,178 @@
 </template>
 
 <script>
-  import nouislider from 'nouislider'
-  import { socket, ls } from '@/services'
-  import { userStore, preferenceStore } from '@/stores'
-  import { event } from '@/utils'
-  import LoginForm from '@/components/auth/login-form'
+import nouislider from 'nouislider'
+import { socket, ls } from '@/services'
+import { userStore, preferenceStore } from '@/stores'
+import { event } from '@/utils'
+import LoginForm from '@/components/auth/login-form'
 import { PlaybackState } from '../config'
 
-  let volumeSlider
-  const MAX_RETRIES = 10
+let volumeSlider
+const MAX_RETRIES = 10
 
-  export default {
-    components: {
-      LoginForm,
-      AlbumArtOverlay: () => import('@/components/ui/album-art-overlay')
+export default {
+  components: {
+    LoginForm,
+    AlbumArtOverlay: () => import('@/components/ui/album-art-overlay')
+  },
+
+  data () {
+    return {
+      authenticated: false,
+      song: null,
+      lastActiveTime: new Date().getTime(),
+      inStandaloneMode: false,
+      connected: false,
+      muted: false,
+      showingVolumeSlider: false,
+      retries: 0,
+      preferences: preferenceStore.state
+    }
+  },
+
+  watch: {
+    connected () {
+      this.$nextTick(() => {
+        volumeSlider = document.getElementById('volumeSlider')
+
+        nouislider.create(volumeSlider, {
+          orientation: 'vertical',
+          connect: [true, false],
+          start: this.volume,
+          range: { min: 0, max: 10 },
+          direction: 'rtl'
+        })
+
+        volumeSlider.noUiSlider.on('change', (values, handle) => {
+          const volume = parseFloat(values[handle])
+          this.muted = !volume
+          socket.broadcast(event.$names.SOCKET_SET_VOLUME, { volume })
+        })
+      })
     },
 
-    data () {
-      return {
-        authenticated: false,
-        song: null,
-        lastActiveTime: new Date().getTime(),
-        inStandaloneMode: false,
-        connected: false,
-        muted: false,
-        showingVolumeSlider: false,
-        retries: 0,
-        preferences: preferenceStore.state
+    volume: value => volumeSlider.noUiSlider.set(value)
+  },
+
+  methods: {
+    onUserLoggedIn () {
+      this.authenticated = true
+      this.init()
+    },
+
+    async init () {
+      try {
+        const user = await userStore.getProfile()
+        userStore.init([], user)
+
+        await socket.init()
+
+        socket
+          .listen(event.$names.SOCKET_SONG, ({ song }) => (this.song = song))
+          .listen(event.$names.SOCKET_PLAYBACK_STOPPED, () => {
+            this.song && (this.song.playbackState = PlaybackState.Stopped)
+          })
+          .listen(event.$names.SOCKET_VOLUME_CHANGED, volume => volumeSlider.noUiSlider.set(volume))
+          .listen(event.$names.SOCKET_STATUS, ({ song, volume }) => {
+            this.song = song
+            this.volume = volume
+            this.connected = true
+          })
+
+        this.scan()
+      } catch (e) {
+        this.authenticated = false
       }
     },
 
-    watch: {
-      connected () {
-        this.$nextTick(() => {
-          volumeSlider = document.getElementById('volumeSlider')
-
-          nouislider.create(volumeSlider, {
-            orientation: 'vertical',
-            connect: [true, false],
-            start: this.volume,
-            range: { min: 0, max: 10 },
-            direction: 'rtl'
-          })
-
-          volumeSlider.noUiSlider.on('change', (values, handle) => {
-            const volume = parseFloat(values[handle])
-            this.muted = !volume
-            socket.broadcast(event.$names.SOCKET_SET_VOLUME, { volume })
-          })
-        })
-      },
-
-      volume: value => volumeSlider.noUiSlider.set(value)
+    toggleVolumeSlider () {
+      this.showingVolumeSlider = !this.showingVolumeSlider
     },
 
-    methods: {
-      onUserLoggedIn () {
-        this.authenticated = true
-        this.init()
-      },
+    toggleFavorite () {
+      if (!this.song) {
+        return
+      }
 
-      async init () {
-        try {
-          const user = await userStore.getProfile()
-          userStore.init([], user)
+      this.song.liked = !this.song.liked
+      socket.broadcast(event.$names.SOCKET_TOGGLE_FAVORITE)
+    },
 
-          await socket.init()
+    togglePlayback () {
+      if (this.song) {
+        this.song.playbackState = this.song.playbackState === PlaybackState.Playing
+          ? PlaybackState.Paused
+          : PlaybackState.Playing
+      }
 
-          socket
-            .listen(event.$names.SOCKET_SONG, ({ song }) => (this.song = song))
-            .listen(event.$names.SOCKET_PLAYBACK_STOPPED, () => {
-              this.song && (this.song.playbackState = PlaybackState.Stopped)
-            })
-            .listen(event.$names.SOCKET_VOLUME_CHANGED, volume => volumeSlider.noUiSlider.set(volume))
-            .listen(event.$names.SOCKET_STATUS, ({ song, volume }) => {
-              this.song = song
-              this.volume = volume
-              this.connected = true
-            })
+      socket.broadcast(event.$names.SOCKET_TOGGLE_PLAYBACK)
+    },
 
-          this.scan()
-        } catch (e) {
-          this.authenticated = false
-        }
-      },
+    playNext: () => socket.broadcast(event.$names.SOCKET_PLAY_NEXT),
+    playPrev: () => socket.broadcast(event.$names.SOCKET_PLAY_PREV),
+    getStatus: () => socket.broadcast(event.$names.SOCKET_GET_STATUS),
 
-      toggleVolumeSlider () {
-        this.showingVolumeSlider = !this.showingVolumeSlider
-      },
-
-      toggleFavorite () {
-        if (!this.song) {
-          return
-        }
-
-        this.song.liked = !this.song.liked
-        socket.broadcast(event.$names.SOCKET_TOGGLE_FAVORITE)
-      },
-
-      togglePlayback () {
-        if (this.song) {
-          this.song.playbackState = this.song.playbackState === PlaybackState.Playing
-            ? PlaybackState.Paused
-            : PlaybackState.Playing
-        }
-
-        socket.broadcast(event.$names.SOCKET_TOGGLE_PLAYBACK)
-      },
-
-      playNext: () => socket.broadcast(event.$names.SOCKET_PLAY_NEXT),
-      playPrev: () => socket.broadcast(event.$names.SOCKET_PLAY_PREV),
-      getStatus: () => socket.broadcast(event.$names.SOCKET_GET_STATUS),
-
-      /**
+    /**
        * As iOS will put a web app into standby/sleep mode (and halt all JS execution),
        * this method will keep track of the last active time and keep the status always fresh.
        */
-      heartbeat () {
-        const now = new Date().getTime()
-        if (now - this.lastActiveTime > 2000) {
-          this.getStatus()
-        }
-        this.lastActiveTime = now
-      },
+    heartbeat () {
+      const now = new Date().getTime()
+      if (now - this.lastActiveTime > 2000) {
+        this.getStatus()
+      }
+      this.lastActiveTime = now
+    },
 
-      /**
+    /**
        * Scan for an active (desktop) Koel instance.
        */
-      scan () {
-        if (!this.connected) {
-          if (!this.maxRetriesReached) {
-            this.getStatus()
-            this.retries++
-            window.setTimeout(this.scan, 1000)
-          }
-        } else {
-          this.retries = 0
+    scan () {
+      if (!this.connected) {
+        if (!this.maxRetriesReached) {
+          this.getStatus()
+          this.retries++
+          window.setTimeout(this.scan, 1000)
         }
-      },
-
-      rescan () {
+      } else {
         this.retries = 0
-        this.scan()
       }
     },
 
-    computed: {
-      playing () {
-        return this.song && this.song.playbackState === PlaybackState.Playing
-      },
+    rescan () {
+      this.retries = 0
+      this.scan()
+    }
+  },
 
-      maxRetriesReached () {
-        return this.retries >= MAX_RETRIES
-      },
-
-      album () {
-        return this.song ? this.song.album : null
-      }
+  computed: {
+    playing () {
+      return this.song && this.song.playbackState === PlaybackState.Playing
     },
 
-    created () {
-      window.setInterval(this.heartbeat, 500)
-      this.inStandaloneMode = window.navigator.standalone
+    maxRetriesReached () {
+      return this.retries >= MAX_RETRIES
     },
 
-    mounted () {
-      // The app has just been initialized, check if we can get the user data with an already existing token
-      if (ls.get('jwt-token')) {
-        this.authenticated = true
-        this.init()
-      }
+    album () {
+      return this.song ? this.song.album : null
+    }
+  },
+
+  created () {
+    window.setInterval(this.heartbeat, 500)
+    this.inStandaloneMode = window.navigator.standalone
+  },
+
+  mounted () {
+    // The app has just been initialized, check if we can get the user data with an already existing token
+    if (ls.get('jwt-token')) {
+      this.authenticated = true
+      this.init()
     }
   }
+}
 </script>
 
 <style lang="scss">

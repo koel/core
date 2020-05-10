@@ -30,7 +30,7 @@ export default Vue.extend({
   },
 
   data: () => ({
-    mutatedGroup: <SmartPlaylistRuleGroup><unknown>null
+    mutatedGroup: null as unknown as SmartPlaylistRuleGroup
   }),
 
   created () {

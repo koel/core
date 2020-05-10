@@ -55,7 +55,7 @@ export default Vue.extend({
     bands: [] as Band[],
     preampGainValue: 0,
     selectedPresetIndex: -1,
-    preampGainNode: <GainNode><unknown>null
+    preampGainNode: null as unknown as GainNode
   }),
 
   computed: {
@@ -166,7 +166,7 @@ export default Vue.extend({
             this.save()
           })
         }
-      )
+        )
 
       // Now we set this value to trigger the audio processing.
       this.selectedPresetIndex = preferences.selectedPreset
@@ -199,7 +199,7 @@ export default Vue.extend({
             el.noUiSlider.set(preset.gains[i - 1])
           }
         }
-      )
+        )
 
       this.save()
     },
@@ -243,7 +243,6 @@ export default Vue.extend({
     align-content: center;
     z-index: 1;
     border-bottom: 1px solid rgba(255, 255, 255, .1);
-
 
     .select-wrapper {
       position: relative;

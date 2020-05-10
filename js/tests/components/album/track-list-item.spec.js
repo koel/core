@@ -25,11 +25,13 @@ describe('componnents/song/track-list-item', () => {
   })
 
   it('renders', () => {
-    const wrapper = shallow(Component, { propsData: {
-      track,
-      album,
-      index: 1
-    }})
+    const wrapper = shallow(Component, {
+      propsData: {
+        track,
+        album,
+        index: 1
+      }
+    })
     expect(wrapper).toMatchSnapshot()
   })
 
@@ -39,11 +41,13 @@ describe('componnents/song/track-list-item', () => {
     const queueStub = mock(queueStore, 'queueAfterCurrent')
     const playStub = mock(playback, 'play')
 
-    shallow(Component, { propsData: {
-      track,
-      album,
-      index: 1
-    }}).click('li')
+    shallow(Component, {
+      propsData: {
+        track,
+        album,
+        index: 1
+      }
+    }).click('li')
 
     expect(containsStub).toHaveBeenCalledWith(song)
     expect(queueStub).toHaveBeenCalledWith(song)

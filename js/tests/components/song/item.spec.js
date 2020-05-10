@@ -24,7 +24,7 @@ describe('components/song/item', () => {
     })
 
     item = { song, selected: false }
-    wrapper = shallow(Component, { propsData: { item }})
+    wrapper = shallow(Component, { propsData: { item } })
   })
 
   afterEach(() => {

@@ -33,7 +33,7 @@ export default Vue.extend({
   },
 
   data: () => ({
-    textZoomTarget: <Element><unknown>null,
+    textZoomTarget: null as unknown as Element,
     userState: userStore.state
   }),
 
@@ -51,7 +51,7 @@ export default Vue.extend({
 
   mounted () {
     // Since Vue's $refs are not reactive, we work around by assigning to a data property
-    this.textZoomTarget = <Element>this.$refs.lyricsContainer
+    this.textZoomTarget = this.$refs.lyricsContainer as Element
   }
 })
 </script>

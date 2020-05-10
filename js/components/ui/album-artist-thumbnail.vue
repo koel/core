@@ -43,7 +43,7 @@ export default Vue.extend({
 
   computed: {
     forAlbum (): boolean {
-      return this.entity.hasOwnProperty('artist')
+      return 'artist' in this.entity
     },
 
     sortKeys (): string[] {

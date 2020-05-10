@@ -44,10 +44,10 @@ export default Vue.extend({
 
   data: () => ({
     models,
-    selectedModel: <SmartPlaylistModel><unknown>null,
-    selectedOperator: <SmartPlaylistOperator><unknown>null,
+    selectedModel: null as unknown as SmartPlaylistModel,
+    selectedOperator: null as unknown as SmartPlaylistOperator,
     inputValues: [],
-    mutatedRule: <SmartPlaylistRule><unknown>null
+    mutatedRule: null as unknown as SmartPlaylistRule
   }),
 
   watch: {

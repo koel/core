@@ -14,7 +14,7 @@ describe('components/ui/album-artist-thumbnail(album)', () => {
       songs: factory('song', 10)
     })
     sharedStore.state = { allowDownload: true }
-    wrapper = shallow(Component, { propsData: { entity: album }})
+    wrapper = shallow(Component, { propsData: { entity: album } })
   })
 
   afterEach(() => {
@@ -46,7 +46,7 @@ describe('components/ui/album-artist-thumbnail(artist)', () => {
       albums: factory('album', 4),
       songs: factory('song', 16)
     })
-    wrapper = shallow(Component, { propsData: { entity: artist }})
+    wrapper = shallow(Component, { propsData: { entity: artist } })
   })
 
   afterEach(() => {

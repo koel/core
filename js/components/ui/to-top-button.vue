@@ -27,7 +27,7 @@ export default Vue.extend({
 
   mounted (): void {
     this.$el.parentElement && this.$el.parentElement.addEventListener('scroll', (e: Event): void => {
-      this.showing = (<HTMLElement>e.currentTarget).scrollTop > 64
+      this.showing = (e.currentTarget as HTMLElement).scrollTop > 64
     })
   }
 })

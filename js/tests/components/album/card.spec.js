@@ -21,7 +21,7 @@ describe('components/album/card', () => {
   })
 
   it('renders properly', async done => {
-    const wrapper = await mount(Component, { propsData: { album }})
+    const wrapper = await mount(Component, { propsData: { album } })
 
     wrapper.vm.$nextTick(() => {
       expect(wrapper.has(Thumbnail)).toBe(true)
@@ -34,7 +34,7 @@ describe('components/album/card', () => {
   })
 
   it('shuffles', () => {
-    const wrapper = shallow(Component, { propsData: { album }})
+    const wrapper = shallow(Component, { propsData: { album } })
     const m = mock(playback, 'playAllInAlbum')
 
     wrapper.click('.shuffle-album')
@@ -42,7 +42,7 @@ describe('components/album/card', () => {
   })
 
   it('downloads', () => {
-    const wrapper = shallow(Component, { propsData: { album }})
+    const wrapper = shallow(Component, { propsData: { album } })
     const m = mock(download, 'fromAlbum')
 
     wrapper.click('.download-album')

@@ -11,7 +11,7 @@ describe('components/song/list-controls-toggler', () => {
   })
 
   each([[true], [false]]).test('shows/hides properly', shouldShow => {
-    const wrapper = shallow(Component, { propsData: { showingControls: shouldShow }})
+    const wrapper = shallow(Component, { propsData: { showingControls: shouldShow } })
     expect(wrapper.has('.toggler.fa-angle-up')).toBe(shouldShow)
   })
 

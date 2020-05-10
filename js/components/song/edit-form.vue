@@ -105,10 +105,10 @@
 <script lang="ts">
 import { union } from 'lodash'
 
-import { br2nl } from '@/utils'
+import { br2nl, getDefaultCover } from '@/utils'
 import { songInfo } from '@/services/info'
 import { artistStore, albumStore, songStore } from '@/stores'
-import { getDefaultCover } from '@/utils'
+
 import Vue, { PropOptions } from 'vue'
 import { TypeAheadConfig } from 'koel/types/ui'
 

@@ -98,12 +98,12 @@ export default Vue.extend({
     config: Object,
     songs: {
       type: Array,
-      default: []
+      default: () => []
     } as PropOptions<Song[]>,
 
     selectedSongs: {
       type: Array,
-      default: []
+      default: () => []
     } as PropOptions<Song[]>
   },
 

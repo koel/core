@@ -40,8 +40,8 @@ export default Vue.extend({
       },
 
       [event.$names.FOCUS_SEARCH_FIELD]: (): void => {
-        ;(<HTMLInputElement>this.$refs.input).focus()
-        ;(<HTMLInputElement>this.$refs.input).select()
+        ;(this.$refs.input as HTMLInputElement).focus()
+        ;(this.$refs.input as HTMLInputElement).select()
       }
     })
   }

@@ -53,7 +53,7 @@ export default Vue.extend({
 
   data: () => ({
     loading: false,
-    mutatedUser: <User><unknown>null
+    mutatedUser: null as unknown as User
   }),
 
   methods: {

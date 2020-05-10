@@ -22,10 +22,12 @@ describe('components/song/list', () => {
   it('informs parent to update meta data', () => {
     const emitStub = mock(event, 'emit')
     const getLengthStub = mock(songStore, 'getFormattedLength', '12:34:56')
-    mount(Component, { propsData: {
-      items: songs,
-      type: 'all-songs'
-    }})
+    mount(Component, {
+      propsData: {
+        items: songs,
+        type: 'all-songs'
+      }
+    })
 
     expect(getLengthStub).toHaveBeenCalledWith(songs)
     expect(emitStub).toHaveBeenCalled()
@@ -38,20 +40,24 @@ describe('components/song/list', () => {
     ['.album', ['song.album.name', 'song.track']],
     ['.time', 'song.length']
   ]).test('sorts when "%s" is clicked', (selector, criteria) => {
-    const wrapper = mount(Component, { propsData: {
-      items: songs,
-      type: 'all-songs'
-    }})
+    const wrapper = mount(Component, {
+      propsData: {
+        items: songs,
+        type: 'all-songs'
+      }
+    })
     const m = mock(wrapper.vm, 'sort')
     wrapper.click(`.song-list-header ${selector}`)
     expect(m).toHaveBeenCalledWith(criteria)
   })
 
   it('takes disc into account when sort an album song list', () => {
-    const wrapper = mount(Component, { propsData: {
-      items: songs,
-      type: 'album'
-    }})
+    const wrapper = mount(Component, {
+      propsData: {
+        items: songs,
+        type: 'album'
+      }
+    })
 
     wrapper.vm.sort()
     expect(wrapper.vm.sortKey).toContain('song.disc')
@@ -64,19 +70,23 @@ describe('components/song/list', () => {
     ['foo bar in:artist', 'foo bar', ['song.artist.name']],
     ['foo in:album in:artist', 'foo', ['song.album.name', 'song.artist.name']]
   ]).test('parses query "%s" into keyword "%s" and proper search fields', (q, keywords, fields) => {
-    const wrapper = shallow(Component, { propsData: {
-      items: songs,
-      type: 'all-songs'
-    }})
+    const wrapper = shallow(Component, {
+      propsData: {
+        items: songs,
+        type: 'all-songs'
+      }
+    })
 
     expect(wrapper.vm.extractSearchDataFromQuery(q)).toEqual({ keywords, fields })
   })
 
   it('plays when Enter is pressed with one selected song', () => {
-    const wrapper = mount(Component, { propsData: {
-      items: songs,
-      type: 'all-songs'
-    }})
+    const wrapper = mount(Component, {
+      propsData: {
+        items: songs,
+        type: 'all-songs'
+      }
+    })
     // select one row
     wrapper.vm.filteredItems[0].selected = true
 
@@ -86,10 +96,12 @@ describe('components/song/list', () => {
   })
 
   it('plays when Enter is pressed in Queue screen', () => {
-    const wrapper = mount(Component, { propsData: {
-      items: songs,
-      type: 'queue'
-    }})
+    const wrapper = mount(Component, {
+      propsData: {
+        items: songs,
+        type: 'queue'
+      }
+    })
 
     const m = mock(playback, 'play')
     wrapper.vm.filteredItems[0].selected = true
@@ -99,10 +111,12 @@ describe('components/song/list', () => {
   })
 
   it('queues when Enter is pressed in other screens', () => {
-    const wrapper = mount(Component, { propsData: {
-      items: songs,
-      type: 'playlist'
-    }})
+    const wrapper = mount(Component, {
+      propsData: {
+        items: songs,
+        type: 'playlist'
+      }
+    })
     const queueMock = mock(queueStore, 'queue')
     const goMock = mock(router, 'go')
     const playMock = mock(playback, 'play')
@@ -129,10 +143,12 @@ describe('components/song/list', () => {
   })
 
   it('selects all songs', () => {
-    const wrapper = mount(Component, { propsData: {
-      items: songs,
-      type: 'playlist'
-    }})
+    const wrapper = mount(Component, {
+      propsData: {
+        items: songs,
+        type: 'playlist'
+      }
+    })
     wrapper.find('.song-list-wrap').trigger('keydown.a', { ctrlKey: true })
     wrapper.vm.filteredItems.forEach(item => expect(item.selected).toBe(true))
   })

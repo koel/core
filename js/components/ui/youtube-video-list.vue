@@ -28,7 +28,6 @@
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
 import { youtube as youtubeService } from '@/services'
-import { YouTubePlayer } from 'youtube-player/dist/types'
 
 export default Vue.extend({
   components: {

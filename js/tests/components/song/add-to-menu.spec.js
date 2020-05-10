@@ -22,11 +22,13 @@ describe('components/song/add-to-menu', () => {
 
   const initComponent = (customConfig = {}, func = shallow) => {
     songs = factory('song', 5)
-    return func(Component, { propsData: {
-      songs,
-      config: _.assign(_.clone(config), customConfig),
-      showing: true
-    }})
+    return func(Component, {
+      propsData: {
+        songs,
+        config: _.assign(_.clone(config), customConfig),
+        showing: true
+      }
+    })
   }
 
   it('renders', () => {
