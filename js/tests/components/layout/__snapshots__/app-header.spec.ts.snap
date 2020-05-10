@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/layout/app-header renders propery 1`] = `
+<header id="mainHeader" data-cy="appHeader">
+  <h1 class="brand">Koel</h1> <span role="button" title="Show or hide the sidebar" class="hamburger"><i class="fa fa-bars"></i></span> <span role="button" title="Show or hide the search form" class="magnifier"><i class="fa fa-search"></i></span>
+  <div id="searchForm" role="search" class="side search showing"><input type="search" autocorrect="false" placeholder="Search" spellcheck="false" class=""></div>
+  <div class="header-right"><span id="userBadge" class="profile"><a href="#!/profile" title="View/edit user profile" class="view-profile control"><img src="" alt="Avatar of " class="avatar"> <span class="name"></span></a> <a title="Log  out" data-cy="btnLogOut" href="" role="button" class="logout control"><i class="fa fa-sign-out"></i></a></span> <a href="" title="About Koel" role="button" class="about control"><i class="fa fa-info-circle"></i></a></div>
+</header>
+`;

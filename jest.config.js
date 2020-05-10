@@ -19,7 +19,7 @@ module.exports = {
     KOEL_ENV: 'web',
     NODE_ENV: 'test'
   },
-  setupFilesAfterEnv: ['<rootDir>/js/tests/setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/js/tests/setup.ts'],
   verbose: true,
   collectCoverage: true,
   coverageReporters: ['lcov', 'json', 'html'],

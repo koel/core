@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/playlist/sidebar-item renders a playlist menu item 1`] = `
+<li class="playlist playlist"><a href="#!/playlist/99" class="">Foo</a>
+  <!---->
+  <contextmenu-stub playlist="[object Object]"></contextmenu-stub>
+</li>
+`;

@@ -9,6 +9,7 @@ declare module 'vue-global-events' {
 
 declare module '@phanan/vuebus' {
   function emit(eventName: string, ...data: any[]): void
+  function emit(...args: any[]): void
   function on(eventName: string, handler: Function): void
   function on(handlers: { [key: string]: Function }): void
   const $names: { [key: string]: string }
@@ -110,7 +111,7 @@ interface Constructable<T> {
 }
 
 interface Window {
-  readonly BASE_URL: string
+  BASE_URL: string
   __UNIT_TESTING__: boolean
   readonly PUSHER_APP_KEY: string
   readonly PUSHER_APP_CLUSTER: string
@@ -175,6 +176,11 @@ interface Song {
 interface AlbumInfo {
   image: string | null
   readonly tracks: AlbumTrack[]
+  wiki?: {
+    summary: string
+    full: string
+  }
+  url?: string
 }
 
 interface AlbumTrack {
@@ -185,6 +191,11 @@ interface AlbumTrack {
 
 interface ArtistInfo {
   image: string | null
+  bio?: {
+    summary: string
+    full: string
+  }
+  url?: string
 }
 
 interface SmartPlaylistRule {
@@ -229,7 +240,7 @@ interface Playlist {
   readonly id: number
   name: string
   songs: Song[]
-  populated: boolean
+  populated?: boolean
   is_smart: boolean
   rules: SmartPlaylistRuleGroup[]
 }
@@ -241,6 +252,12 @@ interface YouTubeVideo {
 
   readonly snippet: {
     title: string
+    description: string
+    thumbnails: {
+      default: {
+        url: string
+      }
+    }
   }
 }
 
@@ -278,12 +295,10 @@ declare module 'koel/types/ui' {
   import Vue from 'vue'
   import { Component } from 'vue/types/options'
 
-
   export interface BaseContextMenu extends Vue {
     open(y: number, x: number): void
     close(): void
   }
-
 
   export interface BasePlaylistMenu extends Vue {
     open(top: number, left: number): void
