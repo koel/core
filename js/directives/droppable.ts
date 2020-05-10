@@ -1,6 +1,7 @@
 import { $ } from '@/utils'
+import { DirectiveOptions } from 'vue'
 
-export const droppable = {
+export const droppable: DirectiveOptions = {
   update: (el: HTMLElement, { value }: { value: Function | never }): void => {
     if (!(value instanceof Function)) {
       throw new Error(`Expect a function, received ${typeof value}`)
