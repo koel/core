@@ -13,11 +13,8 @@ import {
   preferenceStore as preferences
 } from '@/stores'
 import { socket, audio as audioService } from '.'
-import { app, PlaybackState as ImportedPlaybackState } from '@/config'
+import { app } from '@/config'
 import router from '@/router'
-
-// Make sure PlaybackState enum is transpiled to be used at runtime
-const PlaybackState = ImportedPlaybackState
 
 interface Playback {
   previous: Song | undefined
@@ -25,7 +22,7 @@ interface Playback {
   isTranscoding: boolean
   player: Plyr | null
   volumeInput: HTMLInputElement | null
-  repeatModes: String[]
+  repeatModes: string[]
   initialized: boolean
   mainWin: any
 
@@ -206,10 +203,10 @@ export const playback: Playback = {
     document.querySelector('.plyr audio')!.setAttribute('title', `${song.artist.name} - ${song.title}`)
 
     if (queueStore.current) {
-      queueStore.current.playbackState = PlaybackState.Stopped
+      queueStore.current.playbackState = 'Stopped'
     }
 
-    song.playbackState = PlaybackState.Playing
+    song.playbackState = 'Playing'
     queueStore.current = song
 
     // Manually set the `src` attribute of the audio to prevent plyr from resetting
@@ -380,7 +377,7 @@ export const playback: Playback = {
     this.player!.seek(0)
 
     if (queueStore.current) {
-      queueStore.current.playbackState = PlaybackState.Stopped
+      queueStore.current.playbackState = 'Stopped'
     }
 
     socket.broadcast(event.$names.SOCKET_PLAYBACK_STOPPED)
@@ -388,13 +385,13 @@ export const playback: Playback = {
 
   pause () {
     this.player!.pause()
-    queueStore.current!.playbackState = PlaybackState.Paused
+    queueStore.current!.playbackState = 'Paused'
     socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current!))
   },
 
   resume () {
     this.player!.play()
-    queueStore.current!.playbackState = PlaybackState.Playing
+    queueStore.current!.playbackState = 'Playing'
     event.emit(event.$names.SONG_PLAYED, queueStore.current)
     socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current!))
   },
@@ -405,7 +402,7 @@ export const playback: Playback = {
       return
     }
 
-    if (queueStore.current.playbackState !== PlaybackState.Playing) {
+    if (queueStore.current.playbackState !== 'Playing') {
       this.resume()
       return
     }

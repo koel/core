@@ -4,7 +4,7 @@
       <equalizer v-show="showEqualizer" v-if="useEqualizer"/>
 
       <a @click.prevent="toggleVisualizer" title="Click for a marvelous visualizer!" role="button" tabindex="0">
-        <sound-bar v-if="song && song.playbackState === PlaybackState.Playing"/>
+        <sound-bar v-if="song && song.playbackState === 'Playing'"/>
       </a>
 
       <i
@@ -74,7 +74,6 @@ import Vue, { PropOptions } from 'vue'
 import { download, playback, socket } from '@/services'
 import { event, isAudioContextSupported } from '@/utils'
 import { favoriteStore, preferenceStore, sharedStore, songStore } from '@/stores'
-import { MainView, PlaybackState } from '@/config'
 
 export default Vue.extend({
   props: {
@@ -90,7 +89,6 @@ export default Vue.extend({
   },
 
   data: () => ({
-    PlaybackState,
     prefs: preferenceStore.state,
     showEqualizer: false,
     sharedState: sharedStore.state,
@@ -134,8 +132,8 @@ export default Vue.extend({
   },
 
   created () {
-    event.on(event.$names.LOAD_MAIN_CONTENT, (view: MainView) => {
-      this.viewingQueue = view === MainView.Queue
+    event.on(event.$names.LOAD_MAIN_CONTENT, (view: MainViewName) => {
+      this.viewingQueue = view === 'Queue'
     })
   }
 })

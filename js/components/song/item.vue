@@ -18,7 +18,7 @@
     <td class="album">{{ song.album.name }}</td>
     <td class="time">{{ song.fmtLength }}</td>
     <td class="play" @click.stop="doPlayback">
-      <i class="fa fa-pause-circle" v-if="song.playbackState === PlaybackState.Playing"></i>
+      <i class="fa fa-pause-circle" v-if="song.playbackState === 'Playing'"></i>
       <i class="fa fa-play-circle" v-else></i>
     </td>
   </tr>
@@ -29,7 +29,6 @@ import Vue, { PropOptions } from 'vue'
 import $ from 'vuequery'
 import { playback } from '@/services'
 import { queueStore } from '@/stores'
-import { PlaybackState } from '@/config'
 import { SongListComponent } from 'koel/types/ui'
 
 interface ItemData {
@@ -46,7 +45,6 @@ export default Vue.extend({
   },
 
   data: () => ({
-    PlaybackState,
     parentSongList: null
   } as ItemData),
 
@@ -59,7 +57,7 @@ export default Vue.extend({
     },
 
     playing (): boolean {
-      return this.song.playbackState === PlaybackState.Playing || this.song.playbackState === PlaybackState.Paused
+      return this.song.playbackState === 'Playing' || this.song.playbackState === 'Paused'
     }
   },
 
@@ -79,10 +77,10 @@ export default Vue.extend({
 
     doPlayback (): void {
       switch (this.song.playbackState) {
-        case PlaybackState.Playing:
+        case 'Playing':
           playback.pause()
           break
-        case PlaybackState.Paused:
+        case 'Paused':
           playback.resume()
           break
         default:

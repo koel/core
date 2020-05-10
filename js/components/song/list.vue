@@ -342,7 +342,7 @@ export default Vue.extend({
         rowVm.item.selected = true
       }
 
-      startDragging(event, this.selectedSongs, DragType.Song)
+      startDragging(event, this.selectedSongs, 'Song')
     },
 
     /**

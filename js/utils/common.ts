@@ -4,14 +4,13 @@
 import select from 'select'
 import { event, noop, pluralize, use } from '@/utils'
 import { sharedStore } from '@/stores'
-import { MainView } from '@/config'
 
 /**
  * Load (display) a main panel (view).
  *
  * @param {...*} args     Extra data to attach to the view.
  */
-export const loadMainView = (view: MainView, ...args: any[]): void =>
+export const loadMainView = (view: MainViewName, ...args: any[]): void =>
   event.emit(event.$names.LOAD_MAIN_CONTENT, view, ...args)
 
 /**
@@ -80,7 +79,7 @@ export const startDragging = (event: DragEvent, dragged: Song | Song[] | Album |
   let songIds
 
   switch (type) {
-    case DragType.Song:
+    case 'Song':
       dragged = (<Song[]>[]).concat(<Song>dragged)
       text = dragged.length === 1
         ? `${dragged[0].title} by ${dragged[0].artist.name}`
@@ -88,13 +87,13 @@ export const startDragging = (event: DragEvent, dragged: Song | Song[] | Album |
       songIds = dragged.map(song => song.id)
       break
 
-    case DragType.Album:
+    case 'Album':
       dragged = <Album>dragged
       text = `All ${pluralize(dragged.songs.length, 'song')} in ${dragged.name}`
       songIds = dragged.songs.map(song => song.id)
       break
 
-    case DragType.Artist:
+    case 'Artist':
       dragged = <Artist>dragged
       text = `All ${pluralize(dragged.songs.length, 'song')} by ${dragged.name}`
       songIds = dragged.songs.map(song => song.id)

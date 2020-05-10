@@ -85,7 +85,7 @@ export default mixins(artistAttributes).extend({
     },
 
     dragStart (event: DragEvent): void {
-      startDragging(event, this.artist, DragType.Artist)
+      startDragging(event, this.artist, 'Artist')
     }
   }
 })

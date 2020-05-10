@@ -3,8 +3,8 @@
     <div class="tabs">
       <div class="clear" role="tablist">
         <button
-          :aria-selected="currentTab === tabs.Lyrics"
-          @click.prevent="currentTab = tabs.Lyrics"
+          :aria-selected="currentTab === 'Lyrics'"
+          @click.prevent="currentTab = 'Lyrics'"
           aria-controls="extraPanelLyrics"
           id="extraTabLyrics"
           role="tab"
@@ -12,8 +12,8 @@
           Lyrics
         </button>
         <button
-          :aria-selected="currentTab === tabs.Artist"
-          @click.prevent="currentTab = tabs.Artist"
+          :aria-selected="currentTab === 'Artist'"
+          @click.prevent="currentTab = 'Artist'"
           aria-controls="extraPanelArtist"
           id="extraTabArtist"
           role="tab"
@@ -21,8 +21,8 @@
           Artist
         </button>
         <button
-          :aria-selected="currentTab === tabs.Album"
-          @click.prevent="currentTab = tabs.Album"
+          :aria-selected="currentTab === 'Album'"
+          @click.prevent="currentTab = 'Album'"
           aria-controls="extraPanelAlbum"
           id="extraTabAlbum"
           role="tab"
@@ -30,8 +30,8 @@
           Album
         </button>
         <button
-          :aria-selected="currentTab === tabs.YouTube"
-          @click.prevent="currentTab = tabs.YouTube"
+          :aria-selected="currentTab === 'YouTube'"
+          @click.prevent="currentTab = 'YouTube'"
           aria-controls="extraPanelYouTube"
           id="extraTabYouTube"
           role="tab"
@@ -48,7 +48,7 @@
           id="extraPanelLyrics"
           role="tabpanel"
           tabindex="0"
-          v-show="currentTab === tabs.Lyrics"
+          v-show="currentTab === 'Lyrics'"
         >
           <lyrics-pane :song="song" />
         </div>
@@ -58,7 +58,7 @@
           id="extraPanelArtist"
           role="tabpanel"
           tabindex="0"
-          v-show="currentTab === tabs.Artist"
+          v-show="currentTab === 'Artist'"
         >
           <artist-info v-if="song.artist.id" :artist="song.artist" mode="sidebar"/>
         </div>
@@ -68,7 +68,7 @@
           id="extraPanelAlbum"
           role="tabpanel"
           tabindex="0"
-          v-show="currentTab === tabs.Album"
+          v-show="currentTab === 'Album'"
         >
           <album-info v-if="song.album.id" :album="song.album" mode="sidebar"/>
         </div>
@@ -78,7 +78,7 @@
           id="extraPanelAlbum"
           role="tabpanel"
           tabindex="0"
-          v-show="currentTab === tabs.YouTube"
+          v-show="currentTab === 'YouTube'"
         >
           <you-tube-video-list v-if="sharedState.useYouTube" :song="song" :youtube="song.youtube"/>
         </div>
@@ -94,12 +94,8 @@ import { event, $ } from '@/utils'
 import { sharedStore, songStore, preferenceStore as preferences } from '@/stores'
 import { songInfo } from '@/services'
 
-enum Tab {
-  Lyrics,
-  Artist,
-  Album,
-  YouTube
-}
+type Tab = 'Lyrics' | 'Artist' | 'Album' | 'YouTube'
+const defaultTab: Tab = 'Lyrics'
 
 export default Vue.extend({
   components: {
@@ -113,8 +109,7 @@ export default Vue.extend({
     song: songStore.stub,
     state: preferences.state,
     sharedState: sharedStore.state,
-    currentTab: Tab.Lyrics,
-    tabs: Tab
+    currentTab: defaultTab
   }),
 
   watch: {
@@ -134,7 +129,7 @@ export default Vue.extend({
 
   methods: {
     resetState (): void {
-      this.currentTab = Tab.Lyrics
+      this.currentTab = defaultTab
       this.song = songStore.stub
     },
 

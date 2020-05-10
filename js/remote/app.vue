@@ -68,7 +68,6 @@ import { socket, ls } from '@/services'
 import { userStore, preferenceStore } from '@/stores'
 import { event } from '@/utils'
 import LoginForm from '@/components/auth/login-form'
-import { PlaybackState } from '../config'
 
 let volumeSlider
 const MAX_RETRIES = 10
@@ -133,7 +132,7 @@ export default {
         socket
           .listen(event.$names.SOCKET_SONG, ({ song }) => (this.song = song))
           .listen(event.$names.SOCKET_PLAYBACK_STOPPED, () => {
-            this.song && (this.song.playbackState = PlaybackState.Stopped)
+            this.song && (this.song.playbackState = 'Stopped')
           })
           .listen(event.$names.SOCKET_VOLUME_CHANGED, volume => volumeSlider.noUiSlider.set(volume))
           .listen(event.$names.SOCKET_STATUS, ({ song, volume }) => {
@@ -163,9 +162,7 @@ export default {
 
     togglePlayback () {
       if (this.song) {
-        this.song.playbackState = this.song.playbackState === PlaybackState.Playing
-          ? PlaybackState.Paused
-          : PlaybackState.Playing
+        this.song.playbackState = this.song.playbackState === 'Playing' ? 'Paused' : 'Playing'
       }
 
       socket.broadcast(event.$names.SOCKET_TOGGLE_PLAYBACK)
@@ -210,7 +207,7 @@ export default {
 
   computed: {
     playing () {
-      return this.song && this.song.playbackState === PlaybackState.Playing
+      return this.song && this.song.playbackState === 'Playing'
     },
 
     maxRetriesReached () {

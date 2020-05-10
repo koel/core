@@ -45,7 +45,6 @@ import { sharedStore, songStore, queueStore, userStore, playlistStore } from '@/
 import { playback, download } from '@/services'
 import router from '@/router'
 import songMenuMethods from '@/mixins/song-menu-methods.ts'
-import { PlaybackState } from '../../config'
 
 export default mixins(songMenuMethods).extend({
   components: {
@@ -65,7 +64,7 @@ export default mixins(songMenuMethods).extend({
     },
 
     firstSongPlaying (): boolean {
-      return this.songs[0] ? this.songs[0].playbackState === PlaybackState.Playing : false
+      return this.songs[0] ? this.songs[0].playbackState === 'Playing' : false
     },
 
     normalPlaylists (): Playlist[] {
@@ -92,10 +91,10 @@ export default mixins(songMenuMethods).extend({
 
     doPlayback (): void {
       switch (this.songs[0].playbackState) {
-        case PlaybackState.Playing:
+        case 'Playing':
           playback.pause()
           break
-        case PlaybackState.Paused:
+        case 'Paused':
           playback.resume()
           break
         default:

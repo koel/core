@@ -164,7 +164,7 @@ interface Song {
   },
   playCountRegistered?: boolean
   preloaded?: boolean
-  playbackState?: import('@/config').PlaybackState
+  playbackState?: PlaybackState
   infoRetrieved?: boolean
   playCount: number
   liked: boolean
@@ -323,8 +323,22 @@ interface EqualizerPreset {
   gains: number[]
 }
 
-declare const enum DragType {
-  Song = 'Song',
-  Album = 'Album',
-  Artist = 'Artist'
-}
+declare type DragType = 'Song' | 'Album' | 'Artist'
+declare type PlaybackState = 'Stopped' | 'Playing' | 'Paused'
+declare type MainViewName =
+  | 'Home'
+  | 'Default'
+  | 'Queue'
+  | 'Songs'
+  | 'Albums'
+  | 'Artists'
+  | 'Favorites'
+  | 'RecentlyPlayed'
+  | 'Settings'
+  | 'Users'
+  | 'YouTube'
+  | 'Visualizer'
+  | 'Profile'
+  | 'Album'
+  | 'Artist'
+  | 'Playlist'

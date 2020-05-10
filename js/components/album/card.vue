@@ -91,7 +91,7 @@ export default mixins(albumAttributes).extend({
     },
 
     dragStart (event: DragEvent): void {
-      startDragging(event, this.album, DragType.Album)
+      startDragging(event, this.album, 'Album')
     }
   }
 })

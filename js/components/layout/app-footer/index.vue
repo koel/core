@@ -12,7 +12,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import { event } from '@/utils'
-import { MainView } from '@/config'
 import OtherControls from '@/components/layout/app-footer/other-controls.vue'
 import MiddlePane from '@/components/layout/app-footer/middle-pane.vue'
 import PlayerControls from '@/components/layout/app-footer/player-controls.vue'
@@ -50,8 +49,8 @@ export default Vue.extend({
        * Listen to main-content-view:load event and highlight the Queue icon if
        * the Queue screen is being loaded.
        */
-      [event.$names.LOAD_MAIN_CONTENT]: (view: MainView): void => {
-        this.viewingQueue = view === MainView.Queue
+      [event.$names.LOAD_MAIN_CONTENT]: (view: MainViewName): void => {
+        this.viewingQueue = view === 'Queue'
       }
     })
   }

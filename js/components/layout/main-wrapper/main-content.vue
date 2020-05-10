@@ -8,21 +8,21 @@
     <visualizer v-if="showingVisualizer"/>
     <album-art-overlay :album="currentAlbum" v-if="preferences.showAlbumArtOverlay"/>
 
-    <home-screen v-show="view === MainView.Home"/>
-    <queue-screen v-show="view === MainView.Queue"/>
-    <all-songs-screen v-show="view === MainView.Songs"/>
-    <album-list-screen v-show="view === MainView.Albums"/>
-    <artist-list-screen v-show="view === MainView.Artists"/>
-    <playlist-screen v-show="view === MainView.Playlist"/>
-    <favorites-screen v-show="view === MainView.Favorites"/>
-    <recently-played-screen v-show="view === MainView.RecentlyPlayed"/>
+    <home-screen v-show="view === 'Home'"/>
+    <queue-screen v-show="view === 'Queue'"/>
+    <all-songs-screen v-show="view === 'Songs'"/>
+    <album-list-screen v-show="view === 'Albums'"/>
+    <artist-list-screen v-show="view === 'Artists'"/>
+    <playlist-screen v-show="view === 'Playlist'"/>
+    <favorites-screen v-show="view === 'Favorites'"/>
+    <recently-played-screen v-show="view === 'RecentlyPlayed'"/>
 
-    <album-screen v-if="view === MainView.Album" :album="shownAlbum"/>
-    <artist-screen v-if="view === MainView.Artist" :artist="shownArtist"/>
-    <settings-screen v-if="view === MainView.Settings"/>
-    <profile-screen v-if="view === MainView.Profile"/>
-    <user-list-screen v-if="view === MainView.Users"/>
-    <youtube-screen v-if="sharedState.useYouTube" v-show="view === MainView.YouTube"/>
+    <album-screen v-if="view === 'Album'" :album="shownAlbum"/>
+    <artist-screen v-if="view === 'Artist'" :artist="shownArtist"/>
+    <settings-screen v-if="view === 'Settings'"/>
+    <profile-screen v-if="view === 'Profile'"/>
+    <user-list-screen v-if="view === 'Users'"/>
+    <youtube-screen v-if="sharedState.useYouTube" v-show="view === 'YouTube'"/>
   </section>
 </template>
 
@@ -37,7 +37,6 @@ import ArtistListScreen from '@/components/screens/artist-list.vue'
 import AllSongsScreen from '@/components/screens/all-songs.vue'
 import PlaylistScreen from '@/components/screens/playlist.vue'
 import FavoritesScreen from '@/components/screens/favorites.vue'
-import { MainView } from '@/config'
 
 export default Vue.extend({
   components: {
@@ -60,24 +59,23 @@ export default Vue.extend({
   },
 
   data: () => ({
-    MainView,
     currentAlbum: albumStore.stub,
     preferences: preferenceStore.state,
     sharedState: sharedStore.state,
     showingVisualizer: false,
     shownArtist: artistStore.stub,
     shownAlbum: albumStore.stub,
-    view: MainView.Home
+    view: 'Home'
   }),
 
   created () {
     event.on({
-      [event.$names.LOAD_MAIN_CONTENT]: (view: MainView, data: Artist | Album): void => {
+      [event.$names.LOAD_MAIN_CONTENT]: (view: MainViewName, data: Artist | Album): void => {
         switch (view) {
-          case MainView.Album:
+          case 'Album':
             this.shownAlbum = data as Album
             break
-          case MainView.Artist:
+          case 'Artist':
             this.shownArtist = data as Artist
             break
         }
