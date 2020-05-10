@@ -17,7 +17,7 @@ exports[`compoponents/layout/main-wrapper/sidebar displays YouTube menu item if 
         </a></li>
     </ul>
   </section>
-  <playlistlist-stub current-view="HOME"></playlistlist-stub>
+  <playlistlist-stub current-view="Home"></playlistlist-stub>
   <!---->
 </nav>
 `;
@@ -39,7 +39,7 @@ exports[`compoponents/layout/main-wrapper/sidebar displays management menu items
         </a></li>
     </ul>
   </section>
-  <playlistlist-stub current-view="HOME"></playlistlist-stub>
+  <playlistlist-stub current-view="Home"></playlistlist-stub>
   <section class="manage">
     <h1>Manage</h1>
     <ul class="menu">
@@ -67,7 +67,7 @@ exports[`compoponents/layout/main-wrapper/sidebar displays new version info 1`] 
         </a></li>
     </ul>
   </section>
-  <playlistlist-stub current-view="HOME"></playlistlist-stub>
+  <playlistlist-stub current-view="Home"></playlistlist-stub>
   <section class="manage">
     <h1>Manage</h1>
     <ul class="menu">
@@ -93,7 +93,7 @@ exports[`compoponents/layout/main-wrapper/sidebar renders properly 1`] = `
       <!---->
     </ul>
   </section>
-  <section id="playlists" current-view="HOME">
+  <section id="playlists" current-view="Home">
     <h1>Playlists
       <i role="button" title="Create a new playlist" class="fa fa-plus-circle control create"></i></h1>
     <!---->

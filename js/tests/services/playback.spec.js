@@ -294,7 +294,7 @@ describe('services/playback', () => {
     const broadcastMock = mock(socket, 'broadcast')
 
     playback.stop()
-    expect(currentSong.playbackState).toEqual('stopped')
+    expect(currentSong.playbackState).toEqual('Stopped')
     expect(pauseMock).toHaveBeenCalled()
     expect(seekMock).toHaveBeenCalledWith(0)
     expect(broadcastMock).toHaveBeenCalledWith('SOCKET_PLAYBACK_STOPPED')
@@ -312,7 +312,7 @@ describe('services/playback', () => {
     const broadcastMock = mock(socket, 'broadcast')
 
     playback.pause()
-    expect(currentSong.playbackState).toEqual('paused')
+    expect(currentSong.playbackState).toEqual('Paused')
     expect(broadcastMock).toHaveBeenCalledWith('SOCKET_SONG', dataToBroadcast)
     expect(pauseMock).toHaveBeenCalled()
   })
@@ -329,7 +329,7 @@ describe('services/playback', () => {
     const emitMock = mock(event, 'emit')
 
     playback.resume()
-    expect(currentSong.playbackState).toEqual('playing')
+    expect(currentSong.playbackState).toEqual('Playing')
     expect(broadcastMock).toHaveBeenCalledWith('SOCKET_SONG', dataToBroadcast)
     expect(playMock).toHaveBeenCalled()
     expect(emitMock).toHaveBeenCalledWith('SONG_PLAYED', currentSong)
@@ -344,8 +344,8 @@ describe('services/playback', () => {
     expect(playFirstInQueueMock).toHaveBeenCalled()
   })
 
-  each([['resume', 'stopped'], ['resume', 'paused'], ['pause', 'playing']])
-    .test('%ss playback if toggled when current song is %s', (action, playbackState) => {
+  each([['resume', 'Stopped'], ['resume', 'Paused'], ['pause', 'Playing']])
+    .test('%ss playback if toggled when current song playback state is %s', (action, playbackState) => {
       const actionMock = mock(playback, action)
       Object.defineProperty(queueStore, 'current', {
         get: () => factory('song', { playbackState })
