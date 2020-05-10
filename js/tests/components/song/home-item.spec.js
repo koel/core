@@ -15,7 +15,7 @@ describe('components/song/home-item', () => {
         name: 'Foo Fighter'
       }),
       playCount: 10,
-      playbackState: 'stopped',
+      playbackState: 'Stopped',
       title: 'Foo bar'
     })
 
@@ -51,9 +51,9 @@ describe('components/song/home-item', () => {
   })
 
   each([
-    ['stopped', 'play'],
-    ['playing', 'pause'],
-    ['paused', 'resume']
+    ['Stopped', 'play'],
+    ['Playing', 'pause'],
+    ['Paused', 'resume']
   ]).test('if state is currently "%s", %s', (state, action) => {
     const m = mock(playback, action)
     song.playbackState = state

@@ -27,7 +27,7 @@ describe('components/screens/playlist', () => {
     shallow(Component)
 
     const m = mock(playlistStore, 'fetchSongs')
-    event.emit('LOAD_MAIN_CONTENT', 'PLAYLIST', playlist)
+    event.emit('LOAD_MAIN_CONTENT', 'Playlist', playlist)
     expect(m).toHaveBeenCalledWith(playlist)
   })
 

@@ -38,6 +38,10 @@ export default Vue.extend({
     }
   },
 
+  data: () => ({
+    preferences
+  }),
+
   computed: {
     /**
      * The preference key for local storage for persistent mode.
