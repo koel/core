@@ -53,9 +53,9 @@ declare module 'plyr' {
 }
 
 declare module 'ismobilejs' {
-  const apple: { device: boolean }
-  const any: boolean
-  const phone: boolean
+  let apple: { device: boolean }
+  let any: boolean
+  let phone: boolean
 }
 
 declare module 'nouislider' {
@@ -262,11 +262,11 @@ interface YouTubeVideo {
 }
 
 interface User {
-  readonly id: number
+  id: number
   name: string
   email: string
   password: string
-  readonly is_admin: boolean
+  is_admin: boolean
   preferences: { [key: string]: any }
   avatar: string
 }

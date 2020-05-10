@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/ui/album-art-overlay matches what we expect (album having a cover same as stub) with [object Object] 1`] = `<div style="background-image: none;"></div>`;
+
+exports[`components/ui/album-art-overlay matches what we expect (album having a real cover) with [object Object] 1`] = `<div style="background-image: url(/img/foo.jpg);"></div>`;
+
+exports[`components/ui/album-art-overlay matches what we expect (no song playing) with null 1`] = `<div style="background-image: none;"></div>`;

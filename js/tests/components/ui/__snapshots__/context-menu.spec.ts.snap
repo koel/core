@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/ui/context-menu renders 1`] = `
+<nav>
+  <ul tabindex="-1" class="menu" style="top: 0px; left: 0px; display: none;">Menu items go here.</ul>
+</nav>
+`;

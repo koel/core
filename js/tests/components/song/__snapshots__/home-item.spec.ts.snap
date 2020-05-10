@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/song/home-item renders properly 1`] = `
+<li draggable="true" tabindex="0" class="song-item-home"><span class="cover" style="background-image: url(http://lorempixel.com/640/480);"><a class="control"><i class="fa fa-play"></i></a></span> <span class="details"><span class="play-count" style="width: 23.80952380952381%;"></span>
+  Foo bar
+  <span class="by"><a href="#!/artist/42">Foo Fighter</a> - 10 plays</span></span></li>
+`;
