@@ -1,6 +1,7 @@
-/* eslint @typescript-eslint/no-unused-vars: 0 */
+import { noop } from '@/utils'
+
 module.exports = {
-  get: jest.fn(key => null),
-  set: jest.fn((key, val) => {}),
-  remove: jest.fn(key => {})
+  get: jest.fn(noop),
+  set: jest.fn(noop),
+  remove: jest.fn(noop)
 }

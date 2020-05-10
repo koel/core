@@ -51,7 +51,7 @@ export default Vue.extend({
     },
 
     setVolume (e: InputEvent): void {
-      const volume = parseFloat((<HTMLInputElement>e.currentTarget).value)
+      const volume = parseFloat((e.currentTarget as HTMLInputElement).value)
       playback.setVolume(volume)
       this.muted = volume === 0
     },

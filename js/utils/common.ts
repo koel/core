@@ -1,6 +1,3 @@
-/**
- * Other common methods.
- */
 import select from 'select'
 import { event, noop, pluralize, use } from '@/utils'
 import { sharedStore } from '@/stores'
@@ -26,34 +23,21 @@ export const forceReloadWindow = (): void => {
   window.location.reload()
 }
 
-/**
- * Show the overlay.
- */
 export const showOverlay = (message = 'Just a little patience…', type = 'loading', dismissable = false): void =>
   event.emit(event.$names.SHOW_OVERLAY, { message, type, dismissable })
 
-/**
- * Hide the overlay.
- */
 export const hideOverlay = (): void => event.emit(event.$names.HIDE_OVERLAY)
 
-/**
- * Copy a text into clipboard.
- */
 export const copyText = (text: string): void =>
   use(<HTMLTextAreaElement>document.querySelector('#copyArea'), (copyArea: HTMLTextAreaElement): void => {
     copyArea.style.top = `${window.pageYOffset || document.documentElement.scrollTop}px`
     copyArea.value = text
     select(copyArea)
     document.execCommand('copy')
-  }
-)
+  })
 
 export const getDefaultCover = (): string => `${sharedStore.state.cdnUrl}/public/img/covers/unknown-album.png`
 
-/**
- * Create a fancy ghost drag image.
- */
 const createGhostDragImage = (event: DragEvent, text: string): void => {
   use(<HTMLElement>document.querySelector('#dragGhost'), (ghost: HTMLElement): void => {
     if (!event.dataTransfer) {
@@ -64,7 +48,6 @@ const createGhostDragImage = (event: DragEvent, text: string): void => {
     event.dataTransfer.setDragImage(ghost, 0, 0)
   })
 }
-
 
 /**
  * Handle song/album/artist drag start event.

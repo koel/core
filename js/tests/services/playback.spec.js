@@ -2,7 +2,7 @@ import each from 'jest-each'
 import plyr from 'plyr'
 import { shuffle, orderBy } from 'lodash'
 import { playback, socket } from '@/services'
-import { event } from '@/utils'
+import { event, noop } from '@/utils'
 import { mock } from '@/tests/__helpers__'
 import {
   queueStore,
@@ -31,7 +31,7 @@ const prepareForTests = () => {
   `
   window.AudioContext = jest.fn().mockImplementation(() => {
     return {
-      createMediaElementSource: jest.fn(() => {})
+      createMediaElementSource: jest.fn(noop)
     }
   })
 }
