@@ -58,12 +58,13 @@
 <script lang="ts">
 import isMobile from 'ismobilejs'
 
+import Vue, { PropOptions } from 'vue'
+import { VirtualScroller } from 'vue-virtual-scroller/dist/vue-virtual-scroller'
 import { filterBy, orderBy, event, startDragging, $ } from '@/utils'
 import { playlistStore, queueStore, songStore, favoriteStore } from '@/stores'
 import { playback } from '@/services'
 import router from '@/router'
 import { SongListRowComponent } from 'koel/types/ui'
-import Vue, { PropOptions } from 'vue'
 
 const songItemComponent = () => import('@/components/song/item.vue')
 const VALID_SONG_LIST_TYPES = ['all-songs', 'queue', 'playlist', 'favorites', 'recently-played', 'artist', 'album']
@@ -102,6 +103,10 @@ export default Vue.extend({
     playlist: {
       type: Object
     } as PropOptions<Playlist>
+  },
+
+  components: {
+    VirtualScroller
   },
 
   data: () => ({

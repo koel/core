@@ -28,7 +28,7 @@ describe('components/screens/artist', () => {
   })
 
   it('renders upon receiving event', async done => {
-    const wrapper = await shallow(Component, {
+    const wrapper = await mount(Component, {
       propsData: { artist }
     })
 

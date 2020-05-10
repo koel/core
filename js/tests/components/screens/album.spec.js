@@ -13,7 +13,7 @@ describe('components/screens/album', () => {
 
   it('renders properly', async done => {
     const album = factory('album')
-    const wrapper = await shallow(Component, {
+    const wrapper = await mount(Component, {
       propsData: { album }
     })
 

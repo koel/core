@@ -13,7 +13,7 @@ describe('components/screens/playlist', () => {
 
   it('renders properly', async done => {
     const playlist = factory('playlist', { populated: true })
-    const wrapper = await shallow(Component, { data: () => ({ playlist }) })
+    const wrapper = await mount(Component, { data: () => ({ playlist }) })
 
     wrapper.vm.$nextTick(() => {
       expect(wrapper.find('h1.heading').html()).toMatch(playlist.name)

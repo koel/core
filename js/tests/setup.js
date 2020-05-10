@@ -12,10 +12,20 @@ window.__UNIT_TESTING__ = true
 
 global.noop = noop
 
-// Stubs so that rendering will not yell at us.
-global.Vue.component('virtual-scroller', {
-  render: () => noop
-})
+// stub this to make Virtual Sroller silent
+global.IntersectionObserver = class IntersectionObserver {
+  observe () {
+    return null
+  }
+
+  unobserve () {
+    return null
+  }
+
+  disconnect () {
+    return null
+  }
+}
 
 global.Vue.directive('koel-focus', focus)
 global.Vue.directive('koel-clickaway', clickaway)

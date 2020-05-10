@@ -12,9 +12,11 @@ describe('components/screens/queue', () => {
   })
 
   it('renders properly', async done => {
-    const wrapper = await shallow(Component, {
+    const wrapper = await mount(Component, {
       data: () => ({
-        state: { songs: factory('song', 10) }
+        state: {
+          songs: factory('song', 10)
+        }
       })
     })
 

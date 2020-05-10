@@ -13,6 +13,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import GlobalEvents from 'vue-global-events'
 import { $, event, noop } from '@/utils'
 import { playback, socket } from '@/services'
 import { queueStore, favoriteStore, songStore } from '@/stores'
@@ -56,6 +57,10 @@ if (KOEL_ENV === 'app') {
 }
 
 export default Vue.extend({
+  components: {
+    GlobalEvents
+  },
+
   methods: {
     /**
      * Toggle playback when user presses Space key.

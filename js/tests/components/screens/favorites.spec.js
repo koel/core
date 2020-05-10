@@ -12,7 +12,7 @@ describe('components/screens/favorites', () => {
   })
 
   it('displays the song list if there are favorites', async done => {
-    const wrapper = await shallow(Component, {
+    const wrapper = await mount(Component, {
       data: () => ({
         state: {
           songs: factory('song', 5)

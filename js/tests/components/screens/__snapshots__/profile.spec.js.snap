@@ -9,8 +9,10 @@ exports[`components/screens/profile renders properly 1`] = `
       <div class="form-row"><label for="inputProfileEmail">Email Address</label> <input type="email" name="email" id="inputProfileEmail"></div>
       <div class="change-pwd">
         <div class="form-row">
-          <p class="help">If you want to change your password, enter it below. <br>
-            Otherwise, just leave the next two fields empty. It’s OK – no one will judge you.</p>
+          <p class="help">
+            If you want to change your password, enter it below. <br>
+            Otherwise, just leave the next two fields empty.
+          </p>
         </div>
         <div class="form-row"><label for="inputProfilePassword">New Password</label> <input name="password" type="password" id="inputProfilePassword" autocomplete="off" class=""></div>
         <div class="form-row"><label for="inputProfileConfirmPassword">Confirm Password</label> <input name="confirmPassword" type="password" id="inputProfileConfirmPassword" autocomplete="off" class=""></div>
@@ -21,12 +23,6 @@ exports[`components/screens/profile renders properly 1`] = `
       </div>
     </form>
     <div class="preferences">
-      <div class="form-row"><label>
-          Play button's default action:
-          <select name="defaultPlayAction">
-            <option value="">Shuffle</option>
-            <option value="">Play in sequence</option>
-          </select></label></div>
       <div class="form-row"><label><input type="checkbox" name="notify">
           Show “Now Playing” song notification
         </label></div>

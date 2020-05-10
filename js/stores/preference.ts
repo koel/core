@@ -60,7 +60,7 @@ export const preferenceStore: PreferenceStore = {
   },
 
   get (key: string): any {
-    return this.state.hasOwnProperty(key) ? this.state[key] : null
+    return key in this.state ? this.state[key] : null
   },
 
   save (): void {

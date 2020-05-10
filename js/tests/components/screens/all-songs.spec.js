@@ -6,7 +6,7 @@ import { songStore } from '@/stores'
 describe('components/screens/all-songs', () => {
   it('renders properly', async done => {
     songStore.all = factory('song', 10)
-    const wrapper = await shallow(Component)
+    const wrapper = await mount(Component)
 
     wrapper.vm.$nextTick(() => {
       expect(wrapper.find('h1.heading').text()).toMatch('All Songs')

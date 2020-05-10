@@ -1,12 +1,13 @@
 import each from 'jest-each'
 import Profile from '@/components/screens/profile'
 import factory from '@/tests/factory'
-import { userStore, preferenceStore } from '@/stores'
+import { userStore, preferenceStore as preferences } from '@/stores'
 import { mock } from '@/tests/__helpers__'
 
 describe('components/screens/profile', () => {
   beforeEach(() => {
     userStore.state.current = factory('user')
+    preferences.init()
   })
 
   afterEach(() => {
@@ -40,10 +41,8 @@ describe('components/screens/profile', () => {
     ['confirmClosing'],
     ['transcodeOnMobile']
   ]).test('updates preference "%s"', key => {
-    const m = mock(preferenceStore, 'save')
-    shallow(Profile, {
-      data: () => ({ prefs: preferenceStore.state })
-    }).click(`input[name=${key}]`)
+    const m = mock(preferences, 'save')
+    shallow(Profile).change(`input[name=${key}]`)
     expect(m).toHaveBeenCalled()
   })
 })
