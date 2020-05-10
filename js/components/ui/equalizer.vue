@@ -36,7 +36,6 @@ import { equalizerStore, preferenceStore as preferences } from '@/stores'
 import { audio as audioService } from '@/services'
 import { SliderElement } from 'koel/types/ui'
 
-
 interface Band {
   label: string
   filter: BiquadFilterNode
@@ -175,7 +174,7 @@ export default Vue.extend({
       filter.gain.setTargetAtTime(value, context.currentTime, 0.01)
     },
 
-    loadPreset (preset: EqualizerPreset) {
+    loadPreset (preset: EqualizerPreset): void {
       Array.from(document.querySelectorAll('#equalizer .slider') as NodeListOf<SliderElement>)
         .forEach((el: SliderElement, i: number): void => {
           if (!el.noUiSlider) {
