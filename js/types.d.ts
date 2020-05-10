@@ -308,6 +308,14 @@ declare module 'koel/types/ui' {
     filterKey: string
     name: string
   }
+
+  interface SliderElement extends HTMLElement {
+    noUiSlider?: {
+      destroy(): void
+      on(eventName: 'change' | 'slide', handler: Function): void
+      set(options: number | any[]): void
+    }
+  }
 }
 
 interface SongProxy {

@@ -1,6 +1,6 @@
 /// <reference path="./types.d.ts"/>
 import './static-loader'
-import Vue from 'vue'
+import Vue, { VNode, CreateElement } from 'vue'
 import App from './app.vue'
 import { http } from './services/index'
 
@@ -19,7 +19,7 @@ Vue.config.productionTip = false
 /* eslint no-new: 0 */
 new Vue({
   el: '#app',
-  render: h => h(App),
+  render: (h: CreateElement): VNode => h(App),
   created: (): void => http.init()
 })
 

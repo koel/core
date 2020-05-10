@@ -34,14 +34,8 @@ import nouislider from 'nouislider'
 import { event, $ } from '@/utils'
 import { equalizerStore, preferenceStore as preferences } from '@/stores'
 import { audio as audioService } from '@/services'
+import { SliderElement } from 'koel/types/ui'
 
-interface SliderElement extends HTMLElement {
-  noUiSlider?: {
-    destroy(): void
-    on(eventName: string, handler: Function): void
-    set(options: number | any[]): void
-  }
-}
 
 interface Band {
   label: string
