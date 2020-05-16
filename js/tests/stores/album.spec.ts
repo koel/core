@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { cloneDeep } from 'lodash'
 import { albumStore, artistStore } from '@/stores'
 import data from '@/tests/blobs/data'

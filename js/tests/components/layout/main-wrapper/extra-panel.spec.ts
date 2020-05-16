@@ -16,7 +16,7 @@ describe('components/layout/extra-panel', () => {
     expect(shallow(Component)).toMatchSnapshot()
   })
 
-  it('does not have a YouTube tab if not using YouTube', async done => {
+  it('does not have a YouTube tab if not using YouTube', async () => {
     const wrapper = shallow(Component, {
       data: () => ({
         sharedState: {
@@ -26,10 +26,9 @@ describe('components/layout/extra-panel', () => {
     })
     await wrapper.vm.$nextTick()
     expect(wrapper).toMatchSnapshot()
-    done()
   })
 
-  it('has a YouTube tab if using YouTube', async done => {
+  it('has a YouTube tab if using YouTube', async () => {
     const wrapper = shallow(Component, {
       data: () => ({
         sharedState: {
@@ -40,7 +39,6 @@ describe('components/layout/extra-panel', () => {
 
     await wrapper.vm.$nextTick()
     expect(wrapper).toMatchSnapshot()
-    done()
   })
 
   each([['#extraTabLyrics'], ['#extraTabAlbum'], ['#extraTabArtist']])

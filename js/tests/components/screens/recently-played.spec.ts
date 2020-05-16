@@ -12,7 +12,7 @@ describe('components/screens/recently-played', () => {
     jest.clearAllMocks()
   })
 
-  it('renders properly', async done => {
+  it('renders properly', async () => {
     const wrapper = mount(Component, {
       data: () => ({
         state: {
@@ -24,7 +24,6 @@ describe('components/screens/recently-played', () => {
     await wrapper.vm.$nextTick()
     expect(wrapper.find('h1.heading').text()).toMatch('Recently Played')
     expect(wrapper.has(SongList)).toBe(true)
-    done()
   })
 
   it('fetch and populate content on demand', () => {

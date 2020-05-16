@@ -36,7 +36,7 @@ describe('components/playlist/sidebar-item', () => {
   })
 
   // skipping because buggy test utils
-  it.skip('edits a playlist', async done => {
+  it.skip('edits a playlist', async () => {
     const wrapper = mount(Component, {
       propsData: { playlist }
     })
@@ -44,11 +44,10 @@ describe('components/playlist/sidebar-item', () => {
     wrapper.dblclick('li.playlist:last-of-type:not(.favorites):not(.recently-played)')
     await wrapper.vm.$nextTick()
     expect(wrapper.has(NameEditor)).toBe(true)
-    done()
   })
 
   // skipping because buggy test utils
-  it.skip("doesn't allow editing Favorites item", async done => {
+  it.skip("doesn't allow editing Favorites item", async () => {
     const wrapper = shallow(Component, {
       propsData: {
         playlist: { name: 'Favorites' },
@@ -59,6 +58,5 @@ describe('components/playlist/sidebar-item', () => {
     wrapper.dblclick('li.favorites')
     await wrapper.vm.$nextTick()
     expect(wrapper.has(NameEditor)).toBe(false)
-    done()
   })
 })

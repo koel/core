@@ -11,13 +11,12 @@ describe('components/song/list-controls', () => {
 
   each([[factory('song', 5), 0], [factory('song', 5), 1]]).test(
     'allows shuffling all if less than 2 songs are selected',
-    async (songs, selectedSongCount, done) => {
+    async (songs, selectedSongCount) => {
       const selectedSongs = take(songs, selectedSongCount)
       const wrapper = mount(Component, { propsData: { songs, selectedSongs } })
 
       await wrapper.vm.$nextTick()
       expect(wrapper.click('.btn-shuffle-all').hasEmitted('playAll', true)).toBe(true)
-      done()
     })
 
   it('allows shuffling selected if more than 1 song are selected', () => {

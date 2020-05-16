@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { queueStore } from '@/stores'
 import data from '@/tests/blobs/data'
 

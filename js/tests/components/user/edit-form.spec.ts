@@ -35,7 +35,7 @@ describe('components/user/edit-form', () => {
     expect(updateMock).toHaveBeenCalledWith(user, user.name, user.email, user.password)
   })
 
-  it('cancels', async done => {
+  it('cancels', async () => {
     const user = factory('user')
     const updateMock = mock(userStore, 'update')
     const wrapper = mount(Component, {
@@ -48,6 +48,5 @@ describe('components/user/edit-form', () => {
     wrapper.click('.btn-cancel')
     expect(wrapper.hasEmitted('close')).toBe(true)
     expect(updateMock).not.toHaveBeenCalled()
-    done()
   })
 })

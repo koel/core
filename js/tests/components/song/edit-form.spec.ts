@@ -12,7 +12,7 @@ describe('components/song/edit-form', () => {
     jest.clearAllMocks()
   })
 
-  it('supports editing a single song', async done => {
+  it('supports editing a single song', async () => {
     const song = factory<Song>('song', { infoRetrieved: true })
     const wrapper = mount(Component, {
       propsData: { songs: song }
@@ -34,7 +34,6 @@ describe('components/song/edit-form', () => {
 
     wrapper.click('#editSongTabLyrics')
     expect(wrapper.find('textarea[name=lyrics]').value).toBe(song.lyrics)
-    done()
   })
 
   it('fetches song information on demand', () => {
@@ -107,7 +106,7 @@ describe('components/song/edit-form', () => {
     expect(wrapper.has('.tabs .tab-lyrics')).toBe(false)
   })
 
-  it('saves', async done => {
+  it('saves', async () => {
     const updateStub = mock(songStore, 'update')
     const songs = factory('song', 3)
     const formData = { foo: 'bar' }
@@ -120,7 +119,6 @@ describe('components/song/edit-form', () => {
     wrapper.submit('form')
     await wrapper.vm.$nextTick()
     expect(updateStub).toHaveBeenCalledWith(songs, formData)
-    done()
   })
 
   it('closes', () => {

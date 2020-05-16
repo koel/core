@@ -9,11 +9,10 @@ describe('components/layout/app-header', () => {
     jest.clearAllMocks()
   })
 
-  it('renders propery', async done => {
+  it('renders propery', async () => {
     const wrapper = mount(Component)
     await wrapper.vm.$nextTick()
     expect(wrapper).toMatchSnapshot()
-    done()
   })
 
   it('toggles sidebar', () => {

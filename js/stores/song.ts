@@ -169,7 +169,7 @@ export const songStore: SongStore = {
   /**
    * Increase a play count for a song.
    */
-  registerPlay: (song: Song): Promise<Interaction>  => {
+  registerPlay: (song: Song): Promise<Interaction> => {
     return new Promise((resolve, reject): void => {
       const oldCount = song.playCount
 

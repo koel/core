@@ -39,7 +39,7 @@ describe('components/user/card', () => {
     expect(wrapper.find('.btn-edit').text()).toBe('Update Profile')
   })
 
-  it('redirects to update profile if attempting to edit current user', async done => {
+  it('redirects to update profile if attempting to edit current user', async () => {
     const goStub = mock(router, 'go')
     userStore.current.id = user.id
     const wrapper = mount(Component, { propsData: { user } })
@@ -47,18 +47,16 @@ describe('components/user/card', () => {
     await wrapper.vm.$nextTick()
     wrapper.click('.btn-edit')
     expect(goStub).toHaveBeenCalledWith('profile')
-    done()
   })
 
-  it('edits user', async done => {
+  it('edits user', async () => {
     const wrapper = mount(Component, { propsData: { user } })
 
     await wrapper.vm.$nextTick()
     expect(wrapper.click('.btn-edit').hasEmitted('editUser', user)).toBe(true)
-    done()
   })
 
-  it('triggers deleting user', async done => {
+  it('triggers deleting user', async () => {
     const confirmStub = mock(alerts, 'confirm')
     const wrapper = mount(Component, { propsData: { user } })
 
@@ -69,7 +67,6 @@ describe('components/user/card', () => {
       // @ts-ignore
       wrapper.vm.destroy
     )
-    done()
   })
 
   it('deletes user', () => {

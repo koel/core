@@ -12,7 +12,7 @@ describe('components/screens/queue', () => {
     jest.clearAllMocks()
   })
 
-  it('renders properly', async done => {
+  it('renders properly', async () => {
     const wrapper = mount(Component, {
       data: () => ({
         state: {
@@ -24,7 +24,6 @@ describe('components/screens/queue', () => {
     await wrapper.vm.$nextTick()
     expect(wrapper.find('h1.heading').text()).toMatch('Current Queue')
     expect(wrapper.has(SongList)).toBe(true)
-    done()
   })
 
   it('prompts to shuffle all songs if there are songs and current queue is empty', () => {

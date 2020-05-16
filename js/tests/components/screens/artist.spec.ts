@@ -28,7 +28,7 @@ describe('components/screens/artist', () => {
     jest.clearAllMocks()
   })
 
-  it('renders upon receiving event', async done => {
+  it('renders upon receiving event', async () => {
     const wrapper = mount(Component, {
       propsData: { artist }
     })
@@ -38,7 +38,6 @@ describe('components/screens/artist', () => {
     expect(html).toMatch(artist.name)
     expect(html).toMatch('1 album')
     expect(wrapper.hasAll(SongList, SongListControls)).toBe(true)
-    done()
   })
 
   it('loads info from Last.fm', () => {

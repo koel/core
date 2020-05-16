@@ -4,12 +4,11 @@ import factory from '@/tests/factory'
 import { mount, shallow } from '@/tests/adapter'
 
 describe('compoponents/layout/main-wrapper/sidebar', () => {
-  it('renders properly', async done => {
+  it('renders properly', async () => {
     const wrapper = mount(Component)
 
     await wrapper.vm.$nextTick()
     expect(wrapper).toMatchSnapshot()
-    done()
   })
 
   it('displays YouTube menu item if using YouTube', () => {
@@ -17,7 +16,7 @@ describe('compoponents/layout/main-wrapper/sidebar', () => {
     expect(shallow(Component)).toMatchSnapshot()
   })
 
-  it('displays management menu items for admin', async done => {
+  it('displays management menu items for admin', async () => {
     const wrapper = shallow(Component, {
       data: () => ({
         userState: {
@@ -28,10 +27,9 @@ describe('compoponents/layout/main-wrapper/sidebar', () => {
 
     await wrapper.vm.$nextTick()
     expect(wrapper).toMatchSnapshot()
-    done()
   })
 
-  it('displays new version info', async done => {
+  it('displays new version info', async () => {
     sharedStore.state.currentVersion = 'v0.0.0'
     sharedStore.state.latestVersion = 'v0.0.1'
     const wrapper = shallow(Component, {
@@ -44,6 +42,5 @@ describe('compoponents/layout/main-wrapper/sidebar', () => {
 
     await wrapper.vm.$nextTick()
     expect(wrapper).toMatchSnapshot()
-    done()
   })
 })

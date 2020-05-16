@@ -15,7 +15,7 @@ describe('components/ui/youtube', () => {
     jest.clearAllMocks()
   })
 
-  it('displays a list of videos', async done => {
+  it('displays a list of videos', async () => {
     const wrapper = mount(YouTube, {
       propsData: { song },
       data: () => ({
@@ -25,7 +25,6 @@ describe('components/ui/youtube', () => {
 
     await wrapper.vm.$nextTick()
     expect(wrapper.findAll('a.video')).toHaveLength(5)
-    done()
   })
 
   it('loads more videos on demand', () => {

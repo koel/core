@@ -1,3 +1,12 @@
+import factory from '@/tests/factory'
+
+const currentUser = factory<User>('user', {
+  id: 1,
+  name: 'Phan An',
+  email: 'me@phanan.net',
+  is_admin: true
+})
+
 export default {
   artists: [
     {
@@ -200,24 +209,14 @@ export default {
       play_count: 4
     }
   ],
-  currentUser: {
-    id: 1,
-    name: 'Phan An',
-    email: 'me@phanan.net',
-    is_admin: true
-  },
+  currentUser,
   users: [
-    {
-      id: 1,
-      name: 'Phan An',
-      email: 'me@phanan.net',
-      is_admin: true
-    },
-    {
+    currentUser,
+    factory<User>('user', {
       id: 2,
       name: 'John Doe',
       email: 'john@doe.tld',
       is_admin: false
-    }
+    })
   ]
 }

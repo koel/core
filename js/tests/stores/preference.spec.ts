@@ -1,8 +1,9 @@
 import { ls } from '@/services'
 import { preferenceStore } from '@/stores'
 import { mock } from '@/tests/__helpers__'
+import factory from '@/tests/factory'
 
-const user = { id: 1 }
+const user = factory<User>('user', { id: 1 })
 
 describe('stores/preference', () => {
   beforeEach(() => {

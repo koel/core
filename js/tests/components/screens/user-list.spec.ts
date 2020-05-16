@@ -12,23 +12,21 @@ describe('components/screens/user-list', () => {
     jest.clearAllMocks()
   })
 
-  it('displays the users', async done => {
+  it('displays the users', async () => {
     userStore.all = factory<User>('user', 10)
     const wrapper = mount(Component)
 
     await wrapper.vm.$nextTick()
     expect(wrapper.findAll(UserCard)).toHaveLength(10)
-    done()
   })
 
-  it('adds new user', async done => {
+  it('adds new user', async () => {
     const emitMock = mock(event, 'emit')
     const wrapper = mount(Component)
 
     await wrapper.vm.$nextTick()
     wrapper.click('.btn-add')
     expect(emitMock).toHaveBeenCalledWith('MODAL_SHOW_ADD_USER_FORM')
-    done()
   })
 
   it('edits a user', () => {

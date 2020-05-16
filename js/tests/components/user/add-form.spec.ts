@@ -24,12 +24,11 @@ describe('components/user/add-form', () => {
     expect(storeStub).toHaveBeenCalledWith(newUser.name, newUser.email, newUser.password)
   })
 
-  it('cancels', async done => {
+  it('cancels', async () => {
     const wrapper = mount(Component)
 
     await wrapper.vm.$nextTick()
     wrapper.click('.btn-cancel')
     expect(wrapper.hasEmitted('close')).toBe(true)
-    done()
   })
 })

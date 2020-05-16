@@ -168,17 +168,22 @@ describe('services/playback', () => {
   })
 
   it('preloads a song', () => {
-    // we actually don't care how the implementation looks like because it might change.
-    // Most important is, the `preloaded` attribute should be set.
-    const audioElement = jest.fn().mockImplementation(() => ({
-      setAttribute: jest.fn(),
-      load: jest.fn()
-    }))
+    const setAttributeMock = jest.fn()
+    const loadMock = jest.fn()
+
+    const audioElement = {
+      setAttribute: setAttributeMock,
+      load: loadMock
+    }
 
     const createElementMock = mock(document, 'createElement', audioElement)
+    mock(songStore, 'getSourceUrl').mockReturnValue('/foo?token=o5afd')
     const song = factory<Song>('song')
     playback.preload(song)
     expect(createElementMock).toHaveBeenCalledWith('audio')
+    expect(setAttributeMock).toHaveBeenNthCalledWith(1, 'src', '/foo?token=o5afd')
+    expect(setAttributeMock).toHaveBeenNthCalledWith(2, 'preload', 'auto')
+    expect(loadMock).toHaveBeenCalled()
     expect(song.preloaded).toBe(true)
   })
 
@@ -355,7 +360,7 @@ describe('services/playback', () => {
       expect(actionMock).toHaveBeenCalled()
     })
 
-  it('queues and plays all songs shuffled by default', async done => {
+  it('queues and plays all songs shuffled by default', async () => {
     const allSongs = factory<Song>('song', 5)
     const shuffledSongs = factory<Song>('song', 5)
     Object.defineProperty(songStore, 'all', {
@@ -378,11 +383,9 @@ describe('services/playback', () => {
     expect(replaceQueueMock).toHaveBeenCalledWith(shuffledSongs)
     expect(goMock).toHaveBeenCalledWith('queue')
     expect(playMock).toHaveBeenCalledWith(firstSongInQueue)
-
-    done()
   })
 
-  it('queues and plays songs without shuffling', async done => {
+  it('queues and plays songs without shuffling', async () => {
     const songs = factory<Song>('song', 5)
     const replaceQueueMock = mock(queueStore, 'replaceQueueWith')
     const goMock = mock(router, 'go')
@@ -392,16 +395,15 @@ describe('services/playback', () => {
       get: () => firstSongInQueue
     })
 
-    await playback.queueAndPlay(songs)
+    playback.queueAndPlay(songs)
+    await Vue.nextTick()
     expect(shuffle).not.toHaveBeenCalled()
     expect(replaceQueueMock).toHaveBeenCalledWith(songs)
     expect(goMock).toHaveBeenCalledWith('queue')
     expect(playMock).toHaveBeenCalledWith(firstSongInQueue)
-
-    done()
   })
 
-  it('queues and plays songs with shuffling', async done => {
+  it('queues and plays songs with shuffling', async () => {
     const songs = factory<Song>('song', 5)
     const shuffledSongs = factory<Song>('song', 5)
     const replaceQueueMock = mock(queueStore, 'replaceQueueWith')
@@ -419,8 +421,6 @@ describe('services/playback', () => {
     expect(replaceQueueMock).toHaveBeenCalledWith(shuffledSongs)
     expect(goMock).toHaveBeenCalledWith('queue')
     expect(playMock).toHaveBeenCalledWith(firstSongInQueue)
-
-    done()
   })
 
   it('plays first song in queue', () => {

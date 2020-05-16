@@ -14,22 +14,20 @@ describe('components/layout/modal-wrapper', () => {
     ['EditUserForm', EditUserForm, ['MODAL_SHOW_EDIT_USER_FORM', factory('user')]],
     ['EditSongForm', EditSongForm, ['MODAL_SHOW_EDIT_SONG_FORM', factory('song')]],
     ['CreateSmartPlaylistForm', CreateSmartPlaylistForm, ['MODAL_SHOW_CREATE_SMART_PLAYLIST_FORM']]
-  ]).test('shows %s modal', async (modalName, modalComponent, eventParams, done) => {
+  ]).test('shows %s modal', async (modalName, modalComponent, eventParams) => {
     const wrapper = mount(Component)
     event.emit(...eventParams)
 
     await wrapper.vm.$nextTick()
     expect(wrapper.has(modalComponent)).toBe(true)
-    done()
   })
 
-  it('closes', async done => {
+  it('closes', async () => {
     const wrapper = mount(Component)
     event.emit('MODAL_SHOW_ADD_USER_FORM')
     await wrapper.vm.$nextTick()
     // @ts-ignore
     wrapper.vm.close()
     expect(wrapper.has(AddUserForm)).toBe(false)
-    done()
   })
 })

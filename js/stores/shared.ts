@@ -65,7 +65,7 @@ export const sharedStore: SharedStore = {
 
   init (): Promise<SharedState> {
     return new Promise((resolve, reject) => {
-      http.get('data', ({ data } : { data : SharedState }) => {
+      http.get('data', ({ data }: { data: SharedState }) => {
         this.state = Object.assign(this.state, data)
 
         // Don't allow downloading on mobile devices

@@ -3,17 +3,16 @@ import Component from '@/components/ui/overlay.vue'
 import { mount } from '@/tests/adapter'
 
 describe('components/shared/overlay', () => {
-  it('shows with default options', async done => {
+  it('shows with default options', async () => {
     const wrapper = mount(Component)
     // @ts-ignore
     wrapper.vm.show()
 
     await wrapper.vm.$nextTick()
     expect(wrapper).toMatchSnapshot()
-    done()
   })
 
-  it('allows option overriding', async done => {
+  it('allows option overriding', async () => {
     const wrapper = mount(Component)
     // @ts-ignore
     wrapper.vm.show({
@@ -24,7 +23,6 @@ describe('components/shared/overlay', () => {
 
     await wrapper.vm.$nextTick()
     expect(wrapper).toMatchSnapshot()
-    done()
   })
 
   each([['show', true], ['hide', false]]).test('%ss', (methodName) => {

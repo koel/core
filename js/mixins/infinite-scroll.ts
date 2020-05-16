@@ -16,8 +16,7 @@ export default Vue.extend({
   }),
 
   methods: {
-    scrolling ({
-      target: { scrollTop, clientHeight, scrollHeight }}:
+    scrolling ({ target: { scrollTop, clientHeight, scrollHeight } }:
       { target: { scrollTop: number, clientHeight: number, scrollHeight: number }
     }): void {
       // Here we check if the user has scrolled to the end of the wrapper (or 32px to the end).

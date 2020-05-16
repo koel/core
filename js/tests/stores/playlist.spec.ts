@@ -1,7 +1,7 @@
 import factory from '@/tests/factory'
 import { playlistStore } from '@/stores'
 
-const ruleGroups = [
+const ruleGroups: SmartPlaylistRuleGroup[] = [
   {
     id: 1,
     rules: [
@@ -13,7 +13,7 @@ const ruleGroups = [
           label: 'Artist'
         },
         operator: 'is',
-        value: 'Elvis Presley'
+        value: ['Elvis Presley']
       }
     ]
   },
@@ -28,7 +28,7 @@ const ruleGroups = [
           label: 'Artist'
         },
         operator: 'is',
-        value: 'Queen'
+        value: ['Queen']
       }
     ]
   }
@@ -42,7 +42,7 @@ const serializedRuleGroups = [
         id: 1,
         model: 'artist.name',
         operator: 'is',
-        value: 'Elvis Presley'
+        value: ['Elvis Presley']
       }
     ]
   },
@@ -53,7 +53,7 @@ const serializedRuleGroups = [
         id: 1,
         model: 'artist.name',
         operator: 'is',
-        value: 'Queen'
+        value: ['Queen']
       }
     ]
   }
@@ -65,7 +65,9 @@ describe('stores/playlist', () => {
   })
 
   it('set up a smart playlist with properly unserialized rules', () => {
-    const playlist = factory('playlist', {
+    // @ts-ignore because we're only using this factory here for convenience.
+    // By right, the database "serializedRuleGroups" can't be used for Playlist type.
+    const playlist = factory<Playlist>('playlist', {
       is_smart: true,
       rules: serializedRuleGroups
     })

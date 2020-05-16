@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { songStore, albumStore, artistStore } from '@/stores'
 import data from '@/tests/blobs/data'
 
@@ -42,6 +43,6 @@ describe('stores/song', () => {
   })
 
   it('guesses a song', () => {
-    expect(songStore.guess('i swear', albumStore.byId(1193)).id).toBe('39189f4545f9d5671fb3dc964f0080a0')
+    expect(songStore.guess('i swear', albumStore.byId(1193))!.id).toBe('39189f4545f9d5671fb3dc964f0080a0')
   })
 })

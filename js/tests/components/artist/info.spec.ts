@@ -34,13 +34,12 @@ describe('components/artist/info', () => {
     expect(wrapper.html()).toMatch(artist.info!.bio!.full)
   })
 
-  it('shows the artist thumbnail', async done => {
+  it('shows the artist thumbnail', async () => {
     const artist = factory('artist')
     const wrapper = mount(Component, {
       propsData: { artist }
     })
     await wrapper.vm.$nextTick()
     expect(wrapper.has(ArtistThumbnail)).toBe(true)
-    done()
   })
 })

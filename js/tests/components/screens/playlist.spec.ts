@@ -12,14 +12,13 @@ describe('components/screens/playlist', () => {
     jest.clearAllMocks()
   })
 
-  it('renders properly', async done => {
+  it('renders properly', async () => {
     const playlist = factory<Playlist>('playlist', { populated: true })
     const wrapper = mount(Component, { data: () => ({ playlist }) })
 
     await wrapper.vm.$nextTick()
     expect(wrapper.find('h1.heading').html()).toMatch(playlist.name)
     expect(wrapper.has(SongList)).toBe(true)
-    done()
   })
 
   it('fetch and populate playlist content on demand', () => {
@@ -42,13 +41,12 @@ describe('components/screens/playlist', () => {
     }).has('div.none')).toBe(true)
   })
 
-  it('emits an event to delete the playlist', async done => {
+  it('emits an event to delete the playlist', async () => {
     const playlist = factory('playlist', { populated: true })
     const wrapper = shallow(Component, { data: () => ({ playlist }) })
     const emitMock = mock(event, 'emit')
     wrapper.click('.btn-delete-playlist')
     await wrapper.vm.$nextTick()
     expect(emitMock).toHaveBeenCalledWith('PLAYLIST_DELETE', playlist)
-    done()
   })
 })

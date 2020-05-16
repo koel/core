@@ -4,7 +4,7 @@ import factory from '@/tests/factory'
 import { mount } from '@/tests/adapter'
 
 describe('components/album/track-list', () => {
-  it('lists the correct number of tracks', async done => {
+  it('lists the correct number of tracks', async () => {
     const wrapper = mount(Component, {
       propsData: {
         album: factory('album')
@@ -13,6 +13,5 @@ describe('components/album/track-list', () => {
 
     await wrapper.vm.$nextTick()
     expect(wrapper.findAll(TrackListItem)).toHaveLength(2)
-    done()
   })
 })

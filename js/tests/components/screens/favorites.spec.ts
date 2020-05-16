@@ -12,7 +12,7 @@ describe('components/screens/favorites', () => {
     jest.clearAllMocks()
   })
 
-  it('displays the song list if there are favorites', async done => {
+  it('displays the song list if there are favorites', async () => {
     const wrapper = mount(Component, {
       data: () => ({
         state: {
@@ -24,7 +24,6 @@ describe('components/screens/favorites', () => {
     await wrapper.vm.$nextTick()
     expect(wrapper.hasAll(SongList, SongListControls)).toBe(true)
     expect(wrapper.findAll('div.none')).toHaveLength(0)
-    done()
   })
 
   it('displays a fallback message if there are no favorites', () => {

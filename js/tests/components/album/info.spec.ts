@@ -34,13 +34,12 @@ describe('components/album/info', () => {
     expect(wrapper.html()).toMatch(album.info!.wiki!.full)
   })
 
-  it('shows the album thumbnail', async done => {
+  it('shows the album thumbnail', async () => {
     const album = factory('album')
     const wrapper = mount(Component, {
       propsData: { album }
     })
     await wrapper.vm.$nextTick()
     expect(wrapper.has(AlbumThumbnail)).toBe(true)
-    done()
   })
 })

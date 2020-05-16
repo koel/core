@@ -35,7 +35,7 @@ describe('components/screens/home', () => {
     jest.clearAllMocks()
   })
 
-  it('displays all sections', async done => {
+  it('displays all sections', async () => {
     const wrapper = mount(Home, { data: () => data })
 
     await wrapper.vm.$nextTick()
@@ -49,16 +49,14 @@ describe('components/screens/home', () => {
 
     expect(wrapper.find('.top-artists').findAll(ArtistItem)).toHaveLength(5)
     expect(wrapper.find('.top-albums').findAll(AlbumItem)).toHaveLength(6)
-    done()
   })
 
-  it('refreshes when a new song is played', async done => {
+  it('refreshes when a new song is played', async () => {
     const wrapper = mount(Home)
 
     await wrapper.vm.$nextTick()
     const m = mock(wrapper.vm, 'refreshDashboard')
     event.emit('SONG_PLAYED', factory('song'))
     expect(m).toHaveBeenCalled()
-    done()
   })
 })

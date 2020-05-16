@@ -1,5 +1,3 @@
-/* eslint camelcase: ["error", {properties: "never"}] */
-
 import Vue from 'vue'
 import { union, difference, take, orderBy } from 'lodash'
 
@@ -118,7 +116,7 @@ export const artistStore: ArtistStore = {
    * @param {string} image The content data string of the image
    */
   uploadImage: (artist: Artist, image: string): Promise<string> => new Promise((resolve, reject) => {
-    http.put(`artist/${artist.id}/image`, { image }, ({ data: { imageUrl }}: { data: { imageUrl: string }}): void => {
+    http.put(`artist/${artist.id}/image`, { image }, ({ data: { imageUrl } }: { data: { imageUrl: string } }): void => {
       artist.image = imageUrl
       resolve(imageUrl)
     }, (error: any) => reject(error))

@@ -22,7 +22,7 @@ describe('components/album/card', () => {
     jest.clearAllMocks()
   })
 
-  it('renders properly', async done => {
+  it('renders properly', async () => {
     const wrapper = mount(Component, { propsData: { album } })
 
     await wrapper.vm.$nextTick()
@@ -30,8 +30,6 @@ describe('components/album/card', () => {
     const html = wrapper.html()
     expect(html).toMatch(album.name)
     expect(html).toMatch('10 songs')
-
-    done()
   })
 
   it('shuffles', () => {

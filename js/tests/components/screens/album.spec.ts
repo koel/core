@@ -12,7 +12,7 @@ describe('components/screens/album', () => {
     jest.clearAllMocks()
   })
 
-  it('renders properly', async done => {
+  it('renders properly', async () => {
     const album = factory<Album>('album')
     const wrapper = mount(Component, {
       propsData: { album }
@@ -23,7 +23,6 @@ describe('components/screens/album', () => {
     expect(html).toMatch(album.name)
     expect(html).toMatch(album.artist.name)
     expect(wrapper.hasAll(SongList, SongListControls)).toBe(true)
-    done()
   })
 
   it('loads info from Last.fm', () => {

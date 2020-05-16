@@ -97,7 +97,7 @@ describe('components/song/add-to-menu', () => {
     expect(closeStub).toHaveBeenCalled()
   })
 
-  it('creates new playlist from songs', async done => {
+  it('creates new playlist from songs', async () => {
     const storeStub = mock(playlistStore, 'store', new Promise(resolve => resolve(factory('playlist'))))
     const wrapper = initComponent()
     const closeStub = mock(wrapper.vm, 'close')
@@ -106,6 +106,5 @@ describe('components/song/add-to-menu', () => {
     await wrapper.vm.$nextTick()
     expect(storeStub).toHaveBeenCalledWith('Foo', songs)
     expect(closeStub).toHaveBeenCalled()
-    done()
   })
 })
