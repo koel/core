@@ -1,4 +1,3 @@
-import NProgress from 'nprogress'
 import { songStore } from '.'
 import { http } from '../services'
 import { remove } from 'lodash'
@@ -40,8 +39,6 @@ export const recentlyPlayedStore: RecentlyPlayedStore = {
         resolve(this.state.songs)
         return
       }
-
-      NProgress.start()
 
       http.get(`interaction/recently-played`, ({ data } : { data: string[] }): void => {
         this.state.songs = songStore.byIds(data)

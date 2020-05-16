@@ -1,5 +1,4 @@
 import { difference, union } from 'lodash'
-import NProgress from 'nprogress'
 
 import { http } from '@/services'
 import { alerts, pluralize } from '@/utils'
@@ -73,12 +72,10 @@ export const favoriteStore: FavoriteStore = {
     songs.forEach(song => { song.liked = true })
     this.add(songs)
 
-    NProgress.start()
-
     return new Promise((resolve, reject): void => {
       http.post('interaction/batch/like', {
         songs: songs.map(song => song.id)
-      }, ({ data } : { data: Song[] }): void => {
+      }, ({ data }: { data: Song[] }): void => {
         alerts.success(`Added ${pluralize(songs.length, 'song')} into Favorites.`)
         resolve(data)
       }, (error: any) => reject(error))
@@ -89,12 +86,10 @@ export const favoriteStore: FavoriteStore = {
     songs.forEach(song => { song.liked = false })
     this.remove(songs)
 
-    NProgress.start()
-
     return new Promise((resolve, reject): void => {
       http.post('interaction/batch/unlike', {
         songs: songs.map(song => song.id)
-      }, ({ data } : { data: Song[] }): void => {
+      }, ({ data }: { data: Song[] }): void => {
         alerts.success(`Removed ${pluralize(songs.length, 'song')} from Favorites.`)
         resolve(data)
       }, (error: any) => reject(error))

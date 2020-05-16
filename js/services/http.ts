@@ -6,6 +6,23 @@ import { ls } from '@/services'
 
 export const http = {
   client: null as AxiosInstance | null,
+  progressBarTimeout: 0,
+
+  // Only show the progress bar after some delay
+  setProgressBarAfterDelay () {
+    this.progressBarTimeout = window.setTimeout(() => {
+      NProgress.start()
+    }, 2000)
+  },
+
+  hideProgressBar () {
+    NProgress.done()
+
+    if (this.progressBarTimeout) {
+      window.clearTimeout(this.progressBarTimeout)
+      delete this.progressBarTimeout
+    }
+  },
 
   request (method: Method, url: string, data: object, successCb: any, errorCb: any): void {
     this.client!.request({ url, data, method }).then(successCb).catch(errorCb)
@@ -34,12 +51,15 @@ export const http = {
 
     // Intercept the request to make sure the token is injected into the header.
     this.client.interceptors.request.use(config => {
+      this.setProgressBarAfterDelay()
       config.headers.Authorization = `Bearer ${ls.get('jwt-token')}`
       return config
     })
 
     // Intercept the response and…
     this.client.interceptors.response.use(response => {
+      this.hideProgressBar()
+
       // …get the token from the header or response data if exists, and save it.
       const token = response.headers.Authorization || response.data.token
 
@@ -47,10 +67,10 @@ export const http = {
         ls.set('jwt-token', token)
       }
 
-      NProgress.done()
-
       return response
     }, error => {
+      this.hideProgressBar()
+
       // Also, if we receive a Bad Request / Unauthorized error
       if (error.response.status === 400 || error.response.status === 401) {
         // and we're not trying to login
@@ -59,8 +79,6 @@ export const http = {
           event.emit(event.$names.LOG_OUT)
         }
       }
-
-      NProgress.done()
 
       return Promise.reject(error)
     })

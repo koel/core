@@ -1,5 +1,4 @@
 import { difference, union } from 'lodash'
-import NProgress from 'nprogress'
 
 import stub from '@/stubs/playlist'
 import { http } from '@/services'
@@ -72,20 +71,16 @@ export const playlistStore: PlaylistStore = {
     this.state.playlists = value
   },
 
-  fetchSongs: (playlist: Playlist): Promise<Playlist> => {
-    NProgress.start()
-
-    return new Promise((resolve, reject): void => {
-      http.get(`playlist/${playlist.id}/songs`, ({ data }: { data: string[] }) => {
-        playlist.songs = songStore.byIds(data)
-        playlist.populated = true
-        resolve(playlist)
-      }, (error: any) => reject(error))
-    })
-  },
+  fetchSongs: (playlist: Playlist): Promise<Playlist> => new Promise((resolve, reject): void => {
+    http.get(`playlist/${playlist.id}/songs`, ({ data }: { data: string[] }) => {
+      playlist.songs = songStore.byIds(data)
+      playlist.populated = true
+      resolve(playlist)
+    }, (error: any) => reject(error))
+  }),
 
   byId (id: number): Playlist {
-    return <Playlist>this.all.find(song => song.id === id)
+    return <Playlist> this.all.find(song => song.id === id)
   },
 
   /**
@@ -116,8 +111,6 @@ export const playlistStore: PlaylistStore = {
     const songIds = songs.map(song => song.id)
     const serializedRules = this.serializeSmartPlaylistRulesForStorage(rules)
 
-    NProgress.start()
-
     return new Promise((resolve, reject): void => http.post(
       'playlist',
       { name, songs: songIds, rules: serializedRules }, ({ data: playlist }: { data: Playlist }) => {
@@ -136,8 +129,6 @@ export const playlistStore: PlaylistStore = {
   },
 
   delete (playlist: Playlist): Promise<any> {
-    NProgress.start()
-
     return new Promise((resolve, reject): void => {
       http.delete(`playlist/${playlist.id}`, {}, ({ data } : { data: any }) => {
         this.remove(playlist)
@@ -160,8 +151,6 @@ export const playlistStore: PlaylistStore = {
         return
       }
 
-      NProgress.start()
-
       http.put(`playlist/${playlist.id}/sync`, { songs: playlist.songs.map(song => song.id) }, (): void => {
         alerts.success(`Added ${pluralize(songs.length, 'song')} into &quot;${playlist.name}&quot;.`)
 
@@ -182,8 +171,6 @@ export const playlistStore: PlaylistStore = {
         return
       }
 
-      NProgress.start()
-
       playlist.songs = difference(playlist.songs, songs)
       http.put(`playlist/${playlist.id}/sync`, { songs: playlist.songs.map(song => song.id) }, (): void => {
         alerts.success(`Removed ${pluralize(songs.length, 'song')} from &quot;${playlist.name}&quot;.`)
@@ -194,8 +181,6 @@ export const playlistStore: PlaylistStore = {
 
   update (playlist: Playlist): Promise<Playlist> {
     const serializedRules = this.serializeSmartPlaylistRulesForStorage(playlist.rules)
-
-    NProgress.start()
 
     return new Promise((resolve, reject): void => http.put(
       `playlist/${playlist.id}`,

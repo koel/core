@@ -1,7 +1,6 @@
 import { without } from 'lodash'
 import md5 from 'blueimp-md5'
 import Vue from 'vue'
-import NProgress from 'nprogress'
 
 import { http } from '@/services'
 import { alerts } from '@/utils'
@@ -77,15 +76,11 @@ export const userStore: UserStore = {
     Vue.set(user, 'avatar', `https://www.gravatar.com/avatar/${md5(user.email)}?s=256`)
   },
 
-  login: (email: string, password: string): Promise<User> => {
-    NProgress.start()
-
-    return new Promise((resolve, reject): void => {
-      http.post('me', { email, password }, ({ data }: { data: User }): void => {
-        resolve(data)
-      }, (error: any) => reject(error))
-    })
-  },
+  login: (email: string, password: string): Promise<User> => new Promise((resolve, reject): void => {
+    http.post('me', { email, password }, ({ data }: { data: User }): void => {
+      resolve(data)
+    }, (error: any) => reject(error))
+  }),
 
   logout: (): Promise<void> => {
     return new Promise((resolve, reject) => {
@@ -104,8 +99,6 @@ export const userStore: UserStore = {
   },
 
   updateProfile (password: string): Promise<User> {
-    NProgress.start()
-
     return new Promise((resolve, reject): void => {
       http.put('me', {
         password,
@@ -121,10 +114,8 @@ export const userStore: UserStore = {
   },
 
   store (name: string, email: string, password: string): Promise<User> {
-    NProgress.start()
-
     return new Promise((resolve, reject): void => {
-      http.post('user', { name, email, password }, ({ data: user } : { data: User }): void => {
+      http.post('user', { name, email, password }, ({ data: user }: { data: User }): void => {
         this.setAvatar(user)
         this.all.unshift(user)
         alerts.success(`New user &quot;${name}&quot; created.`)
@@ -134,8 +125,6 @@ export const userStore: UserStore = {
   },
 
   update (user: User, name: string, email: string, password: string): Promise<User> {
-    NProgress.start()
-
     return new Promise((resolve, reject): void => {
       http.put(`user/${user.id}`, { name, email, password }, (): void => {
         this.setAvatar(user);
@@ -147,8 +136,6 @@ export const userStore: UserStore = {
   },
 
   destroy (user: User): Promise<void> {
-    NProgress.start()
-
     return new Promise((resolve, reject): void => {
       http.delete(`user/${user.id}`, {}, (): void => {
         this.all = without(this.all, user)
