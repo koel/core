@@ -81,7 +81,7 @@ export const userStore: UserStore = {
     NProgress.start()
 
     return new Promise((resolve, reject): void => {
-      http.post('me', { email, password }, ({ data } : { data: User }): void => {
+      http.post('me', { email, password }, ({ data }: { data: User }): void => {
         resolve(data)
       }, (error: any) => reject(error))
     })
@@ -97,7 +97,7 @@ export const userStore: UserStore = {
 
   getProfile: (): Promise<User> => {
     return new Promise((resolve, reject): void => {
-      http.get('me', ({ data } : { data: User }) => {
+      http.get('me', ({ data }: { data: User }) => {
         resolve(data)
       }, (error: any) => reject(error))
     })
