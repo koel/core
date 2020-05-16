@@ -62,16 +62,6 @@ export default Vue.extend({
       await this.init()
     }
 
-    // Create the element to be the ghost drag image.
-    const dragGhost = document.createElement('div')
-    dragGhost.id = 'dragGhost'
-    document.body.appendChild(dragGhost)
-
-    // And the textarea to copy stuff
-    const copyArea = document.createElement('textarea')
-    copyArea.id = 'copyArea'
-    document.body.appendChild(copyArea)
-
     // Add an ugly mac/non-mac class for OS-targeting styles.
     // I'm crying inside.
     $.addClass(document.documentElement, navigator.userAgent.includes('Mac') ? 'mac' : 'non-mac')
@@ -101,7 +91,6 @@ export default Vue.extend({
 
           this.requestNotifPermission()
 
-          // To confirm or not to confirm closing, it's a question.
           window.addEventListener('beforeunload', (e: BeforeUnloadEvent): void => {
             if (!preferences.confirmClosing) {
               return
@@ -137,17 +126,11 @@ export default Vue.extend({
       }
     },
 
-    /**
-     * When the user logs in, set the whole app to be "authenticated" and initialize it.
-     */
     onUserLoggedIn (): void {
       this.authenticated = true
       this.init()
     },
 
-    /**
-     * Subscribes to the events broadcasted e.g. from the remote controller.
-     */
     subscribeToBroadcastedEvents (): void {
       socket.listen(event.$names.SOCKET_TOGGLE_FAVORITE, (): void => {
         if (queueStore.current) {

@@ -28,25 +28,39 @@ export const showOverlay = (message = 'Just a little patience…', type = 'loadi
 
 export const hideOverlay = (): void => event.emit(event.$names.HIDE_OVERLAY)
 
-export const copyText = (text: string): void =>
-  use(<HTMLTextAreaElement>document.querySelector('#copyArea'), (copyArea: HTMLTextAreaElement): void => {
-    copyArea.style.top = `${window.pageYOffset || document.documentElement.scrollTop}px`
-    copyArea.value = text
-    select(copyArea)
-    document.execCommand('copy')
-  })
+export const copyText = (text: string): void => {
+  let copyArea = document.querySelector('#copyArea') as HTMLTextAreaElement
+
+  if (!copyArea) {
+    copyArea = document.createElement('textarea')
+    copyArea.id = 'copyArea'
+    document.body.appendChild(copyArea)
+  }
+
+  copyArea.style.top = `${window.pageYOffset || document.documentElement.scrollTop}px`
+  copyArea.value = text
+  select(copyArea)
+  document.execCommand('copy')
+}
 
 export const getDefaultCover = (): string => `${sharedStore.state.cdnUrl}/public/img/covers/unknown-album.png`
 
 const createGhostDragImage = (event: DragEvent, text: string): void => {
-  use(<HTMLElement>document.querySelector('#dragGhost'), (ghost: HTMLElement): void => {
-    if (!event.dataTransfer) {
-      return
-    }
+  if (!event.dataTransfer) {
+    return
+  }
 
-    ghost.innerText = text
-    event.dataTransfer.setDragImage(ghost, 0, 0)
-  })
+  let dragGhost = document.querySelector('#dragGhost') as HTMLElement
+
+  if (!dragGhost) {
+    // Create the element to be the ghost drag image.
+    dragGhost = document.createElement('div')
+    dragGhost.id = 'dragGhost'
+    document.body.appendChild(dragGhost)
+  }
+
+  dragGhost.innerText = text
+  event.dataTransfer.setDragImage(dragGhost, 0, 0)
 }
 
 /**
