@@ -56,7 +56,7 @@ export const userStore: UserStore = {
   },
 
   byId (id: number): User {
-    return <User>this.all.find(user => user.id === id)
+    return <User> this.all.find(user => user.id === id)
   },
 
   get current () {
