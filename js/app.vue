@@ -131,7 +131,7 @@ export default Vue.extend({
      */
     requestNotifPermission (): void {
       if (window.Notification && preferences.notify && window.Notification.permission !== 'granted') {
-        window.Notification.requestPermission().then((result: string) => {
+        window.Notification.requestPermission().then((result: string): void => {
           preferences.notify = result === 'denied'
         })
       }
@@ -156,7 +156,7 @@ export default Vue.extend({
       })
     },
 
-    triggerMaximize: () => appUtils.triggerMaximize()
+    triggerMaximize: (): void => appUtils.triggerMaximize()
   }
 })
 

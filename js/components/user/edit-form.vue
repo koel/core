@@ -64,12 +64,12 @@ export default Vue.extend({
       this.close()
     },
 
-    close () {
+    close (): void {
       this.$emit('close')
     }
   },
 
-  created () {
+  created (): void {
     this.mutatedUser = Object.assign({}, this.user)
   }
 })

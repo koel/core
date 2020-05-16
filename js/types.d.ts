@@ -99,7 +99,7 @@ declare module 'vuequery' {
 }
 
 declare const KOEL_ENV: 'app' | 'web'
-declare const NODE_ENV: string
+declare const NODE_ENV: 'dev' | 'test' | 'prod' | 'demo'
 
 declare module '*.vue' {
   import Vue from 'vue'
@@ -107,7 +107,7 @@ declare module '*.vue' {
 }
 
 interface Constructable<T> {
-  new(...args: any) : T
+  new(...args: any): T
 }
 
 interface Window {

@@ -80,20 +80,18 @@ export default Vue.extend({
     AlbumArtOverlay: () => import('@/components/ui/album-art-overlay.vue')
   },
 
-  data () {
-    return {
-      authenticated: false,
-      song: null as unknown as Song,
-      lastActiveTime: new Date().getTime(),
-      inStandaloneMode: false,
-      connected: false,
-      muted: false,
-      showingVolumeSlider: false,
-      retries: 0,
-      preferences: preferenceStore.state,
-      volume: 7
-    }
-  },
+  data: () => ({
+    authenticated: false,
+    song: null as unknown as Song,
+    lastActiveTime: new Date().getTime(),
+    inStandaloneMode: false,
+    connected: false,
+    muted: false,
+    showingVolumeSlider: false,
+    retries: 0,
+    preferences: preferenceStore.state,
+    volume: 7
+  }),
 
   watch: {
     connected (): void {
@@ -140,7 +138,7 @@ export default Vue.extend({
           .listen(event.$names.SOCKET_SONG, ({ song }: { song: Song }): void => {
             this.song = song
           })
-          .listen(event.$names.SOCKET_PLAYBACK_STOPPED, () => {
+          .listen(event.$names.SOCKET_PLAYBACK_STOPPED, (): void => {
             this.song && (this.song.playbackState = 'Stopped')
           })
           .listen(event.$names.SOCKET_VOLUME_CHANGED, (volume: number): void => volumeSlider.noUiSlider!.set(volume))
@@ -190,9 +188,6 @@ export default Vue.extend({
       socket.broadcast(event.$names.SOCKET_GET_STATUS)
     },
 
-    /**
-       * Scan for an active (desktop) Koel instance.
-       */
     scan (): void {
       if (!this.connected) {
         if (!this.maxRetriesReached) {

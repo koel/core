@@ -15,20 +15,23 @@
   </li>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
 import { songStore, queueStore, sharedStore } from '@/stores'
 import { ls, playback } from '@/services'
 
-export default {
+export default Vue.extend({
   props: {
     album: {
       type: Object,
       required: true
-    },
+    } as PropOptions<Album>,
+
     track: {
       type: Object,
       required: true
-    },
+    } as PropOptions<AlbumTrack>,
+
     index: {
       type: Number,
       required: true
@@ -40,28 +43,28 @@ export default {
   }),
 
   computed: {
-    song () {
+    song (): Song | null {
       return songStore.guess(this.track.title, this.album)
     },
 
-    tooltip () {
+    tooltip (): string {
       return this.song ? 'Click to play' : ''
     },
 
-    iTunesUrl () {
+    iTunesUrl (): string {
       return `${window.BASE_URL}api/itunes/song/${this.album.id}?q=${encodeURIComponent(this.track.title)}&jwt-token=${ls.get('jwt-token')}`
     }
   },
 
   methods: {
-    play () {
+    play (): void {
       if (this.song) {
         queueStore.contains(this.song) || queueStore.queueAfterCurrent(this.song)
         playback.play(this.song)
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

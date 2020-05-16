@@ -38,17 +38,17 @@ export default Vue.extend({
   }),
 
   methods: {
-    show (options: object) {
+    show (options: object): void {
       assign(this.state, options)
       this.state.showing = true
     },
 
-    hide () {
+    hide (): void {
       this.state.showing = false
     }
   },
 
-  created () {
+  created (): void {
     event.on({
       [event.$names.SHOW_OVERLAY]: (options: object): void => this.show(options),
       [event.$names.HIDE_OVERLAY]: (): void => this.hide()

@@ -1,7 +1,11 @@
 <template>
   <div class="modal-wrapper" :class="{ overlay: showingModalName }">
     <create-smart-playlist-form v-if="showingModalName === 'create-smart-playlist-form'" @close="close"/>
-    <edit-smart-playlist-form v-if="showingModalName === 'edit-smart-playlist-form'" @close="close" :playlist="boundData.playlist"/>
+    <edit-smart-playlist-form
+      v-if="showingModalName === 'edit-smart-playlist-form'"
+      @close="close"
+      :playlist="boundData.playlist"
+    />
     <add-user-form v-if="showingModalName === 'add-user-form'" @close="close"/>
     <edit-user-form v-if="showingModalName === 'edit-user-form'" :user="boundData.user" @close="close"/>
     <edit-song-form
@@ -25,6 +29,14 @@ interface ModalWrapperBoundData {
   initialTab?: string
 }
 
+declare type ModalName =
+  | 'create-smart-playlist-form'
+  | 'edit-smart-playlist-form'
+  | 'add-user-form'
+  | 'edit-user-form'
+  | 'edit-song-form'
+  | 'about-dialog'
+
 export default Vue.extend({
   components: {
     CreateSmartPlaylistForm: () => import('@/components/playlist/smart-playlist/create-form.vue'),
@@ -36,18 +48,18 @@ export default Vue.extend({
   },
 
   data: () => ({
-    showingModalName: '',
+    showingModalName: null as ModalName | null,
     boundData: {} as ModalWrapperBoundData
   }),
 
   methods: {
-    close () {
-      this.showingModalName = ''
+    close (): void {
+      this.showingModalName = null
       this.boundData = {}
     }
   },
 
-  created () {
+  created (): void {
     event.on({
       [event.$names.MODAL_SHOW_CREATE_SMART_PLAYLIST_FORM]: (): void => {
         this.showingModalName = 'create-smart-playlist-form'

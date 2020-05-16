@@ -81,7 +81,7 @@ export default Vue.extend({
    * they don't appear off-screen.
    */
   mounted (): void {
-    Array.from(this.$el.querySelectorAll('.has-sub') as NodeListOf<HTMLElement>).forEach((item: HTMLElement) => {
+    Array.from(this.$el.querySelectorAll('.has-sub') as NodeListOf<HTMLElement>).forEach((item: HTMLElement): void => {
       const submenu = item.querySelector('.submenu') as HTMLElement
 
       if (!submenu) {

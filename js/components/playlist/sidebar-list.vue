@@ -67,7 +67,7 @@ export default Vue.extend({
     },
 
     toggleContextMenu (event: MouseEvent): void {
-      this.$nextTick(() => {
+      this.$nextTick((): void => {
         if (this.creating) {
           this.creating = false
         } else {

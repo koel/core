@@ -44,7 +44,7 @@ export default mixins(hasSongList).extend({
 
   created (): void {
     event.on({
-      [event.$names.LOAD_MAIN_CONTENT]: (view: MainViewName) => {
+      [event.$names.LOAD_MAIN_CONTENT]: (view: MainViewName): void => {
         if (view === 'RecentlyPlayed') {
           recentlyPlayedStore.fetchAll()
         }

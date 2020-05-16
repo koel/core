@@ -213,7 +213,7 @@ export default Vue.extend({
       this.songProxies = orderBy(this.songProxies, this.sortKey!, this.order)
     },
 
-    handleDelete () {
+    handleDelete (): void {
       if (!this.selectedSongs.length) {
         return
       }
@@ -222,12 +222,15 @@ export default Vue.extend({
         case 'queue':
           queueStore.unqueue(this.selectedSongs)
           break
+
         case 'favorites':
           favoriteStore.unlike(this.selectedSongs)
           break
+
         case 'playlist':
           playlistStore.removeSongs(this.playlist, this.selectedSongs)
           break
+
         default:
           break
       }
@@ -251,6 +254,7 @@ export default Vue.extend({
           // Play the first song selected if we're in Queue screen.
           playback.play(this.selectedSongs[0])
           break
+
         default:
           //
           // --------------------------------------------------------------------
@@ -262,7 +266,11 @@ export default Vue.extend({
           //  • Cmd/Ctrl+Shift+Enter: Queue songs to top and play the first queued song
           // --------------------------------------------------------------------
           //
-          event.shiftKey ? queueStore.queueToTop(this.selectedSongs) : queueStore.queue(this.selectedSongs)
+          if (event.shiftKey) {
+            queueStore.queueToTop(this.selectedSongs)
+          } else {
+            queueStore.queue(this.selectedSongs)
+          }
 
           if (event.ctrlKey || event.metaKey) {
             playback.play(this.selectedSongs[0])
@@ -322,6 +330,7 @@ export default Vue.extend({
         this.filteredItems.indexOf(firstRowVm.item),
         this.filteredItems.indexOf(secondRowVm.item)
       ]
+
       indexes.sort((a, b) => a - b)
 
       for (let i = indexes[0]; i <= indexes[1]; ++i) {
@@ -404,6 +413,7 @@ export default Vue.extend({
 
       if (matches) {
         keywords = q.replace(re, '').trim()
+
         if (keywords) {
           matches.forEach(match => {
             const field = match.split(':')[1].toLowerCase()

@@ -141,6 +141,7 @@ export default Vue.extend({
      */
     scrollSelectedIntoView (alignTop: boolean): void {
       const elem = this.$el.querySelector('.result li.selected') as HTMLElement
+
       if (!elem) {
         return
       }

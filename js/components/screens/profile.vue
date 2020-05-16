@@ -137,20 +137,18 @@ export default Vue.extend({
     Btn: () => import('@/components/ui/btn.vue')
   },
 
-  data () {
-    return {
-      preferences,
-      demo: NODE_ENV === 'demo',
-      state: userStore.state,
-      cache: userStore.stub,
-      pwd: '',
-      confirmPwd: '',
-      sharedState: sharedStore.state,
-      validation: {
-        error: false
-      }
+  data: () => ({
+    preferences,
+    demo: NODE_ENV === 'demo',
+    state: userStore.state,
+    cache: userStore.stub,
+    pwd: '',
+    confirmPwd: '',
+    sharedState: sharedStore.state,
+    validation: {
+      error: false
     }
-  },
+  }),
 
   methods: {
     async update (): Promise<void> {

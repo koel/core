@@ -29,7 +29,7 @@ export default Vue.extend({
     $SUPPORT_BAR_TIMEOUT_HANDLE: null
   }),
 
-  created () {
+  created (): void {
     event.on({
       [event.$names.KOEL_READY]: (): void => {
         if (isMobile.any || preferences.supportBarNoBugging) {

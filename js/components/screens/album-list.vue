@@ -48,9 +48,9 @@ export default mixins(infiniteScroll).extend({
     }
   },
 
-  created () {
+  created (): void {
     event.on({
-      [event.$names.KOEL_READY]: () => {
+      [event.$names.KOEL_READY]: (): void => {
         this.albums = albumStore.all
 
         if (this.$refs.scroller) {

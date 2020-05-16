@@ -71,7 +71,10 @@ export default Vue.extend({
 
   methods: {
     playRightAwayyyyyyy (): void {
-      queueStore.contains(this.song) || queueStore.queueAfterCurrent(this.song)
+      if (!queueStore.contains(this.song)) {
+        queueStore.queueAfterCurrent(this.song)
+      }
+
       playback.play(this.song)
     },
 
@@ -80,9 +83,11 @@ export default Vue.extend({
         case 'Playing':
           playback.pause()
           break
+
         case 'Paused':
           playback.resume()
           break
+
         default:
           this.playRightAwayyyyyyy()
           break

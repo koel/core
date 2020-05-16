@@ -40,12 +40,10 @@ export default Vue.extend({
     Btn: () => import('@/components/ui/btn.vue')
   },
 
-  data () {
-    return {
-      state: settingStore.state,
-      sharedState: sharedStore.state
-    }
-  },
+  data: () => ({
+    state: settingStore.state,
+    sharedState: sharedStore.state
+  }),
 
   computed: {
     shouldWarn (): boolean {

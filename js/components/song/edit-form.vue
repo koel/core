@@ -230,7 +230,7 @@ export default Vue.extend({
   },
 
   methods: {
-    async open () {
+    async open (): Promise<void> {
       this.mutatedSongs = ([] as Song[]).concat(this.songs)
       this.currentView = this.initialTab
 

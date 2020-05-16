@@ -131,8 +131,8 @@ export default Vue.extend({
     }
   },
 
-  created () {
-    event.on(event.$names.LOAD_MAIN_CONTENT, (view: MainViewName) => {
+  created (): void {
+    event.on(event.$names.LOAD_MAIN_CONTENT, (view: MainViewName): void => {
       this.viewingQueue = view === 'Queue'
     })
   }

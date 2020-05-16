@@ -94,7 +94,7 @@ export default Vue.extend({
     }
   },
 
-  created () {
+  created (): void {
     event.on(event.$names.LOAD_MAIN_CONTENT, (view: MainViewName): void => {
       this.currentView = view
 

@@ -40,6 +40,7 @@ export default Vue.extend({
       type: Object,
       required: true
     } as PropOptions<Playlist>,
+
     type: {
       type: String,
       default: 'playlist',
@@ -57,12 +58,15 @@ export default Vue.extend({
       switch (this.type) {
         case 'playlist':
           return `#!/playlist/${this.playlist.id}`
+
         case 'favorites':
           return '#!/favorites'
+
         case 'recently-played':
           return '#!/recently-played'
+
         default:
-          throw Error('Invalid playlist type')
+          throw new Error('Invalid playlist type')
       }
     },
 
@@ -136,18 +140,21 @@ export default Vue.extend({
     }
   },
 
-  created () {
+  created (): void {
     event.on(event.$names.LOAD_MAIN_CONTENT, (view: MainViewName, playlist: Playlist): void => {
       switch (view) {
         case 'Favorites':
           this.active = this.type === 'favorites'
           break
+
         case 'RecentlyPlayed':
           this.active = this.type === 'recently-played'
+
           break
         case 'Playlist':
           this.active = this.playlist === playlist
           break
+
         default:
           this.active = false
           break

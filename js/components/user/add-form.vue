@@ -46,7 +46,7 @@ export default Vue.extend({
   }),
 
   methods: {
-    async submit () {
+    async submit (): Promise<void> {
       this.loading = true
       await userStore.store(this.newUser.name, this.newUser.email, this.newUser.password)
       this.loading = false

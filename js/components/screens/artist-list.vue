@@ -48,7 +48,7 @@ export default mixins(infiniteScroll).extend({
     }
   },
 
-  created () {
+  created (): void {
     event.on({
       [event.$names.KOEL_READY]: (): void => {
         this.artists = artistStore.all
@@ -59,7 +59,7 @@ export default mixins(infiniteScroll).extend({
         }
       },
 
-      [event.$names.FILTER_CHANGED]: (q: string) => {
+      [event.$names.FILTER_CHANGED]: (q: string): void => {
         this.q = q
       }
     })

@@ -79,7 +79,7 @@ export default Vue.extend({
   },
 
   methods: {
-    init () {
+    init (): void {
       const config: EqualizerPreset = equalizerStore.get()
 
       context = audioService.getContext()
@@ -126,7 +126,7 @@ export default Vue.extend({
       const config = equalizerStore.get()
 
       Array.from(document.querySelectorAll('#equalizer .slider') as NodeListOf<SliderElement>)
-        .forEach((el: SliderElement, i: number) => {
+        .forEach((el: SliderElement, i: number): void => {
           if (el.noUiSlider) {
             el.noUiSlider.destroy()
           }
@@ -158,8 +158,7 @@ export default Vue.extend({
             this.selectedPresetIndex = -1
             this.save()
           })
-        }
-        )
+        })
 
       // Now we set this value to trigger the audio processing.
       this.selectedPresetIndex = preferences.selectedPreset
@@ -191,8 +190,7 @@ export default Vue.extend({
             // Update the slider values into GUI.
             el.noUiSlider.set(preset.gains[i - 1])
           }
-        }
-        )
+        })
 
       this.save()
     },

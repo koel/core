@@ -68,13 +68,14 @@ export default Vue.extend({
     view: 'Home'
   }),
 
-  created () {
+  created (): void {
     event.on({
       [event.$names.LOAD_MAIN_CONTENT]: (view: MainViewName, data: Artist | Album): void => {
         switch (view) {
           case 'Album':
             this.shownAlbum = data as Album
             break
+
           case 'Artist':
             this.shownArtist = data as Artist
             break

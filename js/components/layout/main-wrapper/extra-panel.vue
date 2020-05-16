@@ -143,7 +143,7 @@ export default Vue.extend({
     }
   },
 
-  created () {
+  created (): void {
     event.on({
       [event.$names.SONG_PLAYED]: async (song: Song): Promise<void> => await this.fetchSongInfo(song),
       [event.$names.LOAD_MAIN_CONTENT]: (): void => {

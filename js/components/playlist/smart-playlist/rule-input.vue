@@ -19,11 +19,9 @@ export default Vue.extend({
     }
   },
 
-  data () {
-    return {
-      mutableValue: this.value
-    }
-  },
+  data: () => ({
+    mutableValue: this.value
+  }),
 
   watch: {
     mutableValue (): void {

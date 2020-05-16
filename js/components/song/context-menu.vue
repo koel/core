@@ -94,9 +94,11 @@ export default mixins(songMenuMethods).extend({
         case 'Playing':
           playback.pause()
           break
+
         case 'Paused':
           playback.resume()
           break
+
         default:
           queueStore.contains(this.songs[0]) || queueStore.queueAfterCurrent(this.songs[0])
           playback.play(this.songs[0])

@@ -33,7 +33,7 @@ export default Vue.extend({
     }, 200)
   },
 
-  created () {
+  created (): void {
     event.on({
       [event.$names.TOGGLE_SEARCH_FORM]: (): void => {
         this.showing = !this.showing

@@ -33,7 +33,7 @@ export default Vue.extend({
     mutatedGroup: null as unknown as SmartPlaylistRuleGroup
   }),
 
-  created () {
+  created (): void {
     this.mutatedGroup = JSON.parse(JSON.stringify(this.group))
   },
 

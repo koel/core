@@ -90,7 +90,7 @@ export default Vue.extend({
     createGroup: (): SmartPlaylistRuleGroup => playlistStore.createEmptySmartPlaylistRuleGroup()
   },
 
-  created () {
+  created (): void {
     this.mutatedPlaylist = Object.assign({}, this.playlist)
   }
 })

@@ -10,7 +10,8 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import axios from 'axios'
 import { userStore } from '@/stores'
 import { ls } from '@/services'
@@ -20,9 +21,9 @@ const DEMO_ACCOUNT = {
   password: 'demo'
 }
 
-export default {
+export default Vue.extend({
   components: {
-    Btn: () => import('@/components/ui/btn')
+    Btn: () => import('@/components/ui/btn.vue')
   },
 
   data: () => ({
@@ -34,7 +35,7 @@ export default {
   }),
 
   methods: {
-    async login () {
+    async login (): Promise<void> {
       if (KOEL_ENV === 'app') {
         if (this.url.indexOf('http://') !== 0 && this.url.indexOf('https://') !== 0) {
           this.url = `https://${this.url}`
@@ -62,18 +63,20 @@ export default {
         this.$emit('loggedin')
       } catch (err) {
         this.failed = true
-        window.setTimeout(() => (this.failed = false), 2000)
+        window.setTimeout((): void => {
+          this.failed = false
+        }, 2000)
       }
     }
   },
 
-  mounted () {
+  mounted (): void {
     if (KOEL_ENV === 'app') {
       this.url = window.BASE_URL = ls.get('koelHost')
       this.email = ls.get('lastLoginEmail')
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

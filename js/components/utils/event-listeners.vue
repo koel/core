@@ -11,7 +11,7 @@ import { alerts, event, forceReloadWindow } from '@/utils'
 
 export default Vue.extend({
   render: (h: Function): VNode => h(),
-  created () {
+  created (): void {
     event.on({
       [event.$names.PLAYLIST_DELETE]: (playlist: Playlist): void => {
         const destroy = async (): Promise<void> => {

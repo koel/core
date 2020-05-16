@@ -36,13 +36,11 @@ export default Vue.extend({
     UserCard: () => import('@/components/user/card.vue')
   },
 
-  data () {
-    return {
-      state: userStore.state,
-      isPhone: isMobile.phone,
-      showingControls: false
-    }
-  },
+  data: () => ({
+    state: userStore.state,
+    isPhone: isMobile.phone,
+    showingControls: false
+  }),
 
   methods: {
     showAddUserForm: (): void => event.emit(event.$names.MODAL_SHOW_ADD_USER_FORM),
