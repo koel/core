@@ -82,7 +82,7 @@
   },
   "scripts": {
     "lint": "eslint js --ext=js,vue",
-    "test": "yarn lint && cross-env NODE_ENV=test && jest ./js/tests",
+    "test": "yarn lint && cross-env NODE_ENV=test && jest ./js/tests --colors",
     "coverage": "yarn test && codecov"
   },
   "repository": {
