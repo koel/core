@@ -20,13 +20,17 @@ export default Vue.extend({
   },
 
   data: () => ({
-    mutableValue: this.value
+    mutableValue: ''
   }),
 
   watch: {
     mutableValue (): void {
       this.$emit('input', this.mutableValue)
     }
+  },
+
+  created (): void {
+    this.mutableValue = this.value
   }
 })
 </script>
