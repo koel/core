@@ -1,5 +1,5 @@
 import select from 'select'
-import { event, noop, pluralize, use } from '@/utils'
+import { event, noop, pluralize } from '@/utils'
 import { sharedStore } from '@/stores'
 
 /**

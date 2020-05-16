@@ -40,3 +40,9 @@ global.Vue.directive('koel-clickaway', clickaway)
 global.Vue.directive('koel-droppable', droppable)
 
 setupVueTestHelper({ registerGlobals: false })
+
+/* eslint @typescript-eslint/no-unused-vars: 0 */
+// execCommand isn't supported by jsDom (yet?)
+document.execCommand = (command: string): boolean => {
+  return false
+}

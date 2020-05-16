@@ -78,10 +78,13 @@ describe('components/song/context-menu', () => {
   })
 
   it('copies URL', () => {
-    const m = mock(songStore, 'getShareableUrl')
+    const getShareableUrlMock = mock(songStore, 'getShareableUrl')
+    const execCommandMock = mock(document, 'execCommand')
+
     const song = factory('song')
     wrapper.setProps({ songs: [song] })
     wrapper.click('.copy-url')
-    expect(m).toHaveBeenCalledWith(song)
+    expect(getShareableUrlMock).toHaveBeenCalledWith(song)
+    expect(execCommandMock).toHaveBeenCalledWith('copy')
   })
 })
