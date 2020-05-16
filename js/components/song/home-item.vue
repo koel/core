@@ -1,6 +1,6 @@
 <template>
   <li
-    :class="{ playing: song.playbackState === 'playing' || song.playbackState === 'paused' }"
+    :class="{ playing: song.playbackState === 'Playing' || song.playbackState === 'Paused' }"
     @contextmenu.prevent="requestContextMenu"
     @dblclick.prevent="play"
     @dragstart="dragStart"
@@ -10,7 +10,7 @@
   >
     <span class="cover" :style="{ backgroundImage: `url(${song.album.cover})` }">
       <a class="control" @click.prevent="changeSongState">
-        <i class="fa fa-play" v-if="song.playbackState !== 'playing'"></i>
+        <i class="fa fa-play" v-if="song.playbackState !== 'Playing'"></i>
         <i class="fa fa-pause" v-else></i>
       </a>
     </span>
@@ -25,18 +25,19 @@
   </li>
 </template>
 
-<script>
-import { dragTypes } from '@/config'
+<script lang="ts">
 import { event, startDragging, pluralize } from '@/utils'
 import { queueStore } from '@/stores'
 import { playback } from '@/services'
+import Vue, { PropOptions } from 'vue'
 
-export default {
+export default Vue.extend({
   props: {
     song: {
       type: Object,
       required: true
-    },
+    } as PropOptions<Song>,
+
     topPlayCount: {
       type: Number,
       default: 0
@@ -46,36 +47,36 @@ export default {
   filters: { pluralize },
 
   computed: {
-    showPlayCount () {
-      return this.topPlayCount && this.song.playCount
+    showPlayCount (): boolean {
+      return Boolean(this.topPlayCount && this.song.playCount)
     }
   },
 
   methods: {
-    requestContextMenu (e) {
+    requestContextMenu (e: MouseEvent): void {
       event.emit(event.$names.CONTEXT_MENU_REQUESTED, e, this.song)
     },
 
-    play () {
+    play (): void {
       queueStore.contains(this.song) || queueStore.queueAfterCurrent(this.song)
       playback.play(this.song)
     },
 
-    changeSongState () {
-      if (this.song.playbackState === 'stopped') {
+    changeSongState (): void {
+      if (this.song.playbackState === 'Stopped') {
         this.play()
-      } else if (this.song.playbackState === 'paused') {
+      } else if (this.song.playbackState === 'Paused') {
         playback.resume()
       } else {
         playback.pause()
       }
     },
 
-    dragStart (event) {
-      startDragging(event, this.song, dragTypes.SONGS)
+    dragStart (event: DragEvent): void {
+      startDragging(event, this.song, 'Song')
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

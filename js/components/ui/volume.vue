@@ -29,40 +29,41 @@
   </span>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { playback, socket } from '@/services'
 import { event } from '@/utils'
 
-export default {
+export default Vue.extend({
   data: () => ({
     muted: false
   }),
 
   methods: {
-    mute () {
+    mute (): void {
       this.muted = true
       playback.mute()
     },
 
-    unmute () {
+    unmute (): void {
       this.muted = false
       playback.unmute()
     },
 
-    setVolume (e) {
-      const volume = parseFloat(e.target.value)
+    setVolume (e: InputEvent): void {
+      const volume = parseFloat((e.currentTarget as HTMLInputElement).value)
       playback.setVolume(volume)
       this.muted = volume === 0
     },
 
     /**
      * Broadcast the volume changed event to remote controller.
-     *
-     * @param  {Event} e
      */
-    broadcastVolume: e => socket.broadcast(event.$names.SOCKET_VOLUME_CHANGED, parseFloat(e.target.value))
+    broadcastVolume: (e: InputEvent): void => {
+      socket.broadcast(event.$names.SOCKET_VOLUME_CHANGED, parseFloat((e.currentTarget as HTMLInputElement).value))
+    }
   }
-}
+})
 </script>
 
 <style lang="scss">

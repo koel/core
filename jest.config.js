@@ -1,5 +1,6 @@
 module.exports = {
   moduleFileExtensions: [
+    'ts',
     'js',
     'vue'
   ],
@@ -7,6 +8,7 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/js/$1'
   },
   transform: {
+    '^.+\\.ts?$': '<rootDir>/node_modules/ts-jest',
     '^.+\\.js$': '<rootDir>/node_modules/babel-jest',
     '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest'
   },
@@ -17,7 +19,7 @@ module.exports = {
     KOEL_ENV: 'web',
     NODE_ENV: 'test'
   },
-  setupTestFrameworkScriptFile: '<rootDir>/js/tests/setup.js',
+  setupFilesAfterEnv: ['<rootDir>/js/tests/setup.ts'],
   verbose: true,
   collectCoverage: true,
   coverageReporters: ['lcov', 'json', 'html'],

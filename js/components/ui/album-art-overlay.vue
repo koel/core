@@ -2,19 +2,20 @@
   <div :style="{ backgroundImage: albumCover ? `url(${albumCover})` : 'none' }"></div>
 </template>
 
-<script>
-import { albumStore } from '@/stores/album'
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
+import { albumStore } from '@/stores'
 
-export default {
+export default Vue.extend({
   props: {
     album: {
       type: Object,
       require: true
-    }
+    } as PropOptions<Album>
   },
 
   computed: {
-    albumCover () {
+    albumCover (): string | null {
       if (!this.album) {
         return null
       }
@@ -22,7 +23,7 @@ export default {
       return this.album.cover === albumStore.stub.cover ? null : this.album.cover
     }
   }
-}
+})
 </script>
 
 <style scoped>

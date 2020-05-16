@@ -15,17 +15,19 @@
   </section>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
+
+export default Vue.extend({
   props: {
     album: {
       type: Object,
       required: true
-    }
+    } as PropOptions<Album>
   },
 
   components: {
-    TrackListItem: () => import('./track-list-item')
+    TrackListItem: () => import('./track-list-item.vue')
   }
-}
+})
 </script>

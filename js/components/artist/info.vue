@@ -32,12 +32,14 @@
   </article>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
 import { playback } from '@/services'
 
-export default {
+export default Vue.extend({
   props: {
-    artist: Object,
+    artist: Object as PropOptions<Artist>,
+
     mode: {
       type: String,
       default: 'sidebar',
@@ -57,27 +59,27 @@ export default {
     /**
      * Whenever a new artist is loaded into this component, we reset the "full bio" state.
      */
-    artist () {
+    artist (): void {
       this.showingFullBio = false
     }
   },
 
   computed: {
-    showSummary () {
+    showSummary (): boolean {
       return this.mode !== 'full' && !this.showingFullBio
     },
 
-    showFull () {
+    showFull (): boolean {
       return this.mode === 'full' || this.showingFullBio
     }
   },
 
   methods: {
-    shuffleAll () {
+    shuffleAll (): void {
       playback.playAllByArtist(this.artist, false)
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

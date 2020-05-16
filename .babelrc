@@ -1,13 +1,5 @@
 {
   "presets": [
-    "env",
-    "stage-0"
-  ],
-  "env": {
-    "test": {
-      "plugins": [
-        "babel-plugin-dynamic-import-node"
-      ]
-    }
-  }
+    "@babel/preset-env"
+  ]
 }

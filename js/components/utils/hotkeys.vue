@@ -11,13 +11,14 @@
   />
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
-import { $, event } from '@/utils'
+import GlobalEvents from 'vue-global-events'
+import { $, event, noop } from '@/utils'
 import { playback, socket } from '@/services'
 import { queueStore, favoriteStore, songStore } from '@/stores'
 
-let ipc, events
+let ipc: any, events: any
 
 if (KOEL_ENV === 'app') {
   ipc = require('electron').ipcRenderer
@@ -40,96 +41,128 @@ Vue.config.keyCodes = {
  * Listen to the global shortcuts (media keys).
  * Only works in the app.
  */
-let listenToGlobalShortcuts = () => {}
+let listenToGlobalShortcuts = noop
 
 if (KOEL_ENV === 'app') {
-  listenToGlobalShortcuts = () => {
+  listenToGlobalShortcuts = (): void => {
     const mediaFunctionMap = {
       MediaNextTrack: () => playback.playNext(),
       MediaPreviousTrack: () => playback.playPrev(),
       MediaStop: () => playback.stop(),
       MediaPlayPause: () => playback.toggle()
-    }
+    } as { [propName: string]: Function }
 
-    ipc.on(events.GLOBAL_SHORTCUT, (e, msg) => msg in mediaFunctionMap && mediaFunctionMap[msg]())
+    ipc.on(events.GLOBAL_SHORTCUT, (e: any, msg: string) => msg in mediaFunctionMap && mediaFunctionMap[msg]())
   }
 }
 
-export default {
+export default Vue.extend({
+  components: {
+    GlobalEvents
+  },
+
   methods: {
     /**
      * Toggle playback when user presses Space key.
      *
      * @param {Object} e The keydown event
      */
-    togglePlayback: e => {
-      if (e && $.is(e.target, 'input, textarea, button, select') && !$.is(e.target, 'input[type=range]')) {
+    togglePlayback: (e: KeyboardEvent): boolean => {
+      if (
+        !(e.currentTarget instanceof Document) &&
+        $.is(e.currentTarget as Element, 'input, textarea, button, select') &&
+        !$.is(e.currentTarget as Element, 'input[type=range]')
+      ) {
         return true
       }
 
+      e.preventDefault()
       playback.toggle()
-      e && e.preventDefault()
+
+      return false
     },
 
     /**
      * Play the previous song when user presses K.
-     *
-     * @param {Object} e The keydown event
      */
-    playPrev: e => {
-      if ($.is(e.target, 'input, select, textarea')) {
+    playPrev: (e: KeyboardEvent): boolean => {
+      if (
+        !(e.currentTarget instanceof Document) &&
+        $.is(e.currentTarget as Element, 'input, select, textarea')
+      ) {
         return true
       }
 
-      playback.playPrev()
       e.preventDefault()
+      playback.playPrev()
+
+      return false
     },
 
     /**
      * Play the next song when user presses J.
-     *
-     * @param {Object} e The keydown event
      */
-    playNext: e => {
-      if ($.is(e.target, 'input, select, textarea')) {
+    playNext: (e: KeyboardEvent): boolean => {
+      if (
+        !(e.currentTarget instanceof Document) &&
+        $.is(e.currentTarget as Element, 'input, select, textarea')
+      ) {
         return true
       }
 
-      playback.playNext()
       e.preventDefault()
+      playback.playNext()
+
+      return false
     },
 
     /**
      * Put focus into the search field when user presses F.
-     *
-     * @param {Object} e The keydown event
      */
-    search: e => {
-      if (($.is(e.target, 'input, select, textarea') && !$.is(e.target, 'input[type=range]')) || e.metaKey || e.ctrlKey) {
+    search: (e: KeyboardEvent): boolean => {
+      if (
+        !(e.currentTarget instanceof Document) &&
+        ($.is(e.currentTarget as Element, 'input, select, textarea') &&
+        !$.is(e.currentTarget as Element, 'input[type=range]'))
+      ) {
+        return true
+      }
+
+      if (e.metaKey || e.ctrlKey) {
         return true
       }
 
       e.preventDefault()
       event.emit(event.$names.FOCUS_SEARCH_FIELD)
+
+      return false
     },
 
     /**
      * Like/unlike the current song when use presses L.
      */
-    toggleLike: e => {
-      if ($.is(e.target, 'input, select, textarea')) {
+    toggleLike: (e: KeyboardEvent): boolean => {
+      if (
+        !(e.currentTarget instanceof Document) &&
+        $.is(e.currentTarget as Element, 'input, select, textarea')
+      ) {
         return true
       }
 
       if (!queueStore.current) {
-        return
+        return false
       }
 
       favoriteStore.toggleOne(queueStore.current)
       socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current))
+      return false
     }
   },
 
-  created: () => KOEL_ENV === 'app' && listenToGlobalShortcuts()
-}
+  created: (): void => {
+    if (KOEL_ENV === 'app') {
+      listenToGlobalShortcuts()
+    }
+  }
+})
 </script>

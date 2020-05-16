@@ -37,14 +37,14 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import mixins from 'vue-typed-mixins'
 import { pluralize } from '@/utils'
 import { favoriteStore, sharedStore } from '@/stores'
 import { download } from '@/services'
-import hasSongList from '@/mixins/has-song-list'
+import hasSongList from '@/mixins/has-song-list.ts'
 
-export default {
-  mixins: [hasSongList],
+export default mixins(hasSongList).extend({
   filters: { pluralize },
 
   data: () => ({
@@ -53,9 +53,9 @@ export default {
   }),
 
   methods: {
-    download: () => download.fromFavorites()
+    download: (): void => download.fromFavorites()
   }
-}
+})
 </script>
 
 <style lang="scss">

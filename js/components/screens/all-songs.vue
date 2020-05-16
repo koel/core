@@ -25,17 +25,17 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import mixins from 'vue-typed-mixins'
 import { pluralize } from '@/utils'
 import { songStore } from '@/stores'
-import hasSongList from '@/mixins/has-song-list'
+import hasSongList from '@/mixins/has-song-list.ts'
 
-export default {
-  mixins: [hasSongList],
+export default mixins(hasSongList).extend({
   filters: { pluralize },
 
   data: () => ({
     state: songStore.state
   })
-}
+})
 </script>

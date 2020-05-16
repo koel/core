@@ -62,416 +62,423 @@
   </div>
 </template>
 
-<script>
-  import nouislider from 'nouislider'
-  import { socket, ls } from '@/services'
-  import { userStore, preferenceStore } from '@/stores'
-  import { event } from '@/utils'
-  import LoginForm from '@/components/auth/login-form'
+<script lang="ts">
+import Vue from 'vue'
+import nouislider from 'nouislider'
+import { socket, ls } from '@/services'
+import { userStore, preferenceStore } from '@/stores'
+import { event } from '@/utils'
+import LoginForm from '@/components/auth/login-form.vue'
+import { SliderElement } from 'koel/types/ui'
 
-  let volumeSlider
-  const MAX_RETRIES = 10
+let volumeSlider: SliderElement
+const MAX_RETRIES = 10
 
-  export default {
-    components: {
-      LoginForm,
-      AlbumArtOverlay: () => import('@/components/ui/album-art-overlay')
-    },
+export default Vue.extend({
+  components: {
+    LoginForm,
+    AlbumArtOverlay: () => import('@/components/ui/album-art-overlay.vue')
+  },
 
-    data () {
-      return {
-        authenticated: false,
-        song: null,
-        lastActiveTime: new Date().getTime(),
-        inStandaloneMode: false,
-        connected: false,
-        muted: false,
-        showingVolumeSlider: false,
-        retries: 0,
-        preferences: preferenceStore.state
-      }
-    },
+  data: () => ({
+    authenticated: false,
+    song: null as unknown as Song,
+    lastActiveTime: new Date().getTime(),
+    inStandaloneMode: false,
+    connected: false,
+    muted: false,
+    showingVolumeSlider: false,
+    retries: 0,
+    preferences: preferenceStore.state,
+    volume: 7
+  }),
 
-    watch: {
-      connected () {
-        this.$nextTick(() => {
-          volumeSlider = document.getElementById('volumeSlider')
+  watch: {
+    connected (): void {
+      this.$nextTick((): void => {
+        volumeSlider = document.getElementById('volumeSlider') as SliderElement
 
-          nouislider.create(volumeSlider, {
-            orientation: 'vertical',
-            connect: [true, false],
-            start: this.volume,
-            range: { min: 0, max: 10 },
-            direction: 'rtl'
-          })
-
-          volumeSlider.noUiSlider.on('change', (values, handle) => {
-            const volume = parseFloat(values[handle])
-            this.muted = !volume
-            socket.broadcast(event.$names.SOCKET_SET_VOLUME, { volume })
-          })
+        nouislider.create(volumeSlider, {
+          orientation: 'vertical',
+          connect: [true, false],
+          start: this.volume,
+          range: { min: 0, max: 10 },
+          direction: 'rtl'
         })
-      },
 
-      volume: value => volumeSlider.noUiSlider.set(value)
+        if (!volumeSlider.noUiSlider) {
+          throw new Error('Failed to initialize noUISlider on element #volumeSlider')
+        }
+
+        volumeSlider.noUiSlider.on('change', (values: number[], handle: number): void => {
+          const volume = values[handle]
+          this.muted = !volume
+          socket.broadcast(event.$names.SOCKET_SET_VOLUME, { volume })
+        })
+      })
     },
 
-    methods: {
-      onUserLoggedIn () {
-        this.authenticated = true
-        this.init()
-      },
+    volume: (value: number): void => volumeSlider.noUiSlider!.set(value)
+  },
 
-      async init () {
-        try {
-          const user = await userStore.getProfile()
-          userStore.init([], user)
+  methods: {
+    onUserLoggedIn (): void {
+      this.authenticated = true
+      this.init()
+    },
 
-          await socket.init()
+    async init (): Promise<void> {
+      try {
+        const user = await userStore.getProfile()
+        userStore.init([], user)
 
-          socket
-            .listen(event.$names.SOCKET_SONG, ({ song }) => (this.song = song))
-            .listen(event.$names.SOCKET_PLAYBACK_STOPPED, () => this.song && (this.song.playbackState = 'stopped'))
-            .listen(event.$names.SOCKET_VOLUME_CHANGED, volume => volumeSlider.noUiSlider.set(volume))
-            .listen(event.$names.SOCKET_STATUS, ({ song, volume }) => {
-              this.song = song
-              this.volume = volume
-              this.connected = true
-            })
+        await socket.init()
 
-          this.scan()
-        } catch (e) {
-          this.authenticated = false
-        }
-      },
+        socket
+          .listen(event.$names.SOCKET_SONG, ({ song }: { song: Song }): void => {
+            this.song = song
+          })
+          .listen(event.$names.SOCKET_PLAYBACK_STOPPED, (): void => {
+            this.song && (this.song.playbackState = 'Stopped')
+          })
+          .listen(event.$names.SOCKET_VOLUME_CHANGED, (volume: number): void => volumeSlider.noUiSlider!.set(volume))
+          .listen(event.$names.SOCKET_STATUS, ({ song, volume }: { song: Song, volume: number }): void => {
+            this.song = song
+            this.volume = volume
+            this.connected = true
+          })
 
-      toggleVolumeSlider () {
-        this.showingVolumeSlider = !this.showingVolumeSlider
-      },
-
-      toggleFavorite () {
-        if (!this.song) {
-          return
-        }
-
-        this.song.liked = !this.song.liked
-        socket.broadcast(event.$names.SOCKET_TOGGLE_FAVORITE)
-      },
-
-      togglePlayback () {
-        if (this.song) {
-          this.song.playbackState = this.song.playbackState === 'playing' ? 'paused' : 'playing'
-        }
-
-        socket.broadcast(event.$names.SOCKET_TOGGLE_PLAYBACK)
-      },
-
-      playNext: () => socket.broadcast(event.$names.SOCKET_PLAY_NEXT),
-      playPrev: () => socket.broadcast(event.$names.SOCKET_PLAY_PREV),
-      getStatus: () => socket.broadcast(event.$names.SOCKET_GET_STATUS),
-
-      /**
-       * As iOS will put a web app into standby/sleep mode (and halt all JS execution),
-       * this method will keep track of the last active time and keep the status always fresh.
-       */
-      heartbeat () {
-        const now = new Date().getTime()
-        if (now - this.lastActiveTime > 2000) {
-          this.getStatus()
-        }
-        this.lastActiveTime = now
-      },
-
-      /**
-       * Scan for an active (desktop) Koel instance.
-       */
-      scan () {
-        if (!this.connected) {
-          if (!this.maxRetriesReached) {
-            this.getStatus()
-            this.retries++
-            window.setTimeout(this.scan, 1000)
-          }
-        } else {
-          this.retries = 0
-        }
-      },
-
-      rescan () {
-        this.retries = 0
         this.scan()
+      } catch (e) {
+        console.error(e)
+        this.authenticated = false
       }
     },
 
-    computed: {
-      playing () {
-        return this.song && this.song.playbackState === 'playing'
-      },
+    toggleVolumeSlider (): void {
+      this.showingVolumeSlider = !this.showingVolumeSlider
+    },
 
-      maxRetriesReached () {
-        return this.retries >= MAX_RETRIES
-      },
+    toggleFavorite (): void {
+      if (!this.song) {
+        return
+      }
 
-      album () {
-        return this.song ? this.song.album : null
+      this.song.liked = !this.song.liked
+      socket.broadcast(event.$names.SOCKET_TOGGLE_FAVORITE)
+    },
+
+    togglePlayback (): void {
+      if (this.song) {
+        this.song.playbackState = this.song.playbackState === 'Playing' ? 'Paused' : 'Playing'
+      }
+
+      socket.broadcast(event.$names.SOCKET_TOGGLE_PLAYBACK)
+    },
+
+    playNext: (): void => {
+      socket.broadcast(event.$names.SOCKET_PLAY_NEXT)
+    },
+
+    playPrev: (): void => {
+      socket.broadcast(event.$names.SOCKET_PLAY_PREV)
+    },
+
+    getStatus: (): void => {
+      socket.broadcast(event.$names.SOCKET_GET_STATUS)
+    },
+
+    scan (): void {
+      if (!this.connected) {
+        if (!this.maxRetriesReached) {
+          this.getStatus()
+          this.retries++
+          window.setTimeout(this.scan, 1000)
+        }
+      } else {
+        this.retries = 0
       }
     },
 
-    created () {
-      window.setInterval(this.heartbeat, 500)
-      this.inStandaloneMode = window.navigator.standalone
+    rescan (): void {
+      this.retries = 0
+      this.scan()
+    }
+  },
+
+  computed: {
+    playing (): boolean {
+      return Boolean(this.song && this.song.playbackState === 'Playing')
     },
 
-    mounted () {
-      // The app has just been initialized, check if we can get the user data with an already existing token
-      if (ls.get('jwt-token')) {
-        this.authenticated = true
-        this.init()
-      }
+    maxRetriesReached (): boolean {
+      return this.retries >= MAX_RETRIES
+    },
+
+    album (): Album | null {
+      return this.song ? this.song.album : null
+    }
+  },
+
+  created (): void {
+    // @ts-ignore
+    this.inStandaloneMode = window.navigator.standalone
+  },
+
+  mounted (): void {
+    // The app has just been initialized, check if we can get the user data with an already existing token
+    if (ls.get('jwt-token')) {
+      this.authenticated = true
+      this.init()
     }
   }
+})
 </script>
 
 <style lang="scss">
-  @import "~#/partials/_vars.scss";
-  @import "~#/partials/_mixins.scss";
-  @import "~#/partials/_shared.scss";
+@import "~#/partials/_vars.scss";
+@import "~#/partials/_mixins.scss";
+@import "~#/partials/_shared.scss";
 
-  #app {
-    height: 100%;
-    background: $colorMainBgr;
+body, html {
+  height: 100vh;
+}
 
-    .login-wrapper {
-      display: flex;
-      min-height: 100vh;
-      flex-direction: column;
+#app {
+  height: 100vh;
+  background: $colorMainBgr;
 
-      @include vertical-center();
-    }
+  .login-wrapper {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 
-    .loader {
+    @include vertical-center();
+  }
+
+  .loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    position: relative;
+
+    p {
+      position: absolute;
+      height: 100%;
+      width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
-      flex: 1;
-      position: relative;
+      top: 0;
+      left: 0;
+      padding-bottom: 40px;
+    }
 
-      p {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        top: 0;
-        left: 0;
-        padding-bottom: 40px;
+    .signal {
+      border: 1px solid $colorOrange;
+      border-radius: 50%;
+      height: 0;
+      opacity: 0;
+      width: 50vw;
+      animation: pulsate 1.5s ease-out;
+      animation-iteration-count: infinite;
+      transform: translate(-50%, -50%);
+    }
+
+    .rescan {
+      margin-left: 5px;
+      color: $colorOrange;
+    }
+
+    @keyframes pulsate {
+      0% {
+        transform:scale(.1);
+        opacity: 0.0;
       }
-
-      .signal {
-        border: 1px solid $colorOrange;
-        border-radius: 50%;
-        height: 0;
-        opacity: 0;
-        width: 50vw;
-        animation: pulsate 1.5s ease-out;
-        animation-iteration-count: infinite;
-        transform: translate(-50%, -50%);
+      50% {
+        opacity:1;
       }
-
-      .rescan {
-        margin-left: 5px;
-        color: $colorOrange;
-      }
-
-      @keyframes pulsate {
-        0% {
-          transform:scale(.1);
-          opacity: 0.0;
-        }
-        50% {
-          opacity:1;
-        }
-        100% {
-          transform:scale(1.2);
-          opacity:0;
-        }
+      100% {
+        transform:scale(1.2);
+        opacity:0;
       }
     }
   }
+}
 
-  #main {
-    height: 100%;
+#main {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  z-index: 1;
+  position: relative;
+
+  .none, .details {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    text-align: center;
-    z-index: 1;
-    position: relative;
+    align-items: center;
+    justify-content: space-around;
+  }
 
-    .none, .details {
-      flex: 1;
+  .details {
+    .info {
+      width: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: space-around;
     }
 
-    .details {
-      .info {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-      }
-
-      .cover {
-        margin: 0 auto;
-        width: calc(70vw + 4px);
-        height: calc(70vw + 4px);
-        border-radius: 50%;
-        border: 2px solid #fff;
-        background-position: center center;
-        background-size: cover;
-        background-color: #2d2f2f;
-      }
-
-      .text {
-        max-width: 90%;
-        margin: 0 auto;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        line-height: 1.3;
-      }
-
-      .title {
-        font-size: 6vmin;
-        font-weight: bold;
-        margin: 0 auto 10px;
-      }
-
-      .artist {
-        font-size: 5vmin;
-        margin: 0 auto 6px;
-        font-weight: 100;
-        opacity: .5;
-      }
-
-      .album {
-        font-size: 4vmin;
-        font-weight: 100;
-        opacity: .5;
-      }
+    .cover {
+      margin: 0 auto;
+      width: calc(70vw + 4px);
+      height: calc(70vw + 4px);
+      border-radius: 50%;
+      border: 2px solid #fff;
+      background-position: center center;
+      background-size: cover;
+      background-color: #2d2f2f;
     }
 
-    footer {
-      height: 18vh;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      border-top: 1px solid rgba(255, 255, 255, .1);
+    .text {
+      max-width: 90%;
+      margin: 0 auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 1.3;
+    }
+
+    .title {
+      font-size: 6vmin;
+      font-weight: bold;
+      margin: 0 auto 10px;
+    }
+
+    .artist {
       font-size: 5vmin;
+      margin: 0 auto 6px;
+      font-weight: 100;
+      opacity: .5;
+    }
 
-      a {
-        color: #fff;
-
-        &:active {
-          opacity: .8;
-        }
-      }
-
-      .favorite {
-        .yep {
-          color: #bf2043;
-        }
-      }
-
-      .prev, .next {
-        font-size: 6vmin;
-      }
-
-      .play-pause {
-        display: inline-block;
-        width: 16vmin;
-        height: 16vmin;
-        border: 1px solid #fff;
-        border-radius: 50%;
-        line-height: 16vmin;
-        font-size: 7vmin;
-
-        &.fa-play {
-          margin-left: 4px;
-        }
-      }
+    .album {
+      font-size: 4vmin;
+      font-weight: 100;
+      opacity: .5;
     }
   }
 
-  #app.standalone {
-    padding-top: 20px;
+  footer {
+    height: 18vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+    font-size: 5vmin;
 
-    #main {
-      .details {
-        .cover {
-          width: calc(80vw - 4px);
-          height: calc(80vw - 4px);
-        }
-      }
+    a {
+      color: #fff;
 
-      .footer {
-        height: 20vh;
+      &:active {
+        opacity: .8;
       }
     }
-  }
 
-  .volume {
-    position: relative;
+    .favorite {
+      .yep {
+        color: #bf2043;
+      }
+    }
 
-    .icon {
-      width: 20px;
+    .prev, .next {
+      font-size: 6vmin;
+    }
+
+    .play-pause {
       display: inline-block;
-      text-align: center;
+      width: 16vmin;
+      height: 16vmin;
+      border: 1px solid #fff;
+      border-radius: 50%;
+      line-height: 16vmin;
+      font-size: 7vmin;
+
+      &.fa-play {
+        margin-left: 4px;
+      }
     }
   }
+}
 
-  #volumeSlider {
-    height: 80px;
-    position: absolute;
-    bottom: calc(50% + 26px);
-  }
+#app.standalone {
+  padding-top: 20px;
 
-  .noUi-target {
-    background: #fff;
-    border-radius: 4px;
-    border: 0;
-    box-shadow: none;
-    left: 7px;
-  }
+  #main {
+    .details {
+      .cover {
+        width: calc(80vw - 4px);
+        height: calc(80vw - 4px);
+      }
+    }
 
-  .noUi-base {
-    height: calc(100% - 16px);
-    border-radius: 4px;
-  }
-
-  .noUi-vertical {
-    width: 8px;
-  }
-
-  .noUi-vertical .noUi-handle {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    border: 0;
-    left: -4px;
-    top: 0;
-
-    &::after, &::before {
-      display: none;
+    .footer {
+      height: 20vh;
     }
   }
+}
 
-  .noUi-connect {
-    background: transparent;
-    box-shadow: none;
+.volume {
+  position: relative;
+
+  .icon {
+    width: 20px;
+    display: inline-block;
+    text-align: center;
   }
+}
+
+#volumeSlider {
+  height: 80px;
+  position: absolute;
+  bottom: calc(50% + 26px);
+}
+
+.noUi-target {
+  background: #fff;
+  border-radius: 4px;
+  border: 0;
+  box-shadow: none;
+  left: 7px;
+}
+
+.noUi-base {
+  height: calc(100% - 16px);
+  border-radius: 4px;
+}
+
+.noUi-vertical {
+  width: 8px;
+}
+
+.noUi-vertical .noUi-handle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 0;
+  left: -4px;
+  top: 0;
+
+  &::after, &::before {
+    display: none;
+  }
+}
+
+.noUi-connect {
+  background: transparent;
+  box-shadow: none;
+}
 </style>

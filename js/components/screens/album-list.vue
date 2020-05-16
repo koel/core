@@ -2,7 +2,7 @@
   <section id="albumsWrapper">
     <h1 class="heading">
       <span>Albums</span>
-      <view-mode-switch :mode="viewMode" for="albums" @viewModeChanged="changeViewMode"/>
+      <view-mode-switch for="albums" @viewModeChanged="changeViewMode"/>
     </h1>
 
     <div ref="scroller" class="albums main-scroll-wrap" :class="`as-${viewMode}`" @scroll="scrolling">
@@ -12,60 +12,62 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import mixins from 'vue-typed-mixins'
 import { filterBy, limitBy, event } from '@/utils'
 import { albumStore } from '@/stores'
-import infiniteScroll from '@/mixins/infinite-scroll'
+import infiniteScroll from '@/mixins/infinite-scroll.ts'
 
-export default {
-  mixins: [infiniteScroll],
-
+export default mixins(infiniteScroll).extend({
   components: {
-    AlbumCard: () => import('@/components/album/card'),
-    ViewModeSwitch: () => import('@/components/ui/view-mode-switch')
+    AlbumCard: () => import('@/components/album/card.vue'),
+    ViewModeSwitch: () => import('@/components/ui/view-mode-switch.vue')
   },
 
   data: () => ({
     perPage: 9,
     numOfItems: 9,
     q: '',
-    viewMode: null,
-    albums: []
+    viewMode: '',
+    albums: [] as Album[]
   }),
 
   computed: {
-    displayedItems () {
+    displayedItems (): Album[] {
       return limitBy(this.filteredItems, this.numOfItems)
     },
 
-    filteredItems () {
+    filteredItems (): Album[] {
       return filterBy(this.albums, this.q, 'name', 'artist.name')
     }
   },
 
   methods: {
-    changeViewMode (mode) {
+    changeViewMode (mode: string): void {
       this.viewMode = mode
     }
   },
 
-  created () {
+  created (): void {
     event.on({
-      [event.$names.KOEL_READY]: () => {
+      [event.$names.KOEL_READY]: (): void => {
         this.albums = albumStore.all
 
         if (this.$refs.scroller) {
-          this.$nextTick(() => this.makeScrollable(this.$refs.scroller, this.albums.length))
+          this.$nextTick(() => this.makeScrollable(this.$refs.scroller as HTMLElement, this.albums.length))
         }
       },
-      [event.$names.FILTER_CHANGED]: q => (this.q = q)
+
+      [event.$names.FILTER_CHANGED]: (q: string): void => {
+        this.q = q
+      }
     })
   },
 
-  mounted () {
-    this.makeScrollable(this.$refs.scroller, this.albums.length)
+  mounted (): void {
+    this.makeScrollable(this.$refs.scroller as HTMLElement, this.albums.length)
   }
-}
+})
 </script>
 
 <style lang="scss">

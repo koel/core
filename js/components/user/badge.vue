@@ -18,19 +18,20 @@
   </span>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { userStore } from '@/stores'
 import { event } from '@/utils'
 
-export default {
+export default Vue.extend({
   data: () => ({
     state: userStore.state
   }),
 
   methods: {
-    logout: () => event.emit(event.$names.LOG_OUT)
+    logout: (): void => event.emit(event.$names.LOG_OUT)
   }
-}
+})
 </script>
 
 <style lang="scss">

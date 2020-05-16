@@ -50,29 +50,26 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import mixins from 'vue-typed-mixins'
 import { pluralize } from '@/utils'
 import { playlistStore } from '@/stores'
 import router from '@/router'
-import songMenuMethods from '@/mixins/song-menu-methods'
+import songMenuMethods from '@/mixins/song-menu-methods.ts'
 
-export default {
+export default mixins(songMenuMethods).extend({
   components: {
-    Btn: () => import('@/components/ui/btn')
+    Btn: () => import('@/components/ui/btn.vue')
   },
 
   props: {
-    songs: {
-      type: Array,
-      required: true
-    },
     showing: {
       type: Boolean,
       default: false
     },
     config: Object
   },
-  mixins: [songMenuMethods],
+
   filters: { pluralize },
 
   data: () => ({
@@ -81,8 +78,10 @@ export default {
   }),
 
   watch: {
-    songs () {
-      this.songs.length || this.close()
+    songs (): void {
+      if (!this.songs.length) {
+        this.close()
+      }
     }
   },
 
@@ -91,7 +90,7 @@ export default {
      * Save the selected songs as a playlist.
      * As of current we don't have selective save.
      */
-    async createNewPlaylistFromSongs () {
+    async createNewPlaylistFromSongs (): Promise<void> {
       this.newPlaylistName = this.newPlaylistName.trim()
 
       if (!this.newPlaylistName) {
@@ -101,16 +100,16 @@ export default {
       const playlist = await playlistStore.store(this.newPlaylistName, this.songs)
       this.newPlaylistName = ''
       // Activate the new playlist right away
-      this.$nextTick(() => router.go(`playlist/${playlist.id}`))
+      this.$nextTick((): void => router.go(`playlist/${playlist.id}`))
 
       this.close()
     },
 
-    close () {
+    close (): void {
       this.$emit('closing')
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

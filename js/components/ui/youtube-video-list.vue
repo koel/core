@@ -25,44 +25,45 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
 import { youtube as youtubeService } from '@/services'
 
-export default {
+export default Vue.extend({
   components: {
-    Btn: () => import('@/components/ui/btn')
+    Btn: () => import('@/components/ui/btn.vue')
   },
 
   props: {
     song: {
       type: Object,
       required: true
-    }
+    } as PropOptions<Song>
   },
 
   data: () => ({
     loading: false,
-    videos: []
+    videos: [] as YouTubeVideo[]
   }),
 
   watch: {
-    song (val) {
+    song (val: Song): void {
       this.videos = val.youtube ? val.youtube.items : []
     }
   },
 
   methods: {
-    play: video => youtubeService.play(video),
+    play: (video: YouTubeVideo): void => youtubeService.play(video),
 
-    async loadMore () {
+    async loadMore (): Promise<void> {
       this.loading = true
 
       try {
         this.song.youtube = this.song.youtube || { nextPageToken: '', items: [] }
 
-        const result = await youtubeService.searchVideosRelatedToSong(this.song, this.song.youtube.nextPageToken)
+        const result = await youtubeService.searchVideosRelatedToSong(this.song, this.song.youtube.nextPageToken!)
         this.song.youtube.nextPageToken = result.nextPageToken
-        this.song.youtube.items.push(...result.items)
+        this.song.youtube.items.push(...result.items as YouTubeVideo[])
 
         this.videos = this.song.youtube.items
       } finally {
@@ -70,7 +71,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

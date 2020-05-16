@@ -15,11 +15,11 @@
   </nav>
 </template>
 
-<script>
+<script lang="ts">
 import { event } from '@/utils'
 import Vue from 'vue'
 
-export default {
+export default Vue.extend({
   props: {
     extraClass: {
       required: false,
@@ -34,42 +34,42 @@ export default {
   }),
 
   methods: {
-    open (top = 0, left = 0) {
+    open (top = 0, left = 0): void {
       this.notifyOtherInstancesToClose()
 
       this.top = top
       this.left = left
       this.shown = true
 
-      this.preventOffScreen(this.$refs.menu)
+      this.preventOffScreen(this.$refs.menu as HTMLElement)
     },
 
-    close () {
+    close (): void {
       if (!this.$refs.menu) {
         return
       }
 
       this.closeAllSubmenus()
-      this.$refs.menu.style.top = 'auto'
-      this.$refs.menu.style.bottom = 'auto'
+      ;(this.$refs.menu as HTMLElement).style.top = 'auto'
+      ;(this.$refs.menu as HTMLElement).style.bottom = 'auto'
       this.shown = false
     },
 
     notifyOtherInstancesToClose: () => event.emit(event.$names.CONTEXT_MENU_OPENING),
 
-    preventOffScreen: element => {
-      Vue.nextTick(() => {
+    preventOffScreen: (element: HTMLElement): void => {
+      Vue.nextTick((): void => {
         if (element.getBoundingClientRect().bottom > window.innerHeight) {
           element.style.top = 'auto'
-          element.style.bottom = 0
+          element.style.bottom = '0'
         } else {
           element.style.bottom = 'auto'
         }
       })
     },
 
-    closeAllSubmenus () {
-      Array.from(this.$el.querySelectorAll('.submenu')).forEach(el => {
+    closeAllSubmenus (): void {
+      Array.from(this.$el.querySelectorAll('.submenu') as NodeListOf<HTMLElement>).forEach((el: HTMLElement): void => {
         el.style.display = 'none'
       })
     }
@@ -80,35 +80,35 @@ export default {
    * With this, we can catch when the submenus shown or hidden, and can make sure
    * they don't appear off-screen.
    */
-  mounted () {
-    Array.from(this.$el.querySelectorAll('.has-sub')).forEach(item => {
-      const submenu = item.querySelector('.submenu')
+  mounted (): void {
+    Array.from(this.$el.querySelectorAll('.has-sub') as NodeListOf<HTMLElement>).forEach((item: HTMLElement): void => {
+      const submenu = item.querySelector('.submenu') as HTMLElement
 
       if (!submenu) {
         return
       }
 
-      item.addEventListener('mouseenter', () => {
+      item.addEventListener('mouseenter', (): void => {
         submenu.style.display = 'block'
         this.preventOffScreen(submenu)
       })
 
-      item.addEventListener('mouseleave', () => {
-        submenu.style.top = 0
+      item.addEventListener('mouseleave', (): void => {
+        submenu.style.top = '0'
         submenu.style.bottom = 'auto'
         submenu.style.display = 'none'
       })
     })
   },
 
-  created () {
-    event.on(event.$names.CONTEXT_MENU_OPENING, () => {
+  created (): void {
+    event.on(event.$names.CONTEXT_MENU_OPENING, (): void => {
       if (this.shown) {
         this.close()
       }
     })
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

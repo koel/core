@@ -2,7 +2,7 @@
   <span class="view-modes">
     <a
       class="thumbnails"
-      :class="{ active: mutatedMode === 'thumbnails' }"
+      :class="{ active: mode === 'thumbnails' }"
       title="View as thumbnails"
       @click.prevent="setMode('thumbnails')"
       role="button"
@@ -12,7 +12,7 @@
     </a>
     <a
       class="list"
-      :class="{ active: mutatedMode === 'list' }"
+      :class="{ active: mode === 'list' }"
       title="View as list"
       @click.prevent="setMode('list')"
       role="button"
@@ -23,19 +23,14 @@
   </span>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import isMobile from 'ismobilejs'
 
-import { event } from '@/utils'
 import { preferenceStore as preferences } from '@/stores'
 
-export default {
+export default Vue.extend({
   props: {
-    mode: {
-      type: String,
-      default: 'thumbnails',
-      validator: value => ['thumbnails', 'list'].includes(value)
-    },
     for: {
       type: String,
       required: true,
@@ -44,40 +39,37 @@ export default {
   },
 
   data: () => ({
-    mutatedMode: null
+    preferences
   }),
 
   computed: {
     /**
      * The preference key for local storage for persistent mode.
-     *
-     * @return {string}
      */
-    preferenceKey: vm => `${vm.for}ViewMode`
-  },
+    preferenceKey (): string {
+      return `${this.for}ViewMode`
+    },
 
-  methods: {
-    setMode (mode) {
-      preferences[this.preferenceKey] = this.mutatedMode = mode
-      this.$emit('viewModeChanged', mode)
+    mode (): string {
+      if (preferences[this.preferenceKey]) {
+        return preferences[this.preferenceKey]
+      }
+
+      return isMobile.any ? 'list' : 'thumbnails'
     }
   },
 
-  created () {
-    event.on(event.$names.KOEL_READY, () => {
-      this.mutatedMode = preferences[this.preferenceKey]
+  created (): void {
+    this.$emit('viewModeChanged', this.mode)
+  },
 
-      // If the value is empty, we set a default mode.
-      // On mobile, the mode should be 'listing'.
-      // For desktop, 'thumbnails'.
-      if (!this.mutatedMode) {
-        this.mutatedMode = isMobile.phone ? 'list' : 'thumbnails'
-      }
-
-      this.setMode(this.mutatedMode)
-    })
+  methods: {
+    setMode (mode: string): void {
+      preferences[this.preferenceKey] = mode
+      this.$emit('viewModeChanged', mode)
+    }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

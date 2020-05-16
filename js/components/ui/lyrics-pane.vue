@@ -15,44 +15,45 @@
   </article>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
 import { event } from '@/utils'
 import { userStore } from '@/stores'
 
-export default {
+export default Vue.extend({
   props: {
     song: {
       type: Object,
       required: true
-    }
+    } as PropOptions<Song>
   },
 
   components: {
-    TextZoomer: () => import('@/components/ui/text-zoomer')
+    TextZoomer: () => import('@/components/ui/text-zoomer.vue')
   },
 
   data: () => ({
-    textZoomTarget: null,
+    textZoomTarget: null as unknown as Element,
     userState: userStore.state
   }),
 
   methods: {
-    showEditSongForm () {
+    showEditSongForm (): void {
       event.emit(event.$names.MODAL_SHOW_EDIT_SONG_FORM, this.song, 'lyrics')
     }
   },
 
   computed: {
-    isAdmin () {
+    isAdmin (): boolean {
       return this.userState.current.is_admin
     }
   },
 
-  mounted () {
+  mounted (): void {
     // Since Vue's $refs are not reactive, we work around by assigning to a data property
-    this.textZoomTarget = this.$refs.lyricsContainer
+    this.textZoomTarget = this.$refs.lyricsContainer as Element
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

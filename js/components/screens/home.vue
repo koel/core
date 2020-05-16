@@ -74,27 +74,22 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import { sample } from 'lodash'
+import mixins from 'vue-typed-mixins'
 
 import { event } from '@/utils'
 import { songStore, albumStore, artistStore, recentlyPlayedStore, userStore, preferenceStore } from '@/stores'
-import infiniteScroll from '@/mixins/infinite-scroll'
+import infiniteScroll from '@/mixins/infinite-scroll.ts'
 import router from '@/router'
 
-export default {
+export default mixins(infiniteScroll).extend({
   components: {
-    AlbumCard: () => import('@/components/album/card'),
-    ArtistCard: () => import('@/components/artist/card'),
-    SongItem: () => import('@/components/song/home-item'),
-    Btn: () => import('@/components/ui/btn')
+    AlbumCard: () => import('@/components/album/card.vue'),
+    ArtistCard: () => import('@/components/artist/card.vue'),
+    SongItem: () => import('@/components/song/home-item.vue'),
+    Btn: () => import('@/components/ui/btn.vue')
   },
-
-  /**
-   * Note: We're not really using infinite scrolling here,
-   * but only the handy "Back to Top" button.
-   */
-  mixins: [infiniteScroll],
 
   data: () => ({
     greetings: [
@@ -108,32 +103,32 @@ export default {
       'How’s your day, %s?',
       'How have you been, %s?'
     ],
-    recentSongs: [],
+    recentSongs: [] as Song[],
     top: {
-      songs: [],
-      albums: [],
-      artists: []
+      songs: [] as Song[],
+      albums: [] as Album[],
+      artists: [] as Artist[]
     },
     recentlyAdded: {
-      albums: [],
-      songs: []
+      albums: [] as Album[],
+      songs: [] as Song[]
     },
 
     preferences: preferenceStore.state
   }),
 
   computed: {
-    greeting () {
-      return sample(this.greetings).replace('%s', userStore.current.name)
+    greeting (): string {
+      return sample(this.greetings)!.replace('%s', userStore.current.name)
     },
 
-    showRecentlyAddedSection () {
-      return this.recentlyAdded.albums.length || this.recentlyAdded.songs.length
+    showRecentlyAddedSection (): boolean {
+      return Boolean(this.recentlyAdded.albums.length || this.recentlyAdded.songs.length)
     }
   },
 
   methods: {
-    refreshDashboard () {
+    refreshDashboard (): void {
       this.top.songs = songStore.getMostPlayed(7)
       this.top.albums = albumStore.getMostPlayed(6)
       this.top.artists = artistStore.getMostPlayed(6)
@@ -142,16 +137,16 @@ export default {
       this.recentSongs = recentlyPlayedStore.excerptState.songs
     },
 
-    goToRecentlyPlayedScreen: () => router.go('recently-played')
+    goToRecentlyPlayedScreen: (): void => router.go('recently-played')
   },
 
-  created () {
+  created (): void {
     event.on({
-      [event.$names.KOEL_READY]: () => this.refreshDashboard(),
-      [event.$names.SONG_PLAYED]: () => this.refreshDashboard()
+      [event.$names.KOEL_READY]: (): void => this.refreshDashboard(),
+      [event.$names.SONG_PLAYED]: (): void => this.refreshDashboard()
     })
   }
-}
+})
 </script>
 
 <style lang="scss">

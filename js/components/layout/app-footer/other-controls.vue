@@ -1,17 +1,17 @@
 <template>
   <div class="other-controls">
     <div class="wrapper" v-koel-clickaway="closeEqualizer">
-      <equalizer v-if="useEqualizer" v-show="showEqualizer"/>
+      <equalizer v-show="showEqualizer" v-if="useEqualizer"/>
 
       <a @click.prevent="toggleVisualizer" title="Click for a marvelous visualizer!" role="button" tabindex="0">
-        <sound-bar v-if="song.playbackState === 'playing'"/>
+        <sound-bar v-if="song && song.playbackState === 'Playing'"/>
       </a>
 
       <i
         :class="{ liked: song.liked }"
         @click.prevent="like"
         class="like control fa fa-heart"
-        v-if="song.id"
+        v-if="song"
         role="button"
         tabindex="0"
         :title="`${ song.liked ? 'Unlike' : 'Like' } current song`"
@@ -30,7 +30,7 @@
 
       <i
         :class="{ active: showEqualizer }"
-        @click="showEqualizer = !showEqualizer"
+        @click="toggleEqualizer"
         class="fa fa-sliders control equalizer"
         v-if="useEqualizer"
         role="button"
@@ -69,24 +69,23 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
 import { download, playback, socket } from '@/services'
 import { event, isAudioContextSupported } from '@/utils'
 import { favoriteStore, preferenceStore, sharedStore, songStore } from '@/stores'
-import { views } from '@/config'
 
-export default {
+export default Vue.extend({
   props: {
     song: {
-      required: true,
       type: Object
-    }
+    } as PropOptions<Song>
   },
 
   components: {
-    Equalizer: () => import('@/components/ui/equalizer'),
-    SoundBar: () => import('@/components/ui/sound-bar'),
-    Volume: () => import('@/components/ui/volume')
+    Equalizer: () => import('@/components/ui/equalizer.vue'),
+    SoundBar: () => import('@/components/ui/sound-bar.vue'),
+    Volume: () => import('@/components/ui/volume.vue')
   },
 
   data: () => ({
@@ -94,45 +93,50 @@ export default {
     showEqualizer: false,
     sharedState: sharedStore.state,
     useEqualizer: isAudioContextSupported,
-    visualizerActivated: false,
     viewingQueue: false
   }),
 
   computed: {
-    downloadable () {
-      return this.sharedState.allowDownload && this.song && this.song.id
+    downloadable (): boolean {
+      return Boolean(this.sharedState.allowDownload && this.song && this.song.id)
     }
   },
 
   methods: {
-    changeRepeatMode: () => playback.changeRepeatMode(),
+    changeRepeatMode: (): void => playback.changeRepeatMode(),
 
-    like () {
+    like (): void {
       if (this.song.id) {
         favoriteStore.toggleOne(this.song)
         socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(this.song))
       }
     },
 
-    toggleExtraPanel () {
+    toggleExtraPanel (): void {
       preferenceStore.set('showExtraPanel', !this.prefs.showExtraPanel)
     },
 
-    closeEqualizer () {
+    toggleEqualizer (): void {
+      this.showEqualizer = !this.showEqualizer
+    },
+
+    closeEqualizer (): void {
       this.showEqualizer = false
     },
 
-    toggleVisualizer: () => event.emit(event.$names.TOGGLE_VISUALIZER),
+    toggleVisualizer: (): void => event.emit(event.$names.TOGGLE_VISUALIZER),
 
-    downloadCurrentSong () {
+    downloadCurrentSong (): void {
       download.fromSongs(this.song)
     }
   },
 
-  created () {
-    event.on(event.$names.LOAD_MAIN_CONTENT, view => { this.viewingQueue = view === views.QUEUE })
+  created (): void {
+    event.on(event.$names.LOAD_MAIN_CONTENT, (view: MainViewName): void => {
+      this.viewingQueue = view === 'Queue'
+    })
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

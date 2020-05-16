@@ -5,8 +5,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
   props: {
     target: {
       type: HTMLElement
@@ -14,7 +16,7 @@ export default {
   },
 
   methods: {
-    zoom (multiplier) {
+    zoom (multiplier: number): void {
       if (!this.target) {
         return
       }
@@ -23,14 +25,14 @@ export default {
 
       if (style.fontSize === '') {
         style.fontSize = '1em'
-        style.lineHeight = 1.6
+        style.lineHeight = '1.6'
       }
 
       style.fontSize = parseFloat(style.fontSize) + multiplier * 0.2 + 'em'
-      style.lineHeight = parseFloat(style.lineHeight) + multiplier * 0.15
+      style.lineHeight = String(parseFloat(style.lineHeight) + multiplier * 0.15)
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

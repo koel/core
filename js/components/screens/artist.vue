@@ -58,28 +58,20 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import mixins from 'vue-typed-mixins'
 import { pluralize } from '@/utils'
 import { sharedStore } from '@/stores'
 import { download, artistInfo as artistInfoService } from '@/services'
 import router from '@/router'
-import hasSongList from '@/mixins/has-song-list'
-import artistAttributes from '@/mixins/artist-attributes'
+import hasSongList from '@/mixins/has-song-list.ts'
+import artistAttributes from '@/mixins/artist-attributes.ts'
 
-export default {
-  mixins: [hasSongList, artistAttributes],
-
-  props: {
-    artist: {
-      type: Object,
-      required: true
-    }
-  },
-
+export default mixins(hasSongList, artistAttributes).extend({
   components: {
-    ArtistInfo: () => import('@/components/artist/info'),
-    SoundBar: () => import('@/components/ui/sound-bar'),
-    ArtistThumbnail: () => import('@/components/ui/album-artist-thumbnail')
+    ArtistInfo: () => import('@/components/artist/info.vue'),
+    SoundBar: () => import('@/components/ui/sound-bar.vue'),
+    ArtistThumbnail: () => import('@/components/ui/album-artist-thumbnail.vue')
   },
 
   filters: { pluralize },
@@ -99,31 +91,37 @@ export default {
      * and move all of them to another artist (thus delete this artist entirely).
      * We should then go back to the artist list.
      */
-    'artist.albums.length': newAlbumCount => newAlbumCount || router.go('artists'),
+    'artist.albums.length': (newAlbumCount: number): void => {
+      if (!newAlbumCount) {
+        router.go('artists')
+      }
+    },
 
-    artist () {
+    artist (): void {
       this.meta.showing = false
       // #530
-      this.$refs.songList && this.$refs.songList.sort()
+      this.$refs.songList && (this.$refs.songList as any).sort()
     }
   },
 
   methods: {
-    getSongs () {
+    getSongs (): Song[] {
       return this.artist.songs
     },
 
-    download () {
+    download (): void {
       download.fromArtist(this.artist)
     },
 
-    async showInfo () {
+    async showInfo (): Promise<void> {
       this.meta.showing = true
 
       if (!this.artist.info) {
         try {
           await artistInfoService.fetch(this.artist)
         } catch (e) {
+          /* eslint no-console: 0 */
+          console.error(e)
         } finally {
           this.meta.loading = false
         }
@@ -132,7 +130,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

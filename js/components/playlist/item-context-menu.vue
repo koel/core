@@ -5,31 +5,33 @@
   </base-context-menu>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
+import { BasePlaylistMenu } from 'koel/types/ui'
 import { event } from '@/utils'
 
-export default {
+export default Vue.extend({
   components: {
-    BaseContextMenu: () => import('@/components/ui/context-menu')
+    BaseContextMenu: () => import('@/components/ui/context-menu.vue')
   },
 
   props: {
     playlist: {
       required: true,
       type: Object
-    }
+    } as PropOptions<Playlist>
   },
 
   methods: {
-    open (top, left) {
-      this.$refs.base.open(top, left)
+    open (top: number, left: number): void {
+      (this.$refs.base as BasePlaylistMenu).open(top, left)
     },
 
-    close () {
-      this.$refs.base.close()
+    close (): void {
+      (this.$refs.base as BasePlaylistMenu).close()
     },
 
-    editPlaylist () {
+    editPlaylist (): void {
       if (this.playlist.is_smart) {
         event.emit(event.$names.MODAL_SHOW_EDIT_SMART_PLAYLIST_FORM, this.playlist)
       } else {
@@ -39,11 +41,10 @@ export default {
       this.close()
     },
 
-    deletePlaylist () {
+    deletePlaylist (): void {
       event.emit(event.$names.PLAYLIST_DELETE, this.playlist)
       this.close()
     }
   }
-}
+})
 </script>
-

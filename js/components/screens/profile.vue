@@ -18,8 +18,10 @@
 
         <div class="change-pwd">
           <div class="form-row">
-            <p class="help">If you want to change your password, enter it below. <br>
-              Otherwise, just leave the next two fields empty. It’s OK – no one will judge you.</p>
+            <p class="help">
+              If you want to change your password, enter it below. <br>
+              Otherwise, just leave the next two fields empty.
+            </p>
           </div>
 
           <div class="form-row">
@@ -54,34 +56,25 @@
       <div class="preferences">
         <div class="form-row">
           <label>
-            Play button's default action:
-            <select name="defaultPlayAction" v-model="prefs.defaultPlayAction">
-              <option value="">Shuffle</option>
-              <option value="">Play in sequence</option>
-            </select>
-          </label>
-        </div>
-        <div class="form-row">
-          <label>
-            <input type="checkbox" name="notify" v-model="prefs.notify">
+            <input type="checkbox" name="notify" v-model="preferences.notify">
             Show “Now Playing” song notification
           </label>
         </div>
         <div class="form-row">
           <label>
-            <input type="checkbox" name="confirmClosing" v-model="prefs.confirmClosing">
+            <input type="checkbox" name="confirmClosing" v-model="preferences.confirmClosing">
             Confirm before closing Koel
           </label>
         </div>
         <div class="form-row">
           <label>
-            <input type="checkbox" name="transcodeOnMobile" v-model="prefs.transcodeOnMobile">
+            <input type="checkbox" name="transcodeOnMobile" v-model="preferences.transcodeOnMobile">
             Convert and play media at 128kbps on mobile
           </label>
         </div>
         <div class="form-row">
           <label>
-            <input type="checkbox" name="showAlbumArtOverlay" v-model="prefs.showAlbumArtOverlay">
+            <input type="checkbox" name="showAlbumArtOverlay" v-model="preferences.showAlbumArtOverlay">
             Show a translucent, blurred overlay of the current album’s art (may be CPU intensive)
           </label>
         </div>
@@ -100,13 +93,9 @@
             </span>
           </p>
           <p>
-            Connecting Koel and your Last.fm account enables exciting features – scrobbling is one of them.
+            Connecting Koel and your Last.fm account enables such exciting features as
+            <a href="https://www.last.fm/about/trackmymusic" target="_blank">scrobbling</a>.
           </p>
-          <p v-if="state.current.preferences.lastfm_session_key">
-            For the sake of democracy, you have the option to disconnect from Last.fm too.
-            Doing so will reload Koel, though.
-          </p>
-
           <div class="buttons">
             <btn @click.prevent="connectToLastfm" class="connect">
               <i class="fa fa-lastfm"></i>
@@ -137,41 +126,33 @@
   </section>
 </template>
 
-<script>
-import { userStore, preferenceStore, sharedStore } from '@/stores'
+<script lang="ts">
+import Vue from 'vue'
+import { userStore, preferenceStore as preferences, sharedStore } from '@/stores'
 import { forceReloadWindow } from '@/utils'
 import { http, ls } from '@/services'
 
-export default {
+export default Vue.extend({
   components: {
-    Btn: () => import('@/components/ui/btn')
+    Btn: () => import('@/components/ui/btn.vue')
   },
 
-  data () {
-    return {
-      demo: NODE_ENV === 'demo',
-      state: userStore.state,
-      cache: userStore.stub,
-      pwd: '',
-      confirmPwd: '',
-      prefs: preferenceStore.state,
-      sharedState: sharedStore.state,
-      validation: {
-        error: false
-      }
+  data: () => ({
+    preferences,
+    demo: NODE_ENV === 'demo',
+    state: userStore.state,
+    cache: userStore.stub,
+    pwd: '',
+    confirmPwd: '',
+    sharedState: sharedStore.state,
+    validation: {
+      error: false
     }
-  },
-
-  watch: {
-    prefs: {
-      handler: () => preferenceStore.save(),
-      deep: true
-    }
-  },
+  }),
 
   methods: {
-    async update () {
-      this.validation.error = (this.pwd || this.confirmPwd) && this.pwd !== this.confirmPwd
+    async update (): Promise<void> {
+      this.validation.error = Boolean((this.pwd || this.confirmPwd) && this.pwd !== this.confirmPwd)
 
       if (this.validation.error) {
         return
@@ -187,7 +168,7 @@ export default {
      * This method opens a new window.
      * Koel will reload once the connection is successful.
      */
-    connectToLastfm: () => {
+    connectToLastfm: (): void => {
       window.open(
         `${window.BASE_URL}api/lastfm/connect?jwt-token=${ls.get('jwt-token')}`,
         '_blank',
@@ -197,11 +178,10 @@ export default {
 
     /**
      * Disconnect the current user from Last.fm.
-     * Oh God why.
      */
-    disconnectFromLastfm: () => http.delete('lastfm/disconnect', {}, forceReloadWindow)
+    disconnectFromLastfm: (): void => http.delete('lastfm/disconnect', {}, forceReloadWindow)
   }
-}
+})
 </script>
 
 <style lang="scss">

@@ -36,56 +36,54 @@
   </form-base>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { playlistStore } from '@/stores'
 import router from '@/router'
 
-export default {
+export default Vue.extend({
   components: {
-    Btn: () => import('@/components/ui/btn'),
-    FormBase: () => import('./form-base'),
-    RuleGroup: () => import('@/components/playlist/smart-playlist/rule-group'),
-    SoundBar: () => import('@/components/ui/sound-bar')
+    Btn: () => import('@/components/ui/btn.vue'),
+    FormBase: () => import('@/components/playlist/smart-playlist/form-base.vue'),
+    RuleGroup: () => import('@/components/playlist/smart-playlist/rule-group.vue'),
+    SoundBar: () => import('@/components/ui/sound-bar.vue')
   },
 
   data: () => ({
     name: '',
-    ruleGroups: [],
+    ruleGroups: [] as SmartPlaylistRuleGroup[],
     meta: {
       loading: false
     }
   }),
 
   methods: {
-    addGroup () {
-      this.ruleGroups.push(this.$options.createGroup())
+    addGroup (): void {
+      this.ruleGroups.push(this.createGroup())
     },
 
-    onGroupChanged (data) {
-      let changedGroup = this.ruleGroups.find(g => g.id === data.id)
-      changedGroup = Object.assign(changedGroup, data)
+    onGroupChanged (data: SmartPlaylistRuleGroup): void {
+      const changedGroup = Object.assign(this.ruleGroups.find(g => g.id === data.id), data)
+
       // Remove empty group
       if (changedGroup.rules.length === 0) {
         this.ruleGroups = this.ruleGroups.filter(group => group.id !== changedGroup.id)
       }
     },
 
-    close () {
+    close (): void {
       this.$emit('close')
     },
 
-    async submit () {
+    async submit (): Promise<void> {
       this.meta.loading = true
       const playlist = await playlistStore.store(this.name, [], this.ruleGroups)
       this.meta.loading = false
       this.close()
       this.$nextTick(() => router.go(`playlist/${playlist.id}`))
-    }
-  },
+    },
 
-  createGroup: () => ({
-    id: (new Date()).getTime(),
-    rules: []
-  })
-}
+    createGroup: (): SmartPlaylistRuleGroup => playlistStore.createEmptySmartPlaylistRuleGroup()
+  }
+})
 </script>

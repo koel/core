@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "target": "es5",
+    "strict": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "paths": {
+      "@/*": ["js/*"]
+    }
+  },
+  "include": [
+    "js/**/*"
+  ]
+}

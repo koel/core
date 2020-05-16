@@ -5,28 +5,28 @@
 
       <ul class="menu">
         <li>
-          <a :class="['home', currentView === $options.views.HOME ? 'active' : '']" href="#!/home">Home</a>
+          <a :class="['home', currentView === 'Home' ? 'active' : '']" href="#!/home">Home</a>
         </li>
         <li>
           <a
-            :class="['queue', currentView === $options.views.QUEUE ? 'active' : '']"
+            :class="['queue', currentView === 'Queue' ? 'active' : '']"
             href="#!/queue"
             v-koel-droppable="handleDrop"
           >Current Queue</a>
         </li>
         <li>
-          <a :class="['songs', currentView === $options.views.SONGS ? 'active' : '']" href="#!/songs">All Songs</a>
+          <a :class="['songs', currentView === 'Songs' ? 'active' : '']" href="#!/songs">All Songs</a>
         </li>
         <li>
-          <a :class="['albums', currentView === $options.views.ALBUMS ? 'active' : '']" href="#!/albums">Albums</a>
+          <a :class="['albums', currentView === 'Albums' ? 'active' : '']" href="#!/albums">Albums</a>
         </li>
         <li>
-          <a :class="['artists', currentView === $options.views.ARTISTS ? 'active' : '']" href="#!/artists">
+          <a :class="['artists', currentView === 'Artists' ? 'active' : '']" href="#!/artists">
             Artists
           </a>
         </li>
         <li v-if="sharedState.useYouTube">
-          <a :class="['youtube', currentView === $options.views.YOUTUBE ? 'active' : '']" href="#!/youtube">
+          <a :class="['youtube', currentView === 'YouTube' ? 'active' : '']" href="#!/youtube">
             YouTube Video
           </a>
         </li>
@@ -40,32 +40,30 @@
 
       <ul class="menu">
         <li>
-          <a :class="['settings', currentView === $options.views.SETTINGS ? 'active' : '']" href="#!/settings">Settings</a>
+          <a :class="['settings', currentView === 'Settings' ? 'active' : '']" href="#!/settings">Settings</a>
         </li>
         <li>
-          <a :class="['users', currentView === $options.views.USERS ? 'active' : '']" href="#!/users">Users</a>
+          <a :class="['users', currentView === 'Users' ? 'active' : '']" href="#!/users">Users</a>
         </li>
       </ul>
     </section>
   </nav>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import isMobile from 'ismobilejs'
 
 import { event } from '@/utils'
 import { sharedStore, userStore, songStore, queueStore } from '@/stores'
-import { views } from '@/config'
 
-export default {
-  views,
-
+export default Vue.extend({
   components: {
-    PlaylistList: () => import('@/components/playlist/sidebar-list')
+    PlaylistList: () => import('@/components/playlist/sidebar-list.vue')
   },
 
   data: () => ({
-    currentView: views.DEFAULT,
+    currentView: 'Home',
     userState: userStore.state,
     showing: !isMobile.phone,
     sharedState: sharedStore.state
@@ -74,12 +72,12 @@ export default {
   methods: {
     /**
      * Handle songs dropped to our Queue menu item.
-     *
-     * @param  {Object} e The event
-     *
-     * @return {Boolean}
      */
-    handleDrop: e => {
+    handleDrop: (e: DragEvent): boolean => {
+      if (!e.dataTransfer) {
+        return false
+      }
+
       if (!e.dataTransfer.getData('application/x-koel.text+plain')) {
         return false
       }
@@ -96,20 +94,25 @@ export default {
     }
   },
 
-  created () {
-    event.on(event.$names.LOAD_MAIN_CONTENT, view => {
+  created (): void {
+    event.on(event.$names.LOAD_MAIN_CONTENT, (view: MainViewName): void => {
       this.currentView = view
+
       // Hide the sidebar if on mobile
-      isMobile.phone && (this.showing = false)
+      if (isMobile.phone) {
+        this.showing = false
+      }
     })
 
     /**
      * Listen to sidebar:toggle event to show or hide the sidebar.
      * This should only be triggered on a mobile device.
      */
-    event.on(event.$names.TOGGLE_SIDEBAR, () => (this.showing = !this.showing))
+    event.on(event.$names.TOGGLE_SIDEBAR, (): void => {
+      this.showing = !this.showing
+    })
   }
-}
+})
 </script>
 
 <style lang="scss">
@@ -231,4 +234,3 @@ export default {
   }
 }
 </style>
-

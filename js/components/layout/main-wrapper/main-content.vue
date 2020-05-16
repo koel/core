@@ -8,41 +8,37 @@
     <visualizer v-if="showingVisualizer"/>
     <album-art-overlay :album="currentAlbum" v-if="preferences.showAlbumArtOverlay"/>
 
-    <home-screen v-show="view === $options.views.HOME"/>
-    <queue-screen v-show="view === $options.views.QUEUE"/>
-    <all-songs-screen v-show="view === $options.views.SONGS"/>
-    <album-list-screen v-show="view === $options.views.ALBUMS"/>
-    <artist-list-screen v-show="view === $options.views.ARTISTS"/>
-    <playlist-screen v-show="view === $options.views.PLAYLIST"/>
-    <favorites-screen v-show="view === $options.views.FAVORITES"/>
-    <recently-played-screen v-show="view === $options.views.RECENTLY_PLAYED"/>
+    <home-screen v-show="view === 'Home'"/>
+    <queue-screen v-show="view === 'Queue'"/>
+    <all-songs-screen v-show="view === 'Songs'"/>
+    <album-list-screen v-show="view === 'Albums'"/>
+    <artist-list-screen v-show="view === 'Artists'"/>
+    <playlist-screen v-show="view === 'Playlist'"/>
+    <favorites-screen v-show="view === 'Favorites'"/>
+    <recently-played-screen v-show="view === 'RecentlyPlayed'"/>
 
-    <album-screen v-if="view === $options.views.ALBUM" :album="shownAlbum"/>
-    <artist-screen v-if="view === $options.views.ARTIST" :artist="shownArtist"/>
-    <settings-screen v-if="view === $options.views.SETTINGS"/>
-    <profile-screen v-if="view === $options.views.PROFILE"/>
-    <user-list-screen v-if="view === $options.views.USERS"/>
-    <youtube-screen v-if="sharedState.useYouTube" v-show="view === $options.views.YOUTUBE"/>
+    <album-screen v-if="view === 'Album'" :album="shownAlbum"/>
+    <artist-screen v-if="view === 'Artist'" :artist="shownArtist"/>
+    <settings-screen v-if="view === 'Settings'"/>
+    <profile-screen v-if="view === 'Profile'"/>
+    <user-list-screen v-if="view === 'Users'"/>
+    <youtube-screen v-if="sharedState.useYouTube" v-show="view === 'YouTube'"/>
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { event } from '@/utils'
-import { preferenceStore, sharedStore } from '@/stores'
-import { views } from '@/config'
-import HomeScreen from '@/components/screens/home'
-import QueueScreen from '@/components/screens/queue'
-import AlbumListScreen from '@/components/screens/album-list'
-import ArtistListScreen from '@/components/screens/artist-list'
-import AllSongsScreen from '@/components/screens/all-songs'
-import PlaylistScreen from '@/components/screens/playlist'
-import FavoritesScreen from '@/components/screens/favorites'
-import RecentlyPlayedScreen from '@/components/screens/recently-played'
-import UserListScreen from '@/components/screens/user-list'
+import { preferenceStore, sharedStore, artistStore, albumStore } from '@/stores'
+import HomeScreen from '@/components/screens/home.vue'
+import QueueScreen from '@/components/screens/queue.vue'
+import AlbumListScreen from '@/components/screens/album-list.vue'
+import ArtistListScreen from '@/components/screens/artist-list.vue'
+import AllSongsScreen from '@/components/screens/all-songs.vue'
+import PlaylistScreen from '@/components/screens/playlist.vue'
+import FavoritesScreen from '@/components/screens/favorites.vue'
 
-export default {
-  views,
-
+export default Vue.extend({
   components: {
     HomeScreen,
     QueueScreen,
@@ -51,47 +47,53 @@ export default {
     ArtistListScreen,
     PlaylistScreen,
     FavoritesScreen,
-    RecentlyPlayedScreen,
-    UserListScreen,
-    AlbumArtOverlay: () => import('@/components/ui/album-art-overlay'),
-    AlbumScreen: () => import('@/components/screens/album'),
-    ArtistScreen: () => import('@/components/screens/artist'),
-    SettingsScreen: () => import('@/components/screens/settings'),
-    ProfileScreen: () => import('@/components/screens/profile'),
-    YoutubeScreen: () => import('@/components/screens/youtube'),
-    Visualizer: () => import('@/components/ui/visualizer')
+    RecentlyPlayedScreen: () => import('@/components/screens/recently-played.vue'),
+    UserListScreen: () => import('@/components/screens/user-list.vue'),
+    AlbumArtOverlay: () => import('@/components/ui/album-art-overlay.vue'),
+    AlbumScreen: () => import('@/components/screens/album.vue'),
+    ArtistScreen: () => import('@/components/screens/artist.vue'),
+    SettingsScreen: () => import('@/components/screens/settings.vue'),
+    ProfileScreen: () => import('@/components/screens/profile.vue'),
+    YoutubeScreen: () => import('@/components/screens/youtube.vue'),
+    Visualizer: () => import('@/components/ui/visualizer.vue')
   },
 
   data: () => ({
-    currentAlbum: null,
+    currentAlbum: albumStore.stub,
     preferences: preferenceStore.state,
     sharedState: sharedStore.state,
     showingVisualizer: false,
-    shownArtist: null,
-    shownAlbum: null,
-    view: views.DEFAULT
+    shownArtist: artistStore.stub,
+    shownAlbum: albumStore.stub,
+    view: 'Home'
   }),
 
-  created () {
+  created (): void {
     event.on({
-      [event.$names.LOAD_MAIN_CONTENT]: (view, data) => {
+      [event.$names.LOAD_MAIN_CONTENT]: (view: MainViewName, data: Artist | Album): void => {
         switch (view) {
-          case views.ALBUM:
-            this.shownAlbum = data
+          case 'Album':
+            this.shownAlbum = data as Album
             break
-          case views.ARTIST:
-            this.shownArtist = data
+
+          case 'Artist':
+            this.shownArtist = data as Artist
             break
         }
 
         this.view = view
       },
 
-      [event.$names.SONG_PLAYED]: song => (this.currentAlbum = song.album),
-      [event.$names.TOGGLE_VISUALIZER]: () => (this.showingVisualizer = !this.showingVisualizer)
+      [event.$names.SONG_PLAYED]: (song: Song): void => {
+        this.currentAlbum = song.album
+      },
+
+      [event.$names.TOGGLE_VISUALIZER]: (): void => {
+        this.showingVisualizer = !this.showingVisualizer
+      }
     })
   }
-}
+})
 </script>
 
 <style lang="scss">
@@ -116,6 +118,7 @@ export default {
       overflow: auto;
       flex: 1;
       -ms-overflow-style: -ms-autohiding-scrollbar;
+      place-content: start;
 
       html.touchevents & {
         // Enable scroll with momentum on touch devices

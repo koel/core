@@ -19,7 +19,8 @@
   </span>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
 import { orderBy } from 'lodash'
 import { queueStore, albumStore, artistStore, userStore } from '@/stores'
 import { playback } from '@/services'
@@ -27,12 +28,12 @@ import { getDefaultCover, fileReader } from '@/utils'
 
 const VALID_IMAGE_TYPES = ['image/jpeg', 'image/gif', 'image/png']
 
-export default {
+export default Vue.extend({
   props: {
     entity: {
       type: Object,
       required: true
-    }
+    } as PropOptions<Album | Artist>
   },
 
   data: () => ({
@@ -41,41 +42,41 @@ export default {
   }),
 
   computed: {
-    forAlbum () {
-      return this.entity.hasOwnProperty('artist')
+    forAlbum (): boolean {
+      return 'artist' in this.entity
     },
 
-    sortKeys () {
+    sortKeys (): string[] {
       return this.forAlbum ? ['disc', 'track'] : ['album_id', 'disc', 'track']
     },
 
-    backgroundImageUrl () {
-      return this.forAlbum
-        ? this.entity.cover
-          ? this.entity.cover
-          : getDefaultCover()
-        : this.entity.image
-          ? this.entity.image
-          : getDefaultCover()
+    backgroundImageUrl (): string {
+      if (this.forAlbum) {
+        const entity = this.entity as Album
+        return entity.cover ? entity.cover : getDefaultCover()
+      } else {
+        const entity = this.entity as Artist
+        return entity.image ? entity.image : getDefaultCover()
+      }
     },
 
-    buttonLabel () {
+    buttonLabel (): string {
       return this.forAlbum
         ? `Play all songs in the album ${this.entity.name}`
         : `Play all songs by the artist ${this.entity.name}`
     },
 
-    playbackFunc () {
+    playbackFunc (): Function {
       return this.forAlbum ? playback.playAllInAlbum : playback.playAllByArtist
     },
 
-    allowsUpload () {
+    allowsUpload (): boolean {
       return this.userState.current.is_admin
     }
   },
 
   methods: {
-    playOrQueue (e) {
+    playOrQueue (e: KeyboardEvent) {
       if (e.metaKey || e.ctrlKey) {
         queueStore.queue(orderBy(this.entity.songs, this.sortKeys))
       } else {
@@ -83,19 +84,19 @@ export default {
       }
     },
 
-    onDragEnter (e) {
+    onDragEnter (): void {
       this.droppable = this.allowsUpload && true
     },
 
-    onDragLeave (e) {
+    onDragLeave (): void {
       this.droppable = false
     },
 
-    async onDrop (e) {
+    async onDrop (e: DragEvent): Promise<void> {
       this.droppable = false
 
       if (!this.allowsUpload) {
-        return false
+        return
       }
 
       if (!this.validImageDropEvent(e)) {
@@ -103,23 +104,24 @@ export default {
       }
 
       try {
-        const fileData = await fileReader.readAsDataUrl(e.dataTransfer.items[0].getAsFile())
+        const fileData = await fileReader.readAsDataUrl(e.dataTransfer!.items[0]!.getAsFile()!)
 
         if (this.forAlbum) {
           // Replace the image right away to create a swift effect
-          this.entity.cover = fileData
-          albumStore.uploadCover(this.entity, fileData)
+          (this.entity as Album).cover = fileData
+          albumStore.uploadCover(this.entity as Album, fileData)
         } else {
-          this.entity.image = fileData
-          artistStore.uploadImage(this.entity, fileData)
+          (this.entity as Artist).image = fileData
+          artistStore.uploadImage(this.entity as Artist, fileData)
         }
       } catch (exception) {
+        /* eslint no-console: 0 */
         console.error(exception)
       }
     },
 
-    validImageDropEvent: e => {
-      if (!e.dataTransfer.items) {
+    validImageDropEvent: (e: DragEvent): boolean => {
+      if (!e.dataTransfer || !e.dataTransfer.items) {
         return false
       }
 
@@ -131,14 +133,14 @@ export default {
         return false
       }
 
-      if (!VALID_IMAGE_TYPES.includes(e.dataTransfer.items[0].getAsFile().type)) {
+      if (!VALID_IMAGE_TYPES.includes(e.dataTransfer.items[0].getAsFile()!.type)) {
         return false
       }
 
       return true
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

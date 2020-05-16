@@ -36,14 +36,16 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+import { BaseContextMenu } from 'koel/types/ui'
 import { playlistStore, favoriteStore, recentlyPlayedStore } from '@/stores'
 import router from '@/router'
 
-export default {
+export default Vue.extend({
   components: {
-    PlaylistItem: () => import('@/components/playlist/sidebar-item'),
-    ContextMenu: () => import('@/components/playlist/create-new-context-menu')
+    PlaylistItem: () => import('@/components/playlist/sidebar-item.vue'),
+    ContextMenu: () => import('@/components/playlist/create-new-context-menu.vue')
   },
 
   data: () => ({
@@ -55,7 +57,7 @@ export default {
   }),
 
   methods: {
-    async createPlaylist () {
+    async createPlaylist (): Promise<void> {
       this.creating = false
 
       const playlist = await playlistStore.store(this.newName)
@@ -64,17 +66,17 @@ export default {
       this.$nextTick(() => router.go(`playlist/${playlist.id}`))
     },
 
-    toggleContextMenu (event) {
-      this.$nextTick(() => {
+    toggleContextMenu (event: MouseEvent): void {
+      this.$nextTick((): void => {
         if (this.creating) {
           this.creating = false
         } else {
-          this.$refs.contextMenu.open(event.pageY, event.pageX)
+          (this.$refs.contextMenu as BaseContextMenu).open(event.pageY, event.pageX)
         }
       })
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

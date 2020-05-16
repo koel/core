@@ -1,112 +1,114 @@
 <template>
   <div>
-    <input type="text" :name="options.name"
-      :placeholder="options.placeholder || 'No change'"
+    <input type="text" :name="config.name"
+      :placeholder="config.placeholder || 'No change'"
       v-model="mutatedValue"
       @keydown.down.prevent="down"
       @keydown.up.prevent="up"
-      @keydown.enter.prevent.stop="enter"
-      @keydown.tab="enter"
+      @change="change"
       @keyup="keyup"
-      @click="showingResult = true"
-      @blur="apply"
       v-koel-clickaway="hideResults"
+      autocomplete="off"
     >
     <ul class="result" v-show="showingResult">
       <li
         v-for="(item, index) in displayedItems"
         :key="index"
-        @click.prevent="resultClick($event)">
-        {{ item[options.displayKey] }}
+        @click.prevent="resultClick">
+        {{ item[config.displayKey] }}
       </li>
     </ul>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
 import { filterBy, $ } from '@/utils'
 
-export default {
+interface TypeAheadItem {
+  [key: string]: string
+}
+
+export default Vue.extend({
   props: {
-    options: Object,
+    config: Object,
     items: {
       type: Array,
       required: true
-    },
+    } as PropOptions<TypeAheadItem[]>,
     value: String
   },
 
   data: () => ({
     filter: '',
     showingResult: false,
-    mutatedValue: ''
+    mutatedValue: '',
+    lastSelectedValue: ''
   }),
 
   computed: {
-    displayedItems () {
-      return filterBy(this.items, this.filter, this.options.filterKey)
+    displayedItems (): TypeAheadItem[] {
+      return filterBy(this.items, this.filter, this.config.filterKey)
     }
   },
 
   methods: {
-    down (e) {
-      const selected = this.$el.querySelector('.result li.selected')
+    down (): void {
+      this.showingResult = true
+      this.$nextTick((): void => {
+        const selected = this.$el.querySelector('.result li.selected')
 
-      if (!selected || !selected.nextElementSibling) {
-        // No item selected, or we're at the end of the list.
-        // Select the first item now.
-        $.addClass(this.$el.querySelector('.result li:first-child'), 'selected')
-        selected && $.removeClass(selected, 'selected')
-      } else {
-        $.removeClass(selected, 'selected')
-        $.addClass(selected.nextElementSibling, 'selected')
-      }
+        if (!selected || !selected.nextElementSibling) {
+          // No item selected, or we're at the end of the list.
+          // Select the first item now.
+          $.addClass(this.$el.querySelector('.result li:first-child'), 'selected')
+          selected && $.removeClass(selected, 'selected')
+        } else {
+          $.removeClass(selected, 'selected')
+          $.addClass(selected.nextElementSibling, 'selected')
+        }
 
-      this.scrollSelectedIntoView(false)
-      this.apply()
+        this.scrollSelectedIntoView(false)
+      })
     },
 
-    up () {
-      const selected = this.$el.querySelector('.result li.selected')
+    up (): void {
+      this.showingResult = true
+      this.$nextTick((): void => {
+        const selected = this.$el.querySelector('.result li.selected')
 
-      if (!selected || !selected.previousElementSibling) {
-        $.addClass(this.$el.querySelector('.result li:last-child'), 'selected')
-        selected && $.removeClass(selected, 'selected')
-      } else {
-        $.removeClass(selected, 'selected')
-        $.addClass(selected.previousElementSibling, 'selected')
-      }
+        if (!selected || !selected.previousElementSibling) {
+          $.addClass(this.$el.querySelector('.result li:last-child'), 'selected')
+          selected && $.removeClass(selected, 'selected')
+        } else {
+          $.removeClass(selected, 'selected')
+          $.addClass(selected.previousElementSibling, 'selected')
+        }
 
-      this.scrollSelectedIntoView(true)
-      this.apply()
+        this.scrollSelectedIntoView(true)
+      })
     },
 
-    enter () {
-      this.apply()
-      this.hideResults()
-    },
-
-    keyup (e) {
+    keyup (e: KeyboardEvent): void {
       /**
-       * If it's an UP or DOWN arrow key, stop event bubbling.
-       * The actually result navigation is handled by this.up() and this.down().
+       * If it's an UP or DOWN arrow key, stop event bubbling to allow traversing the result dropdown
        */
       if (e.keyCode === 38 || e.keyCode === 40) {
         e.stopPropagation()
         e.preventDefault()
-
         return
       }
 
       // If it's an ENTER or TAB key, don't do anything.
       // We've handled ENTER & TAB on keydown.
       if (e.keyCode === 13 || e.keyCode === 9) {
+        this.apply()
         return
       }
 
       // Hide the typeahead results and reset the value if ESC is pressed.
       if (e.keyCode === 27) {
-        this.mutatedValue = this.value
+        this.mutatedValue = this.lastSelectedValue
         this.hideResults()
         return
       }
@@ -115,46 +117,54 @@ export default {
       this.showingResult = true
     },
 
-    resultClick (e) {
-      const selected = this.$el.querySelector('.result li.selected')
-      $.removeClass(selected, 'selected')
-      $.addClass(e.target, 'selected')
-
-      this.enter()
+    change (): void {
+      this.apply()
+      this.hideResults()
     },
 
-    apply () {
+    resultClick (e: MouseEvent): void {
       const selected = this.$el.querySelector('.result li.selected')
+      $.removeClass(selected, 'selected')
+      $.addClass(e.currentTarget as Element, 'selected')
+      this.$nextTick(() => this.apply())
+    },
+
+    apply (): void {
+      const selected = this.$el.querySelector('.result li.selected') as HTMLElement
       this.mutatedValue = (selected && selected.innerText.trim()) || this.mutatedValue
+      this.lastSelectedValue = this.mutatedValue
       this.$emit('input', this.mutatedValue)
     },
 
     /**
      * @param  {boolean} alignTop Whether the item should be aligned to top of its container.
      */
-    scrollSelectedIntoView (alignTop) {
-      const elem = this.$el.querySelector('.result li.selected')
+    scrollSelectedIntoView (alignTop: boolean): void {
+      const elem = this.$el.querySelector('.result li.selected') as HTMLElement
+
       if (!elem) {
         return
       }
 
       const elemRect = elem.getBoundingClientRect()
-      const containerRect = elem.offsetParent.getBoundingClientRect()
+      const containerRect = elem.offsetParent!.getBoundingClientRect()
 
       if (elemRect.bottom > containerRect.bottom || elemRect.top < containerRect.top) {
         elem.scrollIntoView(alignTop)
       }
     },
 
-    hideResults () {
+    hideResults (): void {
       this.showingResult = false
     }
   },
 
-  created () {
+  created (): void {
     this.mutatedValue = this.value
+    this.filter = this.value
+    this.lastSelectedValue = this.value
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

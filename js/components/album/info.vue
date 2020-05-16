@@ -34,13 +34,14 @@
   </article>
 </template>
 
-<script>
+<script lang="ts">
 import { sharedStore } from '@/stores'
 import { playback, ls } from '@/services'
+import Vue, { PropOptions } from 'vue'
 
-export default {
+export default Vue.extend({
   props: {
-    album: Object,
+    album: Object as PropOptions<Album>,
     mode: {
       type: String,
       default: 'sidebar',
@@ -49,7 +50,7 @@ export default {
   },
 
   components: {
-    TrackList: () => import('./track-list'),
+    TrackList: () => import('./track-list.vue'),
     AlbumThumbnail: () => import('@/components/ui/album-artist-thumbnail.vue')
   },
 
@@ -62,31 +63,31 @@ export default {
     /**
      * Whenever a new album is loaded into this component, we reset the "full wiki" state.
      */
-    album () {
+    album (): void {
       this.showingFullWiki = false
     }
   },
 
   computed: {
-    showSummary () {
+    showSummary (): boolean {
       return this.mode !== 'full' && !this.showingFullWiki
     },
 
-    showFull () {
+    showFull (): boolean {
       return this.mode === 'full' || this.showingFullWiki
     },
 
-    iTunesUrl () {
+    iTunesUrl (): string {
       return `${window.BASE_URL}api/itunes/album/${this.album.id}&jwt-token=${ls.get('jwt-token')}`
     }
   },
 
   methods: {
-    shuffleAll () {
+    shuffleAll (): void {
       playback.playAllInAlbum(this.album)
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

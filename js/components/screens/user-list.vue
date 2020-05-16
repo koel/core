@@ -22,32 +22,31 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import isMobile from 'ismobilejs'
 
 import { userStore } from '@/stores'
 import { event } from '@/utils'
 
-export default {
+export default Vue.extend({
   components: {
-    Btn: () => import('@/components/ui/btn'),
-    BtnGroup: () => import('@/components/ui/btn-group'),
-    UserCard: () => import('@/components/user/card')
+    Btn: () => import('@/components/ui/btn.vue'),
+    BtnGroup: () => import('@/components/ui/btn-group.vue'),
+    UserCard: () => import('@/components/user/card.vue')
   },
 
-  data () {
-    return {
-      state: userStore.state,
-      isPhone: isMobile.phone,
-      showingControls: false
-    }
-  },
+  data: () => ({
+    state: userStore.state,
+    isPhone: isMobile.phone,
+    showingControls: false
+  }),
 
   methods: {
-    showAddUserForm: () => event.emit(event.$names.MODAL_SHOW_ADD_USER_FORM),
-    showEditUserForm: user => event.emit(event.$names.MODAL_SHOW_EDIT_USER_FORM, user)
+    showAddUserForm: (): void => event.emit(event.$names.MODAL_SHOW_ADD_USER_FORM),
+    showEditUserForm: (user: User): void => event.emit(event.$names.MODAL_SHOW_EDIT_USER_FORM, user)
   }
-}
+})
 </script>
 
 <style lang="scss">

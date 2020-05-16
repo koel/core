@@ -15,7 +15,11 @@
       <div class="info">
         <a class="name" :href="`#!/album/${album.id}`">{{ album.name }}</a>
         <span class="sep">by</span>
-        <a class="artist" v-if="isNormalArtist" :href="`#!/artist/${album.artist.id}`">{{ album.artist.name }}</a>
+        <a
+          class="artist"
+          v-if="isNormalArtist"
+          :href="`#!/artist/${album.artist.id}`"
+        >{{ album.artist.name }}</a>
         <span class="artist nope" v-else>{{ album.artist.name }}</span>
       </div>
       <p class="meta">
@@ -52,53 +56,45 @@
   </article>
 </template>
 
-<script>
-import { dragTypes } from '@/config'
+<script lang="ts">
+import mixins from 'vue-typed-mixins'
 import { pluralize, startDragging } from '@/utils'
 import { artistStore, sharedStore } from '@/stores'
 import { playback, download } from '@/services'
-import albumAttributes from '@/mixins/album-attributes'
+import albumAttributes from '@/mixins/album-attributes.ts'
 
-export default {
+export default mixins(albumAttributes).extend({
   components: {
-    AlbumThumbnail: () => import('@/components/ui/album-artist-thumbnail')
-  },
-
-  props: {
-    album: {
-      type: Object,
-      required: true
-    }
+    AlbumThumbnail: () => import('@/components/ui/album-artist-thumbnail.vue')
   },
 
   filters: { pluralize },
-  mixins: [albumAttributes],
 
   data: () => ({
     sharedState: sharedStore.state
   }),
 
   computed: {
-    isNormalArtist () {
+    isNormalArtist (): boolean {
       return !artistStore.isVariousArtists(this.album.artist) &&
         !artistStore.isUnknownArtist(this.album.artist)
     }
   },
 
   methods: {
-    shuffle () {
+    shuffle (): void {
       playback.playAllInAlbum(this.album, true /* shuffled */)
     },
 
-    download () {
+    download (): void {
       download.fromAlbum(this.album)
     },
 
-    dragStart (event) {
-      startDragging(event, this.album, dragTypes.ALBUM)
+    dragStart (event: DragEvent): void {
+      startDragging(event, this.album, 'Album')
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

@@ -2,10 +2,11 @@
   <input :type="type" v-model="mutableValue" required>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import types from '@/config/smart-playlist/types'
 
-export default {
+export default Vue.extend({
   props: {
     type: {
       type: String,
@@ -18,18 +19,20 @@ export default {
     }
   },
 
-  data () {
-    return {
-      mutableValue: this.value
+  data: () => ({
+    mutableValue: ''
+  }),
+
+  watch: {
+    mutableValue (): void {
+      this.$emit('input', this.mutableValue)
     }
   },
 
-  watch: {
-    mutableValue () {
-      this.$emit('input', this.mutableValue)
-    }
+  created (): void {
+    this.mutableValue = this.value
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -38,4 +41,3 @@ input {
   width: 140px !important;
 }
 </style>
-

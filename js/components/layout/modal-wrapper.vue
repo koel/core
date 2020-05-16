@@ -1,7 +1,11 @@
 <template>
-  <div class="modal-wrapper" :class="{ overlay: this.showingModalName }">
+  <div class="modal-wrapper" :class="{ overlay: showingModalName }">
     <create-smart-playlist-form v-if="showingModalName === 'create-smart-playlist-form'" @close="close"/>
-    <edit-smart-playlist-form v-if="showingModalName === 'edit-smart-playlist-form'" @close="close" :playlist="boundData.playlist"/>
+    <edit-smart-playlist-form
+      v-if="showingModalName === 'edit-smart-playlist-form'"
+      @close="close"
+      :playlist="boundData.playlist"
+    />
     <add-user-form v-if="showingModalName === 'add-user-form'" @close="close"/>
     <edit-user-form v-if="showingModalName === 'edit-user-form'" :user="boundData.user" @close="close"/>
     <edit-song-form
@@ -14,61 +18,77 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
 import { event } from '@/utils'
 
-export default {
+interface ModalWrapperBoundData {
+  playlist?: Playlist
+  user?: User
+  songs?: Song[]
+  initialTab?: string
+}
+
+declare type ModalName =
+  | 'create-smart-playlist-form'
+  | 'edit-smart-playlist-form'
+  | 'add-user-form'
+  | 'edit-user-form'
+  | 'edit-song-form'
+  | 'about-dialog'
+
+export default Vue.extend({
   components: {
-    CreateSmartPlaylistForm: () => import('@/components/playlist/smart-playlist/create-form'),
-    EditSmartPlaylistForm: () => import('@/components/playlist/smart-playlist/edit-form'),
-    AddUserForm: () => import('@/components/user/add-form'),
-    EditUserForm: () => import('@/components/user/edit-form'),
-    EditSongForm: () => import('@/components/song/edit-form'),
-    AboutDialog: () => import('@/components/meta/about-dialog')
+    CreateSmartPlaylistForm: () => import('@/components/playlist/smart-playlist/create-form.vue'),
+    EditSmartPlaylistForm: () => import('@/components/playlist/smart-playlist/edit-form.vue'),
+    AddUserForm: () => import('@/components/user/add-form.vue'),
+    EditUserForm: () => import('@/components/user/edit-form.vue'),
+    EditSongForm: () => import('@/components/song/edit-form.vue'),
+    AboutDialog: () => import('@/components/meta/about-dialog.vue')
   },
 
   data: () => ({
-    showingModalName: null,
-    boundData: {}
+    showingModalName: null as ModalName | null,
+    boundData: {} as ModalWrapperBoundData
   }),
 
   methods: {
-    close () {
+    close (): void {
       this.showingModalName = null
       this.boundData = {}
     }
   },
 
-  created () {
+  created (): void {
     event.on({
-      [event.$names.MODAL_SHOW_CREATE_SMART_PLAYLIST_FORM]: () => {
+      [event.$names.MODAL_SHOW_CREATE_SMART_PLAYLIST_FORM]: (): void => {
         this.showingModalName = 'create-smart-playlist-form'
       },
 
-      [event.$names.MODAL_SHOW_EDIT_SMART_PLAYLIST_FORM]: playlist => {
+      [event.$names.MODAL_SHOW_EDIT_SMART_PLAYLIST_FORM]: (playlist: Playlist): void => {
         this.boundData.playlist = playlist
         this.showingModalName = 'edit-smart-playlist-form'
       },
 
-      [event.$names.MODAL_SHOW_ADD_USER_FORM]: () => {
+      [event.$names.MODAL_SHOW_ADD_USER_FORM]: (): void => {
         this.showingModalName = 'add-user-form'
       },
 
-      [event.$names.MODAL_SHOW_EDIT_USER_FORM]: user => {
+      [event.$names.MODAL_SHOW_EDIT_USER_FORM]: (user: User): void => {
         this.boundData.user = user
         this.showingModalName = 'edit-user-form'
       },
 
-      [event.$names.MODAL_SHOW_EDIT_SONG_FORM]: (songs, initialTab = 'details') => {
+      [event.$names.MODAL_SHOW_EDIT_SONG_FORM]: (songs: Song[], initialTab: string = 'details'): void => {
         this.boundData.songs = songs
         this.boundData.initialTab = initialTab
         this.showingModalName = 'edit-song-form'
       },
 
-      [event.$names.MODAL_SHOW_ABOUT_DIALOG]: () => {
+      [event.$names.MODAL_SHOW_ABOUT_DIALOG]: (): void => {
         this.showingModalName = 'about-dialog'
       }
     })
   }
-}
+})
 </script>

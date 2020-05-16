@@ -1,13 +1,9 @@
 language: node_js
 node_js:
+  - 14
   - 13
   - 12
   - 11
   - 10
-  - 8
-
-matrix:
-  allow_failures:
-    - node_js: 13
 
 script: yarn coverage

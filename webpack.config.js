@@ -1,13 +1,6 @@
-const path = require('path')
 const webpack = require('webpack')
 
 module.exports = {
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'js'),
-      '#': path.resolve(__dirname, 'sass')
-    }
-  },
   module: {
     rules: [
       {
@@ -20,7 +13,7 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(png|jpe?g|gif|svg)$/,
         loader: 'file-loader',
         options: {
           name: '[name].[ext]?[hash]'

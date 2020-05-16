@@ -3,7 +3,7 @@
     <h1 class="heading">
       <span class="overview">
         <span class="thumbnail-wrapper">
-          <album-thumbnail :entity="album" />
+          <album-thumbnail :entity="album"/>
         </span>
 
         {{ album.name }}
@@ -53,28 +53,20 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import mixins from 'vue-typed-mixins'
 import { pluralize } from '@/utils'
 import { artistStore, sharedStore } from '@/stores'
 import { download, albumInfo as albumInfoService } from '@/services'
 import router from '@/router'
-import hasSongList from '@/mixins/has-song-list'
-import albumAttributes from '@/mixins/album-attributes'
+import hasSongList from '@/mixins/has-song-list.ts'
+import albumAttributes from '@/mixins/album-attributes.ts'
 
-export default {
-  mixins: [hasSongList, albumAttributes],
-
-  props: {
-    album: {
-      type: Object,
-      required: true
-    }
-  },
-
+export default mixins(hasSongList, albumAttributes).extend({
   components: {
-    AlbumInfo: () => import('@/components/album/info'),
-    SoundBar: () => import('@/components/ui/sound-bar'),
-    AlbumThumbnail: () => import('@/components/ui/album-artist-thumbnail')
+    AlbumInfo: () => import('@/components/album/info.vue'),
+    SoundBar: () => import('@/components/ui/sound-bar.vue'),
+    AlbumThumbnail: () => import('@/components/ui/album-artist-thumbnail.vue')
   },
 
   filters: { pluralize },
@@ -88,7 +80,7 @@ export default {
   }),
 
   computed: {
-    isNormalArtist () {
+    isNormalArtist (): boolean {
       return !artistStore.isVariousArtists(this.album.artist) &&
         !artistStore.isUnknownArtist(this.album.artist)
     }
@@ -101,31 +93,39 @@ export default {
      * and move all of them into another album.
      * We should then go back to the album list.
      */
-    'album.songs.length': newSongCount => newSongCount || router.go('albums'),
+    'album.songs.length': (newSongCount: number): void => {
+      if (!newSongCount) {
+        router.go('albums')
+      }
+    },
 
-    album () {
+    album (): void {
       this.meta.showing = false
       // #530
-      this.$refs.songList && this.$refs.songList.sort()
+      if (this.$refs.songList) {
+        (this.$refs.songList as any).sort()
+      }
     }
   },
 
   methods: {
-    getSongs (shuffled) {
+    getSongs (): Song[] {
       return this.album.songs
     },
 
-    download () {
+    download (): void {
       download.fromAlbum(this.album)
     },
 
-    async showInfo () {
+    async showInfo (): Promise<void> {
       this.meta.showing = true
 
       if (!this.album.info) {
         try {
           await albumInfoService.fetch(this.album)
         } catch (e) {
+          /* eslint no-console: 0 */
+          console.error(e)
         } finally {
           this.meta.loading = false
         }
@@ -134,7 +134,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -163,7 +163,6 @@ export default {
           display: none;
         }
       }
-
 
       @media only screen and (max-width : 768px) {
         padding-left: 0;

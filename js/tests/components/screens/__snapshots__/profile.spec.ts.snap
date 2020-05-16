@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/screens/profile renders properly 1`] = `
+<section id="profileWrapper">
+  <h1 class="heading"><span>Profile &amp; Preferences</span></h1>
+  <div class="main-scroll-wrap">
+    <form>
+      <div class="form-row"><label for="inputProfileName">Name</label> <input type="text" name="name" id="inputProfileName"></div>
+      <div class="form-row"><label for="inputProfileEmail">Email Address</label> <input type="email" name="email" id="inputProfileEmail"></div>
+      <div class="change-pwd">
+        <div class="form-row">
+          <p class="help">
+            If you want to change your password, enter it below. <br>
+            Otherwise, just leave the next two fields empty.
+          </p>
+        </div>
+        <div class="form-row"><label for="inputProfilePassword">New Password</label> <input name="password" type="password" id="inputProfilePassword" autocomplete="off" class=""></div>
+        <div class="form-row"><label for="inputProfileConfirmPassword">Confirm Password</label> <input name="confirmPassword" type="password" id="inputProfileConfirmPassword" autocomplete="off" class=""></div>
+      </div>
+      <div class="form-row">
+        <btn-stub type="submit" class="btn-submit">Save</btn-stub>
+        <!---->
+      </div>
+    </form>
+    <div class="preferences">
+      <div class="form-row"><label><input type="checkbox" name="notify">
+          Show “Now Playing” song notification
+        </label></div>
+      <div class="form-row"><label><input type="checkbox" name="confirmClosing">
+          Confirm before closing Koel
+        </label></div>
+      <div class="form-row"><label><input type="checkbox" name="transcodeOnMobile">
+          Convert and play media at 128kbps on mobile
+        </label></div>
+      <div class="form-row"><label><input type="checkbox" name="showAlbumArtOverlay">
+          Show a translucent, blurred overlay of the current album’s art (may be CPU intensive)
+        </label></div>
+    </div>
+    <section class="lastfm">
+      <h1>Last.fm Integration</h1>
+      <div>
+        <p>This installation of Koel has no Last.fm integration.
+          <span>Try politely asking your administrator to enable it.</span></p>
+      </div>
+    </section>
+  </div>
+</section>
+`;

@@ -18,95 +18,107 @@
     <td class="album">{{ song.album.name }}</td>
     <td class="time">{{ song.fmtLength }}</td>
     <td class="play" @click.stop="doPlayback">
-      <i class="fa fa-pause-circle" v-if="song.playbackState === 'playing'"></i>
+      <i class="fa fa-pause-circle" v-if="song.playbackState === 'Playing'"></i>
       <i class="fa fa-play-circle" v-else></i>
     </td>
   </tr>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropOptions } from 'vue'
+import $ from 'vuequery'
 import { playback } from '@/services'
 import { queueStore } from '@/stores'
-import $ from 'vuequery'
+import { SongListComponent } from 'koel/types/ui'
 
-export default {
+interface ItemData {
+  parentSongList: SongListComponent | null
+}
+
+export default Vue.extend({
   name: 'song-item',
   props: {
     item: {
       type: Object,
       required: true
-    }
+    } as PropOptions<SongProxy>
   },
 
-  data () {
-    return {
-      parentSongList: null
-    }
-  },
+  data: () => ({
+    parentSongList: null
+  } as ItemData),
 
   computed: {
     /**
      * A shortcut to access the current vm's song (instead of this.item.song).
-     * @return {Object}
      */
-    song () {
+    song (): Song {
       return this.item.song
     },
 
-    playing () {
-      return this.song.playbackState === 'playing' || this.song.playbackState === 'paused'
+    playing (): boolean {
+      return this.song.playbackState === 'Playing' || this.song.playbackState === 'Paused'
     }
   },
 
-  mounted () {
-    this.parentSongList = window.__UNIT_TESTING__ || $(this).closest('song-list').vm
+  mounted (): void {
+    if (window.__UNIT_TESTING__) {
+      this.parentSongList = null
+    } else {
+      this.parentSongList = $(this).closest('song-list')!.vm as unknown as SongListComponent
+    }
   },
 
   methods: {
-    playRightAwayyyyyyy () {
-      queueStore.contains(this.song) || queueStore.queueAfterCurrent(this.song)
+    playRightAwayyyyyyy (): void {
+      if (!queueStore.contains(this.song)) {
+        queueStore.queueAfterCurrent(this.song)
+      }
+
       playback.play(this.song)
     },
 
-    doPlayback () {
+    doPlayback (): void {
       switch (this.song.playbackState) {
-        case 'playing':
+        case 'Playing':
           playback.pause()
           break
-        case 'paused':
+
+        case 'Paused':
           playback.resume()
           break
+
         default:
           this.playRightAwayyyyyyy()
           break
       }
     },
 
-    clicked (event) {
-      this.parentSongList.rowClicked(this, event)
+    clicked (event: MouseEvent): void {
+      this.parentSongList!.rowClicked(this, event)
     },
 
-    dragStart (event) {
-      this.parentSongList.dragStart(this, event)
+    dragStart (event: DragEvent): void {
+      this.parentSongList!.dragStart(this, event)
     },
 
-    dragLeave (event) {
-      this.parentSongList.removeDroppableState(event)
+    dragLeave (event: DragEvent): void {
+      this.parentSongList!.removeDroppableState(event)
     },
 
-    dragEnter (event) {
-      this.parentSongList.allowDrop(event)
+    dragEnter (event: DragEvent): void {
+      this.parentSongList!.allowDrop(event)
     },
 
-    drop (event) {
-      this.parentSongList.handleDrop(this, event)
+    drop (event: DragEvent): void {
+      this.parentSongList!.handleDrop(this, event)
     },
 
-    contextMenu (event) {
-      this.parentSongList.openContextMenu(this, event)
+    contextMenu (event: MouseEvent): void {
+      this.parentSongList!.openContextMenu(this, event)
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

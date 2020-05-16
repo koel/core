@@ -34,66 +34,64 @@
   </form-base>
 </template>
 
-<script>
+<script lang="ts">
 import { playlistStore } from '@/stores'
+import Vue, { PropOptions } from 'vue'
 
-export default {
+export default Vue.extend({
   components: {
-    FormBase: () => import('./form-base'),
-    RuleGroup: () => import('@/components/playlist/smart-playlist/rule-group'),
-    SoundBar: () => import('@/components/ui/sound-bar'),
-    Btn: () => import('@/components/ui/btn')
+    FormBase: () => import('@/components/playlist/smart-playlist/form-base.vue'),
+    RuleGroup: () => import('@/components/playlist/smart-playlist/rule-group.vue'),
+    SoundBar: () => import('@/components/ui/sound-bar.vue'),
+    Btn: () => import('@/components/ui/btn.vue')
   },
 
   props: {
     playlist: {
       required: true,
       type: Object
-    }
+    } as PropOptions<Playlist>
   },
 
   data: () => ({
     meta: {
       loading: false
     },
-    mutatedPlaylist: {}
+    mutatedPlaylist: null as unknown as Playlist
   }),
 
   methods: {
-    addGroup () {
-      this.mutatedPlaylist.rules.push(this.$options.createGroup())
+    addGroup (): void {
+      this.mutatedPlaylist.rules.push(this.createGroup())
     },
 
-    onGroupChanged (data) {
-      let changedGroup = this.mutatedPlaylist.rules.find(g => g.id === data.id)
-      changedGroup = Object.assign(changedGroup, data)
+    onGroupChanged (data: SmartPlaylistRuleGroup): void {
+      const changedGroup = Object.assign(this.mutatedPlaylist.rules.find(g => g.id === data.id), data)
+
       // Remove empty group
       if (changedGroup.rules.length === 0) {
         this.mutatedPlaylist.rules = this.mutatedPlaylist.rules.filter(group => group.id !== changedGroup.id)
       }
     },
 
-    close () {
+    close (): void {
       this.$emit('close')
     },
 
-    async submit () {
+    async submit (): Promise<void> {
       this.meta.loading = true
       await playlistStore.update(this.mutatedPlaylist)
       Object.assign(this.playlist, this.mutatedPlaylist)
       this.meta.loading = false
       this.close()
       await playlistStore.fetchSongs(this.playlist)
-    }
+    },
+
+    createGroup: (): SmartPlaylistRuleGroup => playlistStore.createEmptySmartPlaylistRuleGroup()
   },
 
-  created () {
-    Object.assign(this.mutatedPlaylist, this.playlist)
-  },
-
-  createGroup: () => ({
-    id: (new Date()).getTime(),
-    rules: []
-  })
-}
+  created (): void {
+    this.mutatedPlaylist = Object.assign({}, this.playlist)
+  }
+})
 </script>
