@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
-import $ from 'vuequery'
+import $, { VueQuery } from 'vuequery'
 import { playback } from '@/services'
 import { queueStore } from '@/stores'
 import { SongListComponent } from 'koel/types/ui'
@@ -65,7 +65,7 @@ export default Vue.extend({
     if (window.__UNIT_TESTING__) {
       this.parentSongList = null
     } else {
-      this.parentSongList = $(this).closest('song-list')!.vm as unknown as SongListComponent
+      this.parentSongList = ($(this) as VueQuery).closest('song-list')!.vm as unknown as SongListComponent
     }
   },
 

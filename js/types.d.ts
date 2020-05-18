@@ -71,33 +71,6 @@ declare module 'nouislider' {
   }): void
 }
 
-declare module 'vuequery' {
-  import Vue from 'vue'
-
-  interface VueQuery {
-    vm: Vue
-    _isVueQuery: true
-    children(selector: null | string): VueQuery[]
-    closest(selector: string | Vue | VueQuery): VueQuery | null
-    find(selector: string | Vue | VueQuery): VueQuery[]
-    has(selector: string | Vue | VueQuery): boolean
-    is(selector: string | Vue | VueQuery | Array<string | Vue | VueQuery>): boolean
-    next(selector: null | string | Vue | VueQuery): VueQuery | null
-    nextAll(selector: null | string | Vue | VueQuery): VueQuery[]
-    nextUntil(selector: null | string | Vue | VueQuery, filter: null | String | Vue | VueQuery): VueQuery[]
-    prev(selector: null | string | Vue | VueQuery): VueQuery | null
-    prevAll(selector: null | string | Vue | VueQuery): VueQuery[]
-    prevUntil(selector: null | string | Vue | VueQuery, filter: null | String | Vue | VueQuery): VueQuery[]
-    parent(selector: null | string | Vue | VueQuery): VueQuery | null
-    parents(selector: null | string | Vue | VueQuery): VueQuery[]
-    parentsUntil(selector: null | string | Vue | VueQuery, filter: null | String | Vue | VueQuery): VueQuery[]
-    siblings(selector: null | string | Vue | VueQuery): VueQuery[]
-  }
-
-  function $(vm: Vue): VueQuery
-  export default $
-}
-
 declare const KOEL_ENV: 'app' | 'web'
 declare const NODE_ENV: 'dev' | 'test' | 'prod' | 'demo'
 
