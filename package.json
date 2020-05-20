@@ -4,7 +4,6 @@
   "description": "The core client scripts and assets for Koel",
   "main": "js/app.js",
   "dependencies": {
-    "@phanan/vuebus": "~3.0.1",
     "alertify.js": "^1.0.12",
     "axios": "^0.19.2",
     "blueimp-md5": "^2.3.0",
@@ -28,12 +27,7 @@
     "youtube-player": "^3.0.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/polyfill": "^7.8.7",
-    "@babel/preset-env": "^7.9.6",
-    "@babel/preset-typescript": "^7.9.0",
-    "@babel/runtime": "^7.9.6",
     "@types/axios": "^0.14.0",
     "@types/blueimp-md5": "^2.7.0",
     "@types/faker": "^4.1.11",
@@ -49,9 +43,7 @@
     "@vue/eslint-config-standard": "^5.1.2",
     "@vue/eslint-config-typescript": "^5.0.2",
     "@vue/test-utils": "^1.0.0-beta.25",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-eslint": "^7.2.3",
-    "babel-jest": "^26.0.1",
+    "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
     "codecov": "^3.6.5",
     "cross-env": "^3.2.3",
