@@ -10469,10 +10469,10 @@ vue@^2.5.0:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.13.tgz#95bd31e20efcf7a7f39239c9aa6787ce8cf578e1"
   integrity sha512-3D+lY7HTkKbtswDM4BBHgqyq+qo8IAEE8lz8va1dz3LLmttjgo0FxairO4r1iN2OBqk8o1FyL4hvzzTFEdQSEw==
 
-vuequery@~2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/vuequery/-/vuequery-2.1.0.tgz#9c07ad00a9a1fe12351c18de0bb5dd3beffa6fb8"
-  integrity sha512-q9cGMustWlyDUqGWCCucdmVBj5xMb8naa2iTW6nwHt8hcwAio23dBNcp1xw37rRmAvOmw0e5TEBjUP8eyF/X1g==
+vuequery@~2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/vuequery/-/vuequery-2.1.1.tgz#5ff82ebecaf143a77a705637612f499977d06b4a"
+  integrity sha512-5RCU9qZ07oKrBivucM1gnn2evsNYzRxYiglJaMdnOjL3kGrKS1ptAmOS7jZQp7KW9oNHpbG8shT8rzjaKsZ0pQ==
 
 w3c-hr-time@^1.0.1:
   version "1.0.2"
