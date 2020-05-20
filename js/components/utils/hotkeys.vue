@@ -64,14 +64,12 @@ export default Vue.extend({
   methods: {
     /**
      * Toggle playback when user presses Space key.
-     *
-     * @param {Object} e The keydown event
      */
     togglePlayback: (e: KeyboardEvent): boolean => {
       if (
-        !(e.currentTarget instanceof Document) &&
-        $.is(e.currentTarget as Element, 'input, textarea, button, select') &&
-        !$.is(e.currentTarget as Element, 'input[type=range]')
+        !(e.target instanceof Document) &&
+        $.is(e.target as Element, 'input, textarea, button, select') &&
+        !$.is(e.target as Element, 'input[type=range]')
       ) {
         return true
       }
@@ -87,8 +85,8 @@ export default Vue.extend({
      */
     playPrev: (e: KeyboardEvent): boolean => {
       if (
-        !(e.currentTarget instanceof Document) &&
-        $.is(e.currentTarget as Element, 'input, select, textarea')
+        !(e.target instanceof Document) &&
+        $.is(e.target as Element, 'input, select, textarea')
       ) {
         return true
       }
@@ -104,8 +102,8 @@ export default Vue.extend({
      */
     playNext: (e: KeyboardEvent): boolean => {
       if (
-        !(e.currentTarget instanceof Document) &&
-        $.is(e.currentTarget as Element, 'input, select, textarea')
+        !(e.target instanceof Document) &&
+        $.is(e.target as Element, 'input, select, textarea')
       ) {
         return true
       }
@@ -121,9 +119,9 @@ export default Vue.extend({
      */
     search: (e: KeyboardEvent): boolean => {
       if (
-        !(e.currentTarget instanceof Document) &&
-        ($.is(e.currentTarget as Element, 'input, select, textarea') &&
-        !$.is(e.currentTarget as Element, 'input[type=range]'))
+        !(e.target instanceof Document) &&
+        ($.is(e.target as Element, 'input, select, textarea') &&
+        !$.is(e.target as Element, 'input[type=range]'))
       ) {
         return true
       }
@@ -143,8 +141,8 @@ export default Vue.extend({
      */
     toggleLike: (e: KeyboardEvent): boolean => {
       if (
-        !(e.currentTarget instanceof Document) &&
-        $.is(e.currentTarget as Element, 'input, select, textarea')
+        !(e.target instanceof Document) &&
+        $.is(e.target as Element, 'input, select, textarea')
       ) {
         return true
       }

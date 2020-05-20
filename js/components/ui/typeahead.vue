@@ -125,7 +125,7 @@ export default Vue.extend({
     resultClick (e: MouseEvent): void {
       const selected = this.$el.querySelector('.result li.selected')
       $.removeClass(selected, 'selected')
-      $.addClass(e.currentTarget as Element, 'selected')
+      $.addClass(e.target as Element, 'selected')
       this.$nextTick(() => this.apply())
     },
 

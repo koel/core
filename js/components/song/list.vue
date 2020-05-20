@@ -367,7 +367,7 @@ export default Vue.extend({
         return
       }
 
-      $.addClass((event.currentTarget as Element).parentElement, 'droppable')
+      $.addClass((event.target as Element).parentElement, 'droppable')
       event.dataTransfer!.dropEffect = 'move'
 
       return false
@@ -390,7 +390,7 @@ export default Vue.extend({
     },
 
     removeDroppableState: (event: DragEvent): boolean => {
-      $.removeClass((event.currentTarget as Element).parentElement, 'droppable')
+      $.removeClass((event.target as Element).parentElement, 'droppable')
       return false
     },
 
