@@ -124,7 +124,9 @@ export default Vue.extend({
       this.showEqualizer = false
     },
 
-    toggleVisualizer: (): void => event.emit(event.$names.TOGGLE_VISUALIZER),
+    toggleVisualizer: (): void => {
+      event.emit(event.$names.TOGGLE_VISUALIZER)
+    },
 
     downloadCurrentSong (): void {
       download.fromSongs(this.song)

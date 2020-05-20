@@ -30,7 +30,9 @@ export default Vue.extend({
       this.isFullscreen = !this.isFullscreen
     },
 
-    hide: (): void => event.emit(event.$names.TOGGLE_VISUALIZER)
+    hide: (): void => {
+      event.emit(event.$names.TOGGLE_VISUALIZER)
+    }
   },
 
   mounted (): void {

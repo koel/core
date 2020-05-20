@@ -43,8 +43,13 @@ export default Vue.extend({
   }),
 
   methods: {
-    showAddUserForm: (): void => event.emit(event.$names.MODAL_SHOW_ADD_USER_FORM),
-    showEditUserForm: (user: User): void => event.emit(event.$names.MODAL_SHOW_EDIT_USER_FORM, user)
+    showAddUserForm: (): void => {
+      event.emit(event.$names.MODAL_SHOW_ADD_USER_FORM)
+    },
+
+    showEditUserForm: (user: User): void => {
+      event.emit(event.$names.MODAL_SHOW_EDIT_USER_FORM, user)
+    }
   }
 })
 </script>

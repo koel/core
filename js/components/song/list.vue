@@ -402,7 +402,9 @@ export default Vue.extend({
         this.toggleRow(rowVm)
       }
 
-      this.$nextTick((): void => event.emit(event.$names.CONTEXT_MENU_REQUESTED, e, this.selectedSongs))
+      this.$nextTick((): void => {
+        event.emit(event.$names.CONTEXT_MENU_REQUESTED, e, this.selectedSongs)
+      })
     },
 
     extractSearchDataFromQuery: (q: string): { keywords: string, fields: string[] } => {

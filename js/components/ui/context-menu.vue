@@ -55,7 +55,9 @@ export default Vue.extend({
       this.shown = false
     },
 
-    notifyOtherInstancesToClose: () => event.emit(event.$names.CONTEXT_MENU_OPENING),
+    notifyOtherInstancesToClose: (): void => {
+      event.emit(event.$names.CONTEXT_MENU_OPENING)
+    },
 
     preventOffScreen: (element: HTMLElement): void => {
       Vue.nextTick((): void => {

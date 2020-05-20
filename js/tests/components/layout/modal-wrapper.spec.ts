@@ -10,13 +10,13 @@ import { mount } from '@/tests/adapter'
 
 describe('components/layout/modal-wrapper', () => {
   each([
-    ['AddUserForm', AddUserForm, ['MODAL_SHOW_ADD_USER_FORM']],
-    ['EditUserForm', EditUserForm, ['MODAL_SHOW_EDIT_USER_FORM', factory('user')]],
-    ['EditSongForm', EditSongForm, ['MODAL_SHOW_EDIT_SONG_FORM', factory('song')]],
-    ['CreateSmartPlaylistForm', CreateSmartPlaylistForm, ['MODAL_SHOW_CREATE_SMART_PLAYLIST_FORM']]
-  ]).test('shows %s modal', async (modalName, modalComponent, eventParams) => {
+    ['AddUserForm', AddUserForm, 'MODAL_SHOW_ADD_USER_FORM'],
+    ['EditUserForm', EditUserForm, 'MODAL_SHOW_EDIT_USER_FORM', factory('user')],
+    ['EditSongForm', EditSongForm, 'MODAL_SHOW_EDIT_SONG_FORM', factory('song')],
+    ['CreateSmartPlaylistForm', CreateSmartPlaylistForm, 'MODAL_SHOW_CREATE_SMART_PLAYLIST_FORM']
+  ]).test('shows %s modal', async (modalName, modalComponent, eventName, eventParams) => {
     const wrapper = mount(Component)
-    event.emit(...eventParams)
+    event.emit(eventName, ...eventParams)
 
     await wrapper.vm.$nextTick()
     expect(wrapper.has(modalComponent)).toBe(true)

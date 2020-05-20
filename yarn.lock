@@ -1006,9 +1006,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@phanan/vuebus@phanan/vuebus":
-  version "1.0.0"
-  resolved "https://codeload.github.com/phanan/vuebus/tar.gz/8a6a4836a4e2a2b6737d7402d087cdde59e253f3"
+"@phanan/vuebus@~2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@phanan/vuebus/-/vuebus-2.1.0.tgz#159865a26c434f5ea044b45a69625bce52cabf9d"
+  integrity sha512-hRPLQ38eI/D5MwNwGAQ+aryZxbV+aL5fbEFWSrd7JXRFzNn2M26hVAdN1ktCyGS9/MzXdsjzja1SKS5Z9uHD2A==
 
 "@sinonjs/commons@^1.7.0":
   version "1.7.2"
@@ -10468,10 +10469,10 @@ vue@^2.5.0:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.13.tgz#95bd31e20efcf7a7f39239c9aa6787ce8cf578e1"
   integrity sha512-3D+lY7HTkKbtswDM4BBHgqyq+qo8IAEE8lz8va1dz3LLmttjgo0FxairO4r1iN2OBqk8o1FyL4hvzzTFEdQSEw==
 
-vuequery@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/vuequery/-/vuequery-2.0.0.tgz#f0fa75b236a1841297444db568c4f84fc97278d1"
-  integrity sha512-oQZJyZXxuu0jI4eaT86jQfZxd0hYmMXuaUKdtJgvQBYfd3fBepaeWMXFA5OSon+uMyef6TbzGmfH1X6WBDEOVQ==
+vuequery@~2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/vuequery/-/vuequery-2.1.0.tgz#9c07ad00a9a1fe12351c18de0bb5dd3beffa6fb8"
+  integrity sha512-q9cGMustWlyDUqGWCCucdmVBj5xMb8naa2iTW6nwHt8hcwAio23dBNcp1xw37rRmAvOmw0e5TEBjUP8eyF/X1g==
 
 w3c-hr-time@^1.0.1:
   version "1.0.2"

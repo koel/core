@@ -7,8 +7,9 @@ import { sharedStore } from '@/stores'
  *
  * @param {...*} args     Extra data to attach to the view.
  */
-export const loadMainView = (view: MainViewName, ...args: any[]): void =>
+export const loadMainView = (view: MainViewName, ...args: any[]): void => {
   event.emit(event.$names.LOAD_MAIN_CONTENT, view, ...args)
+}
 
 /**
  * Force reloading window regardless of "Confirm before reload" setting.
@@ -23,10 +24,13 @@ export const forceReloadWindow = (): void => {
   window.location.reload()
 }
 
-export const showOverlay = (message = 'Just a little patience…', type = 'loading', dismissable = false): void =>
+export const showOverlay = (message = 'Just a little patience…', type = 'loading', dismissable = false) => {
   event.emit(event.$names.SHOW_OVERLAY, { message, type, dismissable })
+}
 
-export const hideOverlay = (): void => event.emit(event.$names.HIDE_OVERLAY)
+export const hideOverlay = (): void => {
+  event.emit(event.$names.HIDE_OVERLAY)
+}
 
 export const copyText = (text: string): void => {
   let copyArea = document.querySelector('#copyArea') as HTMLTextAreaElement

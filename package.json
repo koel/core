@@ -4,7 +4,7 @@
   "description": "The core client scripts and assets for Koel",
   "main": "js/app.js",
   "dependencies": {
-    "@phanan/vuebus": "phanan/vuebus",
+    "@phanan/vuebus": "~2.1.0",
     "alertify.js": "^1.0.12",
     "axios": "^0.19.2",
     "blueimp-md5": "^2.3.0",
@@ -24,7 +24,7 @@
     "vue": "^2.5.0",
     "vue-global-events": "^1.0.2",
     "vue-virtual-scroller": "^0.5.0",
-    "vuequery": "^2.0.0",
+    "vuequery": "~2.1.0",
     "youtube-player": "^3.0.4"
   },
   "devDependencies": {

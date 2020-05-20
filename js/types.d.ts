@@ -7,14 +7,6 @@ declare module 'vue-global-events' {
   export default any
 }
 
-declare module '@phanan/vuebus' {
-  function emit(eventName: string, ...data: any[]): void
-  function emit(...args: any[]): void
-  function on(eventName: string, handler: Function): void
-  function on(handlers: { [key: string]: Function }): void
-  const $names: { [key: string]: string }
-}
-
 declare module 'alertify.js' {
   function alert(msg: string): void
   function confirm(msg: string, okFunc: Function, cancelFunc?: Function): void

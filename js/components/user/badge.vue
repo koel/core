@@ -29,7 +29,9 @@ export default Vue.extend({
   }),
 
   methods: {
-    logout: (): void => event.emit(event.$names.LOG_OUT)
+    logout: (): void => {
+      event.emit(event.$names.LOG_OUT)
+    }
   }
 })
 </script>

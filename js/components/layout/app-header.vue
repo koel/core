@@ -40,10 +40,21 @@ export default Vue.extend({
   }),
 
   methods: {
-    toggleSidebar: (): void => event.emit(event.$names.TOGGLE_SIDEBAR),
-    toggleSearchForm: (): void => event.emit(event.$names.TOGGLE_SEARCH_FORM),
-    triggerMaximize: (): void => app.triggerMaximize(),
-    showAboutDialog: (): void => event.emit(event.$names.MODAL_SHOW_ABOUT_DIALOG)
+    toggleSidebar: (): void => {
+      event.emit(event.$names.TOGGLE_SIDEBAR)
+    },
+
+    toggleSearchForm: (): void => {
+      event.emit(event.$names.TOGGLE_SEARCH_FORM)
+    },
+
+    triggerMaximize: (): void => {
+      app.triggerMaximize()
+    },
+
+    showAboutDialog: (): void => {
+      event.emit(event.$names.MODAL_SHOW_ABOUT_DIALOG)
+    }
   }
 })
 </script>

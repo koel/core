@@ -1,6 +1,17 @@
-import event from '@phanan/vuebus'
+import BaseVueBus from '@phanan/vuebus'
 import { events as eventNames } from '@/config'
 
-(<any>event).$names = eventNames
+class Bus extends BaseVueBus {
+  readonly $names: {
+    [key: string]: string
+  }
+
+  constructor () {
+    super()
+    this.$names = eventNames
+  }
+}
+
+const event = new Bus()
 
 export { event }
