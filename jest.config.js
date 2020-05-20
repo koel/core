@@ -8,8 +8,7 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/js/$1'
   },
   transform: {
-    '^.+\\.ts?$': '<rootDir>/node_modules/ts-jest',
-    '^.+\\.js$': '<rootDir>/node_modules/babel-jest',
+    '^.+\\.(t|j)s?$': '<rootDir>/node_modules/ts-jest',
     '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest'
   },
   snapshotSerializers: [
