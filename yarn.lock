@@ -1006,10 +1006,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@phanan/vuebus@~2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@phanan/vuebus/-/vuebus-2.1.0.tgz#159865a26c434f5ea044b45a69625bce52cabf9d"
-  integrity sha512-hRPLQ38eI/D5MwNwGAQ+aryZxbV+aL5fbEFWSrd7JXRFzNn2M26hVAdN1ktCyGS9/MzXdsjzja1SKS5Z9uHD2A==
+"@phanan/vuebus@~3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@phanan/vuebus/-/vuebus-3.0.1.tgz#6c46b1134bddda74643786da40346aeb8b6cf216"
+  integrity sha512-KeqM8pbp8ye8qCXhxJdM9UAe1N67QL+8YMQSySRgxodMgipQ94Lo7lMArD8r1UNIwT2YYA/bj6wlwJg/2X9QIw==
 
 "@sinonjs/commons@^1.7.0":
   version "1.7.2"
