@@ -1,3 +1,4 @@
+import each from 'jest-each'
 import Component from '@/components/ui/view-mode-switch.vue'
 import { shallow } from '@/__tests__/adapter'
 
@@ -5,19 +6,17 @@ describe('components/ui/view-mode-switch', () => {
   it('renders properly', () => {
     expect(shallow(Component, {
       propsData: {
-        for: 'albums'
+        value: 'thumbnails'
       }
     })).toMatchSnapshot()
   })
 
-  it('changes the view mode', () => {
+  each([['thumbnails'], ['list']]).test('emits the "%s" mode value', mode => {
     const wrapper = shallow(Component, {
       propsData: {
-        mode: 'list',
-        for: 'albums'
+        value: 'list'
       }
     })
-    expect(wrapper.click('a.thumbnails').hasEmitted('viewModeChanged', 'thumbnails')).toBe(true)
-    expect(wrapper.click('a.list').hasEmitted('viewModeChanged', 'list')).toBe(true)
+    expect(wrapper.input(`input[value=${mode}]`).hasEmitted('input', mode)).toBe(true)
   })
 })

@@ -2,7 +2,7 @@
   <section id="artistsWrapper">
     <h1 class="heading">
       <span>Artists</span>
-      <view-mode-switch for="artists" @viewModeChanged="changeViewMode"/>
+      <view-mode-switch v-model="viewMode"/>
     </h1>
 
     <div ref="scroller" class="artists main-scroll-wrap" :class="`as-${viewMode}`" @scroll="scrolling">
@@ -16,7 +16,7 @@
 import mixins from 'vue-typed-mixins'
 import { filterBy, limitBy, eventBus } from '@/utils'
 import { events } from '@/config'
-import { artistStore } from '@/stores'
+import { artistStore, preferenceStore as preferences } from '@/stores'
 import infiniteScroll from '@/mixins/infinite-scroll.ts'
 
 export default mixins(infiniteScroll).extend({
@@ -43,9 +43,9 @@ export default mixins(infiniteScroll).extend({
     }
   },
 
-  methods: {
-    changeViewMode (mode: string): void {
-      this.viewMode = mode
+  watch: {
+    viewMode (): void {
+      preferences.artistsViewMode = this.viewMode
     }
   },
 
@@ -58,6 +58,8 @@ export default mixins(infiniteScroll).extend({
         if (this.$refs.scroller) {
           this.$nextTick((): void => this.makeScrollable(this.$refs.scroller as HTMLElement, this.artists.length))
         }
+
+        this.viewMode = preferences.artistsViewMode
       },
 
       [events.FILTER_CHANGED]: (q: string): void => {

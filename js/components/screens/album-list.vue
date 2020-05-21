@@ -2,7 +2,7 @@
   <section id="albumsWrapper">
     <h1 class="heading">
       <span>Albums</span>
-      <view-mode-switch for="albums" @viewModeChanged="changeViewMode"/>
+      <view-mode-switch v-model="viewMode"/>
     </h1>
 
     <div ref="scroller" class="albums main-scroll-wrap" :class="`as-${viewMode}`" @scroll="scrolling">
@@ -16,7 +16,7 @@
 import mixins from 'vue-typed-mixins'
 import { filterBy, limitBy, eventBus } from '@/utils'
 import { events } from '@/config'
-import { albumStore } from '@/stores'
+import { albumStore, preferenceStore as preferences } from '@/stores'
 import infiniteScroll from '@/mixins/infinite-scroll.ts'
 
 export default mixins(infiniteScroll).extend({
@@ -43,9 +43,9 @@ export default mixins(infiniteScroll).extend({
     }
   },
 
-  methods: {
-    changeViewMode (mode: string): void {
-      this.viewMode = mode
+  watch: {
+    viewMode (): void {
+      preferences.albumsViewMode = this.viewMode
     }
   },
 
@@ -57,6 +57,8 @@ export default mixins(infiniteScroll).extend({
         if (this.$refs.scroller) {
           this.$nextTick(() => this.makeScrollable(this.$refs.scroller as HTMLElement, this.albums.length))
         }
+
+        this.viewMode = preferences.albumsViewMode || 'thumbnails'
       },
 
       [events.FILTER_CHANGED]: (q: string): void => {

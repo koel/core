@@ -1,73 +1,42 @@
 <template>
   <span class="view-modes">
-    <a
-      class="thumbnails"
-      :class="{ active: mode === 'thumbnails' }"
-      title="View as thumbnails"
-      @click.prevent="setMode('thumbnails')"
-      role="button"
-      href="#"
-    >
+    <label class="thumbnails" :class="{ active: mutatedValue === 'thumbnails' }" title="View as thumbnails">
+      <input class="hidden" type="radio" value="thumbnails" v-model="mutatedValue" @input="onInput">
       <i class="fa fa-th-large"></i>
-    </a>
-    <a
-      class="list"
-      :class="{ active: mode === 'list' }"
-      title="View as list"
-      @click.prevent="setMode('list')"
-      role="button"
-      href="#"
-    >
+      <span class="hidden">View as thumbnails</span>
+    </label>
+
+    <label class="list" :class="{ active: mutatedValue === 'list' }" title="View as list">
+      <input class="hidden" type="radio" value="list" v-model="mutatedValue" @input="onInput">
       <i class="fa fa-list"></i>
-    </a>
+      <span class="hidden">View as list</span>
+    </label>
   </span>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import isMobile from 'ismobilejs'
-
-import { preferenceStore as preferences } from '@/stores'
 
 export default Vue.extend({
   props: {
-    for: {
+    value: {
       type: String,
-      required: true,
-      validator: value => ['albums', 'artists'].includes(value)
+      required: true
     }
   },
 
   data: () => ({
-    preferences
+    mutatedValue: ''
   }),
 
-  computed: {
-    /**
-     * The preference key for local storage for persistent mode.
-     */
-    preferenceKey (): string {
-      return `${this.for}ViewMode`
-    },
-
-    mode (): string {
-      if (preferences[this.preferenceKey]) {
-        return preferences[this.preferenceKey]
-      }
-
-      return isMobile.any ? 'list' : 'thumbnails'
+  methods: {
+    onInput (e: InputEvent): void {
+      this.$emit('input', (e.target as HTMLInputElement).value)
     }
   },
 
   created (): void {
-    this.$emit('viewModeChanged', this.mode)
-  },
-
-  methods: {
-    setMode (mode: string): void {
-      preferences[this.preferenceKey] = mode
-      this.$emit('viewModeChanged', mode)
-    }
+    this.mutatedValue = this.value
   }
 })
 </script>
@@ -80,11 +49,13 @@ export default Vue.extend({
   border-radius: 5px;
   overflow: hidden;
 
-  a {
+  label {
     width: 50%;
     text-align: center;
     line-height: 2rem;
     font-size: 1rem;
+    margin-bottom: 0;
+    cursor: pointer;
 
     &.active {
       background: #fff;

@@ -14,8 +14,8 @@ export interface Wrapper extends BaseWrapper<Vue> {
   submit (selector?: string): Wrapper
   find(any: any): Wrapper
   setValue(value: string): Wrapper
-  input(): Wrapper
-  blur(): Wrapper
+  input(selector?: string, options?: any): Wrapper
+  blur(selector?: string): Wrapper
   hasAll(...args: any): Wrapper
   hasNone(...args: any): Wrapper
   findAll(...args: any): WrapperArray
