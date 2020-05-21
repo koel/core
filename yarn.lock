@@ -975,6 +975,11 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
+"@phanan/vuebus@~3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@phanan/vuebus/-/vuebus-3.0.1.tgz#6c46b1134bddda74643786da40346aeb8b6cf216"
+  integrity sha512-KeqM8pbp8ye8qCXhxJdM9UAe1N67QL+8YMQSySRgxodMgipQ94Lo7lMArD8r1UNIwT2YYA/bj6wlwJg/2X9QIw==
+
 "@sinonjs/commons@^1.7.0":
   version "1.7.2"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.7.2.tgz#505f55c74e0272b43f6c52d81946bed7058fc0e2"

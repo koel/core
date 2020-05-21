@@ -17,7 +17,8 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 import { userStore } from '@/stores'
 
 export default Vue.extend({
@@ -39,7 +40,7 @@ export default Vue.extend({
 
   methods: {
     showEditSongForm (): void {
-      event.emit(event.$names.MODAL_SHOW_EDIT_SONG_FORM, this.song, 'lyrics')
+      eventBus.emit(events.MODAL_SHOW_EDIT_SONG_FORM, this.song, 'lyrics')
     }
   },
 

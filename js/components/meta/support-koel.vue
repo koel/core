@@ -13,7 +13,8 @@
 <script lang="ts">
 import isMobile from 'ismobilejs'
 import Vue from 'vue'
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 import { preferenceStore as preferences } from '@/stores'
 
 const DELAY_UNTIL_SHOWN: number = 30 * 60 * 1000
@@ -30,8 +31,8 @@ export default Vue.extend({
   }),
 
   created (): void {
-    event.on({
-      [event.$names.KOEL_READY]: (): void => {
+    eventBus.on({
+      [events.KOEL_READY]: (): void => {
         if (isMobile.any || preferences.supportBarNoBugging) {
           return
         }

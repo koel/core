@@ -28,7 +28,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 import { preferenceStore, sharedStore, artistStore, albumStore } from '@/stores'
 import HomeScreen from '@/components/screens/home.vue'
 import QueueScreen from '@/components/screens/queue.vue'
@@ -69,8 +70,8 @@ export default Vue.extend({
   }),
 
   created (): void {
-    event.on({
-      [event.$names.LOAD_MAIN_CONTENT]: (view: MainViewName, data: Artist | Album): void => {
+    eventBus.on({
+      [events.LOAD_MAIN_CONTENT]: (view: MainViewName, data: Artist | Album): void => {
         switch (view) {
           case 'Album':
             this.shownAlbum = data as Album
@@ -84,11 +85,11 @@ export default Vue.extend({
         this.view = view
       },
 
-      [event.$names.SONG_PLAYED]: (song: Song): void => {
+      [events.SONG_PLAYED]: (song: Song): void => {
         this.currentAlbum = song.album
       },
 
-      [event.$names.TOGGLE_VISUALIZER]: (): void => {
+      [events.TOGGLE_VISUALIZER]: (): void => {
         this.showingVisualizer = !this.showingVisualizer
       }
     })

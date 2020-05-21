@@ -8,7 +8,8 @@
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
 import { BasePlaylistMenu } from 'koel/types/ui'
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 
 export default Vue.extend({
   components: {
@@ -33,7 +34,7 @@ export default Vue.extend({
 
     editPlaylist (): void {
       if (this.playlist.is_smart) {
-        event.emit(event.$names.MODAL_SHOW_EDIT_SMART_PLAYLIST_FORM, this.playlist)
+        eventBus.emit(events.MODAL_SHOW_EDIT_SMART_PLAYLIST_FORM, this.playlist)
       } else {
         this.$emit('edit')
       }
@@ -42,7 +43,7 @@ export default Vue.extend({
     },
 
     deletePlaylist (): void {
-      event.emit(event.$names.PLAYLIST_DELETE, this.playlist)
+      eventBus.emit(events.PLAYLIST_DELETE, this.playlist)
       this.close()
     }
   }

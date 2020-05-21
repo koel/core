@@ -1,3 +1,11 @@
+/**
+ * By default jest doesn't transform files in node_modules.
+ * List names of the libraries we want to whitelist here, e.g., those export ES6 modules.
+ */
+const forceTransformModules = [
+  '@phanan/vuebus'
+]
+
 module.exports = {
   moduleFileExtensions: [
     'ts',
@@ -8,20 +16,24 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/js/$1'
   },
   transform: {
-    '^.+\\.(t|j)s?$': '<rootDir>/node_modules/ts-jest',
+    '^.+\\.[tj]s$': '<rootDir>/node_modules/ts-jest',
     '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest'
   },
   snapshotSerializers: [
     '<rootDir>/node_modules/jest-serializer-vue'
   ],
+  testMatch: ['**/__tests__/**/*.spec.ts'],
+  transformIgnorePatterns: [
+    `node_modules/(?!(${forceTransformModules.join('|')})/)`
+  ],
   globals: {
     KOEL_ENV: 'web',
     NODE_ENV: 'test'
   },
-  setupFilesAfterEnv: ['<rootDir>/js/tests/setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/js/__tests__/setup.ts'],
   verbose: true,
   collectCoverage: true,
   coverageReporters: ['lcov', 'json', 'html'],
-  coverageDirectory: '<rootDir>/js/tests/__coverage__',
-  coveragePathIgnorePatterns: ['/node_modules/', '/tests/', '/stubs/', '/libs/']
+  coverageDirectory: '<rootDir>/js/__tests__/__coverage__',
+  coveragePathIgnorePatterns: ['/node_modules/', '/__tests__/', '/stubs/', '/libs/']
 }

@@ -13,7 +13,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import { YouTubePlayer } from 'youtube-player/dist/types'
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 import { playback } from '@/services'
 import createYouTubePlayer from 'youtube-player'
 
@@ -46,8 +47,8 @@ export default Vue.extend({
   },
 
   created (): void {
-    event.on({
-      [event.$names.PLAY_YOUTUBE_VIDEO]: ({ id, title }: { id: string, title: string }): void => {
+    eventBus.on({
+      [events.PLAY_YOUTUBE_VIDEO]: ({ id, title }: { id: string, title: string }): void => {
         this.title = title
         this.initPlayer()
         player.loadVideoById(id)
@@ -57,7 +58,7 @@ export default Vue.extend({
       /**
        * Stop video playback when a song is played/resumed.
        */
-      [event.$names.SONG_PLAYED]: (): void => {
+      [events.SONG_PLAYED]: (): void => {
         if (player) {
           player.pauseVideo()
         }

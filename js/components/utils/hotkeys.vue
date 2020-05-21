@@ -14,7 +14,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import GlobalEvents from 'vue-global-events'
-import { $, event, noop } from '@/utils'
+import { $, eventBus, noop } from '@/utils'
+import { events as eventNames } from '@/config'
 import { playback, socket } from '@/services'
 import { queueStore, favoriteStore, songStore } from '@/stores'
 
@@ -131,7 +132,7 @@ export default Vue.extend({
       }
 
       e.preventDefault()
-      event.emit(event.$names.FOCUS_SEARCH_FIELD)
+      eventBus.emit(eventNames.FOCUS_SEARCH_FIELD)
 
       return false
     },
@@ -152,7 +153,7 @@ export default Vue.extend({
       }
 
       favoriteStore.toggleOne(queueStore.current)
-      socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current))
+      socket.broadcast(eventNames.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current))
       return false
     }
   },

@@ -31,7 +31,8 @@
 import Vue from 'vue'
 import nouislider from 'nouislider'
 
-import { event, $ } from '@/utils'
+import { eventBus, $ } from '@/utils'
+import { events } from '@/config'
 import { equalizerStore, preferenceStore as preferences } from '@/stores'
 import { audio as audioService } from '@/services'
 import { SliderElement } from 'koel/types/ui'
@@ -201,7 +202,7 @@ export default Vue.extend({
   },
 
   mounted (): void {
-    event.on(event.$names.INIT_EQUALIZER, (): void => this.init())
+    eventBus.on(events.INIT_EQUALIZER, (): void => this.init())
   }
 })
 </script>

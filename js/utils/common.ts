@@ -1,5 +1,6 @@
 import select from 'select'
-import { event, noop, pluralize } from '@/utils'
+import { eventBus, noop, pluralize } from '@/utils'
+import { events } from '@/config'
 import { sharedStore } from '@/stores'
 
 /**
@@ -8,7 +9,7 @@ import { sharedStore } from '@/stores'
  * @param {...*} args     Extra data to attach to the view.
  */
 export const loadMainView = (view: MainViewName, ...args: any[]): void => {
-  event.emit(event.$names.LOAD_MAIN_CONTENT, view, ...args)
+  eventBus.emit(events.LOAD_MAIN_CONTENT, view, ...args)
 }
 
 /**
@@ -25,11 +26,11 @@ export const forceReloadWindow = (): void => {
 }
 
 export const showOverlay = (message = 'Just a little patience…', type = 'loading', dismissable = false) => {
-  event.emit(event.$names.SHOW_OVERLAY, { message, type, dismissable })
+  eventBus.emit(events.SHOW_OVERLAY, { message, type, dismissable })
 }
 
 export const hideOverlay = (): void => {
-  event.emit(event.$names.HIDE_OVERLAY)
+  eventBus.emit(events.HIDE_OVERLAY)
 }
 
 export const copyText = (text: string): void => {

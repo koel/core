@@ -1,7 +1,8 @@
 import Axios, { AxiosInstance, Method } from 'axios'
 import NProgress from 'nprogress'
 
-import { event } from '@/utils/index'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 import { ls } from '@/services'
 
 export const http = {
@@ -76,7 +77,7 @@ export const http = {
         // and we're not trying to login
         if (!(error.config.method === 'post' && /\/api\/me\/?$/.test(error.config.url))) {
           // the token must have expired. Log out.
-          event.emit(event.$names.LOG_OUT)
+          eventBus.emit(events.LOG_OUT)
         }
       }
 

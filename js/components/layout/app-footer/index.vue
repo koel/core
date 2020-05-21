@@ -11,7 +11,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 import OtherControls from '@/components/layout/app-footer/other-controls.vue'
 import MiddlePane from '@/components/layout/app-footer/middle-pane.vue'
 import PlayerControls from '@/components/layout/app-footer/player-controls.vue'
@@ -31,17 +32,17 @@ export default Vue.extend({
   methods: {
     requestContextMenu (e: MouseEvent): void {
       if (this.song.id) {
-        event.emit(event.$names.CONTEXT_MENU_REQUESTED, e, this.song)
+        eventBus.emit(events.CONTEXT_MENU_REQUESTED, e, this.song)
       }
     }
   },
 
   created (): void {
-    event.on({
+    eventBus.on({
       /**
        * Listen to song:played event to set the current playing song.
        */
-      [event.$names.SONG_PLAYED]: (song: Song): void => {
+      [events.SONG_PLAYED]: (song: Song): void => {
         this.song = song
       },
 
@@ -49,7 +50,7 @@ export default Vue.extend({
        * Listen to main-content-view:load event and highlight the Queue icon if
        * the Queue screen is being loaded.
        */
-      [event.$names.LOAD_MAIN_CONTENT]: (view: MainViewName): void => {
+      [events.LOAD_MAIN_CONTENT]: (view: MainViewName): void => {
         this.viewingQueue = view === 'Queue'
       }
     })

@@ -18,7 +18,8 @@ import Vue from 'vue'
 import isMobile from 'ismobilejs'
 import { debounce } from 'lodash'
 
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 
 export default Vue.extend({
   data: () => ({
@@ -29,17 +30,17 @@ export default Vue.extend({
   methods: {
     filter: debounce(function (): void {
       // @ts-ignore because of `this`
-      event.emit(event.$names.FILTER_CHANGED, this.q.trim())
+      eventBus.emit(events.FILTER_CHANGED, this.q.trim())
     }, 200)
   },
 
   created (): void {
-    event.on({
-      [event.$names.TOGGLE_SEARCH_FORM]: (): void => {
+    eventBus.on({
+      [events.TOGGLE_SEARCH_FORM]: (): void => {
         this.showing = !this.showing
       },
 
-      [event.$names.FOCUS_SEARCH_FIELD]: (): void => {
+      [events.FOCUS_SEARCH_FIELD]: (): void => {
         ;(this.$refs.input as HTMLInputElement).focus()
         ;(this.$refs.input as HTMLInputElement).select()
       }

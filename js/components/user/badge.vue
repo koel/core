@@ -21,7 +21,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import { userStore } from '@/stores'
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 
 export default Vue.extend({
   data: () => ({
@@ -30,7 +31,7 @@ export default Vue.extend({
 
   methods: {
     logout: (): void => {
-      event.emit(event.$names.LOG_OUT)
+      eventBus.emit(events.LOG_OUT)
     }
   }
 })

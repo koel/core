@@ -90,7 +90,8 @@
 <script lang="ts">
 import isMobile from 'ismobilejs'
 import Vue from 'vue'
-import { event, $ } from '@/utils'
+import { eventBus, $ } from '@/utils'
+import { events } from '@/config'
 import { sharedStore, songStore, preferenceStore as preferences } from '@/stores'
 import { songInfo } from '@/services'
 
@@ -144,9 +145,9 @@ export default Vue.extend({
   },
 
   created (): void {
-    event.on({
-      [event.$names.SONG_PLAYED]: async (song: Song): Promise<void> => await this.fetchSongInfo(song),
-      [event.$names.LOAD_MAIN_CONTENT]: (): void => {
+    eventBus.on({
+      [events.SONG_PLAYED]: async (song: Song): Promise<void> => await this.fetchSongInfo(song),
+      [events.LOAD_MAIN_CONTENT]: (): void => {
         // On ready, add 'with-extra-panel' class.
         if (!isMobile.any) {
           $.addClass(document.documentElement, 'with-extra-panel')

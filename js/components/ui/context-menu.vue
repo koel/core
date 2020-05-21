@@ -16,7 +16,8 @@
 </template>
 
 <script lang="ts">
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -56,7 +57,7 @@ export default Vue.extend({
     },
 
     notifyOtherInstancesToClose: (): void => {
-      event.emit(event.$names.CONTEXT_MENU_OPENING)
+      eventBus.emit(events.CONTEXT_MENU_OPENING)
     },
 
     preventOffScreen: (element: HTMLElement): void => {
@@ -104,7 +105,7 @@ export default Vue.extend({
   },
 
   created (): void {
-    event.on(event.$names.CONTEXT_MENU_OPENING, (): void => {
+    eventBus.on(events.CONTEXT_MENU_OPENING, (): void => {
       if (this.shown) {
         this.close()
       }

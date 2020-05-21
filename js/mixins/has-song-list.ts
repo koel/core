@@ -6,7 +6,8 @@ import Vue from 'vue'
 import isMobile from 'ismobilejs'
 
 import { playback } from '@/services'
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 
 export default Vue.extend({
   components: {
@@ -50,14 +51,14 @@ export default Vue.extend({
   },
 
   created (): void {
-    event.on({
-      [event.$names.UPDATE_META]: (meta: SongListMeta, target: Vue): void => {
+    eventBus.on({
+      [events.UPDATE_META]: (meta: SongListMeta, target: Vue): void => {
         if (target === this) {
           Object.assign(this.meta, meta)
         }
       },
 
-      [event.$names.SET_SELECTED_SONGS]: (songs: Song[], target: Vue): void => {
+      [events.SET_SELECTED_SONGS]: (songs: Song[], target: Vue): void => {
         if (target === this) {
           this.selectedSongs = songs
         }

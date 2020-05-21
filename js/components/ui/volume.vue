@@ -32,7 +32,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { playback, socket } from '@/services'
-import { event } from '@/utils'
+import { events } from '@/config'
 
 export default Vue.extend({
   data: () => ({
@@ -60,7 +60,7 @@ export default Vue.extend({
      * Broadcast the volume changed event to remote controller.
      */
     broadcastVolume: (e: InputEvent): void => {
-      socket.broadcast(event.$names.SOCKET_VOLUME_CHANGED, parseFloat((e.target as HTMLInputElement).value))
+      socket.broadcast(events.SOCKET_VOLUME_CHANGED, parseFloat((e.target as HTMLInputElement).value))
     }
   }
 })

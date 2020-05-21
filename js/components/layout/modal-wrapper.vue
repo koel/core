@@ -20,7 +20,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 
 interface ModalWrapperBoundData {
   playlist?: Playlist
@@ -60,32 +61,32 @@ export default Vue.extend({
   },
 
   created (): void {
-    event.on({
-      [event.$names.MODAL_SHOW_CREATE_SMART_PLAYLIST_FORM]: (): void => {
+    eventBus.on({
+      [events.MODAL_SHOW_CREATE_SMART_PLAYLIST_FORM]: (): void => {
         this.showingModalName = 'create-smart-playlist-form'
       },
 
-      [event.$names.MODAL_SHOW_EDIT_SMART_PLAYLIST_FORM]: (playlist: Playlist): void => {
+      [events.MODAL_SHOW_EDIT_SMART_PLAYLIST_FORM]: (playlist: Playlist): void => {
         this.boundData.playlist = playlist
         this.showingModalName = 'edit-smart-playlist-form'
       },
 
-      [event.$names.MODAL_SHOW_ADD_USER_FORM]: (): void => {
+      [events.MODAL_SHOW_ADD_USER_FORM]: (): void => {
         this.showingModalName = 'add-user-form'
       },
 
-      [event.$names.MODAL_SHOW_EDIT_USER_FORM]: (user: User): void => {
+      [events.MODAL_SHOW_EDIT_USER_FORM]: (user: User): void => {
         this.boundData.user = user
         this.showingModalName = 'edit-user-form'
       },
 
-      [event.$names.MODAL_SHOW_EDIT_SONG_FORM]: (songs: Song[], initialTab: string = 'details'): void => {
+      [events.MODAL_SHOW_EDIT_SONG_FORM]: (songs: Song[], initialTab: string = 'details'): void => {
         this.boundData.songs = songs
         this.boundData.initialTab = initialTab
         this.showingModalName = 'edit-song-form'
       },
 
-      [event.$names.MODAL_SHOW_ABOUT_DIALOG]: (): void => {
+      [events.MODAL_SHOW_ABOUT_DIALOG]: (): void => {
         this.showingModalName = 'about-dialog'
       }
     })

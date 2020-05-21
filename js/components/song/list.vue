@@ -60,7 +60,8 @@ import isMobile from 'ismobilejs'
 
 import Vue, { PropOptions } from 'vue'
 import { VirtualScroller } from 'vue-virtual-scroller/dist/vue-virtual-scroller'
-import { filterBy, orderBy, event, startDragging, $ } from '@/utils'
+import { filterBy, orderBy, eventBus, startDragging, $ } from '@/utils'
+import { events } from '@/config'
 import { playlistStore, queueStore, songStore, favoriteStore } from '@/stores'
 import { playback } from '@/services'
 import router from '@/router'
@@ -128,7 +129,7 @@ export default Vue.extend({
     },
 
     selectedSongs (val: Song[]): void {
-      event.emit(event.$names.SET_SELECTED_SONGS, val, this.$parent)
+      eventBus.emit(events.SET_SELECTED_SONGS, val, this.$parent)
     }
   },
 
@@ -154,7 +155,7 @@ export default Vue.extend({
       }
 
       // Update the song count and duration status on parent.
-      event.emit(event.$names.UPDATE_META, {
+      eventBus.emit(events.UPDATE_META, {
         songCount: this.items.length,
         totalLength: songStore.getFormattedLength(this.items)
       }, this.$parent)
@@ -403,7 +404,7 @@ export default Vue.extend({
       }
 
       this.$nextTick((): void => {
-        event.emit(event.$names.CONTEXT_MENU_REQUESTED, e, this.selectedSongs)
+        eventBus.emit(events.CONTEXT_MENU_REQUESTED, e, this.selectedSongs)
       })
     },
 
@@ -438,8 +439,8 @@ export default Vue.extend({
   },
 
   created (): void {
-    event.on({
-      [event.$names.FILTER_CHANGED]: (q: string): void => {
+    eventBus.on({
+      [events.FILTER_CHANGED]: (q: string): void => {
         this.q = q
       }
     })

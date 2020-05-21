@@ -12,7 +12,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import initVisualizer from '@/utils/visualizer'
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 
 export default Vue.extend({
   data: () => ({
@@ -31,7 +32,7 @@ export default Vue.extend({
     },
 
     hide: (): void => {
-      event.emit(event.$names.TOGGLE_VISUALIZER)
+      eventBus.emit(events.TOGGLE_VISUALIZER)
     }
   },
 

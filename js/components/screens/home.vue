@@ -78,7 +78,8 @@
 import { sample } from 'lodash'
 import mixins from 'vue-typed-mixins'
 
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 import { songStore, albumStore, artistStore, recentlyPlayedStore, userStore, preferenceStore } from '@/stores'
 import infiniteScroll from '@/mixins/infinite-scroll.ts'
 import router from '@/router'
@@ -141,9 +142,9 @@ export default mixins(infiniteScroll).extend({
   },
 
   created (): void {
-    event.on({
-      [event.$names.KOEL_READY]: (): void => this.refreshDashboard(),
-      [event.$names.SONG_PLAYED]: (): void => this.refreshDashboard()
+    eventBus.on({
+      [events.KOEL_READY]: (): void => this.refreshDashboard(),
+      [events.SONG_PLAYED]: (): void => this.refreshDashboard()
     })
   }
 })

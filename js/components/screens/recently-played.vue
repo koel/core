@@ -30,7 +30,8 @@
 </template>
 
 <script lang="ts">
-import { event, pluralize } from '@/utils'
+import { eventBus, pluralize } from '@/utils'
+import { events } from '@/config'
 import { recentlyPlayedStore } from '@/stores'
 import hasSongList from '@/mixins/has-song-list.ts'
 import mixins from 'vue-typed-mixins'
@@ -43,8 +44,8 @@ export default mixins(hasSongList).extend({
   }),
 
   created (): void {
-    event.on({
-      [event.$names.LOAD_MAIN_CONTENT]: (view: MainViewName): void => {
+    eventBus.on({
+      [events.LOAD_MAIN_CONTENT]: (view: MainViewName): void => {
         if (view === 'RecentlyPlayed') {
           recentlyPlayedStore.fetchAll()
         }

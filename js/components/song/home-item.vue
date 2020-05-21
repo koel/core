@@ -26,7 +26,8 @@
 </template>
 
 <script lang="ts">
-import { event, startDragging, pluralize } from '@/utils'
+import { eventBus, startDragging, pluralize } from '@/utils'
+import { events } from '@/config'
 import { queueStore } from '@/stores'
 import { playback } from '@/services'
 import Vue, { PropOptions } from 'vue'
@@ -54,7 +55,7 @@ export default Vue.extend({
 
   methods: {
     requestContextMenu (e: MouseEvent): void {
-      event.emit(event.$names.CONTEXT_MENU_REQUESTED, e, this.song)
+      eventBus.emit(events.CONTEXT_MENU_REQUESTED, e, this.song)
     },
 
     play (): void {

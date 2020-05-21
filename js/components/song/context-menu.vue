@@ -40,7 +40,8 @@
 <script lang="ts">
 import mixins from 'vue-typed-mixins'
 import { BaseContextMenu } from 'koel/types/ui'
-import { event, isClipboardSupported, copyText } from '@/utils'
+import { eventBus, isClipboardSupported, copyText } from '@/utils'
+import { events } from '@/config'
 import { sharedStore, songStore, queueStore, userStore, playlistStore } from '@/stores'
 import { playback, download } from '@/services'
 import router from '@/router'
@@ -110,7 +111,7 @@ export default mixins(songMenuMethods).extend({
 
     openEditForm (): void {
       if (this.songs.length) {
-        event.emit(event.$names.MODAL_SHOW_EDIT_SONG_FORM, this.songs)
+        eventBus.emit(events.MODAL_SHOW_EDIT_SONG_FORM, this.songs)
       }
 
       this.close()

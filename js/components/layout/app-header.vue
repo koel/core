@@ -26,8 +26,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { app as appConfig } from '@/config'
-import { event, app } from '@/utils'
+import { eventBus, app } from '@/utils'
+import { app as appConfig, events } from '@/config'
 
 export default Vue.extend({
   components: {
@@ -41,11 +41,11 @@ export default Vue.extend({
 
   methods: {
     toggleSidebar: (): void => {
-      event.emit(event.$names.TOGGLE_SIDEBAR)
+      eventBus.emit(events.TOGGLE_SIDEBAR)
     },
 
     toggleSearchForm: (): void => {
-      event.emit(event.$names.TOGGLE_SEARCH_FORM)
+      eventBus.emit(events.TOGGLE_SEARCH_FORM)
     },
 
     triggerMaximize: (): void => {
@@ -53,7 +53,7 @@ export default Vue.extend({
     },
 
     showAboutDialog: (): void => {
-      event.emit(event.$names.MODAL_SHOW_ABOUT_DIALOG)
+      eventBus.emit(events.MODAL_SHOW_ABOUT_DIALOG)
     }
   }
 })

@@ -8,7 +8,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import { BasePlaylistMenu } from 'koel/types/ui'
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 
 export default Vue.extend({
   components: {
@@ -30,7 +31,7 @@ export default Vue.extend({
     },
 
     createSmartPlaylist (): void {
-      event.emit(event.$names.MODAL_SHOW_CREATE_SMART_PLAYLIST_FORM)
+      eventBus.emit(events.MODAL_SHOW_CREATE_SMART_PLAYLIST_FORM)
       this.close()
     }
   }

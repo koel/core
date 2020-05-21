@@ -3,7 +3,7 @@ import plyr from 'plyr'
 import Vue from 'vue'
 import isMobile from 'ismobilejs'
 
-import { event, isMediaSessionSupported, isAudioContextSupported } from '@/utils'
+import { eventBus, isMediaSessionSupported, isAudioContextSupported } from '@/utils'
 import {
   queueStore,
   sharedStore,
@@ -13,7 +13,7 @@ import {
   preferenceStore as preferences
 } from '@/stores'
 import { socket, audio as audioService } from '.'
-import { app } from '@/config'
+import { app, events } from '@/config'
 import router from '@/router'
 
 interface Playback {
@@ -89,7 +89,7 @@ export const playback: Playback = {
       } catch (e) {}
 
       audioService.init(this.player.media)
-      event.emit(event.$names.INIT_EQUALIZER)
+      eventBus.emit(events.INIT_EQUALIZER)
     }
 
     if (isMediaSessionSupported) {
@@ -105,24 +105,24 @@ export const playback: Playback = {
   },
 
   listenToSocketEvents (): void {
-    socket.listen(event.$names.SOCKET_TOGGLE_PLAYBACK, () => this.toggle())
-      .listen(event.$names.SOCKET_PLAY_NEXT, () => this.playNext())
-      .listen(event.$names.SOCKET_PLAY_PREV, () => this.playPrev())
-      .listen(event.$names.SOCKET_GET_STATUS, () => {
+    socket.listen(events.SOCKET_TOGGLE_PLAYBACK, () => this.toggle())
+      .listen(events.SOCKET_PLAY_NEXT, () => this.playNext())
+      .listen(events.SOCKET_PLAY_PREV, () => this.playPrev())
+      .listen(events.SOCKET_GET_STATUS, () => {
         const data = queueStore.current ? songStore.generateDataToBroadcast(queueStore.current) : {
           volume: this.volumeInput!.value
         }
-        socket.broadcast(event.$names.SOCKET_STATUS, data)
+        socket.broadcast(events.SOCKET_STATUS, data)
       })
-      .listen(event.$names.SOCKET_GET_CURRENT_SONG, () => {
+      .listen(events.SOCKET_GET_CURRENT_SONG, () => {
         socket.broadcast(
-          event.$names.SOCKET_SONG,
+          events.SOCKET_SONG,
           queueStore.current
             ? songStore.generateDataToBroadcast(queueStore.current)
             : { song: null }
         )
       })
-      .listen(event.$names.SOCKET_SET_VOLUME, ({ volume } : { volume: number }) => this.setVolume(volume))
+      .listen(events.SOCKET_SET_VOLUME, ({ volume }: { volume: number }) => this.setVolume(volume))
   },
 
   setMediaSessionActionHandlers (): void {
@@ -264,9 +264,9 @@ export const playback: Playback = {
 
     song.playCountRegistered = false
 
-    event.emit(event.$names.SONG_PLAYED, song)
+    eventBus.emit(events.SONG_PLAYED, song)
 
-    socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(song))
+    socket.broadcast(events.SOCKET_SONG, songStore.generateDataToBroadcast(song))
 
     this.player!.restart()
     this.player!.play()
@@ -380,20 +380,20 @@ export const playback: Playback = {
       queueStore.current.playbackState = 'Stopped'
     }
 
-    socket.broadcast(event.$names.SOCKET_PLAYBACK_STOPPED)
+    socket.broadcast(events.SOCKET_PLAYBACK_STOPPED)
   },
 
   pause () {
     this.player!.pause()
     queueStore.current!.playbackState = 'Paused'
-    socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current!))
+    socket.broadcast(events.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current!))
   },
 
   resume () {
     this.player!.play()
     queueStore.current!.playbackState = 'Playing'
-    event.emit(event.$names.SONG_PLAYED, queueStore.current)
-    socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current!))
+    eventBus.emit(events.SONG_PLAYED, queueStore.current)
+    socket.broadcast(events.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current!))
   },
 
   toggle () {
@@ -447,13 +447,13 @@ export const playback: Playback = {
     queueStore.all.length ? this.play(queueStore.first) : this.queueAndPlay()
   },
 
-  playAllByArtist ({ songs } : { songs: Song[] }, shuffled = true): void {
+  playAllByArtist ({ songs }: { songs: Song[] }, shuffled = true): void {
     shuffled
       ? this.queueAndPlay(songs, true /* shuffled */)
       : this.queueAndPlay(orderBy(songs, ['album_id', 'disc', 'track']))
   },
 
-  playAllInAlbum ({ songs } : { songs: Song[]}, shuffled = true): void {
+  playAllInAlbum ({ songs }: { songs: Song[]}, shuffled = true): void {
     shuffled
       ? this.queueAndPlay(songs, true /* shuffled */)
       : this.queueAndPlay(orderBy(songs, ['disc', 'track']))

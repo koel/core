@@ -72,7 +72,8 @@
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
 import { download, playback, socket } from '@/services'
-import { event, isAudioContextSupported } from '@/utils'
+import { eventBus, isAudioContextSupported } from '@/utils'
+import { events } from '@/config'
 import { favoriteStore, preferenceStore, sharedStore, songStore } from '@/stores'
 
 export default Vue.extend({
@@ -108,7 +109,7 @@ export default Vue.extend({
     like (): void {
       if (this.song.id) {
         favoriteStore.toggleOne(this.song)
-        socket.broadcast(event.$names.SOCKET_SONG, songStore.generateDataToBroadcast(this.song))
+        socket.broadcast(events.SOCKET_SONG, songStore.generateDataToBroadcast(this.song))
       }
     },
 
@@ -125,7 +126,7 @@ export default Vue.extend({
     },
 
     toggleVisualizer: (): void => {
-      event.emit(event.$names.TOGGLE_VISUALIZER)
+      eventBus.emit(events.TOGGLE_VISUALIZER)
     },
 
     downloadCurrentSong (): void {
@@ -134,7 +135,7 @@ export default Vue.extend({
   },
 
   created (): void {
-    event.on(event.$names.LOAD_MAIN_CONTENT, (view: MainViewName): void => {
+    eventBus.on(events.LOAD_MAIN_CONTENT, (view: MainViewName): void => {
       this.viewingQueue = view === 'Queue'
     })
   }

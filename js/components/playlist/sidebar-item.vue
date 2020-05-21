@@ -23,7 +23,8 @@
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
 import { BaseContextMenu } from 'koel/types/ui'
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 import router from '@/router'
 import { songStore, playlistStore, favoriteStore } from '@/stores'
 
@@ -141,7 +142,7 @@ export default Vue.extend({
   },
 
   created (): void {
-    event.on(event.$names.LOAD_MAIN_CONTENT, (view: MainViewName, playlist: Playlist): void => {
+    eventBus.on(events.LOAD_MAIN_CONTENT, (view: MainViewName, playlist: Playlist): void => {
       switch (view) {
         case 'Favorites':
           this.active = this.type === 'favorites'

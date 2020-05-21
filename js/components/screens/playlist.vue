@@ -46,7 +46,8 @@
 
 <script lang="ts">
 import mixins from 'vue-typed-mixins'
-import { pluralize, event } from '@/utils'
+import { pluralize, eventBus } from '@/utils'
+import { events } from '@/config'
 import { playlistStore, sharedStore } from '@/stores'
 import { download } from '@/services'
 import hasSongList from '@/mixins/has-song-list.ts'
@@ -67,7 +68,7 @@ export default mixins(hasSongList).extend({
      * Listen to 'main-content-view:load' event to load the requested
      * playlist into view if applicable.
      */
-    event.on(event.$names.LOAD_MAIN_CONTENT, (view: MainViewName, playlist: Playlist): void => {
+    eventBus.on(events.LOAD_MAIN_CONTENT, (view: MainViewName, playlist: Playlist): void => {
       if (view !== 'Playlist') {
         return
       }
@@ -86,7 +87,7 @@ export default mixins(hasSongList).extend({
     },
 
     destroy (): void {
-      event.emit(event.$names.PLAYLIST_DELETE, this.playlist)
+      eventBus.emit(events.PLAYLIST_DELETE, this.playlist)
     },
 
     download (): void {

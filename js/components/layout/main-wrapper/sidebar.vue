@@ -54,7 +54,8 @@
 import Vue from 'vue'
 import isMobile from 'ismobilejs'
 
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 import { sharedStore, userStore, songStore, queueStore } from '@/stores'
 
 export default Vue.extend({
@@ -95,7 +96,7 @@ export default Vue.extend({
   },
 
   created (): void {
-    event.on(event.$names.LOAD_MAIN_CONTENT, (view: MainViewName): void => {
+    eventBus.on(events.LOAD_MAIN_CONTENT, (view: MainViewName): void => {
       this.currentView = view
 
       // Hide the sidebar if on mobile
@@ -108,7 +109,7 @@ export default Vue.extend({
      * Listen to sidebar:toggle event to show or hide the sidebar.
      * This should only be triggered on a mobile device.
      */
-    event.on(event.$names.TOGGLE_SIDEBAR, (): void => {
+    eventBus.on(events.TOGGLE_SIDEBAR, (): void => {
       this.showing = !this.showing
     })
   }

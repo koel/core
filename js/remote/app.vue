@@ -67,7 +67,7 @@ import Vue from 'vue'
 import nouislider from 'nouislider'
 import { socket, ls } from '@/services'
 import { userStore, preferenceStore } from '@/stores'
-import { event } from '@/utils'
+import { events } from '@/config'
 import LoginForm from '@/components/auth/login-form.vue'
 import { SliderElement } from 'koel/types/ui'
 
@@ -113,7 +113,7 @@ export default Vue.extend({
         volumeSlider.noUiSlider.on('change', (values: number[], handle: number): void => {
           const volume = values[handle]
           this.muted = !volume
-          socket.broadcast(event.$names.SOCKET_SET_VOLUME, { volume })
+          socket.broadcast(events.SOCKET_SET_VOLUME, { volume })
         })
       })
     },
@@ -135,14 +135,14 @@ export default Vue.extend({
         await socket.init()
 
         socket
-          .listen(event.$names.SOCKET_SONG, ({ song }: { song: Song }): void => {
+          .listen(events.SOCKET_SONG, ({ song }: { song: Song }): void => {
             this.song = song
           })
-          .listen(event.$names.SOCKET_PLAYBACK_STOPPED, (): void => {
+          .listen(events.SOCKET_PLAYBACK_STOPPED, (): void => {
             this.song && (this.song.playbackState = 'Stopped')
           })
-          .listen(event.$names.SOCKET_VOLUME_CHANGED, (volume: number): void => volumeSlider.noUiSlider!.set(volume))
-          .listen(event.$names.SOCKET_STATUS, ({ song, volume }: { song: Song, volume: number }): void => {
+          .listen(events.SOCKET_VOLUME_CHANGED, (volume: number): void => volumeSlider.noUiSlider!.set(volume))
+          .listen(events.SOCKET_STATUS, ({ song, volume }: { song: Song, volume: number }): void => {
             this.song = song
             this.volume = volume
             this.connected = true
@@ -165,7 +165,7 @@ export default Vue.extend({
       }
 
       this.song.liked = !this.song.liked
-      socket.broadcast(event.$names.SOCKET_TOGGLE_FAVORITE)
+      socket.broadcast(events.SOCKET_TOGGLE_FAVORITE)
     },
 
     togglePlayback (): void {
@@ -173,19 +173,19 @@ export default Vue.extend({
         this.song.playbackState = this.song.playbackState === 'Playing' ? 'Paused' : 'Playing'
       }
 
-      socket.broadcast(event.$names.SOCKET_TOGGLE_PLAYBACK)
+      socket.broadcast(events.SOCKET_TOGGLE_PLAYBACK)
     },
 
     playNext: (): void => {
-      socket.broadcast(event.$names.SOCKET_PLAY_NEXT)
+      socket.broadcast(events.SOCKET_PLAY_NEXT)
     },
 
     playPrev: (): void => {
-      socket.broadcast(event.$names.SOCKET_PLAY_PREV)
+      socket.broadcast(events.SOCKET_PLAY_PREV)
     },
 
     getStatus: (): void => {
-      socket.broadcast(event.$names.SOCKET_GET_STATUS)
+      socket.broadcast(events.SOCKET_GET_STATUS)
     },
 
     scan (): void {

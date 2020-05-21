@@ -27,7 +27,8 @@ import Vue from 'vue'
 import isMobile from 'ismobilejs'
 
 import { userStore } from '@/stores'
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 
 export default Vue.extend({
   components: {
@@ -44,11 +45,11 @@ export default Vue.extend({
 
   methods: {
     showAddUserForm: (): void => {
-      event.emit(event.$names.MODAL_SHOW_ADD_USER_FORM)
+      eventBus.emit(events.MODAL_SHOW_ADD_USER_FORM)
     },
 
     showEditUserForm: (user: User): void => {
-      event.emit(event.$names.MODAL_SHOW_EDIT_USER_FORM, user)
+      eventBus.emit(events.MODAL_SHOW_EDIT_USER_FORM, user)
     }
   }
 })

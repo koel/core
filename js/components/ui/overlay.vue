@@ -17,7 +17,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import { assign } from 'lodash'
-import { event } from '@/utils'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 
 export default Vue.extend({
   components: {
@@ -49,9 +50,9 @@ export default Vue.extend({
   },
 
   created (): void {
-    event.on({
-      [event.$names.SHOW_OVERLAY]: (options: object): void => this.show(options),
-      [event.$names.HIDE_OVERLAY]: (): void => this.hide()
+    eventBus.on({
+      [events.SHOW_OVERLAY]: (options: object): void => this.show(options),
+      [events.HIDE_OVERLAY]: (): void => this.hide()
     })
   }
 })

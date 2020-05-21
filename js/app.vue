@@ -31,7 +31,8 @@ import LoginForm from '@/components/auth/login-form.vue'
 import MainWrapper from '@/components/layout/main-wrapper/index.vue'
 import Overlay from '@/components/ui/overlay.vue'
 
-import { event, showOverlay, hideOverlay, $, app as appUtils } from '@/utils'
+import { eventBus, showOverlay, hideOverlay, $, app as appUtils } from '@/utils'
+import { events } from '@/config'
 import { sharedStore, favoriteStore, queueStore, preferenceStore as preferences } from '@/stores'
 import { playback, ls, socket, http } from '@/services'
 import { clickaway, droppable, focus } from '@/directives'
@@ -68,7 +69,7 @@ export default Vue.extend({
   },
 
   created () {
-    event.on(event.$names.CONTEXT_MENU_REQUESTED, (e: MouseEvent, songs: Song[]): void => {
+    eventBus.on(events.CONTEXT_MENU_REQUESTED, (e: MouseEvent, songs: Song[]): void => {
       this.contextMenuSongs = ([] as Song[]).concat(songs)
       // @ts-ignore because of .open()
       this.$nextTick((): void => this.$refs.songContextMenu.open(e.pageY, e.pageX))
@@ -107,7 +108,7 @@ export default Vue.extend({
           this.subscribeToBroadcastedEvents()
 
           // Let all other components know we're ready.
-          event.emit(event.$names.KOEL_READY)
+          eventBus.emit(events.KOEL_READY)
         }, 0)
       } catch (err) {
         this.authenticated = false
@@ -132,7 +133,7 @@ export default Vue.extend({
     },
 
     subscribeToBroadcastedEvents (): void {
-      socket.listen(event.$names.SOCKET_TOGGLE_FAVORITE, (): void => {
+      socket.listen(events.SOCKET_TOGGLE_FAVORITE, (): void => {
         if (queueStore.current) {
           favoriteStore.toggleOne(queueStore.current)
         }

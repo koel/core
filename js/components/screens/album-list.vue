@@ -14,7 +14,8 @@
 
 <script lang="ts">
 import mixins from 'vue-typed-mixins'
-import { filterBy, limitBy, event } from '@/utils'
+import { filterBy, limitBy, eventBus } from '@/utils'
+import { events } from '@/config'
 import { albumStore } from '@/stores'
 import infiniteScroll from '@/mixins/infinite-scroll.ts'
 
@@ -49,8 +50,8 @@ export default mixins(infiniteScroll).extend({
   },
 
   created (): void {
-    event.on({
-      [event.$names.KOEL_READY]: (): void => {
+    eventBus.on({
+      [events.KOEL_READY]: (): void => {
         this.albums = albumStore.all
 
         if (this.$refs.scroller) {
@@ -58,7 +59,7 @@ export default mixins(infiniteScroll).extend({
         }
       },
 
-      [event.$names.FILTER_CHANGED]: (q: string): void => {
+      [events.FILTER_CHANGED]: (q: string): void => {
         this.q = q
       }
     })
