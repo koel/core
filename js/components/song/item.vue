@@ -31,10 +31,6 @@ import { playback } from '@/services'
 import { queueStore } from '@/stores'
 import { SongListComponent } from 'koel/types/ui'
 
-interface ItemData {
-  parentSongList: SongListComponent | null
-}
-
 export default Vue.extend({
   name: 'song-item',
   props: {
@@ -43,10 +39,6 @@ export default Vue.extend({
       required: true
     } as PropOptions<SongProxy>
   },
-
-  data: () => ({
-    parentSongList: null
-  } as ItemData),
 
   computed: {
     /**
@@ -58,14 +50,10 @@ export default Vue.extend({
 
     playing (): boolean {
       return this.song.playbackState === 'Playing' || this.song.playbackState === 'Paused'
-    }
-  },
+    },
 
-  mounted (): void {
-    if (window.__UNIT_TESTING__) {
-      this.parentSongList = null
-    } else {
-      this.parentSongList = ($(this) as VueQuery).closest('song-list')!.vm as unknown as SongListComponent
+    parentSongList (): SongListComponent {
+      return ($(this) as VueQuery).closest('song-list')!.vm as unknown as SongListComponent
     }
   },
 
@@ -95,27 +83,27 @@ export default Vue.extend({
     },
 
     clicked (event: MouseEvent): void {
-      this.parentSongList!.rowClicked(this, event)
+      this.parentSongList.rowClicked(this, event)
     },
 
     dragStart (event: DragEvent): void {
-      this.parentSongList!.dragStart(this, event)
+      this.parentSongList.dragStart(this, event)
     },
 
     dragLeave (event: DragEvent): void {
-      this.parentSongList!.removeDroppableState(event)
+      this.parentSongList.removeDroppableState(event)
     },
 
     dragEnter (event: DragEvent): void {
-      this.parentSongList!.allowDrop(event)
+      this.parentSongList.allowDrop(event)
     },
 
     drop (event: DragEvent): void {
-      this.parentSongList!.handleDrop(this, event)
+      this.parentSongList.handleDrop(this, event)
     },
 
     contextMenu (event: MouseEvent): void {
-      this.parentSongList!.openContextMenu(this, event)
+      this.parentSongList.openContextMenu(this, event)
     }
   }
 })
