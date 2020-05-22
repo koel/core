@@ -108,7 +108,7 @@ export const albumStore: AlbumStore = {
    * @param {string} cover The content data string of the cover
    */
   uploadCover: (album: Album, cover: string): Promise<string> => new Promise((resolve, reject): void => {
-    http.put(`album/${album.id}/cover`, { cover }, ({ data: { coverUrl } } : { data: { coverUrl: string }}): void => {
+    http.put(`album/${album.id}/cover`, { cover }, ({ data: { coverUrl } }: { data: { coverUrl: string }}): void => {
       album.cover = coverUrl
       resolve(coverUrl)
     }, (error: any) => reject(error))

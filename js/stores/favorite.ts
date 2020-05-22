@@ -41,7 +41,7 @@ export const favoriteStore: FavoriteStore = {
     song.liked ? this.add(song) : this.remove(song)
 
     return new Promise((resolve, reject) => {
-      http.post('interaction/like', { song: song.id }, ({ data } : { data: Song }) => {
+      http.post('interaction/like', { song: song.id }, ({ data }: { data: Song }) => {
         // We don't really need to notify just for one song.
         resolve(data)
       }, (error: any) => reject(error))

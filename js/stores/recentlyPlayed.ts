@@ -40,7 +40,7 @@ export const recentlyPlayedStore: RecentlyPlayedStore = {
         return
       }
 
-      http.get(`interaction/recently-played`, ({ data } : { data: string[] }): void => {
+      http.get(`interaction/recently-played`, ({ data }: { data: string[] }): void => {
         this.state.songs = songStore.byIds(data)
         resolve(this.state.songs)
       }, (error: any) => reject(error))

@@ -17,7 +17,7 @@ export const songInfo = {
             youtube,
             lyrics
           }
-        } : {
+        }: {
           data: {
             artist_info: ArtistInfo,
             album_info: AlbumInfo,

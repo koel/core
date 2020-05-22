@@ -130,7 +130,7 @@ export const playlistStore: PlaylistStore = {
 
   delete (playlist: Playlist): Promise<any> {
     return new Promise((resolve, reject): void => {
-      http.delete(`playlist/${playlist.id}`, {}, ({ data } : { data: any }) => {
+      http.delete(`playlist/${playlist.id}`, {}, ({ data }: { data: any }) => {
         this.remove(playlist)
         resolve(data)
       }, (error: any) => reject(error))

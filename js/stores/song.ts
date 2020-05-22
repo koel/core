@@ -173,7 +173,7 @@ export const songStore: SongStore = {
     return new Promise((resolve, reject): void => {
       const oldCount = song.playCount
 
-      http.post('interaction/play', { song: song.id }, ({ data } : { data: Interaction }): void => {
+      http.post('interaction/play', { song: song.id }, ({ data }: { data: Interaction }): void => {
         // Use the data from the server to make sure we don't miss a play from another device.
         song.playCount = data.play_count
         song.album.playCount += song.playCount - oldCount
@@ -197,7 +197,7 @@ export const songStore: SongStore = {
       http.put('songs', {
         data,
         songs: songs.map(song => song.id)
-      }, ({ data: { songs, artists, albums }} : { data: { songs: Song[], artists: Artist[], albums: Album[] }}) => {
+      }, ({ data: { songs, artists, albums }}: { data: { songs: Song[], artists: Artist[], albums: Album[] }}) => {
         // Add the artist and album into stores if they're new
         artists.forEach(artist => !artistStore.byId(artist.id) && artistStore.add(artist))
         albums.forEach(album => !albumStore.byId(album.id) && albumStore.add(album))
