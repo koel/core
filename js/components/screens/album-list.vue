@@ -53,11 +53,6 @@ export default mixins(infiniteScroll).extend({
     eventBus.on({
       [events.KOEL_READY]: (): void => {
         this.albums = albumStore.all
-
-        if (this.$refs.scroller) {
-          this.$nextTick(() => this.makeScrollable(this.$refs.scroller as HTMLElement, this.albums.length))
-        }
-
         this.viewMode = preferences.albumsViewMode || 'thumbnails'
       },
 

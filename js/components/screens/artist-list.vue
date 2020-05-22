@@ -53,12 +53,6 @@ export default mixins(infiniteScroll).extend({
     eventBus.on({
       [events.KOEL_READY]: (): void => {
         this.artists = artistStore.all
-
-        // #1086 solving not scrollable issue on very big screens
-        if (this.$refs.scroller) {
-          this.$nextTick((): void => this.makeScrollable(this.$refs.scroller as HTMLElement, this.artists.length))
-        }
-
         this.viewMode = preferences.artistsViewMode
       },
 
