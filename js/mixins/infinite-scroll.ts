@@ -31,7 +31,6 @@ export default Vue.extend({
     },
 
     makeScrollable (container: HTMLElement, totalItemCount: number): void {
-      console.log(container.scrollHeight, container.clientHeight, this.numOfItems, totalItemCount)
       if (container.scrollHeight <= container.clientHeight && this.numOfItems < totalItemCount) {
         this.displayMore()
         // we can't use $nextTick here because it's instant and scrollHeight wouldn't have been udpated.
