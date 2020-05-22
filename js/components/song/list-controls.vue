@@ -7,7 +7,7 @@
             @click.prevent="playAll"
             class="btn-play-all"
             orange
-            title="Play all all"
+            title="Play all songs"
             v-if="selectedSongs.length < 2 && songs.length"
           >
             <i class="fa fa-play"></i> All
@@ -17,7 +17,7 @@
             @click.prevent="playSelected"
             class="btn-play-selected"
             orange
-            title="Play selected"
+            title="Play selected songs"
             v-if="selectedSongs.length > 1"
           >
             <i class="fa fa-play"></i> Selected
@@ -28,7 +28,7 @@
             @click.prevent="shuffle"
             class="btn-shuffle-all"
             orange
-            title="Shuffle all"
+            title="Shuffle all songs"
             v-if="selectedSongs.length < 2 && songs.length"
           >
             <i class="fa fa-random"></i> All
@@ -38,7 +38,7 @@
             @click.prevent="shuffleSelected"
             class="btn-shuffle-selected"
             orange
-            title="Shuffle selected"
+            title="Shuffle selected songs"
             v-if="selectedSongs.length > 1"
           >
             <i class="fa fa-random"></i> Selected
