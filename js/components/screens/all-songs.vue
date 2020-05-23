@@ -21,7 +21,7 @@
       />
     </h1>
 
-    <song-list :items="state.songs" type="all-songs"/>
+    <song-list :items="state.songs" type="all-songs" ref="songList"/>
   </section>
 </template>
 
@@ -36,6 +36,13 @@ export default mixins(hasSongList).extend({
 
   data: () => ({
     state: songStore.state
-  })
+  }),
+
+  methods: {
+    getSongsToPlay (): Song[] {
+      // @ts-ignore
+      return this.$refs.songList.getAllSongsWithSort()
+    }
+  }
 })
 </script>

@@ -43,6 +43,12 @@ export default mixins(hasSongList).extend({
     state: recentlyPlayedStore.state
   }),
 
+  methods: {
+    getSongsToPlay (): Song[] {
+      return this.state.songs
+    }
+  },
+
   created (): void {
     eventBus.on({
       [events.LOAD_MAIN_CONTENT]: (view: MainViewName): void => {

@@ -109,8 +109,9 @@ export default mixins(hasSongList, albumAttributes).extend({
   },
 
   methods: {
-    getSongs (): Song[] {
-      return this.album.songs
+    getSongsToPlay (): Song[] {
+      // @ts-ignore
+      return this.$refs.songList.getAllSongsWithSort()
     },
 
     download (): void {

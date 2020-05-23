@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import Component from '@/components/screens/artist.vue'
 import SongList from '@/components/song/list.vue'
 import SongListControls from '@/components/song/list-controls.vue'
@@ -41,19 +42,26 @@ describe('components/screens/artist', () => {
   })
 
   it('plays all songs', async () => {
-    const artist = factory<Artist>('artist', {
-      songs: factory<Song>('song', 5)
-    })
+    const songs = factory<Song>('song', 5)
+    const artist = factory<Artist>('artist', { songs })
 
     const wrapper = mount(Component, {
       propsData: { artist },
-      stubs: ['song-list']
+      mocks: {
+        $refs: {
+          songList: Vue.extend({
+            methods: {
+              getAllSongsWithSort: () => songs
+            }
+          })
+        }
+      }
     })
 
     const queueAndPlayMock = mock(playback, 'queueAndPlay')
     await wrapper.vm.$nextTick()
     wrapper.click('.btn-shuffle-all')
-    expect(queueAndPlayMock).toHaveBeenCalledWith(artist.songs, true)
+    expect(queueAndPlayMock).toHaveBeenCalledWith(songs, true)
   })
 
   it('loads info from Last.fm', () => {

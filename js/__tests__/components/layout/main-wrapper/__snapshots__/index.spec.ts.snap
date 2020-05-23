@@ -52,9 +52,41 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
         •
         00:00
       </span></span>
-        <!---->
+        <div class="song-list-controls" style="display: none;">
+          <!---->
+          <!---->
+        </div>
       </h1>
-      <!---->
+      <div tabindex="0" class="song-list-wrap main-scroll-wrap queue" style="display: none;">
+        <table class="song-list-header sortable">
+          <thead>
+            <tr>
+              <th class="track-number">
+                #
+                <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="title">
+                Title
+                <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="artist">
+                Artist
+                <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="album">
+                Album
+                <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="time">
+                Time
+                <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="play"></th>
+            </tr>
+          </thead>
+        </table>
+        <div data-v-303cd025="" class="virtual-scroller scroller">
+          <div data-v-303cd025="" class="item-container">
+            <table data-v-303cd025="" class="items"></table>
+          </div>
+          <div data-v-c7b3205a="" data-v-303cd025="" tabindex="-1" class="resize-observer"><object style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;" type="text/html" data="about:blank"></object></div>
+        </div>
+      </div>
       <div class="none">
         <p>Empty spaces. Abandoned places.</p>
         <p>How about
@@ -69,9 +101,41 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
         •
         00:00
       </span></span>
-        <!---->
+        <div class="song-list-controls">
+          <!---->
+          <!---->
+        </div>
       </h1>
-      <!---->
+      <div tabindex="0" class="song-list-wrap main-scroll-wrap all-songs">
+        <table class="song-list-header sortable">
+          <thead>
+            <tr>
+              <th class="track-number">
+                #
+                <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="title">
+                Title
+                <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="artist">
+                Artist
+                <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="album">
+                Album
+                <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="time">
+                Time
+                <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="play"></th>
+            </tr>
+          </thead>
+        </table>
+        <div data-v-303cd025="" class="virtual-scroller scroller">
+          <div data-v-303cd025="" class="item-container">
+            <table data-v-303cd025="" class="items"></table>
+          </div>
+          <div data-v-c7b3205a="" data-v-303cd025="" tabindex="-1" class="resize-observer"><object style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;" type="text/html" data="about:blank"></object></div>
+        </div>
+      </div>
     </section>
     <section id="albumsWrapper" style="display: none;">
       <h1 class="heading"><span>Albums</span>
@@ -99,9 +163,41 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
         •
         00:00
         <!----></span></span>
-        <!---->
+        <div class="song-list-controls" style="display: none;">
+          <!---->
+          <!---->
+        </div>
       </h1>
-      <!---->
+      <div tabindex="0" class="song-list-wrap main-scroll-wrap favorites" style="display: none;">
+        <table class="song-list-header sortable">
+          <thead>
+            <tr>
+              <th class="track-number">
+                #
+                <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="title">
+                Title
+                <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="artist">
+                Artist
+                <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="album">
+                Album
+                <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="time">
+                Time
+                <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="play"></th>
+            </tr>
+          </thead>
+        </table>
+        <div data-v-303cd025="" class="virtual-scroller scroller">
+          <div data-v-303cd025="" class="item-container">
+            <table data-v-303cd025="" class="items"></table>
+          </div>
+          <div data-v-c7b3205a="" data-v-303cd025="" tabindex="-1" class="resize-observer"><object style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;" type="text/html" data="about:blank"></object></div>
+        </div>
+      </div>
       <div class="none">
         Start loving!
         Click the <i class="fa fa-heart" style="margin: 0px 5px;"></i> icon when a song is playing to add it

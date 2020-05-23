@@ -429,6 +429,10 @@ export default Vue.extend({
         keywords,
         fields: fields.length ? fields : ['song.title', 'song.album.name', 'song.artist.name']
       }
+    },
+
+    getAllSongsWithSort (): Song[] {
+      return this.songProxies.map((proxy: SongProxy): Song => proxy.song)
     }
   },
 

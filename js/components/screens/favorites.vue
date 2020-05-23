@@ -27,7 +27,7 @@
       />
     </h1>
 
-    <song-list v-show="state.songs.length" :items="state.songs" type="favorites"/>
+    <song-list v-show="state.songs.length" :items="state.songs" type="favorites" ref="songList"/>
 
     <div v-if="!state.songs.length" class="none">
       Start loving!
@@ -53,6 +53,11 @@ export default mixins(hasSongList).extend({
   }),
 
   methods: {
+    getSongsToPlay (): Song[] {
+      // @ts-ignore
+      return this.$refs.songList.getAllSongsWithSort()
+    },
+
     download: (): void => download.fromFavorites()
   }
 })

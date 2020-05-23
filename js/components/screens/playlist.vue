@@ -82,8 +82,9 @@ export default mixins(hasSongList).extend({
   },
 
   methods: {
-    getSongs (): Song[] {
-      return this.playlist.songs
+    getSongsToPlay (): Song[] {
+      // @ts-ignore
+      return this.$refs.songList.getAllSongsWithSort()
     },
 
     destroy (): void {

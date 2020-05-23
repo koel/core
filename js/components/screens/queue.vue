@@ -22,7 +22,7 @@
       />
     </h1>
 
-    <song-list v-show="state.songs.length" :items="state.songs" type="queue"/>
+    <song-list v-show="state.songs.length" :items="state.songs" type="queue" ref="songList"/>
 
     <div v-show="!state.songs.length" class="none">
       <p>Empty spaces. Abandoned places.</p>
@@ -56,8 +56,9 @@ export default mixins(hasSongList).extend({
   },
 
   methods: {
-    getSongs (): Song[] {
-      return this.state.songs.length ? this.state.songs : songStore.all
+    getSongsToPlay (): Song[] {
+      // @ts-ignore
+      return this.state.songs.length ? this.$refs.songList.getAllSongsWithSort() : songStore.all
     },
 
     shuffleAll: (): void => playback.queueAndPlay(songStore.all, true),

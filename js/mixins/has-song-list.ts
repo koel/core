@@ -8,12 +8,15 @@ import isMobile from 'ismobilejs'
 import { playback } from '@/services'
 import { eventBus } from '@/utils'
 import { events } from '@/config'
+import SongList from '@/components/song/list.vue'
+import SongListControls from '@/components/song/list-controls.vue'
+import ControlsToggler from '@/components/song/list-controls-toggler.vue'
 
 export default Vue.extend({
   components: {
-    SongList: () => import('@/components/song/list.vue'),
-    SongListControls: () => import('@/components/song/list-controls.vue'),
-    ControlsToggler: () => import('@/components/song/list-controls-toggler.vue')
+    SongList,
+    SongListControls,
+    ControlsToggler
   },
 
   data: () => ({
@@ -30,11 +33,7 @@ export default Vue.extend({
 
   methods: {
     playAll (shuffled: boolean): void {
-      if (this.state) {
-        playback.queueAndPlay(this.state.songs, shuffled)
-      } else {
-        playback.queueAndPlay(this.getSongs(), shuffled)
-      }
+      playback.queueAndPlay(this.getSongsToPlay(), shuffled)
     },
 
     playSelected (shuffled: boolean): void {
@@ -45,7 +44,7 @@ export default Vue.extend({
       this.showingControls = !this.showingControls
     },
 
-    getSongs: (): Song[] => {
+    getSongsToPlay: (): Song[] => {
       throw new Error('Method not implemented')
     }
   },

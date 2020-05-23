@@ -41,12 +41,11 @@ describe('components/screens/playlist', () => {
     }).has('div.none')).toBe(true)
   })
 
-  it('emits an event to delete the playlist', async () => {
+  it('emits an event to delete the playlist', () => {
     const playlist = factory('playlist', { populated: true })
-    const wrapper = shallow(Component, { data: () => ({ playlist }) })
+    const wrapper = mount(Component, { data: () => ({ playlist }) })
     const emitMock = mock(eventBus, 'emit')
     wrapper.click('.btn-delete-playlist')
-    await wrapper.vm.$nextTick()
     expect(emitMock).toHaveBeenCalledWith('PLAYLIST_DELETE', playlist)
   })
 })
