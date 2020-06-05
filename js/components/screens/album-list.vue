@@ -26,8 +26,8 @@ export default mixins(infiniteScroll).extend({
   },
 
   data: () => ({
-    perPage: 9,
-    numOfItems: 9,
+    perPage: 1,
+    displayedItemCount: 1,
     q: '',
     viewMode: '',
     albums: [] as Album[]
@@ -35,7 +35,7 @@ export default mixins(infiniteScroll).extend({
 
   computed: {
     displayedItems (): Album[] {
-      return limitBy(this.filteredItems, this.numOfItems)
+      return limitBy(this.filteredItems, this.displayedItemCount)
     },
 
     filteredItems (): Album[] {
@@ -56,14 +56,16 @@ export default mixins(infiniteScroll).extend({
         this.viewMode = preferences.albumsViewMode || 'thumbnails'
       },
 
+      [events.LOAD_MAIN_CONTENT]: (view: MainViewName): void => {
+        if (view === 'Albums') {
+          this.$nextTick((): void => this.makeScrollable(this.$refs.scroller as HTMLElement, this.albums.length))
+        }
+      },
+
       [events.FILTER_CHANGED]: (q: string): void => {
         this.q = q
       }
     })
-  },
-
-  mounted (): void {
-    this.makeScrollable(this.$refs.scroller as HTMLElement, this.albums.length)
   }
 })
 </script>

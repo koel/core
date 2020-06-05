@@ -11,7 +11,7 @@ export default Vue.extend({
   },
 
   data: () => ({
-    numOfItems: 30,
+    displayedItemCount: 30,
     perPage: 30
   }),
 
@@ -27,11 +27,11 @@ export default Vue.extend({
     },
 
     displayMore (): void {
-      this.numOfItems += this.perPage
+      this.displayedItemCount += this.perPage
     },
 
     makeScrollable (container: HTMLElement, totalItemCount: number): void {
-      if (container.scrollHeight <= container.clientHeight && this.numOfItems < totalItemCount) {
+      if (container.scrollHeight <= container.clientHeight && this.displayedItemCount < totalItemCount) {
         this.displayMore()
         // we can't use $nextTick here because it's instant and scrollHeight wouldn't have been udpated.
         window.setTimeout((): void => this.makeScrollable(container, totalItemCount), 200)
