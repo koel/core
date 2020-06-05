@@ -27,7 +27,7 @@ export default mixins(infiniteScroll).extend({
 
   data: () => ({
     perPage: 9,
-    numOfItems: 9,
+    displayedItemCount: 9,
     q: '',
     viewMode: '',
     artists: [] as Artist[]
@@ -35,7 +35,7 @@ export default mixins(infiniteScroll).extend({
 
   computed: {
     displayedItems (): Artist[] {
-      return limitBy(this.filteredItems, this.numOfItems)
+      return limitBy(this.filteredItems, this.displayedItemCount)
     },
 
     filteredItems (): Artist[] {
@@ -53,17 +53,19 @@ export default mixins(infiniteScroll).extend({
     eventBus.on({
       [events.KOEL_READY]: (): void => {
         this.artists = artistStore.all
-        this.viewMode = preferences.artistsViewMode
+        this.viewMode = preferences.artistsViewMode || 'thumbnails'
+      },
+
+      [events.LOAD_MAIN_CONTENT]: (view: MainViewName): void => {
+        if (view === 'Artists') {
+          this.$nextTick((): void => this.makeScrollable(this.$refs.scroller as HTMLElement, this.artists.length))
+        }
       },
 
       [events.FILTER_CHANGED]: (q: string): void => {
         this.q = q
       }
     })
-  },
-
-  mounted (): void {
-    this.makeScrollable(this.$refs.scroller as HTMLElement, this.artists.length)
   }
 })
 </script>
