@@ -25,16 +25,16 @@ export const http = {
     }
   },
 
-  request (method: Method, url: string, data: object, successCb: any, errorCb: any): void {
-    this.client!.request({ url, data, method }).then(successCb).catch(errorCb)
+  request (method: Method, url: string, data: object, successCb: any, errorCb: any, onUploadProgress?: any): void {
+    this.client!.request({ url, data, method, onUploadProgress }).then(successCb).catch(errorCb)
   },
 
   get (url: string, successCb?: any, errorCb?: any): void {
     this.request('get', url, {}, successCb, errorCb)
   },
 
-  post (url: string, data: object, successCb?: any, errorCb?: any): void {
-    this.request('post', url, data, successCb, errorCb)
+  post (url: string, data: object, successCb?: any, errorCb?: any, onUploadProgress?: any): void {
+    this.request('post', url, data, successCb, errorCb, onUploadProgress)
   },
 
   put (url: string, data: object, successCb?: any, errorCb?: any): void {

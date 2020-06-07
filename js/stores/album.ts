@@ -68,9 +68,8 @@ export const albumStore: AlbumStore = {
     (<Album[]>[]).concat(albums).forEach(album => {
       this.setupAlbum(album, album.artist)
       album.playCount = album.songs.reduce((count, song) => count + song.playCount, 0)
+      this.all.push(album)
     })
-
-    this.all = union(this.all, <Album[]>albums)
   },
 
   purify (): void {

@@ -45,7 +45,7 @@ interface SongStore {
   guess(title: string, album: Album): Song | null
   registerPlay(song: Song): Promise<Interaction>
   scrobble(song: Song): Promise<any>
-  update(songs: Song[], data: Object): Promise<Song[]>
+  update(songs: Song[], data: object): Promise<Song[]>
   getSourceUrl(song: Song): string
   getShareableUrl(song: Song): string
   getMostPlayed(n: number): Song[]
@@ -157,7 +157,7 @@ export const songStore: SongStore = {
   guess: (title: string, album: Album): Song | null => {
     title = slugify(title.toLowerCase())
 
-    for (let song of album.songs) {
+    for (const song of album.songs) {
       if (slugify(song.title.toLowerCase()) === title) {
         return song
       }

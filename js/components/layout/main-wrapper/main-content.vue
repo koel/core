@@ -16,6 +16,7 @@
     <playlist-screen v-show="view === 'Playlist'"/>
     <favorites-screen v-show="view === 'Favorites'"/>
     <recently-played-screen v-show="view === 'RecentlyPlayed'"/>
+    <upload-screen v-show="view === 'Upload'"/>
 
     <album-screen v-if="view === 'Album'" :album="shownAlbum"/>
     <artist-screen v-if="view === 'Artist'" :artist="shownArtist"/>
@@ -56,6 +57,7 @@ export default Vue.extend({
     SettingsScreen: () => import('@/components/screens/settings.vue'),
     ProfileScreen: () => import('@/components/screens/profile.vue'),
     YoutubeScreen: () => import('@/components/screens/youtube.vue'),
+    UploadScreen: () => import('@/components/screens/upload.vue'),
     Visualizer: () => import('@/components/ui/visualizer.vue')
   },
 

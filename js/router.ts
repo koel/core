@@ -27,6 +27,12 @@ const router: Router = {
     '/favorites': (): void => loadMainView('Favorites'),
     '/recently-played': (): void => loadMainView('RecentlyPlayed'),
 
+    '/upload': (): void => {
+      if (userStore.current.is_admin) {
+        loadMainView('Upload')
+      }
+    },
+
     '/settings': (): void => {
       if (userStore.current.is_admin) {
         loadMainView('Settings')
