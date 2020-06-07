@@ -44,6 +44,7 @@ exports[`compoponents/layout/main-wrapper/sidebar displays management menu items
     <h1>Manage</h1>
     <ul class="menu">
       <li><a href="#!/settings" class="settings">Settings</a></li>
+      <li><a href="#!/upload" class="upload">Upload</a></li>
       <li><a href="#!/users" class="users">Users</a></li>
     </ul>
   </section>
@@ -72,6 +73,7 @@ exports[`compoponents/layout/main-wrapper/sidebar displays new version info 1`] 
     <h1>Manage</h1>
     <ul class="menu">
       <li><a href="#!/settings" class="settings">Settings</a></li>
+      <li><a href="#!/upload" class="upload">Upload</a></li>
       <li><a href="#!/users" class="users">Users</a></li>
     </ul>
   </section>

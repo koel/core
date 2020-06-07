@@ -87,10 +87,24 @@ interface Window {
   readonly MediaMetadata: Constructable<object>
 }
 
+interface FileSystemEntry {
+  readonly isFile: boolean
+  readonly isDirectory: boolean
+  readonly name: string
+  readonly fullPath: string
+  readonly filesystem: any
+  createReader(): FileSystemDirectoryReader
+  file(successCallback: Function): void
+}
+
+interface FileSystemDirectoryReader {
+  readEntries(successCallback: Function, errorCallback?: Function): FileSystemEntry[]
+}
+
 interface Artist {
   readonly id: number
   name: string
-  image: string
+  image: string | null
   albums: Album[]
   songs: Song[]
   info: ArtistInfo | null
@@ -330,3 +344,24 @@ declare type MainViewName =
   | 'Album'
   | 'Artist'
   | 'Playlist'
+  | 'Upload'
+
+interface SongUploadResult {
+  album: {
+    id: number
+    name: string
+    cover: string
+    is_compilation: boolean
+    artist_id: number
+  }
+  artist: {
+    id: number
+    name: string
+    image: string | null
+  }
+  id: string
+  title: string
+  length: number
+  disc: number
+  track: number
+}

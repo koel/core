@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { union, difference, take, orderBy } from 'lodash'
+import { difference, take, orderBy } from 'lodash'
 
 import { http } from '@/services'
 import stub from '@/stubs/artist'
@@ -68,9 +68,8 @@ export const artistStore: ArtistStore = {
     (<Artist[]>[]).concat(artists).forEach(artist => {
       this.setupArtist(artist)
       artist.playCount = artist.songs.reduce((count, song) => count + song.playCount, 0)
+      this.all.push(artist)
     })
-
-    this.all = union(this.all, <Artist[]>artists)
   },
 
   purify (): void {

@@ -43,6 +43,9 @@
           <a :class="['settings', currentView === 'Settings' ? 'active' : '']" href="#!/settings">Settings</a>
         </li>
         <li>
+          <a :class="['upload', currentView === 'Upload' ? 'active' : '']" href="#!/upload">Upload</a>
+        </li>
+        <li>
           <a :class="['users', currentView === 'Users' ? 'active' : '']" href="#!/users">Users</a>
         </li>
       </ul>
@@ -216,6 +219,10 @@ export default Vue.extend({
 
       &.users::before {
         content: "\f0c0";
+      }
+
+      &.upload::before {
+        content: "\f093";
       }
     }
   }

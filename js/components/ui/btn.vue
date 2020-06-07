@@ -83,6 +83,16 @@ button {
     border-radius: 999px;
   }
 
+  &[unrounded] {
+    border-radius: 0;
+  }
+
+  &[icon-only] {
+    i {
+      margin-right: 0;
+    }
+  }
+
   i {
     margin-right: 4px;
   }
