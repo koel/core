@@ -85,7 +85,7 @@ export default Vue.extend({
     },
 
     onDragEnter (): void {
-      this.droppable = this.allowsUpload && true
+      this.droppable = this.allowsUpload
     },
 
     onDragLeave (): void {
@@ -104,7 +104,7 @@ export default Vue.extend({
       }
 
       try {
-        const fileData = await fileReader.readAsDataUrl(e.dataTransfer!.items[0]!.getAsFile()!)
+        const fileData = await fileReader.readAsDataUrl(e.dataTransfer!.files[0])
 
         if (this.forAlbum) {
           // Replace the image right away to create a swift effect
