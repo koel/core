@@ -57,7 +57,7 @@ export default Vue.extend({
   },
 
   data: () => ({
-    settings: settingStore.all,
+    settingsState: settingStore.state,
     droppable: false,
     userState: userStore.state,
     uploadState: upload.state,
@@ -66,7 +66,7 @@ export default Vue.extend({
 
   computed: {
     mediaPath (): string | undefined {
-      return this.settings.media_path
+      return this.settingsState.settings.media_path
     },
 
     allowsUpload (): boolean {
