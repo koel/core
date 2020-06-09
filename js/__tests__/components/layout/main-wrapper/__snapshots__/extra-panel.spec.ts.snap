@@ -14,7 +14,7 @@ exports[`components/layout/extra-panel does not have a YouTube tab if not using 
     </div>
     <div class="panes">
       <div aria-labelledby="extraTabLyrics" id="extraPanelLyrics" role="tabpanel" tabindex="0">
-        <lyricspane-stub song="[object Object]"></lyricspane-stub>
+        <lyricspane-stub></lyricspane-stub>
       </div>
       <div aria-labelledby="extraTabArtist" id="extraPanelArtist" role="tabpanel" tabindex="0" style="display: none;">
         <!---->
@@ -44,7 +44,7 @@ exports[`components/layout/extra-panel renders properly 1`] = `
     </div>
     <div class="panes">
       <div aria-labelledby="extraTabLyrics" id="extraPanelLyrics" role="tabpanel" tabindex="0">
-        <lyrics-pane-stub song="[object Object]"></lyrics-pane-stub>
+        <lyrics-pane-stub></lyrics-pane-stub>
       </div>
       <div aria-labelledby="extraTabArtist" id="extraPanelArtist" role="tabpanel" tabindex="0" style="display: none;">
         <!---->

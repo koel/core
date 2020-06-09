@@ -38,7 +38,7 @@ describe('components/layout/extra-panel', () => {
       }
     })
     await wrapper.vm.$nextTick()
-    expect(wrapper.has('you-tube-video-list-stub')).toBe(true)
+    expect(wrapper.has('#extraTabYouTube')).toBe(true)
   })
 
   each([['#extraTabLyrics'], ['#extraTabAlbum'], ['#extraTabArtist']])

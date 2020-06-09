@@ -1,6 +1,6 @@
 <template>
   <div class="youtube-extra-wrapper">
-    <template v-if="videos && videos.length">
+    <template v-if="videos.length">
       <a
         :href="`https://youtu.be/${video.id.videoId}`"
         :key="video.id.videoId"
@@ -47,8 +47,11 @@ export default Vue.extend({
   }),
 
   watch: {
-    song (val: Song): void {
-      this.videos = val.youtube ? val.youtube.items : []
+    song: {
+      immediate: true,
+      handler (val: Song): void {
+        this.videos = val.youtube ? val.youtube.items : []
+      }
     }
   },
 

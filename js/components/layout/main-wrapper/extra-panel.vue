@@ -60,7 +60,7 @@
           tabindex="0"
           v-show="currentTab === 'Artist'"
         >
-          <artist-info v-if="song.artist.id" :artist="song.artist" mode="sidebar"/>
+          <artist-info v-if="artist" :artist="artist" mode="sidebar"/>
         </div>
 
         <div
@@ -70,7 +70,7 @@
           tabindex="0"
           v-show="currentTab === 'Album'"
         >
-          <album-info v-if="song.album.id" :album="song.album" mode="sidebar"/>
+          <album-info v-if="album" :album="album" mode="sidebar"/>
         </div>
 
         <div
@@ -80,7 +80,7 @@
           tabindex="0"
           v-show="currentTab === 'YouTube'"
         >
-          <you-tube-video-list v-if="sharedState.useYouTube" :song="song" :youtube="song.youtube"/>
+          <you-tube-video-list v-if="sharedState.useYouTube && song" :song="song"/>
         </div>
       </div>
     </div>
@@ -107,11 +107,21 @@ export default Vue.extend({
   },
 
   data: () => ({
-    song: songStore.stub,
+    song: null as Song | null,
     state: preferences.state,
     sharedState: sharedStore.state,
     currentTab: defaultTab
   }),
+
+  computed: {
+    artist (): Artist | null {
+      return this.song ? this.song.artist : null
+    },
+
+    album (): Album | null {
+      return this.song ? this.song.album : null
+    }
+  },
 
   watch: {
     /**

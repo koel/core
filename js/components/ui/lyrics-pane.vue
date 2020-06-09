@@ -1,16 +1,18 @@
 <template>
   <article id="lyrics">
     <div class="content">
-      <div v-show="song.lyrics">
-        <div ref="lyricsContainer" v-html="song.lyrics"></div>
-        <text-zoomer :target="textZoomTarget"/>
-      </div>
-      <p class="none" v-if="song.id && !song.lyrics">
-        <template v-if="isAdmin">
-          No lyrics found. <a @click.prevent="showEditSongForm">Click here</a> to add lyrics.
-        </template>
-        <span v-else>No lyrics available. Are you listening to Bach?</span>
-      </p>
+      <template v-if="song">
+        <div v-show="song.lyrics">
+          <div ref="lyricsContainer" v-html="song.lyrics"></div>
+          <text-zoomer :target="textZoomTarget"/>
+        </div>
+        <p class="none" v-if="song.id && !song.lyrics">
+          <template v-if="isAdmin">
+            No lyrics found. <a @click.prevent="showEditSongForm">Click here</a> to add lyrics.
+          </template>
+          <span v-else>No lyrics available. Are you listening to Bach?</span>
+        </p>
+      </template>
     </div>
   </article>
 </template>
@@ -24,9 +26,8 @@ import { userStore } from '@/stores'
 export default Vue.extend({
   props: {
     song: {
-      type: Object,
-      required: true
-    } as PropOptions<Song>
+      type: Object
+    } as PropOptions<Song | null>
   },
 
   components: {
