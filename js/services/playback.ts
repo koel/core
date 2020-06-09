@@ -49,6 +49,7 @@ interface Playback {
   changeRepeatMode(): void
   playAllByArtist(artist: Artist, shuffle?: boolean): void
   playAllInAlbum(album: Album, shuffle?: boolean): void
+  getPlayer(): Plyr
 }
 
 /**
@@ -211,12 +212,12 @@ export const playback: Playback = {
 
     // Manually set the `src` attribute of the audio to prevent plyr from resetting
     // the audio media object and cause our equalizer to malfunction.
-    this.player!.media.src = songStore.getSourceUrl(song)
+    this.getPlayer().media.src = songStore.getSourceUrl(song)
 
     // We'll just "restart" playing the song, which will handle notification, scrobbling etc.
     // Fixes #898
     if (isAudioContextSupported) {
-      audioService.getContext().resume().then(() => this.restart())
+      audioService.getContext().resume().then((): void => this.restart())
     } else {
       this.restart()
     }
@@ -268,8 +269,8 @@ export const playback: Playback = {
 
     socket.broadcast(events.SOCKET_SONG, songStore.generateDataToBroadcast(song))
 
-    this.player!.restart()
-    this.player!.play()
+    this.getPlayer().restart()
+    this.getPlayer().play()
   },
 
   /**
@@ -321,16 +322,17 @@ export const playback: Playback = {
   playPrev (): void {
     // If the song's duration is greater than 5 seconds and we've passed 5 seconds into it,
     // restart playing instead.
-    if (this.player!.media.currentTime > 5 && queueStore.current!.length > 5) {
-      this.player!.restart()
+    if (this.getPlayer().media.currentTime > 5 && queueStore.current!.length > 5) {
+      this.getPlayer().restart()
 
       return
     }
 
-    const prev = this.previous
-    !prev && preferences.repeatMode === 'NO_REPEAT'
-      ? this.stop()
-      : this.play(prev)
+    if (!this.previous && preferences.repeatMode === 'NO_REPEAT') {
+      this.stop()
+    } else {
+      this.play(this.previous)
+    }
   },
 
   /**
@@ -338,10 +340,11 @@ export const playback: Playback = {
    * If the next song is not found and the current mode is NO_REPEAT, we stop completely.
    */
   playNext (): void {
-    const next = this.next
-    !next && preferences.repeatMode === 'NO_REPEAT'
-      ? this.stop() //  Nothing lasts forever, even cold November rain.
-      : this.play(next)
+    if (!this.next && preferences.repeatMode === 'NO_REPEAT') {
+      this.stop() //  Nothing lasts forever, even cold November rain.
+    } else {
+      this.play(this.next)
+    }
   },
 
   /**
@@ -349,7 +352,7 @@ export const playback: Playback = {
    * @param {Boolean=true}   persist  Whether the volume should be saved into local storage
    */
   setVolume (volume: number, persist = true): void {
-    this.player!.setVolume(volume)
+    this.getPlayer().setVolume(volume)
 
     if (persist) {
       preferences.volume = volume
@@ -373,8 +376,8 @@ export const playback: Playback = {
 
   stop () {
     document.title = app.name
-    this.player!.pause()
-    this.player!.seek(0)
+    this.getPlayer().pause()
+    this.getPlayer().seek(0)
 
     if (queueStore.current) {
       queueStore.current.playbackState = 'Stopped'
@@ -384,13 +387,13 @@ export const playback: Playback = {
   },
 
   pause () {
-    this.player!.pause()
+    this.getPlayer().pause()
     queueStore.current!.playbackState = 'Paused'
     socket.broadcast(events.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current!))
   },
 
   resume () {
-    this.player!.play()
+    this.getPlayer().play()
     queueStore.current!.playbackState = 'Playing'
     eventBus.emit(events.SONG_PLAYED, queueStore.current)
     socket.broadcast(events.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current!))
@@ -437,6 +440,10 @@ export const playback: Playback = {
       router.go('queue')
       this.play(queueStore.first)
     })
+  },
+
+  getPlayer (): Plyr {
+    return this.player!
   },
 
   /**

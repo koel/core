@@ -10,13 +10,13 @@ export const http = {
   progressBarTimeout: 0,
 
   // Only show the progress bar after some delay
-  setProgressBarAfterDelay () {
-    this.progressBarTimeout = window.setTimeout(() => {
+  setProgressBarAfterDelay (): void {
+    this.progressBarTimeout = window.setTimeout((): void => {
       NProgress.start()
     }, 2000)
   },
 
-  hideProgressBar () {
+  hideProgressBar (): void {
     NProgress.done()
 
     if (this.progressBarTimeout) {
