@@ -48,13 +48,12 @@ import { getAllFileEntries, eventBus, isDirectoryReadingSupported } from '@/util
 import { UploadFile, validMediaMimeTypes, events } from '@/config'
 import md5 from 'blueimp-md5'
 import { upload } from '@/services'
+import UploadItem from '@/components/ui/upload/upload-item.vue'
+import BtnGroup from '@/components/ui/btn-group.vue'
+import Btn from '@/components/ui/btn.vue'
 
 export default Vue.extend({
-  components: {
-    UploadItem: () => import('@/components/ui/upload/upload-item.vue'),
-    BtnGroup: () => import('@/components/ui/btn-group.vue'),
-    Btn: () => import('@/components/ui/btn.vue')
-  },
+  components: { UploadItem, BtnGroup, Btn },
 
   data: () => ({
     settingsState: settingStore.state,
