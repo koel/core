@@ -1,4 +1,4 @@
-import { difference, union } from 'lodash'
+import { difference, union, orderBy } from 'lodash'
 
 import stub from '@/stubs/playlist'
 import { http } from '@/services'
@@ -30,6 +30,7 @@ interface PlaylistStore {
   createEmptySmartPlaylistRule(): SmartPlaylistRule
   createEmptySmartPlaylistRuleGroup(): SmartPlaylistRuleGroup
   serializeSmartPlaylistRulesForStorage(ruleGroups: SmartPlaylistRuleGroup[]): object[] | null
+  sort(playlists: Playlist[]): Playlist[]
 }
 
 export const playlistStore: PlaylistStore = {
@@ -40,7 +41,7 @@ export const playlistStore: PlaylistStore = {
   },
 
   init (playlists: Playlist[]) {
-    this.all = playlists
+    this.all = this.sort(playlists)
     this.all.filter(playlist => playlist.is_smart).forEach(this.setupSmartPlaylist)
   },
 
@@ -97,7 +98,7 @@ export const playlistStore: PlaylistStore = {
    * Add a playlist/playlists into the store.
    */
   add (playlists: Playlist | Playlist[]) {
-    this.all = union(this.all, (<Playlist[]>[]).concat(playlists))
+    this.all = this.sort(union(this.all, (<Playlist[]>[]).concat(playlists)))
   },
 
   /**
@@ -222,5 +223,9 @@ export const playlistStore: PlaylistStore = {
     })
 
     return serializedGroups
+  },
+
+  sort: (playlists: Playlist[]): Playlist[] => {
+    return orderBy(playlists, ['is_smart', 'name'], ['desc', 'asc'])
   }
 }
