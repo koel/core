@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { albumStore } from '@/stores'
+import { albumStore, preferenceStore } from '@/stores'
 import { eventBus } from '@/utils'
 import { events } from '@/config'
 
@@ -15,7 +15,9 @@ export default Vue.extend({
 
   created (): void {
     eventBus.on(events.SONG_STARTED, async (song: Song): Promise<void> => {
-      this.thumbnailUrl = await albumStore.getThumbnail(song.album)
+      if (preferenceStore.state.showAlbumArtOverlay) {
+        this.thumbnailUrl = await albumStore.getThumbnail(song.album)
+      }
     })
   }
 })
