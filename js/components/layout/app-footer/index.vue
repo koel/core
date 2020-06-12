@@ -42,7 +42,7 @@ export default Vue.extend({
       /**
        * Listen to song:played event to set the current playing song.
        */
-      [events.SONG_PLAYED]: (song: Song): void => {
+      [events.SONG_STARTED]: (song: Song): void => {
         this.song = song
       },
 

@@ -56,7 +56,7 @@ describe('components/screens/home', () => {
 
     await wrapper.vm.$nextTick()
     const m = mock(wrapper.vm, 'refreshDashboard')
-    eventBus.emit('SONG_PLAYED', factory('song'))
+    eventBus.emit('SONG_STARTED', factory('song'))
     expect(m).toHaveBeenCalled()
   })
 })

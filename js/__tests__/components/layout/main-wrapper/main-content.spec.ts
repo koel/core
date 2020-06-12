@@ -11,7 +11,7 @@ describe('components/layout/main-wrapper/main-content', () => {
         cover: 'http://foo/bar.jpg'
       })
     })
-    eventBus.emit('SONG_PLAYED', song)
+    eventBus.emit('SONG_STARTED', song)
     expect(wrapper).toMatchSnapshot()
   })
 })

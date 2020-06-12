@@ -58,7 +58,7 @@ export default Vue.extend({
       /**
        * Stop video playback when a song is played/resumed.
        */
-      [events.SONG_PLAYED]: (): void => {
+      [events.SONG_STARTED]: (): void => {
         if (player) {
           player.pauseVideo()
         }

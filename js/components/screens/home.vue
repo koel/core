@@ -144,7 +144,7 @@ export default mixins(infiniteScroll).extend({
   created (): void {
     eventBus.on({
       [events.KOEL_READY]: (): void => this.refreshDashboard(),
-      [events.SONG_PLAYED]: (): void => this.refreshDashboard(),
+      [events.SONG_STARTED]: (): void => this.refreshDashboard(),
       [events.SONG_UPLOADED]: (): void => this.refreshDashboard()
     })
   }

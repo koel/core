@@ -120,6 +120,7 @@ interface Album {
   artist: Artist
   name: string
   cover: string
+  thumbnail?: string
   songs: Song[]
   info: AlbumInfo | null
   playCount: number

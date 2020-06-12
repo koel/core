@@ -1,5 +1,4 @@
 /* eslint camelcase: ["error", {properties: "never"}] */
-
 import Vue from 'vue'
 import { union, difference, take, orderBy } from 'lodash'
 
@@ -24,6 +23,7 @@ interface AlbumStore {
   getMostPlayed(n: number): Album[]
   getRecentlyAdded(n: number): Album[]
   uploadCover(album: Album, cover: string): Promise<string>
+  getThumbnail(album: Album): Promise<string>
 }
 
 export const albumStore: AlbumStore = {
@@ -110,6 +110,20 @@ export const albumStore: AlbumStore = {
     http.put(`album/${album.id}/cover`, { cover }, ({ data: { coverUrl } }: { data: { coverUrl: string }}): void => {
       album.cover = coverUrl
       resolve(coverUrl)
+    }, (error: any) => reject(error))
+  }),
+
+  getThumbnail: async (album: Album): Promise<string> => new Promise((resolve, reject): void => {
+    if (album.thumbnail) {
+      resolve(album.thumbnail)
+    }
+
+    http.get(`album/${album.id}/thumbnail`, ({ data: { thumbnailUrl } }: { data: { thumbnailUrl: string }}): void => {
+      if (thumbnailUrl) {
+        album.thumbnail = thumbnailUrl
+      }
+
+      resolve(thumbnailUrl)
     }, (error: any) => reject(error))
   })
 }

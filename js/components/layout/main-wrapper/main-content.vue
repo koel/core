@@ -6,7 +6,7 @@
       For those that don't need to maintain their own UI state, we use v-if and enjoy some codesplitting juice.
     -->
     <visualizer v-if="showingVisualizer"/>
-    <album-art-overlay :album="currentAlbum" v-if="preferences.showAlbumArtOverlay"/>
+    <album-art-overlay v-if="preferences.showAlbumArtOverlay"/>
 
     <home-screen v-show="view === 'Home'"/>
     <queue-screen v-show="view === 'Queue'"/>
@@ -62,7 +62,6 @@ export default Vue.extend({
   },
 
   data: () => ({
-    currentAlbum: albumStore.stub,
     preferences: preferenceStore.state,
     sharedState: sharedStore.state,
     showingVisualizer: false,
@@ -85,10 +84,6 @@ export default Vue.extend({
         }
 
         this.view = view
-      },
-
-      [events.SONG_PLAYED]: (song: Song): void => {
-        this.currentAlbum = song.album
       },
 
       [events.TOGGLE_VISUALIZER]: (): void => {

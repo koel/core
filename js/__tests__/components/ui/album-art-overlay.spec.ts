@@ -1,22 +1,20 @@
-import each from 'jest-each'
+import flushPromises from 'flush-promises'
 import factory from '@/__tests__/factory'
-import { albumStore } from '@/stores/album'
 import Component from '@/components/ui/album-art-overlay.vue'
-import { mount } from '@/__tests__/adapter'
+import { albumStore } from '@/stores/album'
+import { shallow } from '@/__tests__/adapter'
+import { mock } from '@/__tests__/__helpers__'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 
 describe('components/ui/album-art-overlay', () => {
-  const cases = [
-    ['no song playing', null],
-    ['album having a cover same as stub', factory('album', {
-      cover: albumStore.stub.cover
-    })],
-    ['album having a real cover', factory('album', {
-      cover: '/img/foo.jpg'
-    })]
-  ]
-
-  each(cases).test('renders property with %s', (description, album) => {
-    const wrapper = mount(Component, { propsData: { album } })
+  it('requests album thumbnail when a song starts playing', async () => {
+    const wrapper = shallow(Component, { sync: false })
+    const song = factory<Song>('song')
+    const getCoverThumbnailMock = mock(albumStore, 'getThumbnail').mockResolvedValue('http://localhost/foo_thumb.jpg')
+    eventBus.emit(events.SONG_STARTED, song)
+    await flushPromises()
+    expect(getCoverThumbnailMock).toHaveBeenCalledWith(song.album)
     expect(wrapper).toMatchSnapshot()
   })
 })

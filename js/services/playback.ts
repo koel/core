@@ -265,7 +265,7 @@ export const playback: Playback = {
 
     song.playCountRegistered = false
 
-    eventBus.emit(events.SONG_PLAYED, song)
+    eventBus.emit(events.SONG_STARTED, song)
 
     socket.broadcast(events.SOCKET_SONG, songStore.generateDataToBroadcast(song))
 
@@ -395,7 +395,7 @@ export const playback: Playback = {
   resume () {
     this.getPlayer().play()
     queueStore.current!.playbackState = 'Playing'
-    eventBus.emit(events.SONG_PLAYED, queueStore.current)
+    eventBus.emit(events.SONG_STARTED, queueStore.current)
     socket.broadcast(events.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current!))
   },
 

@@ -50,7 +50,7 @@ describe('components/layout/extra-panel', () => {
     shallowComponent()
     const song = factory('song')
     const m = mock(songInfo, 'fetch', song)
-    eventBus.emit('SONG_PLAYED', song)
+    eventBus.emit('SONG_STARTED', song)
     expect(m).toHaveBeenCalledWith(song)
   })
 })

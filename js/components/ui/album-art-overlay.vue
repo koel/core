@@ -1,27 +1,22 @@
 <template>
-  <div :style="{ backgroundImage: albumCover ? `url(${albumCover})` : 'none' }"></div>
+  <div :style="{ backgroundImage: thumbnailUrl ? `url(${thumbnailUrl})` : 'none' }"></div>
 </template>
 
 <script lang="ts">
-import Vue, { PropOptions } from 'vue'
+import Vue from 'vue'
 import { albumStore } from '@/stores'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
 
 export default Vue.extend({
-  props: {
-    album: {
-      type: Object,
-      require: true
-    } as PropOptions<Album>
-  },
+  data: () => ({
+    thumbnailUrl: null as string | null
+  }),
 
-  computed: {
-    albumCover (): string | null {
-      if (!this.album) {
-        return null
-      }
-
-      return this.album.cover === albumStore.stub.cover ? null : this.album.cover
-    }
+  created (): void {
+    eventBus.on(events.SONG_STARTED, async (song: Song): Promise<void> => {
+      this.thumbnailUrl = await albumStore.getThumbnail(song.album)
+    })
   }
 })
 </script>
@@ -29,19 +24,15 @@ export default Vue.extend({
 <style scoped>
 div {
   position: fixed;
-  top: -20px;
-  left: -20px;
-  right: -20px;
-  bottom: -20px;
-  filter: blur(20px);
   opacity: .07;
   z-index: 10000;
   overflow: hidden;
   background-size: cover;
   background-position: center;
-  transform: translateZ(0);
-  will-change: filter;
-  backface-visibility: hidden;
   pointer-events: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>

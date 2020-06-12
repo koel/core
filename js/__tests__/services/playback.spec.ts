@@ -204,7 +204,7 @@ describe('services/playback', () => {
     playback.restart()
     expect(song.playStartTime).toEqual(1000)
     expect(song.playCountRegistered).toBe(false)
-    expect(emitMock).toHaveBeenCalledWith('SONG_PLAYED', song)
+    expect(emitMock).toHaveBeenCalledWith('SONG_STARTED', song)
     expect(broadcastMock).toHaveBeenCalledWith('SOCKET_SONG', dataToBroadcast)
     expect(showNotificationMock).toHaveBeenCalled()
     expect(restartMock).toHaveBeenCalled()
@@ -338,7 +338,7 @@ describe('services/playback', () => {
     expect(currentSong.playbackState).toEqual('Playing')
     expect(broadcastMock).toHaveBeenCalledWith('SOCKET_SONG', dataToBroadcast)
     expect(playMock).toHaveBeenCalled()
-    expect(emitMock).toHaveBeenCalledWith('SONG_PLAYED', currentSong)
+    expect(emitMock).toHaveBeenCalledWith('SONG_STARTED', currentSong)
   })
 
   it('plays first in queue if toggled when there is no current song', () => {

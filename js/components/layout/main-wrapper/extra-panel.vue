@@ -156,7 +156,7 @@ export default Vue.extend({
 
   created (): void {
     eventBus.on({
-      [events.SONG_PLAYED]: async (song: Song): Promise<void> => await this.fetchSongInfo(song),
+      [events.SONG_STARTED]: async (song: Song): Promise<void> => await this.fetchSongInfo(song),
       [events.LOAD_MAIN_CONTENT]: (): void => {
         // On ready, add 'with-extra-panel' class.
         if (!isMobile.any) {
