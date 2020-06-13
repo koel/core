@@ -89,9 +89,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
       </div>
       <div class="none">
         <p>Empty spaces. Abandoned places.</p>
-        <p>How about
-          <a class="start">shuffling all songs</a>?
-        </p>
+        <!---->
       </div>
     </section>
     <section id="songsWrapper" style="display: none;">
@@ -101,7 +99,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
         •
         00:00
       </span></span>
-        <div class="song-list-controls">
+        <div class="song-list-controls" style="display: none;">
           <!---->
           <!---->
         </div>

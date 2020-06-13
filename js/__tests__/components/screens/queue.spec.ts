@@ -16,7 +16,7 @@ describe('components/screens/queue', () => {
     const wrapper = mount(Component, {
       data: () => ({
         state: {
-          songs: factory('song', 10)
+          songs: factory<Song>('song', 10)
         }
       })
     })
@@ -48,7 +48,7 @@ describe('components/screens/queue', () => {
 
   it('shuffles all songs in the queue if any', () => {
     const m = mock(playback, 'queueAndPlay')
-    const songs = factory('song', 10)
+    const songs = factory<Song>('song', 10)
     const wrapper = mount(Component, {
       data: () => ({
         state: { songs }
@@ -60,10 +60,8 @@ describe('components/screens/queue', () => {
   })
 
   it('shuffles all available songs if there are no songs queued', () => {
-    const songs = factory('song', 10)
-    Object.defineProperty(songStore, 'all', {
-      get: () => songs
-    })
+    const songs = factory<Song>('song', 10)
+    songStore.state.songs = songs
     const m = mock(playback, 'queueAndPlay')
     const c = shallow(Component, {
       data: () => ({

@@ -46,13 +46,16 @@ export default mixins(hasSongList).extend({
 
   data: () => ({
     state: queueStore.state,
+    songState: songStore.state,
     songListControlConfig: {
       clearQueue: true
     }
   }),
 
   computed: {
-    shouldShowShufflingAllLink: (): boolean => songStore.all.length > 0
+    shouldShowShufflingAllLink (): boolean {
+      return this.songState.songs.length > 0
+    }
   },
 
   methods: {
