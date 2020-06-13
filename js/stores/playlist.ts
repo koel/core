@@ -1,6 +1,7 @@
 import { difference, union, orderBy } from 'lodash'
 
 import stub from '@/stubs/playlist'
+import Vue from 'vue'
 import { http } from '@/services'
 import { alerts, pluralize } from '@/utils'
 import { songStore } from '.'
@@ -15,6 +16,7 @@ interface PlaylistStore {
   all: Playlist[]
 
   init(playlists: Playlist[]): void
+  setupPlaylist(playlist: Playlist): void
   setupSmartPlaylist(playlist: Playlist): void
   fetchSongs(playlist: Playlist): Promise<Playlist>
   byId(id: number): Playlist
@@ -30,7 +32,7 @@ interface PlaylistStore {
   createEmptySmartPlaylistRule(): SmartPlaylistRule
   createEmptySmartPlaylistRuleGroup(): SmartPlaylistRuleGroup
   serializeSmartPlaylistRulesForStorage(ruleGroups: SmartPlaylistRuleGroup[]): object[] | null
-  sort(playlists: Playlist[]): Playlist[]
+  sort(playlists: Playlist[]): Playlist[],
 }
 
 export const playlistStore: PlaylistStore = {
@@ -42,7 +44,15 @@ export const playlistStore: PlaylistStore = {
 
   init (playlists: Playlist[]) {
     this.all = this.sort(playlists)
-    this.all.filter(playlist => playlist.is_smart).forEach(this.setupSmartPlaylist)
+    this.all.forEach(playlist => this.setupPlaylist(playlist))
+  },
+
+  setupPlaylist (playlist: Playlist): void {
+    Vue.set(playlist, 'songs', [])
+
+    if (playlist.is_smart) {
+      this.setupSmartPlaylist(playlist)
+    }
   },
 
   /**
@@ -54,7 +64,6 @@ export const playlistStore: PlaylistStore = {
         const model = models.find(model => model.name === rule.model as unknown as string)
 
         if (!model) {
-          /* eslint no-console: 0 */
           console.error(`Invalid model ${rule.model} found in smart playlist ${playlist.name} (ID ${playlist.id})`)
           return
         }
@@ -72,7 +81,7 @@ export const playlistStore: PlaylistStore = {
     this.state.playlists = value
   },
 
-  fetchSongs: async (playlist: Playlist): Promise<Playlist> => {
+  async fetchSongs (playlist: Playlist): Promise<Playlist> {
     const songIds = await http.get<string[]>(`playlist/${playlist.id}/songs`)
     playlist.songs = songStore.byIds(songIds)
     playlist.populated = true
@@ -98,7 +107,9 @@ export const playlistStore: PlaylistStore = {
    * Add a playlist/playlists into the store.
    */
   add (playlists: Playlist | Playlist[]) {
-    this.all = this.sort(union(this.all, (<Playlist[]>[]).concat(playlists)))
+    const playlistsToAdd = (<Playlist[]>[]).concat(playlists)
+    playlistsToAdd.forEach(this.setupPlaylist)
+    this.all = this.sort(union(this.all, playlistsToAdd))
   },
 
   /**
@@ -117,10 +128,6 @@ export const playlistStore: PlaylistStore = {
     this.populateContent(playlist)
     this.add(playlist)
     alerts.success(`Created playlist &quot;${playlist.name}&quot;.`)
-
-    if (playlist.is_smart) {
-      this.setupSmartPlaylist(playlist)
-    }
 
     return playlist
   },
@@ -144,11 +151,6 @@ export const playlistStore: PlaylistStore = {
 
     await http.put(`playlist/${playlist.id}/sync`, { songs: playlist.songs.map(song => song.id) })
     alerts.success(`Added ${pluralize(songs.length, 'song')} into &quot;${playlist.name}&quot;.`)
-
-    // Playlist's songs are not reactive right away for some reason.
-    // This is a dirty hack to force reactivity.
-    playlist.name = `${playlist.name} `
-    playlist.name = playlist.name.trim()
 
     return playlist
   },

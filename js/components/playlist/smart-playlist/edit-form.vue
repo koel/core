@@ -35,8 +35,9 @@
 </template>
 
 <script lang="ts">
-import { playlistStore } from '@/stores'
 import Vue, { PropOptions } from 'vue'
+import { cloneDeep } from 'lodash'
+import { playlistStore } from '@/stores'
 
 export default Vue.extend({
   components: {
@@ -91,7 +92,8 @@ export default Vue.extend({
   },
 
   created (): void {
-    this.mutatedPlaylist = Object.assign({}, this.playlist)
+    // use cloneDeep instead of Object.assign because we don't want references to playlist's rules
+    this.mutatedPlaylist = cloneDeep(this.playlist)
   }
 })
 </script>

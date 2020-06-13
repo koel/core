@@ -37,8 +37,13 @@
       />
 
       <div v-if="!playlist.songs.length" class="none">
-        The playlist is currently empty. You can fill it up by dragging songs into its name in the sidebar,
-        or use the &quot;Add To…&quot; button.
+        <p v-if="playlist.is_smart">
+          No songs match the playlist's <a href="#" @click.prevent="editSmartPlaylist">criteria</a>.
+        </p>
+        <p v-else>
+          The playlist is currently empty. You can fill it up by dragging songs into its name in the sidebar,
+          or use the &quot;Add To…&quot; button.
+        </p>
       </div>
     </template>
   </section>
@@ -93,6 +98,10 @@ export default mixins(hasSongList).extend({
 
     download (): void {
       return download.fromPlaylist(this.playlist)
+    },
+
+    editSmartPlaylist (): void {
+      eventBus.emit(events.MODAL_SHOW_EDIT_SMART_PLAYLIST_FORM, this.playlist)
     },
 
     /**
