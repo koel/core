@@ -1,36 +1,18 @@
 import { difference, union } from 'lodash'
-
 import { http } from '@/services'
-import { alerts, pluralize } from '@/utils'
 
-interface FavoriteStore {
+export const favoriteStore = {
   state: {
-    songs: Song[]
-    length: number
-    fmtLength: string
-  }
-  all: Song[],
-
-  toggleOne(song: Song): Promise<void>
-  add(songs: Song | Song[]): void
-  remove(songs: Song | Song[]): void
-  clear(): void
-  like(songs: Song[]): Promise<void>
-  unlike(songs: Song[]): Promise<void>
-}
-
-export const favoriteStore: FavoriteStore = {
-  state: {
-    songs: [],
+    songs: [] as Song[],
     length: 0,
     fmtLength: ''
   },
 
-  get all () {
+  get all (): Song[] {
     return this.state.songs
   },
 
-  set all (value) {
+  set all (value: Song[]) {
     this.state.songs = value
   },
 

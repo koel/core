@@ -4,36 +4,15 @@ import { difference, take, orderBy } from 'lodash'
 import { http } from '@/services'
 import stub from '@/stubs/artist'
 
-interface ArtistStore {
-  stub: Artist
-  cache: { [id: number]: Artist }
-  state: {
-    artists: Artist[]
-  }
-  all: Artist[]
-
-  init(artists: Artist[]): void
-  setupArtist(artist: Artist): void
-  byId(id: number): Artist
-  add(artists: Artist | Artist[]): void
-  compact(): void
-  purify(): void
-  isUnknownArtist(artist: Artist): boolean
-  isVariousArtists(artist: Artist): boolean
-  getSongsByArtist(artist: Artist): Song[]
-  getMostPlayed(n: number): Artist[]
-  uploadImage(artist: Artist, image: string): Promise<string>
-}
-
 const UNKNOWN_ARTIST_ID = 1
 const VARIOUS_ARTISTS_ID = 2
 
-export const artistStore: ArtistStore = {
+export const artistStore = {
   stub,
-  cache: [],
+  cache: {} as { [key: number]: Artist },
 
   state: {
-    artists: []
+    artists: [] as Artist[]
   },
 
   init (artists: Artist[]): void {
@@ -52,11 +31,11 @@ export const artistStore: ArtistStore = {
     this.cache[artist.id] = artist
   },
 
-  get all () {
+  get all (): Artist[] {
     return this.state.artists
   },
 
-  set all (value) {
+  set all (value: Artist[]) {
     this.state.artists = value
   },
 

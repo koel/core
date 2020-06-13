@@ -1,34 +1,9 @@
 import { union, difference, shuffle } from 'lodash'
 
-interface QueueStore {
+export const queueStore = {
   state: {
-    songs: Song[]
-    current: Song | undefined
-  }
-  all: Song[]
-  first: Song | undefined
-  last: Song | undefined
-  next: Song | undefined
-  previous: Song | undefined
-  current: Song | undefined
-
-  init(): void
-  contains(song: Song): boolean
-  indexOf(current: Song): number
-  queue(songs: Song | Song[]): void
-  queueToTop(songs: Song | Song[]): void
-  unqueue(songs: Song | Song[]): void
-  replaceQueueWith(songs: Song | Song[]): void
-  queueAfterCurrent(songs: Song | Song[]): void
-  move(songs: Song | Song[], target: Song): void
-  clear(): void
-  shuffle(): void
-}
-
-export const queueStore: QueueStore = {
-  state: {
-    songs: [],
-    current: undefined
+    songs: [] as Song[],
+    current: undefined as Song | undefined
   },
 
   init () {
@@ -56,11 +31,11 @@ export const queueStore: QueueStore = {
     // Anything...
   },
 
-  get all () {
+  get all (): Song[] {
     return this.state.songs
   },
 
-  set all (songs) {
+  set all (songs: Song[]) {
     this.state.songs = songs
   },
 

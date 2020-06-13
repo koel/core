@@ -1,14 +1,6 @@
 import { preferenceStore } from '.'
 
-interface EqualizerStore {
-  presets: EqualizerPreset[]
-
-  getPresetById(id: number): EqualizerPreset
-  get(): EqualizerPreset
-  set(preamp: number, gains: number[]): void
-}
-
-export const equalizerStore: EqualizerStore = {
+export const equalizerStore = {
   presets: [
     {
       id: 0,
@@ -97,7 +89,7 @@ export const equalizerStore: EqualizerStore = {
   ],
 
   getPresetById (id: number): EqualizerPreset {
-    return <EqualizerPreset>this.presets.find(preset => preset.id === id)
+    return <EqualizerPreset> this.presets.find(preset => preset.id === id)
   },
 
   /**

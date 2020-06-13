@@ -6,29 +6,9 @@ import stub from '@/stubs/album'
 import { artistStore } from '.'
 import { http } from '@/services'
 
-interface AlbumStore {
-  stub: Album
-  cache: { [id: number]: Album }
-  state: {
-    albums: Album[]
-  }
-  all: Album[]
-
-  init(albums: Album[]): void
-  setupAlbum(album: Album, artist?: Artist): void
-  byId(id: number): Album
-  add(album: Album | Album[]): void
-  purify(): void
-  compact(): void
-  getMostPlayed(n: number): Album[]
-  getRecentlyAdded(n: number): Album[]
-  uploadCover(album: Album, cover: string): Promise<string>
-  getThumbnail(album: Album): Promise<string|null>
-}
-
-export const albumStore: AlbumStore = {
+export const albumStore = {
   stub,
-  cache: {},
+  cache: {} as { [key: string]: Album },
 
   state: {
     albums: [stub]
@@ -66,7 +46,7 @@ export const albumStore: AlbumStore = {
 
   add (albums: Album | Album[]): void {
     (<Album[]>[]).concat(albums).forEach(album => {
-      this.setupAlbum(album, album.artist)
+      this.setupAlbum(album)
       album.playCount = album.songs.reduce((count, song) => count + song.playCount, 0)
       this.all.push(album)
     })

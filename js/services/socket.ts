@@ -3,17 +3,9 @@ import Pusher from 'pusher-js'
 import { userStore } from '@/stores'
 import { ls } from '.'
 
-interface Socket {
-  pusher: Pusher.Pusher | null
-  channel: Pusher.Channel | null
-  init(): Promise<void>
-  broadcast(eventName: string, data?: any): Socket
-  listen(eventName: string, cb: Function): Socket
-}
-
-export const socket: Socket = {
-  pusher: null,
-  channel: null,
+export const socket = {
+  pusher: null as Pusher.Pusher | null,
+  channel: null as Pusher.Channel | null,
 
   async init (): Promise<void> {
     return new Promise(resolve => {
@@ -38,12 +30,12 @@ export const socket: Socket = {
     })
   },
 
-  broadcast (eventName: string, data: any = {}): Socket {
+  broadcast (eventName: string, data: any = {}) {
     this.channel && this.channel.trigger(`client-${eventName}.${userStore.current.id}`, data)
     return this
   },
 
-  listen (eventName: string, cb: Function): Socket {
+  listen (eventName: string, cb: Function) {
     this.channel && this.channel.bind(`client-${eventName}.${userStore.current.id}`, data => cb(data))
     return this
   }

@@ -24,49 +24,19 @@ interface BroadcastedSongData {
   }
 }
 
-interface SongStore {
-  stub: Song
-  albums: Album[]
-  cache: { [id: string]: Song }
-  state: {
-    songs: Song[]
-    recentlyPlayed: Song[]
-  }
-  all: Song[]
-  recentlyPlayed: Song[]
-
-  init(songs: Song[]): void
-  setupSong(song: Song): void
-  byId(id: string): Song
-  byIds(ids: string[]): Song[]
-  initInteractions(interactions: Interaction[]): void
-  getLength(songs: Song[], formatted: boolean): number|string
-  getFormattedLength(songs: Song[]): string
-  guess(title: string, album: Album): Song | null
-  registerPlay(song: Song): Promise<void>
-  scrobble(song: Song): Promise<any>
-  update(songs: Song[], data: object): Promise<Song[]>
-  getSourceUrl(song: Song): string
-  getShareableUrl(song: Song): string
-  getMostPlayed(n: number): Song[]
-  getRecentlyAdded(n: number): Song[]
-  generateDataToBroadcast(song: Song): BroadcastedSongData
-}
-
 interface SongUpdateResult {
   songs: Song[]
   artists: Artist[]
   albums: Album[]
 }
 
-export const songStore: SongStore = {
+export const songStore = {
   stub,
-  albums: [],
-  cache: {},
+  cache: {} as { [key: string]: Song },
 
   state: {
-    songs: [stub],
-    recentlyPlayed: []
+    songs: [] as Song[],
+    recentlyPlayed: [] as Song[]
   },
 
   init (songs: Song[]): void {
@@ -140,7 +110,7 @@ export const songStore: SongStore = {
     return <string> this.getLength(songs, true)
   },
 
-  get all () {
+  get all (): Song[] {
     return this.state.songs
   },
 
@@ -148,11 +118,11 @@ export const songStore: SongStore = {
     this.state.songs = value
   },
 
-  byId (id: string) {
+  byId (id: string): Song {
     return this.cache[id]
   },
 
-  byIds (ids: string[]) {
+  byIds (ids: string[]): Song[] {
     return ids.map(id => this.byId(id))
   },
 
@@ -238,7 +208,7 @@ export const songStore: SongStore = {
     return `${baseUrl}#!/song/${song.id}`
   },
 
-  get recentlyPlayed () {
+  get recentlyPlayed (): Song[] {
     return this.state.recentlyPlayed
   },
 
@@ -251,7 +221,7 @@ export const songStore: SongStore = {
     return songs
   },
 
-  getRecentlyAdded (n = 10) {
+  getRecentlyAdded (n = 10): Song[] {
     return take(orderBy(this.all, 'created_at', 'desc'), n)
   },
 

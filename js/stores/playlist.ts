@@ -8,38 +8,11 @@ import { songStore } from '.'
 import models from '@/config/smart-playlist/models'
 import operators from '@/config/smart-playlist/operators'
 
-interface PlaylistStore {
-  stub: Playlist
-  state: {
-    playlists: Playlist[]
-  }
-  all: Playlist[]
-
-  init(playlists: Playlist[]): void
-  setupPlaylist(playlist: Playlist): void
-  setupSmartPlaylist(playlist: Playlist): void
-  fetchSongs(playlist: Playlist): Promise<Playlist>
-  byId(id: number): Playlist
-  populateContent(playlist: Playlist): void
-  getSongs(playlist: Playlist): Song[]
-  add(playlists: Playlist | Playlist[]): void
-  remove(playlists: Playlist | Playlist[]): void
-  store(name: string, songs?: Song[], rules?: SmartPlaylistRuleGroup[]): Promise<Playlist>
-  delete(playlist: Playlist): Promise<void>
-  addSongs(playlist: Playlist, songs: Song[]): Promise<Playlist>
-  removeSongs(playlist: Playlist, songs: Song[]): Promise<Playlist>
-  update(playlist: Playlist): Promise<Playlist>
-  createEmptySmartPlaylistRule(): SmartPlaylistRule
-  createEmptySmartPlaylistRuleGroup(): SmartPlaylistRuleGroup
-  serializeSmartPlaylistRulesForStorage(ruleGroups: SmartPlaylistRuleGroup[]): object[] | null
-  sort(playlists: Playlist[]): Playlist[],
-}
-
-export const playlistStore: PlaylistStore = {
+export const playlistStore = {
   stub,
 
   state: {
-    playlists: []
+    playlists: [] as Playlist[]
   },
 
   init (playlists: Playlist[]) {
@@ -73,11 +46,11 @@ export const playlistStore: PlaylistStore = {
     })
   },
 
-  get all () {
+  get all (): Playlist[] {
     return this.state.playlists
   },
 
-  set all (value) {
+  set all (value: Playlist[]) {
     this.state.playlists = value
   },
 

@@ -16,42 +16,6 @@ import { socket, audio as audioService } from '.'
 import { app, events } from '@/config'
 import router from '@/router'
 
-interface Playback {
-  previous: Song | undefined
-  next: Song | undefined
-  isTranscoding: boolean
-  player: Plyr | null
-  volumeInput: HTMLInputElement | null
-  repeatModes: string[]
-  initialized: boolean
-  mainWin: any
-
-  init(): void
-  listenToMediaEvents(media: HTMLMediaElement): void
-  setVolume(value: number, persist?: boolean): void
-  setMediaSessionActionHandlers(): void
-  listenToSocketEvents(): void
-  toggle(): void
-  playNext(): void
-  playPrev(): void
-  play(song: Song | undefined): void
-  restart(): void
-  resume(): void
-  pause(): void
-  stop(): void
-  mute(): void
-  unmute(): void
-  playFirstInQueue(): void
-  queueAndPlay(songs?: Song[], shuffle?: boolean): void
-  registerPlay(song: Song): void
-  preload(song: Song): void
-  showNotification(song: Song): void
-  changeRepeatMode(): void
-  playAllByArtist(artist: Artist, shuffle?: boolean): void
-  playAllInAlbum(album: Album, shuffle?: boolean): void
-  getPlayer(): Plyr
-}
-
 /**
  * The number of seconds before the current song ends to start preload the next one.
  */
@@ -60,12 +24,12 @@ const DEFAULT_VOLUME_VALUE = 7
 const VOLUME_INPUT_SELECTOR = '#volumeRange'
 const REPEAT_MODES = ['NO_REPEAT', 'REPEAT_ALL', 'REPEAT_ONE']
 
-export const playback: Playback = {
-  player: null,
-  volumeInput: null,
+export const playback = {
+  player: null as Plyr | null,
+  volumeInput: null as HTMLInputElement | null,
   repeatModes: REPEAT_MODES,
   initialized: false,
-  mainWin: null,
+  mainWin: null as any,
 
   init () {
     if (KOEL_ENV === 'app') {

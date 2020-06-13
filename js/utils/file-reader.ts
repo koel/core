@@ -1,4 +1,4 @@
-const fileReader = {
+export const fileReader = {
   /**
    * Read a File into a binary string
    */
@@ -9,5 +9,3 @@ const fileReader = {
     reader.onerror = error => reject(error)
   })
 }
-
-export { fileReader }

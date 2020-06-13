@@ -6,36 +6,15 @@ import { http } from '@/services'
 import { alerts } from '@/utils'
 import stub from '@/stubs/user'
 
-interface UserStore {
-  stub: User
-  state: {
-    users: User[]
-    current: User
-  }
-  all: User[]
-  current: User
-
-  init(users: User[], currentUser: User): void
-  setAvatar(user?: User | null): void
-  byId(id: number): User
-  login(email: string, password: string): Promise<User>
-  logout(): Promise<void>
-  getProfile(): Promise<User>
-  updateProfile(password: string): Promise<void>
-  store(name: string, email: string, password: string, is_admin: boolean): Promise<User>
-  update(user: User, name: string, email: string, password: string, is_admin: boolean): Promise<void>
-  destroy(user: User): Promise<void>
-}
-
-export const userStore: UserStore = {
+export const userStore = {
   stub,
 
   state: {
-    users: [],
+    users: [] as User[],
     current: stub
   },
 
-  init (users, currentUser) {
+  init (users: User[], currentUser: User): void {
     this.all = users
     this.current = currentUser
 
@@ -46,11 +25,11 @@ export const userStore: UserStore = {
     this.setAvatar()
   },
 
-  get all () {
+  get all (): User[] {
     return this.state.users
   },
 
-  set all (value) {
+  set all (value: User[]) {
     this.state.users = value
   },
 

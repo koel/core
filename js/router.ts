@@ -5,19 +5,7 @@ import { artistStore, albumStore, songStore, queueStore, playlistStore, userStor
 import { playback } from './services'
 import { use } from '@/utils'
 
-interface Routes {
-  [path: string]: Function
-}
-
-interface Router {
-  routes: Routes
-
-  init(): void
-  loadState(): void
-  go(path: string | number): void
-}
-
-const router: Router = {
+const router = {
   routes: {
     '/home': (): void => loadMainView('Home'),
     '/queue': (): void => loadMainView('Queue'),
@@ -70,7 +58,7 @@ const router: Router = {
         playback.queueAndPlay([song])
       }
     })
-  },
+  } as { [path: string]: Function },
 
   init (): void {
     this.loadState()

@@ -3,17 +3,12 @@ import { eventBus } from '@/utils'
 import { events } from '@/config'
 import router from '@/router'
 
-interface YouTube {
-  searchVideosRelatedToSong: (song: Song, nextPageToken: string) => Promise<YouTubeSearchResult>
-  play: (video: YouTubeVideo) => void
-}
-
 interface YouTubeSearchResult {
   nextPageToken: string
   items: object[]
 }
 
-export const youtube: YouTube = {
+export const youtube = {
   searchVideosRelatedToSong: async (song: Song, nextPageToken: string): Promise<YouTubeSearchResult> => {
     return await http.get<YouTubeSearchResult>(`youtube/search/song/${song.id}?pageToken=${nextPageToken}`)
   },

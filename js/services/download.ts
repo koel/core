@@ -2,22 +2,13 @@ import { playlistStore, favoriteStore } from '@/stores'
 import { ls } from '.'
 import { alerts } from '@/utils'
 
-interface Download {
-  fromSongs(songs: Song | Song[]): void
-  fromAlbum(album: Album): void
-  fromArtist(artist: Artist): void
-  fromPlaylist(playlist: Playlist): void
-  fromFavorites(): void
-  trigger(uri: string): void
-}
-
 let events: any
 
 if (KOEL_ENV === 'app') {
   events = require('&/events').default
 }
 
-export const download: Download = {
+export const download = {
   fromSongs (songs: Song | Song[]): void {
     const query = (<Song[]>[]).concat(songs).reduce((q, song) => `songs[]=${song.id}&${q}`, '')
     this.trigger(`songs?${query}`)

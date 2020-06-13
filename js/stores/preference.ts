@@ -1,19 +1,7 @@
 import { userStore } from '.'
 import { ls } from '@/services'
 
-interface PreferenceStore {
-  storeKey: string
-  state: { [key: string]: any }
-  [preferenceKey: string]: any
-
-  init(user?: User | null): void
-  setupProxy(): void
-  get(key: string): any
-  set(key: string, value: any): void
-  save(): void
-}
-
-export const preferenceStore: PreferenceStore = {
+export const preferenceStore = {
   storeKey: '',
 
   state: {
@@ -32,7 +20,7 @@ export const preferenceStore: PreferenceStore = {
     transcodeOnMobile: false,
     supportBarNoBugging: false,
     showAlbumArtOverlay: true
-  },
+  } as { [key: string]: any },
 
   init (user?: User): void {
     const initUser = user || userStore.current
@@ -66,4 +54,4 @@ export const preferenceStore: PreferenceStore = {
   save (): void {
     ls.set(this.storeKey, this.state)
   }
-}
+} as { [key: string]: any }

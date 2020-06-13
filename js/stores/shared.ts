@@ -35,18 +35,13 @@ interface SharedState {
   useYouTube: boolean
 }
 
-interface SharedStore {
-  state: SharedState
-  init(): Promise<SharedState>
-}
-
-export const sharedStore: SharedStore = {
+export const sharedStore = {
   state: {
     albums: [],
     allowDownload: false,
     artists: [],
     cdnUrl: '',
-    currentUser: null,
+    currentUser: null as User | null,
     currentVersion: '',
     favorites: [],
     interactions: [],
@@ -55,7 +50,7 @@ export const sharedStore: SharedStore = {
     playlists: [],
     queued: [],
     recentlyPlayed: [],
-    settings: [],
+    settings: {} as Settings,
     songs: [],
     useiTunes: false,
     useLastfm: false,
@@ -87,7 +82,7 @@ export const sharedStore: SharedStore = {
     settingStore.init(this.state.settings)
 
     // Keep a copy of the media path. We'll need this to properly warn the user later.
-    this.state.originalMediaPath = this.state.settings.media_path
+    this.state.originalMediaPath = this.state.settings.media_path!
 
     return this.state
   }

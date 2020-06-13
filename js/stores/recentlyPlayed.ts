@@ -2,34 +2,20 @@ import { songStore } from '.'
 import { http } from '../services'
 import { remove } from 'lodash'
 
-interface RecentlyPlayedStore {
-  excerptState: {
-    songs: Song[]
-  }
-  state: {
-    songs: Song[]
-  }
-  fetched: boolean
-
-  initExcerpt(songIds: string[]): void
-  fetchAll(): Promise<Song[]>
-  add(song: Song): void
-}
-
 const EXCERPT_COUNT = 7
 
-export const recentlyPlayedStore: RecentlyPlayedStore = {
+export const recentlyPlayedStore = {
   excerptState: {
-    songs: []
+    songs: [] as Song[]
   },
 
   state: {
-    songs: []
+    songs: [] as Song[]
   },
 
   fetched: false,
 
-  initExcerpt (songIds): void {
+  initExcerpt (songIds: string[]): void {
     this.excerptState.songs = songStore.byIds(songIds)
   },
 

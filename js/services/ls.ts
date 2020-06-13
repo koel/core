@@ -1,12 +1,6 @@
 import localStorage from 'local-storage'
 
-interface LocalStorage {
-  get: (key: string, defaultValue?: any) => any
-  set: (key: string, value: any) => void
-  remove: (key: string) => void
-}
-
-export const ls: LocalStorage = {
+export const ls = {
   get: (key: string, defaultValue: any = null): any => {
     const value = localStorage.get(key)
 

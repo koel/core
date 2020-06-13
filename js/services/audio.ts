@@ -1,18 +1,7 @@
-interface AudioService {
-  context: AudioContext | null
-  source: MediaElementAudioSourceNode | null
-  element: HTMLMediaElement | null
-
-  init (element: HTMLMediaElement): void
-  getContext(): AudioContext
-  getSource(): MediaElementAudioSourceNode
-  getElement(): HTMLMediaElement
-}
-
-export const audio: AudioService = {
-  context: null,
-  source: null,
-  element: null,
+export const audio = {
+  context: null as AudioContext | null,
+  source: null as MediaElementAudioSourceNode | null,
+  element: null as HTMLMediaElement | null,
 
   init (element: HTMLMediaElement): void {
     const AudioContext = window.AudioContext ||
@@ -26,15 +15,15 @@ export const audio: AudioService = {
     this.element = element
   },
 
-  getContext () {
+  getContext (): AudioContext {
     return this.context!
   },
 
-  getSource () {
+  getSource (): MediaElementAudioSourceNode {
     return this.source!
   },
 
-  getElement () {
+  getElement (): HTMLMediaElement {
     return this.element!
   }
 }
