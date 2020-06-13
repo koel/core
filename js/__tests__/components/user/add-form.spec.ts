@@ -16,12 +16,12 @@ describe('components/user/add-form', () => {
   })
 
   it('adds a new user', () => {
-    const newUser = factory<User>('user')
+    const newUser = factory<User>('user', { is_admin: false })
     const storeStub = mock(userStore, 'store')
     const wrapper = shallow(Component)
     wrapper.setData({ newUser })
     wrapper.submit('form.user-add')
-    expect(storeStub).toHaveBeenCalledWith(newUser.name, newUser.email, newUser.password)
+    expect(storeStub).toHaveBeenCalledWith(newUser.name, newUser.email, newUser.password, false)
   })
 
   it('cancels', async () => {

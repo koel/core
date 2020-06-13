@@ -5,8 +5,10 @@
 
       <div class="right">
         <div>
-          <h1>{{ user.name }}
-            <i v-if="isCurrentUser" class="you fa fa-check-circle"></i>
+          <h1>
+            {{ user.name }}
+            <i v-if="isCurrentUser" class="you fa fa-check-circle" title="This is you!"></i>
+            <i v-if="user.is_admin" class="is-admin fa fa-shield" title="User has admin privileges"></i>
           </h1>
           <p>{{ user.email }}</p>
         </div>
@@ -70,3 +72,59 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+@import "~#/partials/_vars.scss";
+
+.user-item {
+  width: 100%;
+
+  .info {
+    display: flex;
+
+    img {
+      flex: 0 0 128px;
+    }
+
+    .right {
+      flex: 1;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-color: rgba(255, 255, 255, .02);
+      position: relative;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+
+      .you {
+        color: $colorHighlight;
+        margin-left: 5px;
+      }
+
+      .is-admin {
+        color: $colorBlue;
+        margin-left: 5px;
+      }
+    }
+
+    .buttons {
+      display: none;
+      margin-top: 16px;
+    }
+
+    &:hover, html.touchevents & {
+      .buttons {
+        display: block;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 1024px) {
+    width: 100%;
+  }
+}
+</style>

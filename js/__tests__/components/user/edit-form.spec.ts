@@ -24,7 +24,7 @@ describe('components/user/edit-form', () => {
   })
 
   it('saves', () => {
-    const user = factory<User>('user')
+    const user = factory<User>('user', { is_admin: true })
     const updateMock = mock(userStore, 'update')
     const wrapper = shallow(Component, {
       propsData: {
@@ -32,7 +32,7 @@ describe('components/user/edit-form', () => {
       }
     })
     wrapper.submit('form')
-    expect(updateMock).toHaveBeenCalledWith(user, user.name, user.email, user.password)
+    expect(updateMock).toHaveBeenCalledWith(user, user.name, user.email, user.password, true)
   })
 
   it('cancels', async () => {

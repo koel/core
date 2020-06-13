@@ -24,6 +24,15 @@
             v-model="mutatedUser.password"
           >
         </div>
+        <div class="form-row">
+          <label>
+            <input type="checkbox" name="is_admin" v-model="mutatedUser.is_admin"> User is an admin
+            <i
+              class="fa fa-question-circle help-trigger"
+              title="Admins can perform administrative tasks like manage users and upload songs.">
+            </i>
+          </label>
+        </div>
       </div>
 
       <footer>
@@ -59,7 +68,15 @@ export default Vue.extend({
   methods: {
     async submit (): Promise<void> {
       this.loading = true
-      await userStore.update(this.user, this.mutatedUser.name, this.mutatedUser.email, this.mutatedUser.password)
+
+      await userStore.update(
+        this.user,
+        this.mutatedUser.name,
+        this.mutatedUser.email,
+        this.mutatedUser.password,
+        this.mutatedUser.is_admin
+      )
+
       this.loading = false
       this.close()
     },

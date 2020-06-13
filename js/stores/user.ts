@@ -22,8 +22,8 @@ interface UserStore {
   logout(): Promise<void>
   getProfile(): Promise<User>
   updateProfile(password: string): Promise<User>
-  store(name: string, email: string, password: string): Promise<User>
-  update(user: User, name: string, email: string, password: string): Promise<User>
+  store(name: string, email: string, password: string, is_admin: boolean): Promise<User>
+  update(user: User, name: string, email: string, password: string, is_admin: boolean): Promise<User>
   destroy(user: User): Promise<void>
 }
 
@@ -113,9 +113,9 @@ export const userStore: UserStore = {
     })
   },
 
-  store (name: string, email: string, password: string): Promise<User> {
+  store (name: string, email: string, password: string, is_admin: boolean): Promise<User> {
     return new Promise((resolve, reject): void => {
-      http.post('user', { name, email, password }, ({ data: user }: { data: User }): void => {
+      http.post('user', { name, email, password, is_admin }, ({ data: user }: { data: User }): void => {
         this.setAvatar(user)
         this.all.unshift(user)
         alerts.success(`New user &quot;${name}&quot; created.`)
@@ -124,11 +124,11 @@ export const userStore: UserStore = {
     })
   },
 
-  update (user: User, name: string, email: string, password: string): Promise<User> {
+  update (user: User, name: string, email: string, password: string, is_admin: boolean): Promise<User> {
     return new Promise((resolve, reject): void => {
-      http.put(`user/${user.id}`, { name, email, password }, (): void => {
+      http.put(`user/${user.id}`, { name, email, password, is_admin }, (): void => {
         this.setAvatar(user);
-        [user.name, user.email, user.password] = [name, email, '']
+        [user.name, user.email, user.password, user.is_admin] = [name, email, '', is_admin]
         alerts.success('User profile updated.')
         resolve(user)
       }, (error: any) => reject(error))

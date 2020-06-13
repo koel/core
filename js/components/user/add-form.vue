@@ -17,7 +17,16 @@
         </div>
         <div class="form-row">
           <label>Password</label>
-          <input title="Password" type="password" name="password" v-model="newUser.password">
+          <input title="Password" type="password" name="password" v-model="newUser.password" autocomplete="off">
+        </div>
+        <div class="form-row">
+          <label>
+            <input type="checkbox" name="is_admin" v-model="newUser.is_admin"> User is an admin
+            <i
+              class="fa fa-question-circle help-trigger"
+              title="Admins can perform administrative tasks like manage users and upload songs.">
+            </i>
+          </label>
         </div>
       </div>
 
@@ -48,7 +57,7 @@ export default Vue.extend({
   methods: {
     async submit (): Promise<void> {
       this.loading = true
-      await userStore.store(this.newUser.name, this.newUser.email, this.newUser.password)
+      await userStore.store(this.newUser.name, this.newUser.email, this.newUser.password, this.newUser.is_admin)
       this.loading = false
       this.close()
     },
@@ -59,3 +68,13 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+@import "~#/partials/_vars.scss";
+
+.help-trigger {
+  margin-left: 4px;
+  display: inline-block;
+  color: $colorBlue;
+}
+</style>
