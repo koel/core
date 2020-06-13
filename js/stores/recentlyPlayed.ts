@@ -33,18 +33,13 @@ export const recentlyPlayedStore: RecentlyPlayedStore = {
     this.excerptState.songs = songStore.byIds(songIds)
   },
 
-  fetchAll (): Promise<Song[]> {
-    return new Promise((resolve, reject): void => {
-      if (this.fetched) {
-        resolve(this.state.songs)
-        return
-      }
+  async fetchAll (): Promise<Song[]> {
+    if (!this.fetched) {
+      this.state.songs = songStore.byIds(await http.get<string[]>(`interaction/recently-played`))
+      this.fetched = true
+    }
 
-      http.get(`interaction/recently-played`, ({ data }: { data: string[] }): void => {
-        this.state.songs = songStore.byIds(data)
-        resolve(this.state.songs)
-      }, (error: any) => reject(error))
-    })
+    return this.state.songs
   },
 
   add (song: Song): void {

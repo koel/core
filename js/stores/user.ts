@@ -21,9 +21,9 @@ interface UserStore {
   login(email: string, password: string): Promise<User>
   logout(): Promise<void>
   getProfile(): Promise<User>
-  updateProfile(password: string): Promise<User>
+  updateProfile(password: string): Promise<void>
   store(name: string, email: string, password: string, is_admin: boolean): Promise<User>
-  update(user: User, name: string, email: string, password: string, is_admin: boolean): Promise<User>
+  update(user: User, name: string, email: string, password: string, is_admin: boolean): Promise<void>
   destroy(user: User): Promise<void>
 }
 
@@ -76,95 +76,67 @@ export const userStore: UserStore = {
     Vue.set(user, 'avatar', `https://www.gravatar.com/avatar/${md5(user.email)}?s=256`)
   },
 
-  login: (email: string, password: string): Promise<User> => new Promise((resolve, reject): void => {
-    http.post('me', { email, password }, ({ data }: { data: User }): void => {
-      resolve(data)
-    }, (error: any) => reject(error))
-  }),
-
-  logout: (): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      http.delete('me', {}, (): void => {
-        resolve()
-      }, (error: any) => reject(error))
-    })
+  login: async (email: string, password: string): Promise<User> => {
+    return await http.post<User>('me', { email, password })
   },
 
-  getProfile: (): Promise<User> => {
-    return new Promise((resolve, reject): void => {
-      http.get('me', ({ data }: { data: User }) => {
-        resolve(data)
-      }, (error: any) => reject(error))
-    })
+  logout: async (): Promise<void> => {
+    await http.delete('me')
   },
 
-  updateProfile (password: string): Promise<User> {
-    return new Promise((resolve, reject): void => {
-      http.put('me', {
-        password,
-        name: this.current.name,
-        email: this.current.email
-      }, (): void => {
-        this.setAvatar()
-        alerts.success('Profile updated.')
-        resolve(this.current)
-      },
-      (error: any) => reject(error))
-    })
+  getProfile: async (): Promise<User> => {
+    return await http.get<User>('me')
   },
 
-  store (name: string, email: string, password: string, is_admin: boolean): Promise<User> {
-    return new Promise((resolve, reject): void => {
-      http.post('user', { name, email, password, is_admin }, ({ data: user }: { data: User }): void => {
-        this.setAvatar(user)
-        this.all.unshift(user)
-        alerts.success(`New user &quot;${name}&quot; created.`)
-        resolve(user)
-      }, (error: any) => reject(error))
+  async updateProfile (password: string): Promise<void> {
+    await http.put('me', {
+      password,
+      name: this.current.name,
+      email: this.current.email
     })
+
+    this.setAvatar()
+    alerts.success('Profile updated.')
   },
 
-  update (user: User, name: string, email: string, password: string, is_admin: boolean): Promise<User> {
-    return new Promise((resolve, reject): void => {
-      http.put(`user/${user.id}`, { name, email, password, is_admin }, (): void => {
-        this.setAvatar(user);
-        [user.name, user.email, user.password, user.is_admin] = [name, email, '', is_admin]
-        alerts.success('User profile updated.')
-        resolve(user)
-      }, (error: any) => reject(error))
-    })
+  async store (name: string, email: string, password: string, is_admin: boolean): Promise<User> {
+    const user = await http.post<User>('user', { name, email, password, is_admin })
+    this.setAvatar(user)
+    this.all.unshift(user)
+    alerts.success(`New user &quot;${name}&quot; created.`)
+
+    return user
   },
 
-  destroy (user: User): Promise<void> {
-    return new Promise((resolve, reject): void => {
-      http.delete(`user/${user.id}`, {}, (): void => {
-        this.all = without(this.all, user)
-        alerts.success(`User &quot;${user.name}&quot; deleted.`)
+  async update (user: User, name: string, email: string, password: string, is_admin: boolean): Promise<void> {
+    await http.put(`user/${user.id}`, { name, email, password, is_admin })
+    this.setAvatar(user);
+    [user.name, user.email, user.password, user.is_admin] = [name, email, '', is_admin]
+    alerts.success('User profile updated.')
+  },
 
-        // Mama, just killed a man
-        // Put a gun against his head
-        // Pulled my trigger, now he's dead
-        // Mama, life had just begun
-        // But now I've gone and thrown it all away
-        // Mama, oooh
-        // Didn't mean to make you cry
-        // If I'm not back again this time tomorrow
-        // Carry on, carry on, as if nothing really matters
-        //
-        // Too late, my time has come
-        // Sends shivers down my spine
-        // Body's aching all the time
-        // Goodbye everybody - I've got to go
-        // Gotta leave you all behind and face the truth
-        // Mama, oooh
-        // I don't want to die
-        // I sometimes wish I'd never been born at all
+  async destroy (user: User): Promise<void> {
+    await http.delete(`user/${user.id}`)
+    this.all = without(this.all, user)
+    alerts.success(`User &quot;${user.name}&quot; deleted.`)
 
-        /**
-         * Brian May enters the stage.
-         */
-        resolve()
-      }, (error: any) => reject(error))
-    })
+    // Mama, just killed a man
+    // Put a gun against his head
+    // Pulled my trigger, now he's dead
+    // Mama, life had just begun
+    // But now I've gone and thrown it all away
+    // Mama, oooh
+    // Didn't mean to make you cry
+    // If I'm not back again this time tomorrow
+    // Carry on, carry on, as if nothing really matters
+    //
+    // Too late, my time has come
+    // Sends shivers down my spine
+    // Body's aching all the time
+    // Goodbye everybody - I've got to go
+    // Gotta leave you all behind and face the truth
+    // Mama, oooh
+    // I don't want to die
+    // I sometimes wish I'd never been born at all
   }
 }

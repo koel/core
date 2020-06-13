@@ -11,12 +11,12 @@ interface FavoriteStore {
   }
   all: Song[],
 
-  toggleOne(song: Song): Promise<Song>
+  toggleOne(song: Song): Promise<void>
   add(songs: Song | Song[]): void
   remove(songs: Song | Song[]): void
   clear(): void
-  like(songs: Song[]): Promise<Song[]>
-  unlike(songs: Song[]): Promise<Song[]>
+  like(songs: Song[]): Promise<void>
+  unlike(songs: Song[]): Promise<void>
 }
 
 export const favoriteStore: FavoriteStore = {
@@ -34,18 +34,13 @@ export const favoriteStore: FavoriteStore = {
     this.state.songs = value
   },
 
-  toggleOne (song: Song): Promise<Song> {
+  async toggleOne (song: Song): Promise<void> {
     // Don't wait for the HTTP response to update the status, just toggle right away.
     // This may cause a minor problem if the request fails somehow, but do we care?
     song.liked = !song.liked
     song.liked ? this.add(song) : this.remove(song)
 
-    return new Promise((resolve, reject) => {
-      http.post('interaction/like', { song: song.id }, ({ data }: { data: Song }) => {
-        // We don't really need to notify just for one song.
-        resolve(data)
-      }, (error: any) => reject(error))
-    })
+    await http.post<Song>('interaction/like', { song: song.id })
   },
 
   /**
@@ -66,33 +61,19 @@ export const favoriteStore: FavoriteStore = {
     this.all = []
   },
 
-  like (songs: Song[]): Promise<Song[]> {
+  async like (songs: Song[]): Promise<void> {
     // Don't wait for the HTTP response to update the status, just set them to Liked right away.
     // This may cause a minor problem if the request fails somehow, but do we care?
     songs.forEach(song => { song.liked = true })
     this.add(songs)
 
-    return new Promise((resolve, reject): void => {
-      http.post('interaction/batch/like', {
-        songs: songs.map(song => song.id)
-      }, ({ data }: { data: Song[] }): void => {
-        alerts.success(`Added ${pluralize(songs.length, 'song')} into Favorites.`)
-        resolve(data)
-      }, (error: any) => reject(error))
-    })
+    await http.post('interaction/batch/like', { songs: songs.map(song => song.id) })
   },
 
-  unlike (songs: Song[]): Promise<Song[]> {
+  async unlike (songs: Song[]): Promise<void> {
     songs.forEach(song => { song.liked = false })
     this.remove(songs)
 
-    return new Promise((resolve, reject): void => {
-      http.post('interaction/batch/unlike', {
-        songs: songs.map(song => song.id)
-      }, ({ data }: { data: Song[] }): void => {
-        alerts.success(`Removed ${pluralize(songs.length, 'song')} from Favorites.`)
-        resolve(data)
-      }, (error: any) => reject(error))
-    })
+    await http.post('interaction/batch/unlike', { songs: songs.map(song => song.id) })
   }
 }

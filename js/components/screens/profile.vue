@@ -179,7 +179,9 @@ export default Vue.extend({
     /**
      * Disconnect the current user from Last.fm.
      */
-    disconnectFromLastfm: (): void => http.delete('lastfm/disconnect', {}, forceReloadWindow)
+    disconnectFromLastfm: (): void => {
+      http.delete('lastfm/disconnect').then(forceReloadWindow)
+    }
   }
 })
 </script>

@@ -114,10 +114,9 @@ export const artistStore: ArtistStore = {
    * @param {Artist} artist The artist object
    * @param {string} image The content data string of the image
    */
-  uploadImage: (artist: Artist, image: string): Promise<string> => new Promise((resolve, reject) => {
-    http.put(`artist/${artist.id}/image`, { image }, ({ data: { imageUrl } }: { data: { imageUrl: string } }): void => {
-      artist.image = imageUrl
-      resolve(imageUrl)
-    }, (error: any) => reject(error))
-  })
+  uploadImage: async (artist: Artist, image: string): Promise<string> => {
+    const { imageUrl } = await http.put<{ imageUrl: string }>(`artist/${artist.id}/image`, { image })
+    artist.image = imageUrl
+    return artist.image
+  }
 }

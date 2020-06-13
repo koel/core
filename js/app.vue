@@ -103,7 +103,7 @@ export default Vue.extend({
 
           // Ping the server everytime the window is focused, so that we don't have those
           // "suddent" logout.
-          window.addEventListener('focus', (): void => http.get('/ping'))
+          window.addEventListener('focus', () => http.get('/ping'))
 
           this.subscribeToBroadcastedEvents()
 

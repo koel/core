@@ -1,18 +1,16 @@
 import { http } from '..'
 
 export const artistInfo = {
-  fetch (artist: Artist): Promise<Artist> {
-    return new Promise((resolve, reject): void => {
-      if (artist.info) {
-        resolve(artist)
-        return
-      }
+  async fetch (artist: Artist): Promise<Artist> {
+    if (!artist.info) {
+      const info = await http.get<ArtistInfo|null>(`artist/${artist.id}/info`)
 
-      http.get(`artist/${artist.id}/info`, ({ data }: { data: ArtistInfo }): void => {
-        data && this.merge(artist, data)
-        resolve(artist)
-      }, (error: any) => reject(error))
-    })
+      if (info) {
+        this.merge(artist, info)
+      }
+    }
+
+    return artist
   },
 
   /**

@@ -63,36 +63,32 @@ export const sharedStore: SharedStore = {
     useYouTube: false
   },
 
-  init (): Promise<SharedState> {
-    return new Promise((resolve, reject) => {
-      http.get('data', ({ data }: { data: SharedState }) => {
-        this.state = Object.assign(this.state, data)
+  async init (): Promise<SharedState> {
+    this.state = Object.assign(this.state, await http.get<SharedState>('data'))
 
-        // Don't allow downloading on mobile devices
-        this.state.allowDownload = this.state.allowDownload && !isMobile.any
+    // Don't allow downloading on mobile devices
+    this.state.allowDownload = this.state.allowDownload && !isMobile.any
 
-        // Always disable YouTube integration on mobile.
-        this.state.useYouTube = this.state.useYouTube && !isMobile.phone
+    // Always disable YouTube integration on mobile.
+    this.state.useYouTube = this.state.useYouTube && !isMobile.phone
 
-        // If this is a new user, initialize his preferences to be an empty object.
-        this.state.currentUser!.preferences = this.state.currentUser!.preferences || {}
+    // If this is a new user, initialize his preferences to be an empty object.
+    this.state.currentUser!.preferences = this.state.currentUser!.preferences || {}
 
-        userStore.init(this.state.users, this.state.currentUser!)
-        preferenceStore.init(this.state.currentUser)
-        artistStore.init(this.state.artists)
-        albumStore.init(this.state.albums)
-        songStore.init(this.state.songs)
-        songStore.initInteractions(this.state.interactions)
-        recentlyPlayedStore.initExcerpt(this.state.recentlyPlayed)
-        playlistStore.init(this.state.playlists)
-        queueStore.init()
-        settingStore.init(this.state.settings)
+    userStore.init(this.state.users, this.state.currentUser!)
+    preferenceStore.init(this.state.currentUser)
+    artistStore.init(this.state.artists)
+    albumStore.init(this.state.albums)
+    songStore.init(this.state.songs)
+    songStore.initInteractions(this.state.interactions)
+    recentlyPlayedStore.initExcerpt(this.state.recentlyPlayed)
+    playlistStore.init(this.state.playlists)
+    queueStore.init()
+    settingStore.init(this.state.settings)
 
-        // Keep a copy of the media path. We'll need this to properly warn the user later.
-        this.state.originalMediaPath = this.state.settings.media_path
+    // Keep a copy of the media path. We'll need this to properly warn the user later.
+    this.state.originalMediaPath = this.state.settings.media_path
 
-        resolve(this.state)
-      }, (error: any) => reject(error))
-    })
+    return this.state
   }
 }

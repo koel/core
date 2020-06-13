@@ -23,7 +23,7 @@ interface AlbumStore {
   getMostPlayed(n: number): Album[]
   getRecentlyAdded(n: number): Album[]
   uploadCover(album: Album, cover: string): Promise<string>
-  getThumbnail(album: Album): Promise<string>
+  getThumbnail(album: Album): Promise<string|null>
 }
 
 export const albumStore: AlbumStore = {
@@ -106,24 +106,22 @@ export const albumStore: AlbumStore = {
    * @param {Album} album The album object
    * @param {string} cover The content data string of the cover
    */
-  uploadCover: (album: Album, cover: string): Promise<string> => new Promise((resolve, reject): void => {
-    http.put(`album/${album.id}/cover`, { cover }, ({ data: { coverUrl } }: { data: { coverUrl: string }}): void => {
-      album.cover = coverUrl
-      resolve(coverUrl)
-    }, (error: any) => reject(error))
-  }),
+  uploadCover: async (album: Album, cover: string): Promise<string> => {
+    const { coverUrl } = await http.put<{ coverUrl: string }>(`album/${album.id}/cover`, { cover })
+    album.cover = coverUrl
+    return album.cover
+  },
 
-  getThumbnail: async (album: Album): Promise<string> => new Promise((resolve, reject): void => {
-    if (album.thumbnail) {
-      resolve(album.thumbnail)
+  /**
+   * Get the (blurry) thumbnail-sized version of an album's cover.
+   */
+  getThumbnail: async (album: Album): Promise<string|null> => {
+    if (album.thumbnail === undefined) {
+      const { thumbnailUrl } = await http.get<{ thumbnailUrl: string }>(`album/${album.id}/thumbnail`)
+
+      album.thumbnail = thumbnailUrl
     }
 
-    http.get(`album/${album.id}/thumbnail`, ({ data: { thumbnailUrl } }: { data: { thumbnailUrl: string }}): void => {
-      if (thumbnailUrl) {
-        album.thumbnail = thumbnailUrl
-      }
-
-      resolve(thumbnailUrl)
-    }, (error: any) => reject(error))
-  })
+    return album.thumbnail
+  }
 }

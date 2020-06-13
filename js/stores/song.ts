@@ -43,7 +43,7 @@ interface SongStore {
   getLength(songs: Song[], formatted: boolean): number|string
   getFormattedLength(songs: Song[]): string
   guess(title: string, album: Album): Song | null
-  registerPlay(song: Song): Promise<Interaction>
+  registerPlay(song: Song): Promise<void>
   scrobble(song: Song): Promise<any>
   update(songs: Song[], data: object): Promise<Song[]>
   getSourceUrl(song: Song): string
@@ -51,6 +51,12 @@ interface SongStore {
   getMostPlayed(n: number): Song[]
   getRecentlyAdded(n: number): Song[]
   generateDataToBroadcast(song: Song): BroadcastedSongData
+}
+
+interface SongUpdateResult {
+  songs: Song[]
+  artists: Artist[]
+  albums: Album[]
 }
 
 export const songStore: SongStore = {
@@ -131,7 +137,7 @@ export const songStore: SongStore = {
   },
 
   getFormattedLength (songs: Song[]): string {
-    return <string>this.getLength(songs, true)
+    return <string> this.getLength(songs, true)
   },
 
   get all () {
@@ -169,64 +175,55 @@ export const songStore: SongStore = {
   /**
    * Increase a play count for a song.
    */
-  registerPlay: (song: Song): Promise<Interaction> => {
-    return new Promise((resolve, reject): void => {
-      const oldCount = song.playCount
+  registerPlay: async (song: Song): Promise<void> => {
+    const oldCount = song.playCount
 
-      http.post('interaction/play', { song: song.id }, ({ data }: { data: Interaction }): void => {
-        // Use the data from the server to make sure we don't miss a play from another device.
-        song.playCount = data.play_count
-        song.album.playCount += song.playCount - oldCount
-        song.artist.playCount += song.playCount - oldCount
+    const interaction = await http.post<Interaction>('interaction/play', { song: song.id })
 
-        resolve(data)
-      }, (error: any) => reject(error))
-    })
+    // Use the data from the server to make sure we don't miss a play from another device.
+    song.playCount = interaction.play_count
+    song.album.playCount += song.playCount - oldCount
+    song.artist.playCount += song.playCount - oldCount
   },
 
-  scrobble: (song: Song): Promise<any> => {
-    return new Promise((resolve, reject): void => {
-      http.post(`${song.id}/scrobble/${song.playStartTime}`, {}, (): void => {
-        resolve()
-      }, (error: any) => reject(error))
-    })
+  scrobble: async (song: Song): Promise<void> => {
+    await http.post(`${song.id}/scrobble/${song.playStartTime}`, {})
   },
 
-  update (songs: Song[], data: any): Promise<Song[]> {
-    return new Promise((resolve, reject) => {
-      http.put('songs', {
-        data,
-        songs: songs.map(song => song.id)
-      }, ({ data: { songs, artists, albums }}: { data: { songs: Song[], artists: Artist[], albums: Album[] }}) => {
-        // Add the artist and album into stores if they're new
-        artists.forEach(artist => !artistStore.byId(artist.id) && artistStore.add(artist))
-        albums.forEach(album => !albumStore.byId(album.id) && albumStore.add(album))
-
-        songs.forEach(song => {
-          let originalSong = this.byId(song.id)
-
-          if (originalSong.album_id !== song.album_id) {
-            // album has been changed. Remove the song from its old album.
-            originalSong.album.songs = without(originalSong.album.songs, originalSong)
-          }
-
-          if (originalSong.artist_id !== song.artist_id) {
-            // artist has been changed. Remove the song from its old artist
-            originalSong.artist.songs = without(originalSong.artist.songs, originalSong)
-          }
-
-          originalSong = Object.assign(originalSong, song)
-          // re-setup the song
-          this.setupSong(originalSong)
-        })
-
-        artistStore.compact()
-        albumStore.compact()
-
-        alerts.success(`Updated ${pluralize(songs.length, 'song')}.`)
-        resolve(songs)
-      }, (error: any) => reject(error))
+  async update (songsToUpdate: Song[], data: any): Promise<Song[]> {
+    const { songs, artists, albums } = await http.put<SongUpdateResult>('songs', {
+      data,
+      songs: songsToUpdate.map(song => song.id)
     })
+
+    // Add the artist and album into stores if they're new
+    artists.forEach(artist => !artistStore.byId(artist.id) && artistStore.add(artist))
+    albums.forEach(album => !albumStore.byId(album.id) && albumStore.add(album))
+
+    songs.forEach(song => {
+      let originalSong = this.byId(song.id)
+
+      if (originalSong.album_id !== song.album_id) {
+        // album has been changed. Remove the song from its old album.
+        originalSong.album.songs = without(originalSong.album.songs, originalSong)
+      }
+
+      if (originalSong.artist_id !== song.artist_id) {
+        // artist has been changed. Remove the song from its old artist
+        originalSong.artist.songs = without(originalSong.artist.songs, originalSong)
+      }
+
+      originalSong = Object.assign(originalSong, song)
+      // re-setup the song
+      this.setupSong(originalSong)
+    })
+
+    artistStore.compact()
+    albumStore.compact()
+
+    alerts.success(`Updated ${pluralize(songs.length, 'song')}.`)
+
+    return songs
   },
 
   getSourceUrl: (song: Song): string => {

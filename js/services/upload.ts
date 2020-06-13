@@ -45,7 +45,7 @@ export const upload = {
     return this.state.files.find(file => file.status === 'Ready')
   },
 
-  upload (file: UploadFile): void {
+  async upload (file: UploadFile): Promise<void> {
     if (file.status === 'Uploading') {
       return
     }
@@ -55,21 +55,23 @@ export const upload = {
     file.progress = 0
     file.status = 'Uploading'
 
-    http.post('upload', formData, ({ data: { song } }: { data: { song: SongUploadResult }}): void => {
+    try {
+      const song = await http.post<SongUploadResult>('upload', formData, (progressEvent: ProgressEvent): void => {
+        file.progress = progressEvent.loaded * 100 / progressEvent.total
+      })
+
       file.status = 'Uploaded'
       this.populateUploadResultIntoStores(song)
       this.proceed() // upload the next file
       window.setTimeout((): void => this.remove(file), 1000)
       eventBus.emit(events.SONG_UPLOADED)
-      this.checkUploadQueueStatus()
-    }, (err: any): void => {
-      file.message = `Upload failed: ${err.response.data.message}`
+    } catch (error) {
+      file.message = `Upload failed: ${error.response.data.message}`
       file.status = 'Errored'
       this.proceed() // upload the next file
+    } finally {
       this.checkUploadQueueStatus()
-    }, (progressEvent: ProgressEvent): void => {
-      file.progress = progressEvent.loaded * 100 / progressEvent.total
-    })
+    }
   },
 
   retry (file: UploadFile): void {

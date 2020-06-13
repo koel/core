@@ -28,12 +28,8 @@ export const settingStore: SettingStore = {
     return this.state.settings
   },
 
-  update (): Promise<void> {
-    return new Promise((resolve, reject): void => {
-      http.post('settings', this.all, (): void => {
-        alerts.success('Settings saved.')
-        resolve()
-      }, (error: any) => reject(error))
-    })
+  async update (): Promise<void> {
+    await http.post('settings', this.all)
+    alerts.success('Settings saved.')
   }
 }

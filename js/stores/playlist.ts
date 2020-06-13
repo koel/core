@@ -23,7 +23,7 @@ interface PlaylistStore {
   add(playlists: Playlist | Playlist[]): void
   remove(playlists: Playlist | Playlist[]): void
   store(name: string, songs?: Song[], rules?: SmartPlaylistRuleGroup[]): Promise<Playlist>
-  delete(playlist: Playlist): Promise<any>
+  delete(playlist: Playlist): Promise<void>
   addSongs(playlist: Playlist, songs: Song[]): Promise<Playlist>
   removeSongs(playlist: Playlist, songs: Song[]): Promise<Playlist>
   update(playlist: Playlist): Promise<Playlist>
@@ -72,13 +72,13 @@ export const playlistStore: PlaylistStore = {
     this.state.playlists = value
   },
 
-  fetchSongs: (playlist: Playlist): Promise<Playlist> => new Promise((resolve, reject): void => {
-    http.get(`playlist/${playlist.id}/songs`, ({ data }: { data: string[] }) => {
-      playlist.songs = songStore.byIds(data)
-      playlist.populated = true
-      resolve(playlist)
-    }, (error: any) => reject(error))
-  }),
+  fetchSongs: async (playlist: Playlist): Promise<Playlist> => {
+    const songIds = await http.get<string[]>(`playlist/${playlist.id}/songs`)
+    playlist.songs = songStore.byIds(songIds)
+    playlist.populated = true
+
+    return playlist
+  },
 
   byId (id: number): Playlist {
     return <Playlist> this.all.find(song => song.id === id)
@@ -108,34 +108,26 @@ export const playlistStore: PlaylistStore = {
     this.all = difference(this.all, (<Playlist[]>[]).concat(playlists))
   },
 
-  store (name: string, songs: Song[] = [], rules: SmartPlaylistRuleGroup[] = []): Promise<Playlist> {
+  async store (name: string, songs: Song[] = [], rules: SmartPlaylistRuleGroup[] = []): Promise<Playlist> {
     const songIds = songs.map(song => song.id)
     const serializedRules = this.serializeSmartPlaylistRulesForStorage(rules)
 
-    return new Promise((resolve, reject): void => http.post(
-      'playlist',
-      { name, songs: songIds, rules: serializedRules }, ({ data: playlist }: { data: Playlist }) => {
-        playlist.songs = songs
-        this.populateContent(playlist)
-        this.add(playlist)
-        alerts.success(`Created playlist &quot;${playlist.name}&quot;.`)
+    const playlist = await http.post<Playlist>('playlist', { name, songs: songIds, rules: serializedRules })
+    playlist.songs = songs
+    this.populateContent(playlist)
+    this.add(playlist)
+    alerts.success(`Created playlist &quot;${playlist.name}&quot;.`)
 
-        if (playlist.is_smart) {
-          this.setupSmartPlaylist(playlist)
-        }
+    if (playlist.is_smart) {
+      this.setupSmartPlaylist(playlist)
+    }
 
-        resolve(playlist)
-      }, (error: any) => reject(error))
-    )
+    return playlist
   },
 
-  delete (playlist: Playlist): Promise<any> {
-    return new Promise((resolve, reject): void => {
-      http.delete(`playlist/${playlist.id}`, {}, ({ data }: { data: any }) => {
-        this.remove(playlist)
-        resolve(data)
-      }, (error: any) => reject(error))
-    })
+  async delete (playlist: Playlist): Promise<void> {
+    await http.delete(`playlist/${playlist.id}`)
+    this.remove(playlist)
   },
 
   async addSongs (playlist: Playlist, songs: Song[]): Promise<Playlist> {
@@ -143,55 +135,43 @@ export const playlistStore: PlaylistStore = {
       await this.fetchSongs(playlist)
     }
 
-    return new Promise((resolve, reject): void => {
-      const count = playlist.songs.length
-      playlist.songs = union(playlist.songs, songs)
+    const count = playlist.songs.length
+    playlist.songs = union(playlist.songs, songs)
 
-      if (count === playlist.songs.length) {
-        resolve(playlist)
-        return
-      }
+    if (count === playlist.songs.length) {
+      return playlist
+    }
 
-      http.put(`playlist/${playlist.id}/sync`, { songs: playlist.songs.map(song => song.id) }, (): void => {
-        alerts.success(`Added ${pluralize(songs.length, 'song')} into &quot;${playlist.name}&quot;.`)
+    await http.put(`playlist/${playlist.id}/sync`, { songs: playlist.songs.map(song => song.id) })
+    alerts.success(`Added ${pluralize(songs.length, 'song')} into &quot;${playlist.name}&quot;.`)
 
-        // Playlist's songs are not reactive right away for some reason.
-        // This is a dirty hack to force reactivity.
-        playlist.name = `${playlist.name} `
-        playlist.name = playlist.name.trim()
+    // Playlist's songs are not reactive right away for some reason.
+    // This is a dirty hack to force reactivity.
+    playlist.name = `${playlist.name} `
+    playlist.name = playlist.name.trim()
 
-        resolve(playlist)
-      }, (error: any) => reject(error))
-    })
+    return playlist
   },
 
-  removeSongs: (playlist: Playlist, songs: Song[]): Promise<Playlist> => {
-    return new Promise((resolve, reject) => {
-      if (playlist.is_smart) {
-        resolve(playlist)
-        return
-      }
+  removeSongs: async (playlist: Playlist, songs: Song[]): Promise<Playlist> => {
+    if (playlist.is_smart) {
+      return playlist
+    }
 
-      playlist.songs = difference(playlist.songs, songs)
-      http.put(`playlist/${playlist.id}/sync`, { songs: playlist.songs.map(song => song.id) }, (): void => {
-        alerts.success(`Removed ${pluralize(songs.length, 'song')} from &quot;${playlist.name}&quot;.`)
-        resolve(playlist)
-      }, (error: any) => reject(error))
-    })
+    playlist.songs = difference(playlist.songs, songs)
+    await http.put(`playlist/${playlist.id}/sync`, { songs: playlist.songs.map(song => song.id) })
+    alerts.success(`Removed ${pluralize(songs.length, 'song')} from &quot;${playlist.name}&quot;.`)
+
+    return playlist
   },
 
-  update (playlist: Playlist): Promise<Playlist> {
+  async update (playlist: Playlist): Promise<Playlist> {
     const serializedRules = this.serializeSmartPlaylistRulesForStorage(playlist.rules)
 
-    return new Promise((resolve, reject): void => http.put(
-      `playlist/${playlist.id}`,
-      { name: playlist.name, rules: serializedRules },
-      (): void => {
-        alerts.success(`Updated playlist &quot;${playlist.name}&quot;.`)
-        resolve(playlist)
-      },
-      (error: any) => reject(error)
-    ))
+    await http.put(`playlist/${playlist.id}`, { name: playlist.name, rules: serializedRules })
+    alerts.success(`Updated playlist &quot;${playlist.name}&quot;.`)
+
+    return playlist
   },
 
   createEmptySmartPlaylistRule: (): SmartPlaylistRule => ({

@@ -2,18 +2,16 @@ import { secondsToHis } from '@/utils'
 import { http } from '..'
 
 export const albumInfo = {
-  fetch (album: Album): Promise<Album> {
-    return new Promise((resolve, reject): void => {
-      if (album.info) {
-        resolve(album)
-        return
-      }
+  async fetch (album: Album): Promise<Album> {
+    if (!album.info) {
+      const info = await http.get<AlbumInfo|null>(`album/${album.id}/info`)
 
-      http.get(`album/${album.id}/info`, ({ data }: { data: AlbumInfo | null }): void => {
-        data && this.merge(album, data)
-        resolve(album)
-      }, (error: any) => reject(error))
-    })
+      if (info) {
+        this.merge(album, info)
+      }
+    }
+
+    return album
   },
 
   /**
@@ -21,7 +19,11 @@ export const albumInfo = {
    */
   merge: (album: Album, info: AlbumInfo): void => {
     // Convert the duration into i:s
-    info.tracks && info.tracks.forEach(track => (track.fmtLength = secondsToHis(track.length)))
+    if (info.tracks) {
+      info.tracks.forEach(track => {
+        track.fmtLength = secondsToHis(track.length)
+      })
+    }
 
     // If the album cover is not in a nice form, discard.
     if (typeof info.image !== 'string') {

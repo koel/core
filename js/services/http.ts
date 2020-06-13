@@ -25,24 +25,29 @@ export const http = {
     }
   },
 
-  request (method: Method, url: string, data: object, successCb: any, errorCb: any, onUploadProgress?: any): void {
-    this.client!.request({ url, data, method, onUploadProgress }).then(successCb).catch(errorCb)
+  request <T> (method: Method, url: string, data: object = {}, onUploadProgress?: any): Promise<{ data: T}> {
+    return this.client?.request({
+      url,
+      data,
+      method,
+      onUploadProgress
+    }) as Promise<{ data: T }>
   },
 
-  get (url: string, successCb?: any, errorCb?: any): void {
-    this.request('get', url, {}, successCb, errorCb)
+  async get <T> (url: string): Promise<T> {
+    return (await this.request<T>('get', url)).data
   },
 
-  post (url: string, data: object, successCb?: any, errorCb?: any, onUploadProgress?: any): void {
-    this.request('post', url, data, successCb, errorCb, onUploadProgress)
+  async post <T> (url: string, data: object, onUploadProgress?: any): Promise<T> {
+    return (await this.request<T>('post', url, data, onUploadProgress)).data
   },
 
-  put (url: string, data: object, successCb?: any, errorCb?: any): void {
-    this.request('put', url, data, successCb, errorCb)
+  async put <T> (url: string, data: object): Promise<T> {
+    return (await this.request<T>('put', url, data)).data
   },
 
-  delete (url: string, data: object = {}, successCb?: any, errorCb?: any): void {
-    this.request('delete', url, data, successCb, errorCb)
+  async delete <T> (url: string, data: object = {}): Promise<T> {
+    return (await this.request<T>('delete', url, data)).data
   },
 
   init (): void {

@@ -14,13 +14,8 @@ interface YouTubeSearchResult {
 }
 
 export const youtube: YouTube = {
-  searchVideosRelatedToSong: (song: Song, nextPageToken: string): Promise<YouTubeSearchResult> => {
-    return new Promise((resolve, reject): void => {
-      http.get(`youtube/search/song/${song.id}?pageToken=${nextPageToken}`,
-        ({ data: { nextPageToken, items } }: { data: YouTubeSearchResult }) => resolve({ nextPageToken, items }),
-        (error: any) => reject(error)
-      )
-    })
+  searchVideosRelatedToSong: async (song: Song, nextPageToken: string): Promise<YouTubeSearchResult> => {
+    return await http.get<YouTubeSearchResult>(`youtube/search/song/${song.id}?pageToken=${nextPageToken}`)
   },
 
   play: (video: YouTubeVideo): void => {
