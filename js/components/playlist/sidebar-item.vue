@@ -105,7 +105,7 @@ export default Vue.extend({
         return false
       }
 
-      if (!e.dataTransfer || !e.dataTransfer.getData('application/x-koel.text+plain')) {
+      if (!e.dataTransfer?.getData('application/x-koel.text+plain')) {
         return false
       }
 
