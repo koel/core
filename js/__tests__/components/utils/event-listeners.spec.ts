@@ -2,7 +2,7 @@ import Component from '@/components/utils/event-listeners.vue'
 import factory from '@/__tests__/factory'
 import { playlistStore, userStore } from '@/stores'
 import router from '@/router'
-import { ls } from '@/services'
+import { auth } from '@/services'
 import { alerts, eventBus } from '@/utils'
 import { events } from '@/config'
 import { mock } from '@/__tests__/__helpers__'
@@ -44,13 +44,13 @@ describe('utils/event-listeners', () => {
 
   it('listens to log out event', () => {
     const wrapper = mount(Component)
-    const lsRemoveMock = mock(ls, 'remove')
+    const authDestroyMock = mock(auth, 'destroy')
     const logOutMock = mock(userStore, 'logout')
 
     eventBus.emit(events.LOG_OUT)
 
     wrapper.vm.$nextTick(() => {
-      expect(lsRemoveMock).toHaveBeenCalledWith('jwt-token')
+      expect(authDestroyMock).toHaveBeenCalled()
       expect(logOutMock).toHaveBeenCalled()
     })
   })

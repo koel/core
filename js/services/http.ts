@@ -3,7 +3,7 @@ import NProgress from 'nprogress'
 
 import { eventBus } from '@/utils'
 import { events } from '@/config'
-import { ls } from '@/services'
+import { ls, auth } from '@/services'
 
 export const http = {
   client: null as AxiosInstance | null,
@@ -58,7 +58,7 @@ export const http = {
     // Intercept the request to make sure the token is injected into the header.
     this.client.interceptors.request.use(config => {
       this.setProgressBarAfterDelay()
-      config.headers.Authorization = `Bearer ${ls.get('jwt-token')}`
+      config.headers.Authorization = `Bearer ${auth.getToken()}`
       return config
     })
 
@@ -70,7 +70,7 @@ export const http = {
       const token = response.headers.Authorization || response.data.token
 
       if (token) {
-        ls.set('jwt-token', token)
+        auth.setToken(token)
       }
 
       return response

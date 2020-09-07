@@ -4,11 +4,11 @@ import { without, take, remove, orderBy, unionBy } from 'lodash'
 import isMobile from 'ismobilejs'
 
 import { secondsToHis, alerts, pluralize } from '@/utils'
-import { http, ls } from '@/services'
+import { http, auth, ls } from '@/services'
 import { sharedStore, favoriteStore, albumStore, artistStore, preferenceStore } from '.'
 import stub from '@/stubs/song'
 
-interface BroadcastedSongData {
+interface BroadcastSongData {
   song: {
     id: string
     title: string
@@ -98,6 +98,7 @@ export const songStore = {
   /**
    * Get the total duration of some songs.
    *
+   * @param songs
    * @param {Boolean} formatted Whether to convert the duration into H:i:s format
    */
   getLength: (songs: Song[], formatted: boolean = false): number | string => {
@@ -198,13 +199,13 @@ export const songStore = {
 
   getSourceUrl: (song: Song): string => {
     if (isMobile.any && preferenceStore.transcodeOnMobile) {
-      return `${sharedStore.state.cdnUrl}api/${song.id}/play/1/128?jwt-token=${ls.get('jwt-token')}`
+      return `${sharedStore.state.cdnUrl}${song.id}/play/1/128?api_token=${auth.getToken()}`
     }
-    return `${sharedStore.state.cdnUrl}api/${song.id}/play?jwt-token=${ls.get('jwt-token')}`
+    return `${sharedStore.state.cdnUrl}${song.id}/play?api_token=${auth.getToken()}`
   },
 
   getShareableUrl: (song: Song): string => {
-    const baseUrl = KOEL_ENV === 'app' ? ls.get('koelHost') : window.BASE_URL
+    const baseUrl = KOEL_ENV === 'app' ? ls.get<string>('koelHost') : window.BASE_URL
     return `${baseUrl}#!/song/${song.id}`
   },
 
@@ -225,7 +226,7 @@ export const songStore = {
     return take(orderBy(this.all, 'created_at', 'desc'), n)
   },
 
-  generateDataToBroadcast: (song: Song): BroadcastedSongData => ({
+  generateDataToBroadcast: (song: Song): BroadcastSongData => ({
     song: {
       id: song.id,
       title: song.title,

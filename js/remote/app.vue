@@ -65,7 +65,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import nouislider from 'nouislider'
-import { socket, ls } from '@/services'
+import { socket, auth } from '@/services'
 import { userStore, preferenceStore } from '@/stores'
 import { events } from '@/config'
 import LoginForm from '@/components/auth/login-form.vue'
@@ -227,7 +227,7 @@ export default Vue.extend({
 
   mounted (): void {
     // The app has just been initialized, check if we can get the user data with an already existing token
-    if (ls.get('jwt-token')) {
+    if (auth.hasToken()) {
       this.authenticated = true
       this.init()
     }

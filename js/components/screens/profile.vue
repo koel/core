@@ -130,7 +130,7 @@
 import Vue from 'vue'
 import { userStore, preferenceStore as preferences, sharedStore } from '@/stores'
 import { forceReloadWindow } from '@/utils'
-import { http, ls } from '@/services'
+import { http, auth } from '@/services'
 
 export default Vue.extend({
   components: {
@@ -170,7 +170,7 @@ export default Vue.extend({
      */
     connectToLastfm: (): void => {
       window.open(
-        `${window.BASE_URL}lastfm/connect?api_token=${ls.get('jwt-token')}`,
+        `${window.BASE_URL}lastfm/connect?api_token=${auth.getToken()}`,
         '_blank',
         'toolbar=no,titlebar=no,location=no,width=1024,height=640'
       )

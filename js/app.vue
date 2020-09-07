@@ -34,7 +34,7 @@ import Overlay from '@/components/ui/overlay.vue'
 import { eventBus, showOverlay, hideOverlay, $, app as appUtils } from '@/utils'
 import { events } from '@/config'
 import { sharedStore, favoriteStore, queueStore, preferenceStore as preferences } from '@/stores'
-import { playback, ls, socket, http } from '@/services'
+import { playback, socket, http, auth } from '@/services'
 import { clickaway, droppable, focus } from '@/directives'
 
 export default Vue.extend({
@@ -58,7 +58,7 @@ export default Vue.extend({
 
   async mounted (): Promise<void> {
     // The app has just been initialized, check if we can get the user data with an already existing token
-    if (ls.get('jwt-token')) {
+    if (auth.hasToken()) {
       this.authenticated = true
       await this.init()
     }

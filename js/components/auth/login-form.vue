@@ -72,8 +72,8 @@ export default Vue.extend({
 
   mounted (): void {
     if (KOEL_ENV === 'app') {
-      this.url = window.BASE_URL = ls.get('koelHost')
-      this.email = ls.get('lastLoginEmail')
+      this.url = window.BASE_URL = String(ls.get<string>('koelHost'))
+      this.email = String(ls.get('lastLoginEmail'))
     }
   }
 })
