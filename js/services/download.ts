@@ -42,7 +42,7 @@ export const download = {
    */
   trigger: (uri: string) => {
     const sep = uri.includes('?') ? '&' : '?'
-    const url = `${window.BASE_URL}download/${uri}${sep}api_token=${auth.getToken()}`
+    const url = `${window.BASE_URL}web/download/${uri}${sep}api_token=${auth.getToken()}`
 
     if (KOEL_ENV === 'app') {
       require('electron').ipcRenderer.send(events.DOWNLOAD, url)

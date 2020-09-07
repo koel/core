@@ -170,7 +170,7 @@ export default Vue.extend({
      */
     connectToLastfm: (): void => {
       window.open(
-        `${window.BASE_URL}lastfm/connect?api_token=${auth.getToken()}`,
+        `${window.BASE_URL}web/lastfm/connect?api_token=${auth.getToken()}`,
         '_blank',
         'toolbar=no,titlebar=no,location=no,width=1024,height=640'
       )

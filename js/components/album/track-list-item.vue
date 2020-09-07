@@ -52,7 +52,7 @@ export default Vue.extend({
     },
 
     iTunesUrl (): string {
-      return `${window.BASE_URL}itunes/song/${this.album.id}?q=${encodeURIComponent(this.track.title)}&api_token=${auth.getToken()}`
+      return `${window.BASE_URL}web/itunes/song/${this.album.id}?q=${encodeURIComponent(this.track.title)}&api_token=${auth.getToken()}`
     }
   },
 
