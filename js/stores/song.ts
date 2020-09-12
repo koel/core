@@ -199,9 +199,9 @@ export const songStore = {
 
   getSourceUrl: (song: Song): string => {
     if (isMobile.any && preferenceStore.transcodeOnMobile) {
-      return `${sharedStore.state.cdnUrl}web/${song.id}/play/1/128?api_token=${auth.getToken()}`
+      return `${sharedStore.state.cdnUrl}play/${song.id}/1/128?api_token=${auth.getToken()}`
     }
-    return `${sharedStore.state.cdnUrl}web/${song.id}/play?api_token=${auth.getToken()}`
+    return `${sharedStore.state.cdnUrl}play/${song.id}?api_token=${auth.getToken()}`
   },
 
   getShareableUrl: (song: Song): string => {

@@ -35,43 +35,43 @@ export default {
       id: 1193,
       artist_id: 3,
       name: 'All-4-One',
-      cover: '/public/img/covers/565c0f7067425.jpeg'
+      cover: '/img/covers/565c0f7067425.jpeg'
     },
     {
       id: 1194,
       artist_id: 3,
       name: 'And The Music Speaks',
-      cover: '/public/img/covers/unknown-album.png'
+      cover: '/img/covers/unknown-album.png'
     },
     {
       id: 1195,
       artist_id: 3,
       name: 'Space Jam',
-      cover: '/public/img/covers/565c0f7115e0f.png'
+      cover: '/img/covers/565c0f7115e0f.png'
     },
     {
       id: 1217,
       artist_id: 4,
       name: 'Highway 61 Revisited',
-      cover: '/public/img/covers/565c0f76dc6e8.jpeg'
+      cover: '/img/covers/565c0f76dc6e8.jpeg'
     },
     {
       id: 1218,
       artist_id: 4,
       name: 'Pat Garrett & Billy the Kid',
-      cover: '/public/img/covers/unknown-album.png'
+      cover: '/img/covers/unknown-album.png'
     },
     {
       id: 1219,
       artist_id: 4,
       name: "The Times They Are A-Changin",
-      cover: '/public/img/covers/unknown-album.png'
+      cover: '/img/covers/unknown-album.png'
     },
     {
       id: 1268,
       artist_id: 5,
       name: 'Back To Bedlam',
-      cover: '/public/img/covers/unknown-album.png'
+      cover: '/img/covers/unknown-album.png'
     }
   ],
 

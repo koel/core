@@ -48,7 +48,7 @@ export const copyText = (text: string): void => {
   document.execCommand('copy')
 }
 
-export const getDefaultCover = (): string => `${sharedStore.state.cdnUrl}/public/img/covers/unknown-album.png`
+export const getDefaultCover = (): string => `${sharedStore.state.cdnUrl}/img/covers/unknown-album.png`
 
 const createGhostDragImage = (event: DragEvent, text: string): void => {
   if (!event.dataTransfer) {
