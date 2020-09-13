@@ -158,7 +158,7 @@ export const songStore = {
   },
 
   scrobble: async (song: Song): Promise<void> => {
-    await http.post(`${song.id}/scrobble/${song.playStartTime}`, {})
+    await http.post(`${song.id}/scrobble`, { timestamp: song.playStartTime })
   },
 
   async update (songsToUpdate: Song[], data: any): Promise<Song[]> {
