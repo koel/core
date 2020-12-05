@@ -34,7 +34,7 @@ import Overlay from '@/components/ui/overlay.vue'
 import { eventBus, showOverlay, hideOverlay, $, app as appUtils } from '@/utils'
 import { events } from '@/config'
 import { sharedStore, favoriteStore, queueStore, preferenceStore as preferences } from '@/stores'
-import { playback, socket, http, auth } from '@/services'
+import { playback, socket, auth } from '@/services'
 import { clickaway, droppable, focus } from '@/directives'
 
 export default Vue.extend({
@@ -100,10 +100,6 @@ export default Vue.extend({
             e.preventDefault()
             e.returnValue = ''
           })
-
-          // Ping the server everytime the window is focused, so that we don't have those
-          // "suddent" logout.
-          window.addEventListener('focus', () => http.get('/ping'))
 
           this.subscribeToBroadcastedEvents()
 
