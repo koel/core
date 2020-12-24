@@ -53,11 +53,6 @@ export default mixins(hasSongList).extend({
   }),
 
   methods: {
-    getSongsToPlay (): Song[] {
-      // @ts-ignore
-      return this.$refs.songList.getAllSongsWithSort()
-    },
-
     download: (): void => download.fromFavorites()
   }
 })

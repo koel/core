@@ -14,7 +14,8 @@ const router = {
     '/artists': (): void => loadMainView('Artists'),
     '/favorites': (): void => loadMainView('Favorites'),
     '/recently-played': (): void => loadMainView('RecentlyPlayed'),
-    '/search': (): void => loadMainView('Search'),
+    '/search': (): void => loadMainView('Search.Excerpt'),
+    '/search/songs/(.+)': (q: string) => loadMainView('Search.Songs', q),
 
     '/upload': (): void => {
       if (userStore.current.is_admin) {

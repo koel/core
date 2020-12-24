@@ -68,7 +68,16 @@ import router from '@/router'
 import { SongListRowComponent } from 'koel/types/ui'
 
 const songItemComponent = () => import('@/components/song/item.vue')
-const VALID_SONG_LIST_TYPES = ['all-songs', 'queue', 'playlist', 'favorites', 'recently-played', 'artist', 'album']
+const VALID_SONG_LIST_TYPES = [
+  'all-songs',
+  'queue',
+  'playlist',
+  'favorites',
+  'recently-played',
+  'artist',
+  'album',
+  'search-results'
+]
 
 interface SongListData {
   renderers: Readonly<{ song: any }>,

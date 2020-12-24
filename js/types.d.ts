@@ -348,7 +348,8 @@ declare type MainViewName =
   | 'Artist'
   | 'Playlist'
   | 'Upload'
-  | 'Search'
+  | 'Search.Excerpt'
+  | 'Search.Songs'
 
 declare type ArtistAlbumCardLayout = 'full' | 'compact'
 

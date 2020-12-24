@@ -12,7 +12,10 @@
     <div class="main-scroll-wrap" ref="wrapper">
       <div class="results" v-if="q">
         <section class="songs">
-          <h1>Songs</h1>
+          <h1>
+            Songs
+            <btn @click.prevent="goToSongResults" rounded small orange>View All</btn>
+          </h1>
           <ul v-if="searchState.excerpt.songs.length">
             <li v-for="song in searchState.excerpt.songs" :key="song.id" :song="song" is="song-item"/>
           </ul>
@@ -62,18 +65,26 @@ import Vue from 'vue'
 import { eventBus } from '@/utils'
 import { events } from '@/config'
 import { searchStore } from '@/stores'
+import router from '@/router'
 
 export default Vue.extend({
   components: {
     SongItem: () => import('@/components/song/home-item.vue'),
     ArtistCard: () => import('@/components/artist/card'),
-    AlbumCard: () => import('@/components/album/card')
+    AlbumCard: () => import('@/components/album/card'),
+    Btn: () => import('@/components/ui/btn.vue')
   },
 
   data: () => ({
     searchState: searchStore.state,
     q: ''
   }),
+
+  methods: {
+    goToSongResults () {
+      router.go(`search/songs/${this.q}`)
+    }
+  },
 
   created () {
     eventBus.on(events.SEARCH_KEYWORDS_CHANGED, (q: string) => {
@@ -93,6 +104,8 @@ h1 {
   font-size: 1.4rem;
   margin: 0 0 1.8rem;
   font-weight: 100;
+  display: flex;
+  place-content: space-between;
 }
 
 section ul {

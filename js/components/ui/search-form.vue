@@ -6,7 +6,7 @@
       @input="onInput"
       @focus="goToSearchScreen"
       autocorrect="false"
-      placeholder="Search"
+      placeholder="Press F to search"
       ref="input"
       spellcheck="false"
       v-model="q"

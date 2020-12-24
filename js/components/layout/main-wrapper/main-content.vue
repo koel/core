@@ -17,10 +17,11 @@
     <favorites-screen v-show="view === 'Favorites'"/>
     <recently-played-screen v-show="view === 'RecentlyPlayed'"/>
     <upload-screen v-show="view === 'Upload'"/>
-    <search-screen v-show="view === 'Search'"/>
+    <search-excerpts-screen v-show="view === 'Search.Excerpt'"/>
 
-    <album-screen v-if="view === 'Album'" :album="shownAlbum"/>
-    <artist-screen v-if="view === 'Artist'" :artist="shownArtist"/>
+    <search-song-results-screen v-if="view === 'Search.Songs'" :q="screenProps" />
+    <album-screen v-if="view === 'Album'" :album="screenProps"/>
+    <artist-screen v-if="view === 'Artist'" :artist="screenProps"/>
     <settings-screen v-if="view === 'Settings'"/>
     <profile-screen v-if="view === 'Profile'"/>
     <user-list-screen v-if="view === 'Users'"/>
@@ -32,7 +33,7 @@
 import Vue from 'vue'
 import { eventBus } from '@/utils'
 import { events } from '@/config'
-import { preferenceStore, sharedStore, artistStore, albumStore } from '@/stores'
+import { preferenceStore, sharedStore } from '@/stores'
 import HomeScreen from '@/components/screens/home.vue'
 import QueueScreen from '@/components/screens/queue.vue'
 import AlbumListScreen from '@/components/screens/album-list.vue'
@@ -59,7 +60,8 @@ export default Vue.extend({
     ProfileScreen: () => import('@/components/screens/profile.vue'),
     YoutubeScreen: () => import('@/components/screens/youtube.vue'),
     UploadScreen: () => import('@/components/screens/upload.vue'),
-    SearchScreen: () => import('@/components/screens/search.vue'),
+    SearchExcerptsScreen: () => import('@/components/screens/search/excerpts.vue'),
+    SearchSongResultsScreen: () => import('@/components/screens/search/song-results'),
     Visualizer: () => import('@/components/ui/visualizer.vue')
   },
 
@@ -67,24 +69,14 @@ export default Vue.extend({
     preferences: preferenceStore.state,
     sharedState: sharedStore.state,
     showingVisualizer: false,
-    shownArtist: artistStore.stub,
-    shownAlbum: albumStore.stub,
+    screenProps: null,
     view: 'Home' as MainViewName
   }),
 
   created (): void {
     eventBus.on({
-      [events.LOAD_MAIN_CONTENT]: (view: MainViewName, data: Artist | Album): void => {
-        switch (view) {
-          case 'Album':
-            this.shownAlbum = data as Album
-            break
-
-          case 'Artist':
-            this.shownArtist = data as Artist
-            break
-        }
-
+      [events.LOAD_MAIN_CONTENT]: (view: MainViewName, data: any): void => {
+        this.screenProps = data
         this.view = view
       },
 

@@ -10,7 +10,7 @@
       <span class="message" v-html="state.message"></span>
     </div>
 
-    <button class="btn-dismiss" v-if="state.dismissable" @click.prevent="state.showing = false">Close</button>
+    <button class="btn-dismiss" v-if="state.dismissible" @click.prevent="state.showing = false">Close</button>
   </div>
 </template>
 
@@ -28,7 +28,7 @@ export default Vue.extend({
   data: () => ({
     state: {
       showing: true,
-      dismissable: false,
+      dismissible: false,
       /**
        * Either 'loading', 'success', 'info', 'warning', or 'error'.
        * This dictates the icon as well as possibly other visual appearances.

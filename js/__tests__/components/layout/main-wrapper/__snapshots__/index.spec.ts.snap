@@ -211,6 +211,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
     <!---->
     <!---->
     <!---->
+    <!---->
   </section>
   <section id="extra" class="showing">
     <div class="tabs">
