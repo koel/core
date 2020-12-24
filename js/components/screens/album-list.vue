@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import mixins from 'vue-typed-mixins'
-import { filterBy, limitBy, eventBus } from '@/utils'
+import { limitBy, eventBus } from '@/utils'
 import { events } from '@/config'
 import { albumStore, preferenceStore as preferences } from '@/stores'
 import infiniteScroll from '@/mixins/infinite-scroll.ts'
@@ -35,11 +35,7 @@ export default mixins(infiniteScroll).extend({
 
   computed: {
     displayedItems (): Album[] {
-      return limitBy(this.filteredItems, this.displayedItemCount)
-    },
-
-    filteredItems (): Album[] {
-      return filterBy(this.albums, this.q, 'name', 'artist.name')
+      return limitBy(this.albums, this.displayedItemCount)
     },
 
     itemLayout (): ArtistAlbumCardLayout {
