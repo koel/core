@@ -40,10 +40,9 @@
 
       <section class="recently-added" v-show="showRecentlyAddedSection">
         <h1>Recently Added</h1>
-
         <div class="two-cols">
-          <div class="wrapper as-list">
-            <album-card v-for="album in recentlyAdded.albums" :album="album" :key="album.id"/>
+          <div class="wrapper">
+            <album-card v-for="album in recentlyAdded.albums" :album="album" :key="album.id" layout="compact"/>
           </div>
           <div>
             <ul class="recently-added-song-list" v-show="recentlyAdded.songs.length">
@@ -55,17 +54,15 @@
 
       <section class="top-artists" v-show="top.artists.length">
         <h1>Top Artists</h1>
-
-        <div class="wrapper" :class="`as-${preferences.artistsViewMode}`">
-          <artist-card v-for="artist in top.artists" :artist="artist" :key="artist.id"/>
+        <div class="wrapper as-list">
+          <artist-card v-for="artist in top.artists" :artist="artist" :key="artist.id" layout="compact"/>
         </div>
       </section>
 
       <section class="top-albums" v-show="top.albums.length">
         <h1>Top Albums</h1>
-
-        <div class="wrapper" :class="`as-${preferences.albumsViewMode}`">
-          <album-card v-for="album in top.albums" :album="album" :key="album.id"/>
+        <div class="wrapper as-list">
+          <album-card v-for="album in top.albums" :album="album" :key="album.id" layout="compact"/>
         </div>
       </section>
 
@@ -157,16 +154,9 @@ export default mixins(infiniteScroll).extend({
 
 #homeWrapper {
   .two-cols {
-    display: flex;
-
-    > section, > div {
-      flex-grow: 1;
-      flex-basis: 0;
-
-      &:first-of-type {
-        margin-right: 8px;
-      }
-    }
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: .7em 1em;
   }
 
   .recent {
@@ -186,14 +176,14 @@ export default mixins(infiniteScroll).extend({
     }
   }
 
-  .recently-added {
-    .song-item-home .details {
-      background: rgba(255, 255, 255, .02);
-    }
+  .recently-added .wrapper {
+    display: grid;
   }
 
-  .top-artists .wrapper, .top-albums .wrapper, .recently-added .wrapper {
-    @include artist-album-wrapper();
+  .top-artists .wrapper, .top-albums .wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: .7em 1em;
   }
 
   .main-scroll-wrap {

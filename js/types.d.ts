@@ -27,6 +27,8 @@ declare module 'sketch-js' {
 }
 
 declare module 'youtube-player' {
+  import { YouTubePlayer } from 'youtube-player/dist/types'
+
   function createYouTubePlayer(name: string, options: { [propName: string]: any }): YouTubePlayer
   export default createYouTubePlayer
 }
@@ -346,6 +348,9 @@ declare type MainViewName =
   | 'Artist'
   | 'Playlist'
   | 'Upload'
+  | 'Search'
+
+declare type ArtistAlbumCardLayout = 'full' | 'compact'
 
 interface SongUploadResult {
   album: {

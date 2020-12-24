@@ -3,6 +3,7 @@
     :title="artist.name"
     @dragstart="dragStart"
     class="item"
+    :class="layout"
     draggable="true"
     tabindex="0"
     v-if="showing"
@@ -57,8 +58,16 @@ import { startDragging, pluralize } from '@/utils'
 import { artistStore, sharedStore } from '@/stores'
 import { playback, download } from '@/services'
 import artistAttributes from '@/mixins/artist-attributes.ts'
+import { PropOptions } from 'vue'
 
 export default mixins(artistAttributes).extend({
+  props: {
+    layout: {
+      type: String,
+      default: 'full'
+    } as PropOptions<ArtistAlbumCardLayout>
+  },
+
   components: {
     ArtistThumbnail: () => import('@/components/ui/album-artist-thumbnail.vue')
   },

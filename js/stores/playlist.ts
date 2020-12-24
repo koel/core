@@ -62,8 +62,8 @@ export const playlistStore = {
     return playlist
   },
 
-  byId (id: number): Playlist {
-    return <Playlist> this.all.find(song => song.id === id)
+  byId (id: number): Playlist | undefined {
+    return this.all.find(playlist => playlist.id === id)
   },
 
   /**

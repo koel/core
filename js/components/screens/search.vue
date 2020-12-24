@@ -1,0 +1,128 @@
+<template>
+  <section id="searchWrapper">
+    <h1 class="heading">
+      <span v-if="q">
+        Search Results for <strong>{{ q }}</strong>
+      </span>
+      <span v-else>
+        Search
+      </span>
+    </h1>
+
+    <div class="main-scroll-wrap" ref="wrapper">
+      <div class="results" v-if="q">
+        <section class="songs">
+          <h1>Songs</h1>
+          <ul v-if="searchState.excerpt.songs.length">
+            <li v-for="song in searchState.excerpt.songs" :key="song.id" :song="song" is="song-item"/>
+          </ul>
+          <p v-else>None found.</p>
+        </section>
+
+        <section class="artists">
+          <h1>Artists</h1>
+          <ul v-if="searchState.excerpt.artists.length">
+            <li
+              v-for="artist in searchState.excerpt.artists"
+              :key="artist.id"
+              :artist="artist"
+              is="artist-card"
+              layout="compact"
+            />
+          </ul>
+          <p v-else>None found.</p>
+        </section>
+
+        <section class="albums">
+          <h1>Albums</h1>
+          <ul v-if="searchState.excerpt.albums.length">
+            <li
+              v-for="album in searchState.excerpt.albums"
+              :key="album.id"
+              :album="album"
+              is="album-card"
+              layout="compact"
+            />
+          </ul>
+          <p v-else>None found.</p>
+        </section>
+      </div>
+      <div class="screen-placeholder" v-else>
+        <div>
+          <i class="fa fa-search"></i>
+          <p>Find songs, artists, and albums</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import { eventBus } from '@/utils'
+import { events } from '@/config'
+import { searchStore } from '@/stores'
+
+export default Vue.extend({
+  components: {
+    SongItem: () => import('@/components/song/home-item.vue'),
+    ArtistCard: () => import('@/components/artist/card'),
+    AlbumCard: () => import('@/components/album/card')
+  },
+
+  data: () => ({
+    searchState: searchStore.state,
+    q: ''
+  }),
+
+  created () {
+    eventBus.on(events.SEARCH_KEYWORDS_CHANGED, (q: string) => {
+      this.q = q
+      searchStore.excerptSearch(q)
+    })
+  }
+})
+</script>
+
+<style lang="scss" scoped>
+.results > section {
+  margin-bottom: 3em;
+}
+
+h1 {
+  font-size: 1.4rem;
+  margin: 0 0 1.8rem;
+  font-weight: 100;
+}
+
+section ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: .7em 1em;
+}
+
+.screen-placeholder {
+  position: relative;
+  height: 100%;
+  display: flex;
+  place-content: center;
+  place-items: center;
+  opacity: .2;
+
+  i {
+    display: block;
+    font-size: 6em;
+    margin-bottom: 1.5rem;
+    opacity: 0.8;
+  }
+
+  p {
+    font-size: 2em;
+    font-weight: 200;
+  }
+
+  div {
+    text-align: center;
+  }
+}
+</style>

@@ -21,32 +21,25 @@
   &.as-list {
     grid-gap: 8px;
     align-content: start;
-  }
-
-  &.as-thumbnails {
-    .item {
-      max-width: 256px;
-
-      @media only screen and (max-width: 768px) {
-        max-width: 100%;
-      }
-    }
+    grid-template-columns: 1fr 1fr;
   }
 }
 
 @mixin artist-album-card() {
   .item {
     position: relative;
+    max-width: 256px;
 
-    .as-list & {
-      grid-column: 1;
+    @media only screen and (max-width: 768px) {
+      max-width: 100%;
+    }
+
+    &.compact {
       display: flex;
       flex-direction: row;
       max-width: 100%;
-
-      &:last-of-type {
-        margin-bottom: 24px;
-      }
+      overflow: hidden;
+      min-height: 80px;
 
       .thumbnail-wrapper {
         width: 80px;
@@ -55,6 +48,18 @@
       footer {
         max-height: 80px;
         flex: 1;
+      }
+
+      .info {
+        margin-bottom: 12px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
+      a.name, a.artist, .sep {
+        display: inline;
+        white-space: inherit;
       }
     }
 
@@ -96,15 +101,10 @@
       &:focus, &:hover {
         color: $colorHighlight;
       }
-
-      .as-list & {
-        display: inline;
-        white-space: inherit;
-      }
     }
 
     .info {
-      .as-list & {
+      .compact & {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

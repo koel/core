@@ -28,7 +28,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
         <section class="recently-added" style="display: none;">
           <h1>Recently Added</h1>
           <div class="two-cols">
-            <div class="wrapper as-list"></div>
+            <div class="wrapper"></div>
             <div>
               <ul class="recently-added-song-list" style="display: none;"></ul>
             </div>
@@ -36,11 +36,11 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
         </section>
         <section class="top-artists" style="display: none;">
           <h1>Top Artists</h1>
-          <div class="wrapper as-null"></div>
+          <div class="wrapper as-list"></div>
         </section>
         <section class="top-albums" style="display: none;">
           <h1>Top Albums</h1>
-          <div class="wrapper as-null"></div>
+          <div class="wrapper as-list"></div>
         </section>
         <!---->
       </div>
@@ -202,6 +202,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
         to this list.
       </div>
     </section>
+    <!---->
     <!---->
     <!---->
     <!---->

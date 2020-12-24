@@ -6,7 +6,7 @@
     </h1>
 
     <div ref="scroller" class="albums main-scroll-wrap" :class="`as-${viewMode}`" @scroll="scrolling">
-      <album-card v-for="item in displayedItems" :album="item" :key="item.id"/>
+      <album-card v-for="item in displayedItems" :album="item" :layout="itemLayout" :key="item.id" />
       <to-top-button/>
     </div>
   </section>
@@ -40,6 +40,10 @@ export default mixins(infiniteScroll).extend({
 
     filteredItems (): Album[] {
       return filterBy(this.albums, this.q, 'name', 'artist.name')
+    },
+
+    itemLayout (): ArtistAlbumCardLayout {
+      return this.viewMode === 'thumbnails' ? 'full' : 'compact'
     }
   },
 
@@ -60,10 +64,6 @@ export default mixins(infiniteScroll).extend({
         if (view === 'Albums') {
           this.$nextTick((): void => this.makeScrollable(this.$refs.scroller as HTMLElement, this.albums.length))
         }
-      },
-
-      [events.FILTER_CHANGED]: (q: string): void => {
-        this.q = q
       }
     })
   }

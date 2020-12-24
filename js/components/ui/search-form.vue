@@ -1,14 +1,15 @@
 <template>
   <div class="side search" id="searchForm" :class="{ showing: showing }" role="search">
-    <input type="search"
+    <input
+      type="search"
       :class="{ dirty: q }"
-      @input="filter"
+      @input="onInput"
+      @focus="goToSearchScreen"
       autocorrect="false"
       placeholder="Search"
       ref="input"
       spellcheck="false"
       v-model="q"
-      v-koel-focus
     >
   </div>
 </template>
@@ -18,8 +19,9 @@ import Vue from 'vue'
 import isMobile from 'ismobilejs'
 import { debounce } from 'lodash'
 
-import { eventBus } from '@/utils'
+import { eventBus, use } from '@/utils'
 import { events } from '@/config'
+import router from '@/router'
 
 export default Vue.extend({
   data: () => ({
@@ -28,10 +30,12 @@ export default Vue.extend({
   }),
 
   methods: {
-    filter: debounce(function (): void {
+    onInput: debounce(function (): void {
       // @ts-ignore because of `this`
-      eventBus.emit(events.FILTER_CHANGED, this.q.trim())
-    }, 200)
+      use(this.q.trim(), q => eventBus.emit(events.SEARCH_KEYWORDS_CHANGED, q))
+    }, 200),
+
+    goToSearchScreen: () => router.go('/search')
   },
 
   created (): void {
@@ -41,7 +45,7 @@ export default Vue.extend({
       },
 
       [events.FOCUS_SEARCH_FIELD]: (): void => {
-        ;(this.$refs.input as HTMLInputElement).focus()
+        (this.$refs.input as HTMLInputElement).focus()
         ;(this.$refs.input as HTMLInputElement).select()
       }
     })

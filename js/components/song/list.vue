@@ -440,14 +440,6 @@ export default Vue.extend({
     if (this.items) {
       this.render()
     }
-  },
-
-  created (): void {
-    eventBus.on({
-      [events.FILTER_CHANGED]: (q: string): void => {
-        this.q = q
-      }
-    })
   }
 })
 </script>
