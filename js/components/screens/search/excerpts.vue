@@ -112,12 +112,8 @@ h1 {
 
 section ul {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   grid-gap: .7em 1em;
-
-  @media only screen and (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
 }
 
 .screen-placeholder {
