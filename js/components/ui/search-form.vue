@@ -19,7 +19,7 @@ import Vue from 'vue'
 import isMobile from 'ismobilejs'
 import { debounce } from 'lodash'
 
-import { eventBus, use } from '@/utils'
+import { eventBus } from '@/utils'
 import { events } from '@/config'
 import router from '@/router'
 
@@ -32,8 +32,11 @@ export default Vue.extend({
   methods: {
     onInput: debounce(function (): void {
       // @ts-ignore because of `this`
-      use(this.q.trim(), q => eventBus.emit(events.SEARCH_KEYWORDS_CHANGED, q))
-    }, 200),
+      const q = this.q.trim()
+      if (q) {
+        eventBus.emit(events.SEARCH_KEYWORDS_CHANGED, q)
+      }
+    }, 500),
 
     goToSearchScreen: () => router.go('/search')
   },
