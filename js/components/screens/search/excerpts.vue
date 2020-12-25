@@ -17,7 +17,7 @@
             <btn @click.prevent="goToSongResults" rounded small orange>View All</btn>
           </h1>
           <ul v-if="searchState.excerpt.songs.length">
-            <li v-for="song in searchState.excerpt.songs" :key="song.id" :song="song" is="song-item"/>
+            <li v-for="song in searchState.excerpt.songs" :key="song.id" :song="song" is="song-card"/>
           </ul>
           <p v-else>None found.</p>
         </section>
@@ -69,9 +69,9 @@ import router from '@/router'
 
 export default Vue.extend({
   components: {
-    SongItem: () => import('@/components/song/home-item.vue'),
-    ArtistCard: () => import('@/components/artist/card'),
-    AlbumCard: () => import('@/components/album/card'),
+    SongCard: () => import('@/components/song/card.vue'),
+    ArtistCard: () => import('@/components/artist/card.vue'),
+    AlbumCard: () => import('@/components/album/card.vue'),
     Btn: () => import('@/components/ui/btn.vue')
   },
 
@@ -112,6 +112,10 @@ section ul {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: .7em 1em;
+
+  @media only screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .screen-placeholder {

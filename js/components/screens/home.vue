@@ -11,10 +11,10 @@
 
           <ol class="top-song-list">
             <li v-for="song in top.songs"
-              :top-play-count="top.songs.length ? top.songs[0].playCount : 0"
-              :song="song"
-              :key="song.id"
-              is="song-item"/>
+                :top-play-count="top.songs.length ? top.songs[0].playCount : 0"
+                :song="song"
+                :key="song.id"
+                is="song-card"/>
           </ol>
         </section>
 
@@ -25,14 +25,14 @@
 
           <ol class="recent-song-list" v-show="recentSongs.length">
             <li v-for="song in recentSongs"
-              :top-play-count="top.songs.length ? top.songs[0].playCount : 0"
-              :song="song"
-              :key="song.id"
-              is="song-item"></li>
+                :top-play-count="top.songs.length ? top.songs[0].playCount : 0"
+                :song="song"
+                :key="song.id"
+                is="song-card"></li>
           </ol>
 
           <p class="none" v-show="!recentSongs.length">
-            Your recently played songs will be displayed here.<br />
+            Your recently played songs will be displayed here.<br/>
             Start listening!
           </p>
         </section>
@@ -41,29 +41,27 @@
       <section class="recently-added" v-show="showRecentlyAddedSection">
         <h1>Recently Added</h1>
         <div class="two-cols">
-          <div class="wrapper">
-            <album-card v-for="album in recentlyAdded.albums" :album="album" :key="album.id" layout="compact"/>
-          </div>
-          <div>
-            <ul class="recently-added-song-list" v-show="recentlyAdded.songs.length">
-              <li v-for="song in recentlyAdded.songs" :song="song" :key="song.id" is="song-item"></li>
-            </ul>
-          </div>
+          <ol>
+            <li v-for="album in recentlyAdded.albums" :album="album" :key="album.id" layout="compact" is="album-card"/>
+          </ol>
+          <ol class="recently-added-song-list" v-show="recentlyAdded.songs.length">
+            <li v-for="song in recentlyAdded.songs" :song="song" :key="song.id" is="song-card"></li>
+          </ol>
         </div>
       </section>
 
       <section class="top-artists" v-show="top.artists.length">
         <h1>Top Artists</h1>
-        <div class="wrapper as-list">
-          <artist-card v-for="artist in top.artists" :artist="artist" :key="artist.id" layout="compact"/>
-        </div>
+        <ol class="two-cols">
+          <li v-for="artist in top.artists" :artist="artist" :key="artist.id" layout="compact" is="artist-card"/>
+        </ol>
       </section>
 
       <section class="top-albums" v-show="top.albums.length">
         <h1>Top Albums</h1>
-        <div class="wrapper as-list">
-          <album-card v-for="album in top.albums" :album="album" :key="album.id" layout="compact"/>
-        </div>
+        <ol class="two-cols">
+          <li v-for="album in top.albums" :album="album" :key="album.id" layout="compact" is="album-card"/>
+        </ol>
       </section>
 
       <to-top-button/>
@@ -85,7 +83,7 @@ export default mixins(infiniteScroll).extend({
   components: {
     AlbumCard: () => import('@/components/album/card.vue'),
     ArtistCard: () => import('@/components/artist/card.vue'),
-    SongItem: () => import('@/components/song/home-item.vue'),
+    SongCard: () => import('@/components/song/card.vue'),
     Btn: () => import('@/components/ui/btn.vue')
   },
 
@@ -176,14 +174,10 @@ export default mixins(infiniteScroll).extend({
     }
   }
 
-  .recently-added .wrapper {
+  ol {
     display: grid;
-  }
-
-  .top-artists .wrapper, .top-albums .wrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     grid-gap: .7em 1em;
+    align-content: start;
   }
 
   .main-scroll-wrap {
@@ -200,13 +194,7 @@ export default mixins(infiniteScroll).extend({
 
   @media only screen and (max-width: 768px) {
     .two-cols {
-      display: block;
-
-      > section, > div {
-        &:first-of-type {
-          margin-right: 0;
-        }
-      }
+      grid-template-columns: 1fr;
     }
   }
 }

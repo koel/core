@@ -21,6 +21,6 @@ describe('components/ui/search-form', () => {
     setTimeout(() => {
       expect(emitStub).toHaveBeenCalledWith('SEARCH_KEYWORDS_CHANGED', 'foo')
       done()
-    }, 300) // because of debounce
+    }, 500) // because of debounce
   })
 })
