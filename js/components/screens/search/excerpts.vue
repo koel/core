@@ -96,6 +96,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import "~#/partials/_mixins.scss";
+
 .results > section {
   margin-bottom: 3em;
 }
@@ -119,11 +121,9 @@ section ul {
 }
 
 .screen-placeholder {
+  @include vertical-center();
   position: relative;
   height: 100%;
-  display: flex;
-  place-content: center;
-  place-items: center;
   opacity: .2;
 
   i {
