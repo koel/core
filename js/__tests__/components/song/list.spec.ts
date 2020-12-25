@@ -66,24 +66,6 @@ describe('components/song/list', () => {
     expect(wrapper.vm.sortKey).toContain('song.disc')
   })
 
-  each([
-    ['foo', 'foo', ['song.title', 'song.album.name', 'song.artist.name']],
-    ['foo in:title', 'foo', ['song.title']],
-    ['in:album foo bar', 'foo bar', ['song.album.name']],
-    ['foo bar in:artist', 'foo bar', ['song.artist.name']],
-    ['foo in:album in:artist', 'foo', ['song.album.name', 'song.artist.name']]
-  ]).test('parses query "%s" into keyword "%s" and proper search fields', (q, keywords, fields) => {
-    const wrapper = shallow(Component, {
-      propsData: {
-        items: songs,
-        type: 'all-songs'
-      }
-    })
-
-    // @ts-ignore
-    expect(wrapper.vm.extractSearchDataFromQuery(q)).toEqual({ keywords, fields })
-  })
-
   it('plays when Enter is pressed with one selected song', () => {
     const wrapper = mount(Component, {
       propsData: {
@@ -93,7 +75,7 @@ describe('components/song/list', () => {
     })
     // select one row
     // @ts-ignore
-    wrapper.vm.filteredItems[0].selected = true
+    wrapper.vm.songProxies[0].selected = true
 
     const m = mock(playback, 'play')
     wrapper.find('.song-list-wrap').trigger('keydown.enter')
@@ -110,9 +92,9 @@ describe('components/song/list', () => {
 
     const m = mock(playback, 'play')
     // @ts-ignore
-    wrapper.vm.filteredItems[0].selected = true
+    wrapper.vm.songProxies[0].selected = true
     // @ts-ignore
-    wrapper.vm.filteredItems[1].selected = true
+    wrapper.vm.songProxies[1].selected = true
     wrapper.find('.song-list-wrap').trigger('keydown.enter')
     expect(m).toHaveBeenCalledWith(songs[0])
   })
@@ -130,9 +112,9 @@ describe('components/song/list', () => {
 
     // select 2 rows
     // @ts-ignore
-    wrapper.vm.filteredItems[0].selected = true
+    wrapper.vm.songProxies[0].selected = true
     // @ts-ignore
-    wrapper.vm.filteredItems[1].selected = true
+    wrapper.vm.songProxies[1].selected = true
 
     // simple Enter adds selected songs to bottom
     wrapper.find('.song-list-wrap').trigger('keydown.enter')
@@ -163,6 +145,6 @@ describe('components/song/list', () => {
     })
     wrapper.find('.song-list-wrap').trigger('keydown.a', { ctrlKey: true })
     // @ts-ignore
-    wrapper.vm.filteredItems.forEach(item => expect(item.selected).toBe(true))
+    wrapper.vm.songProxies.forEach(item => expect(item.selected).toBe(true))
   })
 })

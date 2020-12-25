@@ -1,7 +1,7 @@
 import Home from '@/components/screens/home.vue'
 import AlbumItem from '@/components/album/card.vue'
 import ArtistItem from '@/components/artist/card.vue'
-import HomeSongItem from '@/components/song/home-item.vue'
+import HomeSongItem from '@/components/song/card.vue'
 import factory from '@/__tests__/factory'
 import { eventBus } from '@/utils'
 import { mock } from '@/__tests__/__helpers__'

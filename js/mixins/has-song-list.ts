@@ -44,8 +44,9 @@ export default Vue.extend({
       this.showingControls = !this.showingControls
     },
 
-    getSongsToPlay: (): Song[] => {
-      throw new Error('Method not implemented')
+    getSongsToPlay (): Song[] {
+      // @ts-ignore
+      return this.$refs.songList.getAllSongsWithSort()
     }
   },
 

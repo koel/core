@@ -1,7 +1,8 @@
 <template>
-  <section id="songsWrapper">
+  <section id="songResultsWrapper">
     <h1 class="heading">
-      <span>All Songs
+      <span>
+        Showing Songs for <strong>{{ decodedQ }}</strong>
         <controls-toggler :showing-controls="showingControls" @toggleControls="toggleControls"/>
 
         <span class="meta" v-show="meta.songCount">
@@ -21,21 +22,39 @@
       />
     </h1>
 
-    <song-list :items="state.songs" type="all-songs" ref="songList"/>
+    <song-list :items="state.songs" type="search-results" ref="songList"/>
   </section>
 </template>
 
 <script lang="ts">
+import { searchStore } from '@/stores'
 import mixins from 'vue-typed-mixins'
+import hasSongList from '@/mixins/has-song-list'
 import { pluralize } from '@/utils'
-import { songStore } from '@/stores'
-import hasSongList from '@/mixins/has-song-list.ts'
 
 export default mixins(hasSongList).extend({
   filters: { pluralize },
 
+  props: {
+    q: {
+      type: String,
+      required: true
+    }
+  },
+
   data: () => ({
-    state: songStore.state
-  })
+    state: searchStore.state
+  }),
+
+  computed: {
+    decodedQ (): string {
+      return decodeURIComponent(this.q)
+    }
+  },
+
+  created () {
+    searchStore.resetSongResultState()
+    searchStore.songSearch(this.decodedQ)
+  }
 })
 </script>

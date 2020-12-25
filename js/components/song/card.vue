@@ -177,7 +177,5 @@ export default Vue.extend({
       }
     }
   }
-
-  margin-bottom: 8px;
 }
 </style>

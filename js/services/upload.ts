@@ -111,8 +111,8 @@ export const upload = {
   },
 
   populateUploadResultIntoStores (uploadResult: SongUploadResult): void {
-    let artist: Artist = artistStore.byId(uploadResult.artist.id)
-    let album: Album = albumStore.byId(uploadResult.album.id)
+    let artist = artistStore.byId(uploadResult.artist.id)!
+    let album = albumStore.byId(uploadResult.album.id)!
 
     if (!artist) {
       artist = Object.assign(uploadResult.artist, {

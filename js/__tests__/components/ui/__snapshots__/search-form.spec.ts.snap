@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/ui/search-form renders properly 1`] = `<div id="searchForm" role="search" class="side search showing"><input type="search" autocorrect="false" placeholder="Search" spellcheck="false" class=""></div>`;
+exports[`components/ui/search-form renders properly 1`] = `<div id="searchForm" role="search" class="side search showing"><input type="search" autocorrect="false" placeholder="Press F to search" spellcheck="false" class=""></div>`;

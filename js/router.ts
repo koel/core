@@ -14,6 +14,8 @@ const router = {
     '/artists': (): void => loadMainView('Artists'),
     '/favorites': (): void => loadMainView('Favorites'),
     '/recently-played': (): void => loadMainView('RecentlyPlayed'),
+    '/search': (): void => loadMainView('Search.Excerpt'),
+    '/search/songs/(.+)': (q: string) => loadMainView('Search.Songs', q),
 
     '/upload': (): void => {
       if (userStore.current.is_admin) {
@@ -37,19 +39,19 @@ const router = {
     '/visualizer': (): void => loadMainView('Visualizer'),
     '/profile': (): void => loadMainView('Profile'),
 
-    '/album/(\\d+)': (id: number) => use(albumStore.byId(~~id), (album: Album): void => {
+    '/album/(\\d+)': (id: number) => use(albumStore.byId(~~id)!, (album: Album): void => {
       loadMainView('Album', album)
     }),
 
-    '/artist/(\\d+)': (id: number) => use(artistStore.byId(~~id), (artist: Artist): void => {
+    '/artist/(\\d+)': (id: number) => use(artistStore.byId(~~id)!, (artist: Artist): void => {
       loadMainView('Artist', artist)
     }),
 
-    '/playlist/(\\d+)': (id: number) => use(playlistStore.byId(~~id), (playlist: Playlist): void => {
+    '/playlist/(\\d+)': (id: number) => use(playlistStore.byId(~~id)!, (playlist: Playlist): void => {
       loadMainView('Playlist', playlist)
     }),
 
-    '/song/([a-z0-9]{32})': (id: string): void => use(songStore.byId(id), (song: Song): void => {
+    '/song/([a-z0-9]{32})': (id: string): void => use(songStore.byId(id)!, (song: Song): void => {
       if (isMobile.apple.device) {
         // Mobile Safari doesn't allow autoplay, so we just queue.
         queueStore.queue(song)

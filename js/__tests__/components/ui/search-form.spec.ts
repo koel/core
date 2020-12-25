@@ -19,8 +19,8 @@ describe('components/ui/search-form', () => {
     wrapper.find('[type=search]').setValue('foo').input()
 
     setTimeout(() => {
-      expect(emitStub).toHaveBeenCalledWith('FILTER_CHANGED', 'foo')
+      expect(emitStub).toHaveBeenCalledWith('SEARCH_KEYWORDS_CHANGED', 'foo')
       done()
-    }, 300) // because of debounce
+    }, 500) // because of debounce
   })
 })

@@ -6,7 +6,7 @@
     </h1>
 
     <div ref="scroller" class="artists main-scroll-wrap" :class="`as-${viewMode}`" @scroll="scrolling">
-      <artist-card v-for="item in displayedItems" :artist="item" :key="item.id"/>
+      <artist-card v-for="item in displayedItems" :artist="item" :layout="itemLayout" :key="item.id"/>
       <to-top-button/>
     </div>
   </section>
@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import mixins from 'vue-typed-mixins'
-import { filterBy, limitBy, eventBus } from '@/utils'
+import { limitBy, eventBus } from '@/utils'
 import { events } from '@/config'
 import { artistStore, preferenceStore as preferences } from '@/stores'
 import infiniteScroll from '@/mixins/infinite-scroll.ts'
@@ -35,11 +35,11 @@ export default mixins(infiniteScroll).extend({
 
   computed: {
     displayedItems (): Artist[] {
-      return limitBy(this.filteredItems, this.displayedItemCount)
+      return limitBy(this.artists, this.displayedItemCount)
     },
 
-    filteredItems (): Artist[] {
-      return filterBy(this.artists, this.q, 'name')
+    itemLayout (): ArtistAlbumCardLayout {
+      return this.viewMode === 'thumbnails' ? 'full' : 'compact'
     }
   },
 
@@ -60,10 +60,6 @@ export default mixins(infiniteScroll).extend({
         if (view === 'Artists') {
           this.$nextTick((): void => this.makeScrollable(this.$refs.scroller as HTMLElement, this.artists.length))
         }
-      },
-
-      [events.FILTER_CHANGED]: (q: string): void => {
-        this.q = q
       }
     })
   }

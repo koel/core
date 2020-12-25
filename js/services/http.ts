@@ -7,25 +7,11 @@ import { ls, auth } from '@/services'
 
 export const http = {
   client: null as AxiosInstance | null,
-  progressBarTimeout: 0,
 
-  // Only show the progress bar after some delay
-  setProgressBarAfterDelay (): void {
-    this.progressBarTimeout = window.setTimeout((): void => {
-      NProgress.start()
-    }, 2000)
-  },
+  setProgressBar: () => NProgress.start(),
+  hideProgressBar: () => NProgress.done(true),
 
-  hideProgressBar (): void {
-    NProgress.done()
-
-    if (this.progressBarTimeout) {
-      window.clearTimeout(this.progressBarTimeout)
-      delete this.progressBarTimeout
-    }
-  },
-
-  request <T> (method: Method, url: string, data: object = {}, onUploadProgress?: any): Promise<{ data: T}> {
+  request<T> (method: Method, url: string, data: object = {}, onUploadProgress?: any): Promise<{ data: T }> {
     return this.client?.request({
       url,
       data,
@@ -34,19 +20,19 @@ export const http = {
     }) as Promise<{ data: T }>
   },
 
-  async get <T> (url: string): Promise<T> {
+  async get<T> (url: string): Promise<T> {
     return (await this.request<T>('get', url)).data
   },
 
-  async post <T> (url: string, data: object, onUploadProgress?: any): Promise<T> {
+  async post<T> (url: string, data: object, onUploadProgress?: any): Promise<T> {
     return (await this.request<T>('post', url, data, onUploadProgress)).data
   },
 
-  async put <T> (url: string, data: object): Promise<T> {
+  async put<T> (url: string, data: object): Promise<T> {
     return (await this.request<T>('put', url, data)).data
   },
 
-  async delete <T> (url: string, data: object = {}): Promise<T> {
+  async delete<T> (url: string, data: object = {}): Promise<T> {
     return (await this.request<T>('delete', url, data)).data
   },
 
@@ -57,7 +43,7 @@ export const http = {
 
     // Intercept the request to make sure the token is injected into the header.
     this.client.interceptors.request.use(config => {
-      this.setProgressBarAfterDelay()
+      this.setProgressBar()
       config.headers.Authorization = `Bearer ${auth.getToken()}`
       return config
     })

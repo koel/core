@@ -87,11 +87,6 @@ export default mixins(hasSongList).extend({
   },
 
   methods: {
-    getSongsToPlay (): Song[] {
-      // @ts-ignore
-      return this.$refs.songList.getAllSongsWithSort()
-    },
-
     destroy (): void {
       eventBus.emit(events.PLAYLIST_DELETE, this.playlist)
     },

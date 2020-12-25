@@ -16,7 +16,7 @@ describe('components/shared/overlay', () => {
     const wrapper = mount(Component)
     // @ts-ignore
     wrapper.vm.show({
-      dismissable: true,
+      dismissible: true,
       type: 'warning',
       message: 'Foo'
     })
@@ -35,7 +35,7 @@ describe('components/shared/overlay', () => {
   it('dismisses', () => {
     const wrapper = mount(Component)
     // @ts-ignore
-    wrapper.vm.show({ dismissable: true })
+    wrapper.vm.show({ dismissible: true })
     expect(wrapper.has('.display')).toBe(true)
     wrapper.click('button.btn-dismiss')
     expect(wrapper.has('.display')).toBe(false)
