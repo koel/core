@@ -34,6 +34,10 @@
       max-width: 100%;
     }
 
+    &:hover .right, &:focus-within .right {
+      display: block !important;
+    }
+
     &.compact {
       display: flex;
       flex-direction: row;
@@ -82,6 +86,12 @@
       justify-content: space-between;
 
       .right {
+        display: none;
+
+        html.touchevents & {
+          display: block;
+        }
+
         a {
           margin-left: 4px;
         }
