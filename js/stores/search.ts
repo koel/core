@@ -4,9 +4,9 @@ import { albumStore } from '@/stores/album'
 import { artistStore } from '@/stores/artist'
 
 interface ExcerptSearchResult {
-  albums: Array<{ id: number }>
-  artists: Array<{ id: number }>
-  songs: Array<{ id: string }>
+  songs: Array<string>
+  albums: Array<number>
+  artists: Array<number>
 }
 
 interface SongSearchResult {
@@ -25,9 +25,9 @@ export const searchStore = {
 
   excerptSearch (q: string) {
     http.get<{ [key: string]: ExcerptSearchResult }>(`search?q=${q}`).then(({ results }) => {
-      this.state.excerpt.songs = songStore.byIds(results.songs.map(song => song.id))
-      this.state.excerpt.albums = albumStore.byIds(results.albums.map(album => album.id))
-      this.state.excerpt.artists = artistStore.byIds(results.artists.map(artist => artist.id))
+      this.state.excerpt.songs = songStore.byIds(results.songs)
+      this.state.excerpt.albums = albumStore.byIds(results.albums)
+      this.state.excerpt.artists = artistStore.byIds(results.artists)
     })
   },
 
