@@ -4,15 +4,6 @@
   justify-content: center;
 }
 
-@mixin control($playBtnWidth, $fontSize, $textIndent) {
-  width: $playBtnWidth;
-  height: $playBtnWidth;
-  line-height: $playBtnWidth;
-  font-size: $fontSize;
-  text-indent: $textIndent;
-  left: calc(50% - #{$playBtnWidth/2});
-}
-
 @mixin artist-album-wrapper() {
   display: grid;
   grid-gap: 16px;
@@ -123,19 +114,6 @@
   }
 }
 
-@mixin close-modal-button() {
-  position: absolute;
-  right: 0;
-  top: 0;
-  background: #c34848;
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
-  text-align: center;
-  color: #fff;
-  transition: opacity .3s;
-}
-
 @mixin artist-album-info-wrapper() {
   .loading {
     @include vertical-center();
@@ -151,20 +129,6 @@
     width: 100%;
     height: 100%;
     z-index: 2;
-
-    .close {
-      @include close-modal-button();
-
-      opacity: 0;
-
-      html.touchevents & {
-        opacity: 1;
-      }
-    }
-
-    &:hover .close {
-      opacity: 1;
-    }
 
     .inner {
       padding: 24px;

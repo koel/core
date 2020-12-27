@@ -49,7 +49,7 @@
     <song-list :items="artist.songs" type="artist" ref="songList"/>
 
     <section class="info-wrapper" v-if="sharedState.useLastfm && meta.showing">
-      <a href class="close" @click.prevent="meta.showing = false"><i class="fa fa-times"></i></a>
+      <close-modal-btn @click="meta.showing = false"/>
       <div class="inner">
         <div class="loading" v-if="meta.loading"><sound-bar/></div>
         <artist-info :artist="artist" mode="full" v-else/>
@@ -71,7 +71,8 @@ export default mixins(hasSongList, artistAttributes).extend({
   components: {
     ArtistInfo: () => import('@/components/artist/info.vue'),
     SoundBar: () => import('@/components/ui/sound-bar.vue'),
-    ArtistThumbnail: () => import('@/components/ui/album-artist-thumbnail.vue')
+    ArtistThumbnail: () => import('@/components/ui/album-artist-thumbnail.vue'),
+    CloseModalBtn: () => import('@/components/ui/close-modal-btn.vue')
   },
 
   filters: { pluralize },

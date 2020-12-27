@@ -21,7 +21,7 @@
       <p class="meta">
         <span class="left">
           {{ artist.albums.length | pluralize('album') }}
-          •
+          •w
           {{ artist.songs.length | pluralize('song') }}
           •
           {{ artist.playCount | pluralize('play') }}
