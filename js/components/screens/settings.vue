@@ -1,8 +1,6 @@
 <template>
   <section id="settingsWrapper">
-    <h1 class="heading">
-      <span>Settings</span>
-    </h1>
+    <screen-header>Settings</screen-header>
 
     <form @submit.prevent="confirmThenSave" class="main-scroll-wrap">
       <div class="form-row">
@@ -37,6 +35,7 @@ import router from '@/router'
 
 export default Vue.extend({
   components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
     Btn: () => import('@/components/ui/btn.vue')
   },
 

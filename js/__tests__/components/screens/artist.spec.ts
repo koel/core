@@ -35,10 +35,7 @@ describe('components/screens/artist', () => {
     })
 
     await wrapper.vm.$nextTick()
-    const html = wrapper.html()
-    expect(html).toMatch(artist.name)
-    expect(html).toMatch('1 album')
-    expect(wrapper.hasAll(SongList, SongListControls)).toBe(true)
+    expect(wrapper.has(SongList)).toBe(true)
   })
 
   it('plays all songs', async () => {

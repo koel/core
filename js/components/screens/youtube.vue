@@ -1,6 +1,7 @@
 <template>
   <section id="youtubeWrapper">
-    <h1 class="heading"><span>{{ title }}</span></h1>
+    <screen-header>{{ title }}</screen-header>
+
     <div id="player">
       <p class="none">Your YouTube video will be played here.<br/>
       You can start a video playback from the right sidebar. When a song is playing, that is.<br>
@@ -21,6 +22,10 @@ import createYouTubePlayer from 'youtube-player'
 let player: YouTubePlayer
 
 export default Vue.extend({
+  components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue')
+  },
+
   data: () => ({
     title: 'YouTube Video'
   }),

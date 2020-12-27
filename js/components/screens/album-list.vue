@@ -1,9 +1,11 @@
 <template>
   <section id="albumsWrapper">
-    <h1 class="heading">
-      <span>Albums</span>
-      <view-mode-switch v-model="viewMode"/>
-    </h1>
+    <screen-header>
+      Albums
+      <template v-slot:controls>
+        <view-mode-switch v-model="viewMode"/>
+      </template>
+    </screen-header>
 
     <div ref="scroller" class="albums main-scroll-wrap" :class="`as-${viewMode}`" @scroll="scrolling">
       <album-card v-for="item in displayedItems" :album="item" :layout="itemLayout" :key="item.id" />
@@ -21,6 +23,7 @@ import infiniteScroll from '@/mixins/infinite-scroll.ts'
 
 export default mixins(infiniteScroll).extend({
   components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
     AlbumCard: () => import('@/components/album/card.vue'),
     ViewModeSwitch: () => import('@/components/ui/view-mode-switch.vue')
   },

@@ -1,26 +1,25 @@
 <template>
   <section id="queueWrapper">
-    <h1 class="heading">
-      <span title="That's a lot of U's and E's">Current Queue
-        <controls-toggler :showing-controls="showingControls" @toggleControls="toggleControls"/>
+    <screen-header>
+      Current Queue
+      <controls-toggler :showing-controls="showingControls" @toggleControls="toggleControls"/>
 
-        <span class="meta" v-show="meta.songCount">
-          {{ meta.songCount | pluralize('song') }}
-          •
-          {{ meta.totalLength }}
-        </span>
-      </span>
+      <template v-slot:meta>
+        <span v-if="meta.songCount">{{ meta.songCount | pluralize('song') }} • {{ meta.totalLength }}</span>
+      </template>
 
-      <song-list-controls
-        v-show="state.songs.length && (!isPhone || showingControls)"
-        @playAll="playAll"
-        @playSelected="playSelected"
-        @clearQueue="clearQueue"
-        :songs="state.songs"
-        :config="songListControlConfig"
-        :selectedSongs="selectedSongs"
-      />
-    </h1>
+      <template v-slot:controls>
+        <song-list-controls
+          v-if="state.songs.length && (!isPhone || showingControls)"
+          @playAll="playAll"
+          @playSelected="playSelected"
+          @clearQueue="clearQueue"
+          :songs="state.songs"
+          :config="songListControlConfig"
+          :selectedSongs="selectedSongs"
+        />
+      </template>
+    </screen-header>
 
     <song-list v-show="state.songs.length" :items="state.songs" type="queue" ref="songList"/>
 
@@ -42,6 +41,10 @@ import { playback } from '@/services'
 import hasSongList from '@/mixins/has-song-list.ts'
 
 export default mixins(hasSongList).extend({
+  components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue')
+  },
+
   filters: { pluralize },
 
   data: () => ({
@@ -60,8 +63,7 @@ export default mixins(hasSongList).extend({
 
   methods: {
     getSongsToPlay (): Song[] {
-      // @ts-ignore
-      return this.state.songs.length ? this.$refs.songList.getAllSongsWithSort() : songStore.all
+      return this.state.songs.length ? (this.$refs.songList as any).getAllSongsWithSort() : songStore.all
     },
 
     shuffleAll: (): void => playback.queueAndPlay(songStore.all, true),

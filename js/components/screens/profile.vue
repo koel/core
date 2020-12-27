@@ -1,8 +1,6 @@
 <template>
   <section id="profileWrapper">
-    <h1 class="heading">
-      <span>Profile &amp; Preferences</span>
-    </h1>
+    <screen-header>Profile &amp; Preferences</screen-header>
 
     <div class="main-scroll-wrap">
       <form @submit.prevent="update">
@@ -26,7 +24,8 @@
 
           <div class="form-row">
             <label for="inputProfilePassword">New Password</label>
-            <input :class="{ error: validation.error }"
+            <input
+              :class="{ error: validation.error }"
               v-model="pwd"
               name="password"
               type="password"
@@ -36,7 +35,8 @@
 
           <div class="form-row">
             <label for="inputProfileConfirmPassword">Confirm Password</label>
-            <input :class="{ error: validation.error }"
+            <input
+              :class="{ error: validation.error }"
               v-model="confirmPwd"
               name="confirmPassword"
               type="password"
@@ -134,6 +134,7 @@ import { http, auth } from '@/services'
 
 export default Vue.extend({
   components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
     Btn: () => import('@/components/ui/btn.vue')
   },
 

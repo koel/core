@@ -221,8 +221,7 @@ export default Vue.extend({
   },
 
   created (): void {
-    // @ts-ignore
-    this.inStandaloneMode = window.navigator.standalone
+    this.inStandaloneMode = (window.navigator as any).standalone
   },
 
   mounted (): void {

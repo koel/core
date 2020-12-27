@@ -2,7 +2,7 @@
 import './static-loader'
 import Vue, { VNode, CreateElement } from 'vue'
 import App from './app.vue'
-import { http } from './services/index'
+import { http } from '@/services'
 
 if (KOEL_ENV === 'app') {
   Vue.use(require('vue-electron'))
@@ -14,7 +14,7 @@ Vue.config.productionTip = false
  * For Ancelot, the ancient cross of war
  * for the holy town of Gods
  * Gloria, gloria perpetua
- * in this dawn of victorya
+ * in this dawn of victory
  */
 /* eslint no-new: 0 */
 new Vue({

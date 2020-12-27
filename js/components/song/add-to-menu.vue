@@ -56,6 +56,7 @@ import { pluralize } from '@/utils'
 import { playlistStore } from '@/stores'
 import router from '@/router'
 import songMenuMethods from '@/mixins/song-menu-methods.ts'
+import { PropOptions } from 'vue'
 
 export default mixins(songMenuMethods).extend({
   components: {
@@ -67,7 +68,9 @@ export default mixins(songMenuMethods).extend({
       type: Boolean,
       default: false
     },
-    config: Object
+    config: {
+      type: Object
+    } as PropOptions<AddToMenuConfig>
   },
 
   filters: { pluralize },

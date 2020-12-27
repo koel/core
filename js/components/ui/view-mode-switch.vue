@@ -44,7 +44,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .view-modes {
   display: flex;
-  flex: 0 0 64px;
+  width: 64px;
   border: 1px solid rgba(255, 255, 255, .2);
   border-radius: 5px;
   overflow: hidden;
@@ -64,8 +64,6 @@ export default Vue.extend({
   }
 
   @media only screen and(max-width: 768px) {
-    flex: auto;
-    width: 64px;
     margin-top: 8px;
   }
 }

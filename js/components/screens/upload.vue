@@ -1,21 +1,25 @@
 <template>
   <section id="uploadWrapper">
-    <h1 class="heading">
-      <span>Upload <sup>Beta</sup></span>
-      <btn-group uppercased>
-        <btn v-show="failedUploadsAvailable" @click="retryAll" green>
-          <i class="fa fa-repeat"></i>
-          Retry All
-        </btn>
-        <btn v-show="failedUploadsAvailable" @click="removeFailedEntries" orange>
-          <i class="fa fa-times"></i>
-          Remove Failed
-        </btn>
-      </btn-group>
-    </h1>
+    <screen-header>
+      Upload <sup>Beta</sup>
+
+      <template v-slot:controls>
+        <btn-group uppercased v-if="hasUploadFailures">
+          <btn @click="retryAll" green>
+            <i class="fa fa-repeat"></i>
+            Retry All
+          </btn>
+          <btn @click="removeFailedEntries" orange>
+            <i class="fa fa-times"></i>
+            Remove Failed
+          </btn>
+        </btn-group>
+      </template>
+    </screen-header>
 
     <div class="main-scroll-wrap">
-      <div class="upload-panel"
+      <div
+        class="upload-panel"
         @dragenter.prevent="onDragEnter"
         @dragleave.prevent="onDragLeave"
         @drop.stop.prevent="onDrop"
@@ -43,24 +47,31 @@
 <script lang="ts">
 import Vue from 'vue'
 import ismobile from 'ismobilejs'
+import md5 from 'blueimp-md5'
+
 import { settingStore, userStore } from '@/stores'
 import { getAllFileEntries, eventBus, isDirectoryReadingSupported } from '@/utils'
 import { UploadFile, validMediaMimeTypes, events } from '@/config'
-import md5 from 'blueimp-md5'
 import { upload } from '@/services'
+
 import UploadItem from '@/components/ui/upload/upload-item.vue'
 import BtnGroup from '@/components/ui/btn-group.vue'
 import Btn from '@/components/ui/btn.vue'
 
 export default Vue.extend({
-  components: { UploadItem, BtnGroup, Btn },
+  components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
+    UploadItem,
+    BtnGroup,
+    Btn
+  },
 
   data: () => ({
     settingsState: settingStore.state,
     droppable: false,
     userState: userStore.state,
     uploadState: upload.state,
-    failedUploadsAvailable: false
+    hasUploadFailures: false
   }),
 
   computed: {
@@ -117,18 +128,18 @@ export default Vue.extend({
 
     retryAll (): void {
       upload.retryAll()
-      this.failedUploadsAvailable = false
+      this.hasUploadFailures = false
     },
 
     removeFailedEntries (): void {
       upload.removeFailed()
-      this.failedUploadsAvailable = false
+      this.hasUploadFailures = false
     }
   },
 
   created (): void {
     eventBus.on(events.UPLOAD_QUEUE_FINISHED, (): void => {
-      this.failedUploadsAvailable = upload.getFilesByStatus('Errored').length !== 0
+      this.hasUploadFailures = upload.getFilesByStatus('Errored').length !== 0
     })
   }
 })

@@ -24,8 +24,7 @@ describe('components/song/edit-form', () => {
     expect(metaHtml).toMatch(song.album.name)
     expect(metaHtml).toMatch(song.artist.name)
 
-    // @ts-ignore
-    await wrapper.vm.open()
+    await (wrapper.vm as any).open()
     expect(wrapper.has(Typeahead)).toBe(true)
     expect(wrapper.find('input[name=title]').value).toBe(song.title)
     expect(wrapper.find('input[name=album]').value).toBe(song.album.name)

@@ -56,7 +56,7 @@ export const sharedStore = {
     useLastfm: false,
     users: [],
     useYouTube: false
-  },
+  } as SharedState,
 
   async init (): Promise<SharedState> {
     this.state = Object.assign(this.state, await http.get<SharedState>('data'))

@@ -44,9 +44,13 @@ describe('components/screens/favorites', () => {
     shallow(Component, {
       data: () => ({
         state: {
-          songs: factory('song', 5)
+          songs: factory('song', 5),
         },
-        sharedState: { allowDownload: true }
+        sharedState: { allowDownload: true },
+        meta: {
+          songCount: 5,
+          totalLength: '12:34'
+        }
       })
     }).click('a.download')
 

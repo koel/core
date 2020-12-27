@@ -86,7 +86,7 @@ export default Vue.extend({
 
   &.Errored {
     background: $colorRed;
-    
+
     .progress {
       background: transparent;
     }

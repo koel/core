@@ -89,9 +89,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
-
 #mainContent {
   flex: 1;
   position: relative;
@@ -116,76 +113,6 @@ export default Vue.extend({
         // Enable scroll with momentum on touch devices
         overflow-y: scroll;
         -webkit-overflow-scrolling: touch;
-      }
-    }
-  }
-
-  h1.heading {
-    font-weight: $fontWeight_UltraThin;
-    font-size: 2.76rem;
-    padding: 1rem 1.8rem;
-    border-bottom: 1px solid $color2ndBgr;
-    min-height: 96px;
-    position: relative;
-    align-items: center;
-    align-content: stretch;
-    display: flex;
-    line-height: normal;
-    background: rgba(0, 0, 0, .1);
-
-    span:first-child {
-      flex: 1;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
-    .meta {
-      display: block;
-      font-size: .9rem;
-      color: $color2ndText;
-      margin: 6px 0 0 2px;
-
-      a {
-        color: #fff;
-
-        &:hover {
-          color: $colorHighlight;
-        }
-      }
-    }
-
-    .btn-group {
-      text-align: right;
-      z-index: 2;
-    }
-  }
-
-  @media only screen and (max-width: 768px) {
-    h1.heading {
-      font-size: 1.38rem;
-      min-height: 0;
-      line-height: 1.85rem;
-      text-align: center;
-      flex-direction: column;
-
-      .meta {
-        display: none;
-      }
-
-      .buttons {
-        justify-content: center;
-        margin-top: 8px;
-      }
-
-      span:first-child {
-        flex: 0 0 28px;
-      }
-    }
-
-    > section {
-      .main-scroll-wrap {
-        padding: 12px;
       }
     }
   }

@@ -1,30 +1,29 @@
 <template>
   <section id="recentlyPlayedWrapper">
-    <h1 class="heading">
-      <span>Recently Played
-        <controls-toggler :showing-controls="showingControls" @toggleControls="toggleControls"/>
+    <screen-header>
+      Recently Played
+      <controls-toggler :showing-controls="showingControls" @toggleControls="toggleControls"/>
 
-        <span class="meta" v-show="meta.songCount">
-          {{ meta.songCount | pluralize('song') }}
-          •
-          {{ meta.totalLength }}
-        </span>
-      </span>
+      <template v-slot:meta>
+        <span v-if="meta.songCount">{{ meta.songCount | pluralize('song') }} • {{ meta.totalLength }}</span>
+      </template>
 
-      <song-list-controls
-        v-show="state.songs.length && (!isPhone || showingControls)"
-        @playAll="playAll"
-        @playSelected="playSelected"
-        :songs="state.songs"
-        :config="songListControlConfig"
-        :selectedSongs="selectedSongs"
-      />
-    </h1>
+      <template v-slot:controls>
+        <song-list-controls
+          v-if="state.songs.length && (!isPhone || showingControls)"
+          @playAll="playAll"
+          @playSelected="playSelected"
+          :songs="state.songs"
+          :config="songListControlConfig"
+          :selectedSongs="selectedSongs"
+        />
+      </template>
+    </screen-header>
 
-    <song-list v-show="state.songs.length" :items="state.songs" type="recently-played" :sortable="false"/>
+    <song-list v-if="state.songs.length" :items="state.songs" type="recently-played" :sortable="false"/>
 
     <div v-if="!state.songs.length" class="none">
-      This playlist will be automatically filled with the songs you most recently played, so start playing!
+      This playlist is automatically populated with the songs you most recently played, so start playing!
     </div>
   </section>
 </template>
@@ -37,6 +36,10 @@ import hasSongList from '@/mixins/has-song-list.ts'
 import mixins from 'vue-typed-mixins'
 
 export default mixins(hasSongList).extend({
+  components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue')
+  },
+
   filters: { pluralize },
 
   data: () => ({
@@ -62,16 +65,16 @@ export default mixins(hasSongList).extend({
 </script>
 
 <style lang="scss">
-  @import "~#/partials/_vars.scss";
+@import "~#/partials/_vars.scss";
 
-  #recentlyPlayedWrapper {
-    .none {
-      color: $color2ndText;
-      padding: 16px 24px;
+#recentlyPlayedWrapper {
+  .none {
+    color: $color2ndText;
+    padding: 16px 24px;
 
-      a {
-        color: $colorHighlight;
-      }
+    a {
+      color: $colorHighlight;
     }
   }
+}
 </style>

@@ -1,13 +1,9 @@
 <template>
   <section id="searchWrapper">
-    <h1 class="heading">
-      <span v-if="q">
-        Search Results for <strong>{{ q }}</strong>
-      </span>
-      <span v-else>
-        Search
-      </span>
-    </h1>
+    <screen-header>
+      <span v-if="q">Search Results for <strong>{{ q }}</strong></span>
+      <span v-else>Search</span>
+    </screen-header>
 
     <div class="main-scroll-wrap" ref="wrapper">
       <div class="results" v-if="q">
@@ -69,6 +65,7 @@ import router from '@/router'
 
 export default Vue.extend({
   components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
     SongCard: () => import('@/components/song/card.vue'),
     ArtistCard: () => import('@/components/artist/card.vue'),
     AlbumCard: () => import('@/components/album/card.vue'),

@@ -372,3 +372,17 @@ interface SongUploadResult {
   disc: number
   track: number
 }
+
+interface AddToMenuConfig {
+  queue: boolean
+  favorites: boolean
+  playlists: boolean
+  newPlaylist: boolean
+}
+
+interface SongListControlsConfig {
+  play: boolean
+  addTo: AddToMenuConfig
+  clearQueue: boolean
+  deletePlaylist: boolean
+}

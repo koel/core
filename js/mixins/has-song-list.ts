@@ -8,9 +8,10 @@ import isMobile from 'ismobilejs'
 import { playback } from '@/services'
 import { eventBus } from '@/utils'
 import { events } from '@/config'
+
+import ControlsToggler from '@/components/ui/screen-controls-toggler.vue'
 import SongList from '@/components/song/list.vue'
 import SongListControls from '@/components/song/list-controls.vue'
-import ControlsToggler from '@/components/song/list-controls-toggler.vue'
 
 export default Vue.extend({
   components: {
@@ -27,7 +28,7 @@ export default Vue.extend({
     } as SongListMeta,
     selectedSongs: [] as Song[],
     showingControls: false,
-    songListControlConfig: {},
+    songListControlConfig: {} as Partial<SongListControlsConfig>,
     isPhone: isMobile.phone
   }),
 
@@ -45,8 +46,7 @@ export default Vue.extend({
     },
 
     getSongsToPlay (): Song[] {
-      // @ts-ignore
-      return this.$refs.songList.getAllSongsWithSort()
+      return (this.$refs.songList as any).getAllSongsWithSort()
     }
   },
 
