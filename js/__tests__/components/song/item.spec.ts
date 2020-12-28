@@ -2,7 +2,7 @@ import each from 'jest-each'
 import Component from '@/components/song/item.vue'
 import factory from '@/__tests__/factory'
 import { playback } from '@/services'
-import { favoriteStore, queueStore } from '@/stores'
+import { queueStore } from '@/stores'
 import { mock } from '@/__tests__/__helpers__'
 import { Wrapper, shallow } from '@/__tests__/adapter'
 
@@ -64,12 +64,6 @@ describe('components/song/item', () => {
     const m = mock(playback, action)
     song.playbackState = state
     wrapper.click('.play')
-    expect(m).toHaveBeenCalled()
-  })
-
-  it('toggles favorite', () => {
-    const m = mock(favoriteStore, 'toggleOne')
-    wrapper.click('.favorite')
     expect(m).toHaveBeenCalled()
   })
 })

@@ -17,9 +17,8 @@
     <td class="artist">{{ song.artist.name }}</td>
     <td class="album">{{ song.album.name }}</td>
     <td class="time">{{ song.fmtLength }}</td>
-    <td class="favorite" role="button" @click.stop="toggleLike">
-      <i class="fa fa-heart" v-if="song.liked"/>
-      <i class="fa fa-heart-o" v-else/>
+    <td class="favorite">
+      <like-button :song="song"/>
     </td>
     <td class="play" role="button" @click.stop="doPlayback">
       <i class="fa fa-pause-circle" v-if="song.playbackState === 'Playing'"></i>
@@ -32,11 +31,16 @@
 import Vue, { PropOptions } from 'vue'
 import $, { VueQuery } from 'vuequery'
 import { playback } from '@/services'
-import { queueStore, favoriteStore } from '@/stores'
+import { queueStore } from '@/stores'
 import { SongListComponent } from 'koel/types/ui'
 
 export default Vue.extend({
   name: 'song-item',
+
+  components: {
+    LikeButton: () => import('@/components/song/like-button.vue')
+  },
+
   props: {
     item: {
       type: Object,
@@ -68,10 +72,6 @@ export default Vue.extend({
       }
 
       playback.play(this.song)
-    },
-
-    toggleLike (): void {
-      favoriteStore.toggleOne(this.song)
     },
 
     doPlayback (): void {
