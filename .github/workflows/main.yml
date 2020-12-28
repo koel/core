@@ -9,7 +9,7 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
-      - name: actions/setup-node@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
