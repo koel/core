@@ -51,7 +51,7 @@ export default Vue.extend({
     }
   },
 
-  mounted (): void {
+  updated (): void {
     // Since Vue's $refs are not reactive, we work around by assigning to a data property
     this.textZoomTarget = this.$refs.lyricsContainer as Element
   }
