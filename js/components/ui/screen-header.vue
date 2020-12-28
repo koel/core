@@ -74,6 +74,7 @@ header {
     font-size: .9rem;
     line-height: 2;
     color: $color2ndText;
+    font-weight: $fontWeight_Thin;
 
     a {
       color: #fff;
