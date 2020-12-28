@@ -47,6 +47,7 @@ describe('components/song/list', () => {
         type: 'all-songs'
       }
     })
+    // @ts-ignore
     const m = mock(wrapper.vm, 'sort')
     wrapper.click(`.song-list-header ${selector}`)
     expect(m).toHaveBeenCalledWith(criteria)

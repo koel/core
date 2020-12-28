@@ -198,8 +198,8 @@ describe('services/playback', () => {
     const showNotificationMock = mock(playback, 'showNotification')
     const dataToBroadcast = {}
     mock(songStore, 'generateDataToBroadcast', dataToBroadcast)
-    const restartMock = mock(playback.player, 'restart')
-    const playMock = mock(playback.player, 'play')
+    const restartMock = mock(playback.player!, 'restart')
+    const playMock = mock(playback.player!, 'play')
 
     playback.restart()
     expect(song.playStartTime).toEqual(1000)
@@ -222,7 +222,7 @@ describe('services/playback', () => {
   )
 
   it('restarts song if playPrev is triggered after 5 seconds', () => {
-    const restartMock = mock(playback.player, 'restart')
+    const restartMock = mock(playback.player!, 'restart')
     Object.defineProperty(playback.player!.media, 'currentTime', {
       get: () => 6
     })
@@ -292,8 +292,8 @@ describe('services/playback', () => {
 
   it('stops playback', () => {
     const currentSong = factory<Song>('song')
-    const pauseMock = mock(playback.player, 'pause')
-    const seekMock = mock(playback.player, 'seek')
+    const pauseMock = mock(playback.player!, 'pause')
+    const seekMock = mock(playback.player!, 'seek')
     Object.defineProperty(queueStore, 'current', {
       get: () => currentSong
     })
@@ -314,7 +314,7 @@ describe('services/playback', () => {
     })
     const dataToBroadcast = {}
     mock(songStore, 'generateDataToBroadcast', dataToBroadcast)
-    const pauseMock = mock(playback.player, 'pause')
+    const pauseMock = mock(playback.player!, 'pause')
     const broadcastMock = mock(socket, 'broadcast')
 
     playback.pause()
@@ -330,7 +330,7 @@ describe('services/playback', () => {
     })
     const dataToBroadcast = {}
     mock(songStore, 'generateDataToBroadcast', dataToBroadcast)
-    const playMock = mock(playback.player, 'play')
+    const playMock = mock(playback.player!, 'play')
     const broadcastMock = mock(socket, 'broadcast')
     const emitMock = mock(eventBus, 'emit')
 
