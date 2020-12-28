@@ -39,6 +39,7 @@
             <i class="fa fa-angle-down" v-show="sortKey === 'song.length' && order > 0"></i>
             <i class="fa fa-angle-up" v-show="sortKey === 'song.length' && order < 0"></i>
           </th>
+          <th class="favorite"></th>
           <th class="play"></th>
         </tr>
       </thead>
@@ -480,6 +481,10 @@ export default Vue.extend({
       width: 27%;
     }
 
+    &.favorite {
+      width: 36px;
+    }
+
     &.play {
       display: none;
 
@@ -562,15 +567,13 @@ export default Vue.extend({
     }
 
     td {
-      display: inline;
+      display: none;
       padding: 0;
       vertical-align: bottom;
       color: $colorMainText;
 
-      &.album,
-      &.time,
-      &.track-number {
-        display: none;
+      &.artist, &.title {
+        display: inline;
       }
 
       &.artist {

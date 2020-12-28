@@ -17,7 +17,11 @@
     <td class="artist">{{ song.artist.name }}</td>
     <td class="album">{{ song.album.name }}</td>
     <td class="time">{{ song.fmtLength }}</td>
-    <td class="play" @click.stop="doPlayback">
+    <td class="favorite" role="button" @click.stop="toggleLike">
+      <i class="fa fa-heart" v-if="song.liked"/>
+      <i class="fa fa-heart-o" v-else/>
+    </td>
+    <td class="play" role="button" @click.stop="doPlayback">
       <i class="fa fa-pause-circle" v-if="song.playbackState === 'Playing'"></i>
       <i class="fa fa-play-circle" v-else></i>
     </td>
@@ -28,7 +32,7 @@
 import Vue, { PropOptions } from 'vue'
 import $, { VueQuery } from 'vuequery'
 import { playback } from '@/services'
-import { queueStore } from '@/stores'
+import { queueStore, favoriteStore } from '@/stores'
 import { SongListComponent } from 'koel/types/ui'
 
 export default Vue.extend({
@@ -64,6 +68,10 @@ export default Vue.extend({
       }
 
       playback.play(this.song)
+    },
+
+    toggleLike (): void {
+      favoriteStore.toggleOne(this.song)
     },
 
     doPlayback (): void {
@@ -125,17 +133,14 @@ export default Vue.extend({
     color: $color2ndText;
   }
 
-  .title {
-    min-width: 192px;
-  }
-
   .play {
-    max-width: 32px;
-    opacity: .5;
-
     i {
       font-size: 1.5rem;
     }
+  }
+
+  .favorite .fa-heart, .favorite:hover .fa-heart-o {
+    color: $colorHeart;
   }
 
   &.selected {

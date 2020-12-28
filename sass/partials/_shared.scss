@@ -46,7 +46,7 @@ input, select, button, textarea, .btn {
   &::-moz-focus-inner { border: 0 !important; }
 }
 
-button {
+button, [role=button] {
   cursor: pointer;
 }
 
@@ -172,8 +172,6 @@ label {
     font-size: 1rem;
   }
 }
-
-
 
 .tabs {
   [role=tablist] {
