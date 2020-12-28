@@ -1,6 +1,6 @@
 <template>
-  <button @click.stop="toggleLike" :title="title">
-    <i class="fa fa-heart" v-if="song.liked"></i>
+  <button @click.stop="toggleLike" :title="title" class="text-light-gray">
+    <i class="fa fa-heart text-maroon" v-if="song.liked"></i>
     <i class="fa fa-heart-o" v-else></i>
   </button>
 </template>
@@ -38,14 +38,9 @@ button {
   background: transparent;
   padding: 0;
   border: 0;
-  color: $color2ndText;
-
-  .fa-heart {
-    color: $colorHeart;
-  }
 
   &:hover .fa-heart-o {
-    color: $colorHeart;
+    color: $colorMaroon;
   }
 }
 </style>

@@ -40,9 +40,9 @@
         ref="songList"
       />
 
-      <div v-if="!playlist.songs.length" class="none">
+      <div v-if="!playlist.songs.length" class="none text-light-gray">
         <p v-if="playlist.is_smart">
-          No songs match the playlist's <a href="#" @click.prevent="editSmartPlaylist">criteria</a>.
+          No songs match the playlist's <a href class="text-orange" @click.prevent="editSmartPlaylist">criteria</a>.
         </p>
         <p v-else>
           The playlist is currently empty. You can fill it up by dragging songs into its name in the sidebar,
@@ -124,12 +124,7 @@ export default mixins(hasSongList).extend({
 
 #playlistWrapper {
   .none {
-    color: $color2ndText;
     padding: 16px 24px;
-
-    a {
-      color: $colorHighlight;
-    }
   }
 }
 </style>

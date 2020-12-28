@@ -167,7 +167,7 @@ export default Vue.extend({
       border-left: 4px solid transparent;
 
       &.active, &:hover {
-        border-left-color: $colorHighlight;
+        border-left-color: $colorOrange;
         color: $colorLinkHovered;
         background: rgba(255, 255, 255, .05);
         box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
@@ -178,7 +178,7 @@ export default Vue.extend({
       }
 
       &:hover {
-        border-left-color: darken($colorHighlight, 20%);
+        border-left-color: darken($colorOrange, 20%);
       }
 
       &::before {

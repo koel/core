@@ -6,9 +6,10 @@
           <div ref="lyricsContainer" v-html="song.lyrics"></div>
           <text-zoomer :target="textZoomTarget"/>
         </div>
-        <p class="none" v-if="song.id && !song.lyrics">
+        <p class="none text-light-gray" v-if="song.id && !song.lyrics">
           <template v-if="isAdmin">
-            No lyrics found. <a @click.prevent="showEditSongForm">Click here</a> to add lyrics.
+            No lyrics found.
+            <a href class="text-orange" @click.prevent="showEditSongForm">Click here</a> to add lyrics.
           </template>
           <span v-else>No lyrics available. Are you listening to Bach?</span>
         </p>
@@ -64,14 +65,6 @@ export default Vue.extend({
 .content {
   line-height: 1.6;
   position: relative;
-
-  .none a {
-    color: $colorLinkHovered;
-
-    &:hover {
-      color: $colorHighlight;
-    }
-  }
 
   .text-zoomer {
     opacity: 0;

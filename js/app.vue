@@ -156,7 +156,7 @@ Vue.directive('koel-droppable', droppable)
   color: #fff;
   font-family: $fontFamily;
   font-size: 1rem;
-  font-weight: $fontWeight_Thin;
+  font-weight: $fontWeightLight;
   position: fixed;
   top: 0;
   left: 0;

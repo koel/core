@@ -80,7 +80,7 @@
         </div>
       </div>
 
-      <section class="lastfm" >
+      <section class="lastfm text-light-gray">
         <h1>Last.fm Integration</h1>
 
         <div v-if="sharedState.useLastfm">
@@ -94,7 +94,14 @@
           </p>
           <p>
             Connecting Koel and your Last.fm account enables such exciting features as
-            <a href="https://www.last.fm/about/trackmymusic" target="_blank">scrobbling</a>.
+            <a
+              class="text-orange"
+              href="https://www.last.fm/about/trackmymusic"
+              target="_blank"
+              rel="noopener"
+            >
+              scrobbling
+            </a>.
           </p>
           <div class="buttons">
             <btn @click.prevent="connectToLastfm" class="connect">
@@ -206,14 +213,9 @@ export default Vue.extend({
     margin-top: 24px;
   }
 
-  .status {
-    margin-left: 8px;
-    color: $colorGreen;
-  }
-
   .preferences {
     margin-top: 32px;
-    border-top: 1px solid $color2ndBgr;
+    border-top: 1px solid $colorSecondaryBgr;
 
     label {
       font-size: $fontSize;
@@ -221,14 +223,9 @@ export default Vue.extend({
   }
 
   .lastfm {
-    border-top: 1px solid $color2ndBgr;
-    color: $color2ndText;
+    border-top: 1px solid $colorSecondaryBgr;
     margin-top: 16px;
     padding-top: 16px;
-
-    a {
-      color: $colorHighlight;
-    }
 
     h1 {
       font-size: 24px;

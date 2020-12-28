@@ -34,7 +34,7 @@
             />
           </ol>
 
-          <p class="none" v-show="!recentSongs.length">
+          <p class="text-light-gray" v-show="!recentSongs.length">
             Your recently played songs will be displayed here.<br/>
             Start listening!
           </p>
@@ -168,15 +168,6 @@ export default mixins(infiniteScroll).extend({
     }
   }
 
-  .none {
-    color: $color2ndText;
-    padding: 0;
-
-    a {
-      color: $colorHighlight;
-    }
-  }
-
   ol {
     display: grid;
     grid-gap: .7em 1em;
@@ -191,7 +182,7 @@ export default mixins(infiniteScroll).extend({
     h1 {
       font-size: 1.4rem;
       margin: 0 0 1.8rem;
-      font-weight: $fontWeight_UltraThin;
+      font-weight: $fontWeightThin;
     }
   }
 

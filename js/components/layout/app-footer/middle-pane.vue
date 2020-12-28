@@ -32,7 +32,7 @@ export default Vue.extend({
 @import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
-$colorPaneBgr: darken($color2ndBgr, 3);
+$colorPaneBgr: darken($colorSecondaryBgr, 3);
 
 .middle-pane {
   flex: 1;
@@ -61,7 +61,7 @@ $colorPaneBgr: darken($color2ndBgr, 3);
 
     a {
       &:hover {
-        color: $colorHighlight;
+        color: $colorOrange;
       }
     }
   }
@@ -100,7 +100,7 @@ $colorPaneBgr: darken($color2ndBgr, 3);
 
     .plyr__progress {
       &--seek {
-        border-bottom-color: $color2ndBgr;
+        border-bottom-color: $colorSecondaryBgr;
       }
     }
   }

@@ -64,7 +64,6 @@ export default Vue.extend({
   @include vertical-center();
   flex: 0 0 256px;
   order: -1;
-  background: $colorSearchFormBgr;
 
   input[type="search"] {
     width: 218px;

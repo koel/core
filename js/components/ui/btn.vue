@@ -14,7 +14,7 @@ export default {}
 
 button {
   background: $colorBtnBgr;
-  color: $colorBtnText;
+  color: $colorMainText;
   font-size: 1rem;
   padding: .6rem 1rem;
   cursor: pointer;
