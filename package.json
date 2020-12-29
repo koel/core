@@ -48,7 +48,6 @@
     "@vue/test-utils": "^1.0.0-beta.25",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.1.0",
-    "codecov": "^3.7.1",
     "cross-env": "^3.2.3",
     "crypto-random-string": "^1.0.0",
     "css-loader": "^0.28.7",
@@ -82,8 +81,7 @@
   "scripts": {
     "lint": "eslint js --ext=js,vue",
     "type-check": "tsc --noEmit",
-    "test": "yarn lint && cross-env NODE_ENV=test && jest --colors",
-    "coverage": "codecov"
+    "test": "yarn lint && cross-env NODE_ENV=test && jest --colors"
   },
   "repository": {
     "type": "git",

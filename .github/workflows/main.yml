@@ -19,4 +19,6 @@ jobs:
       - name: Run unit tests
         run: yarn test --forceExit # Jest won't exit in Node 15 for whatever reason
       - name: Collect coverage
-        run: yarn coverage
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
