@@ -1,26 +1,24 @@
 <template>
   <section id="songResultsWrapper">
-    <h1 class="heading">
-      <span>
-        Showing Songs for <strong>{{ decodedQ }}</strong>
-        <controls-toggler :showing-controls="showingControls" @toggleControls="toggleControls"/>
+    <screen-header>
+      Showing Songs for <strong>{{ decodedQ }}</strong>
+      <controls-toggler :showing-controls="showingControls" @toggleControls="toggleControls"/>
 
-        <span class="meta" v-show="meta.songCount">
-          {{ meta.songCount | pluralize('song') }}
-          •
-          {{ meta.totalLength }}
-        </span>
-      </span>
+      <template v-slot:meta>
+        <span v-if="meta.songCount">{{ meta.songCount | pluralize('song') }} • {{ meta.totalLength }}</span>
+      </template>
 
-      <song-list-controls
-        v-show="state.songs.length && (!isPhone || showingControls)"
-        @playAll="playAll"
-        @playSelected="playSelected"
-        :songs="state.songs"
-        :config="songListControlConfig"
-        :selectedSongs="selectedSongs"
-      />
-    </h1>
+      <template v-slot:controls>
+        <song-list-controls
+          v-if="state.songs.length && (!isPhone || showingControls)"
+          @playAll="playAll"
+          @playSelected="playSelected"
+          :songs="state.songs"
+          :config="songListControlConfig"
+          :selectedSongs="selectedSongs"
+        />
+      </template>
+    </screen-header>
 
     <song-list :items="state.songs" type="search-results" ref="songList"/>
   </section>
@@ -33,6 +31,10 @@ import hasSongList from '@/mixins/has-song-list'
 import { pluralize } from '@/utils'
 
 export default mixins(hasSongList).extend({
+  components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue')
+  },
+
   filters: { pluralize },
 
   props: {

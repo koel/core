@@ -1,13 +1,9 @@
 <template>
   <section id="searchWrapper">
-    <h1 class="heading">
-      <span v-if="q">
-        Search Results for <strong>{{ q }}</strong>
-      </span>
-      <span v-else>
-        Search
-      </span>
-    </h1>
+    <screen-header>
+      <span v-if="q">Search Results for <strong>{{ q }}</strong></span>
+      <span v-else>Search</span>
+    </screen-header>
 
     <div class="main-scroll-wrap" ref="wrapper">
       <div class="results" v-if="q">
@@ -69,6 +65,7 @@ import router from '@/router'
 
 export default Vue.extend({
   components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
     SongCard: () => import('@/components/song/card.vue'),
     ArtistCard: () => import('@/components/artist/card.vue'),
     AlbumCard: () => import('@/components/album/card.vue'),
@@ -96,6 +93,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import "~#/partials/_mixins.scss";
+
 .results > section {
   margin-bottom: 3em;
 }
@@ -110,20 +109,14 @@ h1 {
 
 section ul {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   grid-gap: .7em 1em;
-
-  @media only screen and (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
 }
 
 .screen-placeholder {
+  @include vertical-center();
   position: relative;
   height: 100%;
-  display: flex;
-  place-content: center;
-  place-items: center;
   opacity: .2;
 
   i {

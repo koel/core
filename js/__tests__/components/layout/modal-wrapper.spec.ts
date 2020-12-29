@@ -34,8 +34,7 @@ describe('components/layout/modal-wrapper', () => {
     eventBus.emit('MODAL_SHOW_ADD_USER_FORM')
     await wrapper.vm.$nextTick()
     expect(wrapper.has('add-user-form-stub')).toBe(true)
-    // @ts-ignore
-    wrapper.vm.close()
+    ;(wrapper.vm as any).close()
     expect(wrapper.has('add-user-form-stub')).toBe(false)
   })
 })

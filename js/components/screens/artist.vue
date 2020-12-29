@@ -1,15 +1,15 @@
 <template>
   <section id="artistWrapper">
-    <h1 class="heading">
-      <span class="overview">
-        <span class="thumbnail-wrapper">
-          <artist-thumbnail :entity="artist" />
-        </span>
+    <screen-header>
+      {{ artist.name }}
+      <controls-toggler :showing-controls="showingControls" @toggleControls="toggleControls"/>
 
-        {{ artist.name }}
-        <controls-toggler :showing-controls="showingControls" @toggleControls="toggleControls"/>
+      <template v-slot:thumbnail>
+        <artist-thumbnail :entity="artist"/>
+      </template>
 
-        <span class="meta" v-show="artist.songs.length">
+      <template v-slot:meta>
+        <span v-if="artist.songs.length">
           {{ artist.albums.length | pluralize('album') }}
           •
           {{ artist.songs.length | pluralize('song') }}
@@ -34,24 +34,28 @@
             </a>
           </template>
         </span>
-      </span>
+      </template>
 
-      <song-list-controls
-        v-show="artist.songs.length && (!isPhone || showingControls)"
-        @playAll="playAll"
-        @playSelected="playSelected"
-        :songs="artist.songs"
-        :config="songListControlConfig"
-        :selectedSongs="selectedSongs"
-      />
-    </h1>
+      <template v-slot:controls>
+        <song-list-controls
+          v-if="artist.songs.length && (!isPhone || showingControls)"
+          @playAll="playAll"
+          @playSelected="playSelected"
+          :songs="artist.songs"
+          :config="songListControlConfig"
+          :selectedSongs="selectedSongs"
+        />
+      </template>
+    </screen-header>
 
     <song-list :items="artist.songs" type="artist" ref="songList"/>
 
     <section class="info-wrapper" v-if="sharedState.useLastfm && meta.showing">
-      <a href class="close" @click.prevent="meta.showing = false"><i class="fa fa-times"></i></a>
+      <close-modal-btn @click="meta.showing = false"/>
       <div class="inner">
-        <div class="loading" v-if="meta.loading"><sound-bar/></div>
+        <div class="loading" v-if="meta.loading">
+          <sound-bar/>
+        </div>
         <artist-info :artist="artist" mode="full" v-else/>
       </div>
     </section>
@@ -69,9 +73,11 @@ import artistAttributes from '@/mixins/artist-attributes.ts'
 
 export default mixins(hasSongList, artistAttributes).extend({
   components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
     ArtistInfo: () => import('@/components/artist/info.vue'),
     SoundBar: () => import('@/components/ui/sound-bar.vue'),
-    ArtistThumbnail: () => import('@/components/ui/album-artist-thumbnail.vue')
+    ArtistThumbnail: () => import('@/components/ui/album-artist-thumbnail.vue'),
+    CloseModalBtn: () => import('@/components/ui/close-modal-btn.vue')
   },
 
   filters: { pluralize },
@@ -100,7 +106,9 @@ export default mixins(hasSongList, artistAttributes).extend({
     artist (): void {
       this.meta.showing = false
       // #530
-      this.$refs.songList && (this.$refs.songList as any).sort()
+      if (this.$refs.songList) {
+        (this.$refs.songList as any).sort()
+      }
     }
   },
 
@@ -134,34 +142,6 @@ export default mixins(hasSongList, artistAttributes).extend({
 @import "~#/partials/_mixins.scss";
 
 #artistWrapper {
-  button.play-shuffle {
-    i {
-      margin-right: 0 !important;
-    }
-  }
-
-  .heading {
-    .overview {
-      .thumbnail-wrapper {
-        display: block;
-        width: 64px;
-        position: absolute;
-        left: 0;
-
-        @media only screen and (max-width : 768px) {
-          display: none;
-        }
-      }
-
-      position: relative;
-      padding-left: 84px;
-
-      @media only screen and (max-width : 768px) {
-        padding-left: 0;
-      }
-    }
-  }
-
   @include artist-album-info-wrapper();
 }
 </style>

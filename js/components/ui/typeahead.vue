@@ -183,7 +183,7 @@ export default Vue.extend({
     padding: 2px 8px;
 
     &.selected, &:hover {
-    background: $colorHighlight;
+    background: $colorOrange;
     color: #fff;
     }
   }

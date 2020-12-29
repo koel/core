@@ -1,7 +1,7 @@
 <template>
-  <div class="about">
+  <div class="about text-light-gray">
     <header>
-      <h1>About Koel</h1>
+      <h1 class="text-white">About Koel</h1>
     </header>
 
     <main>
@@ -91,9 +91,9 @@ export default Vue.extend({
 
   main {
     padding: 24px;
+
     p {
       margin: 12px 0;
-      color: $color2ndText;
     }
   }
 

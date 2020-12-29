@@ -15,7 +15,7 @@
     <footer>
       <div class="info">
         <a class="name" :href="`#!/album/${album.id}`">{{ album.name }}</a>
-        <span class="sep">by</span>
+        <span class="sep text-light-gray">by</span>
         <a
           class="artist"
           v-if="isNormalArtist"
@@ -112,7 +112,6 @@ export default mixins(albumAttributes).extend({
 
 .sep {
   display: none;
-  color: $color2ndText;
 
   .as-list & {
     display: inline;

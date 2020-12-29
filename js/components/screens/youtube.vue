@@ -1,8 +1,9 @@
 <template>
   <section id="youtubeWrapper">
-    <h1 class="heading"><span>{{ title }}</span></h1>
+    <screen-header>{{ title }}</screen-header>
+
     <div id="player">
-      <p class="none">Your YouTube video will be played here.<br/>
+      <p class="none text-light-gray">Your YouTube video will be played here.<br/>
       You can start a video playback from the right sidebar. When a song is playing, that is.<br>
       It might also be worth noting that video’s volume, progress and such are controlled from within
       the video itself, and not via Koel’s controls.</p>
@@ -21,6 +22,10 @@ import createYouTubePlayer from 'youtube-player'
 let player: YouTubePlayer
 
 export default Vue.extend({
+  components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue')
+  },
+
   data: () => ({
     title: 'YouTube Video'
   }),
@@ -72,7 +77,6 @@ export default Vue.extend({
 @import "~#/partials/_vars.scss";
 
 .none {
-  color: $color2ndText;
   padding: 16px 24px;
 }
 </style>

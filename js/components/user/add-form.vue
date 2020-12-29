@@ -23,7 +23,7 @@
           <label>
             <input type="checkbox" name="is_admin" v-model="newUser.is_admin"> User is an admin
             <i
-              class="fa fa-question-circle help-trigger"
+              class="fa fa-question-circle help-trigger text-blue"
               title="Admins can perform administrative tasks like manage users and upload songs.">
             </i>
           </label>
@@ -75,6 +75,5 @@ export default Vue.extend({
 .help-trigger {
   margin-left: 4px;
   display: inline-block;
-  color: $colorBlue;
 }
 </style>

@@ -1,15 +1,15 @@
 <template>
   <section id="albumWrapper">
-    <h1 class="heading">
-      <span class="overview">
-        <span class="thumbnail-wrapper">
-          <album-thumbnail :entity="album"/>
-        </span>
+    <screen-header>
+      {{ album.name }}
+      <controls-toggler :showing-controls="showingControls" @toggleControls="toggleControls"/>
 
-        {{ album.name }}
-        <controls-toggler :showing-controls="showingControls" @toggleControls="toggleControls"/>
+      <template v-slot:thumbnail>
+        <album-thumbnail :entity="album"/>
+      </template>
 
-        <span class="meta" v-show="album.songs.length">
+      <template v-slot:meta>
+        <span v-if="album.songs.length">
           by
           <a class="artist" v-if="isNormalArtist" :href="`#!/artist/${album.artist.id}`">{{ album.artist.name }}</a>
           <span class="nope" v-else>{{ album.artist.name }}</span>
@@ -29,24 +29,28 @@
             </a>
           </template>
         </span>
-      </span>
+      </template>
 
-      <song-list-controls
-        v-show="album.songs.length && (!isPhone || showingControls)"
-        @playAll="playAll"
-        @playSelected="playSelected"
-        :songs="album.songs"
-        :config="songListControlConfig"
-        :selectedSongs="selectedSongs"
-      />
-    </h1>
+      <template v-slot:controls>
+        <song-list-controls
+          v-if="album.songs.length && (!isPhone || showingControls)"
+          @playAll="playAll"
+          @playSelected="playSelected"
+          :songs="album.songs"
+          :config="songListControlConfig"
+          :selectedSongs="selectedSongs"
+        />
+      </template>
+    </screen-header>
 
     <song-list :items="album.songs" type="album" ref="songList"/>
 
     <section class="info-wrapper" v-if="sharedState.useLastfm && meta.showing">
-      <a href class="close" @click.prevent="meta.showing = false"><i class="fa fa-times"></i></a>
+      <close-modal-btn @click="meta.showing = false"/>
       <div class="inner">
-        <div class="loading" v-if="meta.loading"><sound-bar/></div>
+        <div class="loading" v-if="meta.loading">
+          <sound-bar/>
+        </div>
         <album-info :album="album" mode="full" v-else/>
       </div>
     </section>
@@ -64,9 +68,11 @@ import albumAttributes from '@/mixins/album-attributes.ts'
 
 export default mixins(hasSongList, albumAttributes).extend({
   components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
     AlbumInfo: () => import('@/components/album/info.vue'),
     SoundBar: () => import('@/components/ui/sound-bar.vue'),
-    AlbumThumbnail: () => import('@/components/ui/album-artist-thumbnail.vue')
+    AlbumThumbnail: () => import('@/components/ui/album-artist-thumbnail.vue'),
+    CloseModalBtn: () => import('@/components/ui/close-modal-btn.vue')
   },
 
   filters: { pluralize },
@@ -138,43 +144,6 @@ export default mixins(hasSongList, albumAttributes).extend({
 @import "~#/partials/_mixins.scss";
 
 #albumWrapper {
-  button.play-shuffle {
-    i {
-      margin-right: 0 !important;
-    }
-  }
-
-  .heading {
-    .overview {
-      position: relative;
-      padding-left: 84px;
-
-      .thumbnail-wrapper {
-        display: block;
-        width: 64px;
-        position: absolute;
-        left: 0;
-
-        @media only screen and (max-width : 768px) {
-          display: none;
-        }
-      }
-
-      @media only screen and (max-width : 768px) {
-        padding-left: 0;
-      }
-    }
-
-    a.artist {
-      color: $colorMainText;
-      display: inline;
-
-      &:hover {
-        color: $colorHighlight;
-      }
-    }
-  }
-
   @include artist-album-info-wrapper();
 }
 </style>

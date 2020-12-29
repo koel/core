@@ -39,6 +39,7 @@
             <i class="fa fa-angle-down" v-show="sortKey === 'song.length' && order > 0"></i>
             <i class="fa fa-angle-up" v-show="sortKey === 'song.length' && order < 0"></i>
           </th>
+          <th class="favorite"></th>
           <th class="play"></th>
         </tr>
       </thead>
@@ -480,6 +481,10 @@ export default Vue.extend({
       width: 27%;
     }
 
+    &.favorite {
+      width: 36px;
+    }
+
     &.play {
       display: none;
 
@@ -493,13 +498,13 @@ export default Vue.extend({
   }
 
   th {
-    color: $color2ndText;
+    color: $colorLightGray;
     letter-spacing: 1px;
     text-transform: uppercase;
     cursor: pointer;
 
     i {
-      color: $colorHighlight;
+      color: $colorOrange;
       font-size: 1.2rem;
     }
   }
@@ -557,24 +562,22 @@ export default Vue.extend({
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: $color2ndText;
+      color: $colorLightGray;
       width: 100%;
     }
 
     td {
-      display: inline;
+      display: none;
       padding: 0;
       vertical-align: bottom;
       color: $colorMainText;
 
-      &.album,
-      &.time,
-      &.track-number {
-        display: none;
+      &.artist, &.title {
+        display: inline;
       }
 
       &.artist {
-        color: $color2ndText;
+        color: $colorLightGray;
         font-size: 0.9rem;
         padding: 0 4px;
       }

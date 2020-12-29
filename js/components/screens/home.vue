@@ -1,44 +1,47 @@
 <template>
   <section id="homeWrapper">
-    <h1 class="heading">
-      <span>{{ greeting }}</span>
-    </h1>
+    <screen-header>{{ greeting }}</screen-header>
 
     <div class="main-scroll-wrap" @scroll="scrolling" ref="wrapper">
       <div class="two-cols">
-        <section v-show="top.songs.length">
+        <section v-if="top.songs.length">
           <h1>Most Played</h1>
 
           <ol class="top-song-list">
-            <li v-for="song in top.songs"
-                :top-play-count="top.songs.length ? top.songs[0].playCount : 0"
-                :song="song"
-                :key="song.id"
-                is="song-card"/>
+            <li
+              v-for="song in top.songs"
+              :top-play-count="top.songs.length ? top.songs[0].playCount : 0"
+              :song="song"
+              :key="song.id"
+              is="song-card"
+            />
           </ol>
         </section>
 
         <section class="recent">
-          <h1>Recently Played
+          <h1>
+            Recently Played
             <btn @click.prevent="goToRecentlyPlayedScreen" rounded small orange>View All</btn>
           </h1>
 
-          <ol class="recent-song-list" v-show="recentSongs.length">
-            <li v-for="song in recentSongs"
-                :top-play-count="top.songs.length ? top.songs[0].playCount : 0"
-                :song="song"
-                :key="song.id"
-                is="song-card"></li>
+          <ol class="recent-song-list" v-if="recentSongs.length">
+            <li
+              v-for="song in recentSongs"
+              :top-play-count="top.songs.length ? top.songs[0].playCount : 0"
+              :song="song"
+              :key="song.id"
+              is="song-card"
+            />
           </ol>
 
-          <p class="none" v-show="!recentSongs.length">
+          <p class="text-light-gray" v-show="!recentSongs.length">
             Your recently played songs will be displayed here.<br/>
             Start listening!
           </p>
         </section>
       </div>
 
-      <section class="recently-added" v-show="showRecentlyAddedSection">
+      <section class="recently-added" v-if="showRecentlyAddedSection">
         <h1>Recently Added</h1>
         <div class="two-cols">
           <ol>
@@ -50,14 +53,14 @@
         </div>
       </section>
 
-      <section class="top-artists" v-show="top.artists.length">
+      <section class="top-artists" v-if="top.artists.length">
         <h1>Top Artists</h1>
         <ol class="two-cols">
           <li v-for="artist in top.artists" :artist="artist" :key="artist.id" layout="compact" is="artist-card"/>
         </ol>
       </section>
 
-      <section class="top-albums" v-show="top.albums.length">
+      <section class="top-albums" v-if="top.albums.length">
         <h1>Top Albums</h1>
         <ol class="two-cols">
           <li v-for="album in top.albums" :album="album" :key="album.id" layout="compact" is="album-card"/>
@@ -81,6 +84,7 @@ import router from '@/router'
 
 export default mixins(infiniteScroll).extend({
   components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
     AlbumCard: () => import('@/components/album/card.vue'),
     ArtistCard: () => import('@/components/artist/card.vue'),
     SongCard: () => import('@/components/song/card.vue'),
@@ -148,7 +152,6 @@ export default mixins(infiniteScroll).extend({
 
 <style lang="scss">
 @import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 #homeWrapper {
   .two-cols {
@@ -162,15 +165,6 @@ export default mixins(infiniteScroll).extend({
       float: right;
       padding: 6px 10px;
       margin-top: -3px;
-    }
-  }
-
-  .none {
-    color: $color2ndText;
-    padding: 0;
-
-    a {
-      color: $colorHighlight;
     }
   }
 
@@ -188,7 +182,7 @@ export default mixins(infiniteScroll).extend({
     h1 {
       font-size: 1.4rem;
       margin: 0 0 1.8rem;
-      font-weight: $fontWeight_UltraThin;
+      font-weight: $fontWeightThin;
     }
   }
 

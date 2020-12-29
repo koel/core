@@ -5,7 +5,7 @@
     id="vizContainer"
     ref="visualizerContainer"
   >
-    <a @click="hide" class="close"><i class="fa fa-times"></i></a>
+    <close-modal-btn class="close" @click="hide"/>
   </div>
 </template>
 
@@ -16,6 +16,10 @@ import { eventBus } from '@/utils'
 import { events } from '@/config'
 
 export default Vue.extend({
+  components: {
+    CloseModalBtn: () => import('@/components/ui/close-modal-btn.vue')
+  },
+
   data: () => ({
     isFullscreen: false
   }),
@@ -42,9 +46,8 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "~#/partials/_vars.scss";
-@import "~#/partials/_mixins.scss";
 
 #vizContainer {
   position: relative;
@@ -59,7 +62,6 @@ export default Vue.extend({
   }
 
   .close {
-    @include close-modal-button();
     opacity: 0;
   }
 

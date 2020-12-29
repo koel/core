@@ -12,12 +12,15 @@
     @contextmenu.prevent="contextMenu"
     :class="{ playing, selected: item.selected }"
   >
-    <td class="track-number">{{ song.track || '' }}</td>
+    <td class="track-number text-light-gray">{{ song.track || '' }}</td>
     <td class="title">{{ song.title }}</td>
     <td class="artist">{{ song.artist.name }}</td>
     <td class="album">{{ song.album.name }}</td>
-    <td class="time">{{ song.fmtLength }}</td>
-    <td class="play" @click.stop="doPlayback">
+    <td class="time text-light-gray">{{ song.fmtLength }}</td>
+    <td class="favorite">
+      <like-button :song="song"/>
+    </td>
+    <td class="play" role="button" @click.stop="doPlayback">
       <i class="fa fa-pause-circle" v-if="song.playbackState === 'Playing'"></i>
       <i class="fa fa-play-circle" v-else></i>
     </td>
@@ -33,6 +36,11 @@ import { SongListComponent } from 'koel/types/ui'
 
 export default Vue.extend({
   name: 'song-item',
+
+  components: {
+    LikeButton: () => import('@/components/song/like-button.vue')
+  },
+
   props: {
     item: {
       type: Object,
@@ -113,7 +121,7 @@ export default Vue.extend({
 @import "~#/partials/_vars.scss";
 
 .song-item {
-  border-bottom: 1px solid $color2ndBgr;
+  border-bottom: 1px solid $colorSecondaryBgr;
   max-width: 100% !important; // overriding .item
   height: 35px;
 
@@ -121,21 +129,14 @@ export default Vue.extend({
     background: rgba(255, 255, 255, .05);
   }
 
-  .time, .track-number {
-    color: $color2ndText;
-  }
-
-  .title {
-    min-width: 192px;
-  }
-
   .play {
-    max-width: 32px;
-    opacity: .5;
-
     i {
       font-size: 1.5rem;
     }
+  }
+
+  .favorite .fa-heart, .favorite:hover .fa-heart-o {
+    color: $colorMaroon;
   }
 
   &.selected {
@@ -143,7 +144,7 @@ export default Vue.extend({
   }
 
   &.playing td {
-    color: $colorHighlight;
+    color: $colorOrange;
   }
 }
 </style>

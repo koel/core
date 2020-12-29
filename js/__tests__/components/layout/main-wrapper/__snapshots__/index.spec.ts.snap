@@ -2,59 +2,51 @@
 
 exports[`component/layout/main-wrapper/index renders properly 1`] = `
 <div id="mainWrapper">
-  <sidebar-stub></sidebar-stub>
+  <nav id="sidebar" class="side side-nav showing">
+    <section class="music">
+      <h1>Your Music</h1>
+      <ul class="menu">
+        <li><a href="#!/home" class="home active">Home</a></li>
+        <li><a href="#!/queue" class="queue">Current Queue</a></li>
+        <li><a href="#!/songs" class="songs">All Songs</a></li>
+        <li><a href="#!/albums" class="albums">Albums</a></li>
+        <li><a href="#!/artists" class="artists">
+            Artists
+          </a></li>
+        <!---->
+      </ul>
+    </section>
+    <!---->
+    <!---->
+  </nav>
   <section id="mainContent">
     <!---->
     <!---->
     <section id="homeWrapper">
-      <h1 class="heading"><span>Oh hai!</span></h1>
+      <!---->
       <div class="main-scroll-wrap">
         <div class="two-cols">
-          <section style="display: none;">
-            <h1>Most Played</h1>
-            <ol class="top-song-list"></ol>
-          </section>
+          <!---->
           <section class="recent">
-            <h1>Recently Played
+            <h1>
+              Recently Played
               <!---->
             </h1>
-            <ol class="recent-song-list" style="display: none;"></ol>
-            <p class="none">
+            <!---->
+            <p class="text-light-gray">
               Your recently played songs will be displayed here.<br>
               Start listening!
             </p>
           </section>
         </div>
-        <section class="recently-added" style="display: none;">
-          <h1>Recently Added</h1>
-          <div class="two-cols">
-            <ol></ol>
-            <ol class="recently-added-song-list" style="display: none;"></ol>
-          </div>
-        </section>
-        <section class="top-artists" style="display: none;">
-          <h1>Top Artists</h1>
-          <ol class="two-cols"></ol>
-        </section>
-        <section class="top-albums" style="display: none;">
-          <h1>Top Albums</h1>
-          <ol class="two-cols"></ol>
-        </section>
+        <!---->
+        <!---->
+        <!---->
         <!---->
       </div>
     </section>
     <section id="queueWrapper" style="display: none;">
-      <h1 class="heading"><span title="That's a lot of U's and E's">Current Queue
-      <!----> <span class="meta" style="display: none;">
-        0 songs
-        •
-        00:00
-      </span></span>
-        <div class="song-list-controls" style="display: none;">
-          <!---->
-          <!---->
-        </div>
-      </h1>
+      <!---->
       <div tabindex="0" class="song-list-wrap main-scroll-wrap queue" style="display: none;">
         <table class="song-list-header sortable">
           <thead>
@@ -74,6 +66,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
               <th class="time">
                 Time
                 <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="favorite"></th>
               <th class="play"></th>
             </tr>
           </thead>
@@ -85,23 +78,13 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
           <div data-v-c7b3205a="" data-v-303cd025="" tabindex="-1" class="resize-observer"><object style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;" type="text/html" data="about:blank"></object></div>
         </div>
       </div>
-      <div class="none">
+      <div class="none text-light-gray">
         <p>Empty spaces. Abandoned places.</p>
         <!---->
       </div>
     </section>
     <section id="songsWrapper" style="display: none;">
-      <h1 class="heading"><span>All Songs
-      <!----> <span class="meta" style="display: none;">
-        0 songs
-        •
-        00:00
-      </span></span>
-        <div class="song-list-controls" style="display: none;">
-          <!---->
-          <!---->
-        </div>
-      </h1>
+      <!---->
       <div tabindex="0" class="song-list-wrap main-scroll-wrap all-songs">
         <table class="song-list-header sortable">
           <thead>
@@ -121,6 +104,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
               <th class="time">
                 Time
                 <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="favorite"></th>
               <th class="play"></th>
             </tr>
           </thead>
@@ -134,36 +118,23 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
       </div>
     </section>
     <section id="albumsWrapper" style="display: none;">
-      <h1 class="heading"><span>Albums</span>
-        <!---->
-      </h1>
+      <!---->
       <div class="albums main-scroll-wrap as-">
         <!---->
       </div>
     </section>
     <section id="artistsWrapper" style="display: none;">
-      <h1 class="heading"><span>Artists</span>
-        <!---->
-      </h1>
+      <!---->
       <div class="artists main-scroll-wrap as-">
         <!---->
       </div>
     </section>
     <section id="playlistWrapper" style="display: none;">
       <!---->
+      <!---->
     </section>
     <section id="favoritesWrapper" style="display: none;">
-      <h1 class="heading"><span>Songs You Love
-      <!----> <span class="meta" style="display: none;">
-        0 songs
-        •
-        00:00
-        <!----></span></span>
-        <div class="song-list-controls" style="display: none;">
-          <!---->
-          <!---->
-        </div>
-      </h1>
+      <!---->
       <div tabindex="0" class="song-list-wrap main-scroll-wrap favorites" style="display: none;">
         <table class="song-list-header sortable">
           <thead>
@@ -183,6 +154,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
               <th class="time">
                 Time
                 <i class="fa fa-angle-down" style="display: none;"></i> <i class="fa fa-angle-up" style="display: none;"></i></th>
+              <th class="favorite"></th>
               <th class="play"></th>
             </tr>
           </thead>
@@ -194,7 +166,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
           <div data-v-c7b3205a="" data-v-303cd025="" tabindex="-1" class="resize-observer"><object style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;" type="text/html" data="about:blank"></object></div>
         </div>
       </div>
-      <div class="none">
+      <div class="text-light-gray none">
         Start loving!
         Click the <i class="fa fa-heart" style="margin: 0px 5px;"></i> icon when a song is playing to add it
         to this list.
@@ -211,7 +183,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
     <!---->
     <!---->
   </section>
-  <section id="extra" class="showing">
+  <section id="extra" class="text-light-gray showing">
     <div class="tabs">
       <div role="tablist" class="clear"><button aria-selected="true" aria-controls="extraPanelLyrics" id="extraTabLyrics" role="tab">
           Lyrics

@@ -24,7 +24,7 @@
             Full Bio
           </button>
         </div>
-        <p class="none" v-else>This artist has no Last.fm biography – yet.</p>
+        <p class="text-light-gray" v-else>This artist has no Last.fm biography – yet.</p>
 
         <footer>Data &copy; <a target="_blank" :href="artist.info.url">Last.fm</a></footer>
       </template>

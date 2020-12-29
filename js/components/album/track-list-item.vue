@@ -8,7 +8,7 @@
       target="_blank"
       class="view-on-itunes"
       title="View on iTunes"
-      >
+    >
       iTunes
     </a>
     <span class="length">{{ track.fmtLength }}</span>
@@ -73,7 +73,7 @@ export default Vue.extend({
 [role=button] {
   &:focus {
     span.title {
-      color: $colorHighlight;
+      color: $colorOrange;
     }
   }
 

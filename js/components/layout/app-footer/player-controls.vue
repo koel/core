@@ -77,6 +77,10 @@ export default Vue.extend({
       margin-right: 12px;
     }
 
+    .album-thumb {
+      filter: brightness(.4);
+    }
+
     .prev, .next {
       opacity: 1;
     }
