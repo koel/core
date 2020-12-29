@@ -17,7 +17,7 @@ describe('components/layout/modal-wrapper', () => {
     eventName: string,
     eventParams?: any
   ) => {
-    mock(http, 'request')
+    mock(http, 'request').mockReturnValue(Promise.resolve({ data: {}}))
     const wrapper = shallow(Component, {
       stubs: [modalName]
     })
