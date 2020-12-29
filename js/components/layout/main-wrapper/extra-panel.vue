@@ -1,5 +1,5 @@
 <template>
-  <section id="extra" :class="{ showing: state.showExtraPanel }">
+  <section id="extra" :class="{ showing: state.showExtraPanel }" class="text-light-gray">
     <div class="tabs">
       <div class="clear" role="tablist">
         <button
@@ -181,7 +181,6 @@ export default Vue.extend({
   padding: 24px 16px;
   background: $colorExtraBgr;
   display: none;
-  color: $color2ndText;
   overflow: auto;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 
@@ -196,7 +195,7 @@ export default Vue.extend({
   }
 
   h1 {
-    font-weight: $fontWeight_UltraThin;
+    font-weight: $fontWeightThin;
     font-size: 2.2rem;
     margin-bottom: 16px;
     line-height: 2.8rem;

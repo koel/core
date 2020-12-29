@@ -1,5 +1,5 @@
 <template>
-  <span class="btn-group" v-bind="$attrs">
+  <span class="btn-group">
     <slot>
       <btn green>Foo</btn>
       <btn orange>Bar</btn>
@@ -22,11 +22,9 @@ export default Vue.extend({
 .btn-group {
   display: flex;
   position: relative;
-  justify-content: flex-end;
+  flex-wrap: nowrap;
 
   button {
-    display: inline-block;
-
     &:not(:first-child) {
       border-radius: 0;
     }

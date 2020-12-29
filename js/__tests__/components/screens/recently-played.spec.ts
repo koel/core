@@ -22,7 +22,6 @@ describe('components/screens/recently-played', () => {
     })
 
     await wrapper.vm.$nextTick()
-    expect(wrapper.find('h1.heading').text()).toMatch('Recently Played')
     expect(wrapper.has(SongList)).toBe(true)
   })
 

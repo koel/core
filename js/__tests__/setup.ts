@@ -7,17 +7,13 @@ import { noop } from './__helpers__'
 import { focus, clickaway, droppable } from '@/directives'
 
 // make common utils available globally as well
-// @ts-ignore
 global.Vue = Vue
-// @ts-ignore
 global._ = lodash
 window.__UNIT_TESTING__ = true
 
-// @ts-ignore
 global.noop = noop
 
-// stub this to make Virtual Sroller silent
-// @ts-ignore
+// stub this to make Virtual Scroller silent
 global.IntersectionObserver = class IntersectionObserver {
   observe () {
     return null
@@ -32,11 +28,8 @@ global.IntersectionObserver = class IntersectionObserver {
   }
 }
 
-// @ts-ignore
 global.Vue.directive('koel-focus', focus)
-// @ts-ignore
 global.Vue.directive('koel-clickaway', clickaway)
-// @ts-ignore
 global.Vue.directive('koel-droppable', droppable)
 
 setupVueTestHelper({ registerGlobals: false })

@@ -1,5 +1,5 @@
 <template>
-  <span class="song-list-controls-toggler" v-if="isPhone" @click="toggleControls">
+  <span class="controls-toggler text-orange" v-if="isPhone" @click="toggleControls">
     <i class="fa fa-angle-up toggler" v-if="showingControls"/>
     <i class="fa fa-angle-down toggler" v-else/>
   </span>
@@ -35,6 +35,5 @@ export default Vue.extend({
 .toggler {
   font-size: 1rem;
   margin-left: 4px;
-  color: $colorHighlight;
 }
 </style>

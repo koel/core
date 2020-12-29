@@ -1,6 +1,6 @@
 .alertify {
   font-family: $fontFamily;
-  font-weight: $fontWeight_UltraThin;
+  font-weight: $fontWeightLight;
   background-color: rgba(0, 0, 0, .7);
   z-index: 9999;
   color: rgba(0,0,0,.87);
@@ -12,7 +12,7 @@
 
 .alertify-logs {
   font-family: $fontFamily;
-  font-weight: $fontWeight_UltraThin;
+  font-weight: $fontWeightThin;
 
   .show {
     border-radius: 3px;

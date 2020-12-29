@@ -243,7 +243,7 @@ export default Vue.extend({
       &::after {
         content: '\f107';
         font-family: FontAwesome;
-        color: $colorHighlight;
+        color: $colorOrange;
         display: inline-block;
         position: absolute;
         right: 8px;

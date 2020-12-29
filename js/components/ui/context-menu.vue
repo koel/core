@@ -136,7 +136,7 @@ export default Vue.extend({
     &.separator {
       pointer-events: none;
       padding: 1px 0;
-      background: lighten($colorMenuBgr, 10%);
+      background: lighten($colorSecondaryBgr, 10%);
     }
 
     &.has-sub {

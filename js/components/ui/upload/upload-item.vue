@@ -76,12 +76,20 @@ export default Vue.extend({
     transition: .3s ease-out;
   }
 
-  &.Uploaded .progress {
+  &.Uploaded {
     background: $colorGreen;
+
+    .progress {
+      background: transparent;
+    }
   }
 
-  &.Errored .progress {
+  &.Errored {
     background: $colorRed;
+
+    .progress {
+      background: transparent;
+    }
   }
 
   .details {

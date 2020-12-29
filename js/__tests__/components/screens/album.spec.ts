@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Component from '@/components/screens/album.vue'
 import SongList from '@/components/song/list.vue'
-import SongListControls from '@/components/song/list-controls.vue'
 import { download, albumInfo as albumInfoService, playback } from '@/services'
 import factory from '@/__tests__/factory'
 import { mock } from '@/__tests__/__helpers__'
@@ -20,10 +19,7 @@ describe('components/screens/album', () => {
     })
 
     await wrapper.vm.$nextTick()
-    const html = wrapper.html()
-    expect(html).toMatch(album.name)
-    expect(html).toMatch(album.artist.name)
-    expect(wrapper.hasAll(SongList, SongListControls)).toBe(true)
+    expect(wrapper.hasAll(SongList)).toBe(true)
   })
 
   it('plays all songs', async () => {
@@ -49,9 +45,12 @@ describe('components/screens/album', () => {
     expect(queueAndPlayMock).toHaveBeenCalledWith(songs, true)
   })
 
-  it('loads info from Last.fm', () => {
-    const album = factory<Album>('album', { info: null })
-    const wrapper = shallow(Component, {
+  it('loads info from Last.fm', async () => {
+    const album = factory<Album>('album', {
+      info: null,
+      songs: factory<Song>('song', 2)
+    })
+    const wrapper = await shallow(Component, {
       propsData: { album },
       data: () => ({
         sharedState: { useLastfm: true }
@@ -63,7 +62,9 @@ describe('components/screens/album', () => {
   })
 
   it('allows downloading', () => {
-    const album = factory<Album>('album')
+    const album = factory<Album>('album', {
+      songs: factory<Song>('song', 2)
+    })
     const wrapper = shallow(Component, {
       propsData: { album },
       data: () => ({

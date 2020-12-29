@@ -62,8 +62,8 @@ export const playlistStore = {
     return playlist
   },
 
-  byId (id: number): Playlist {
-    return <Playlist> this.all.find(song => song.id === id)
+  byId (id: number): Playlist | undefined {
+    return this.all.find(playlist => playlist.id === id)
   },
 
   /**
@@ -81,7 +81,7 @@ export const playlistStore = {
    */
   add (playlists: Playlist | Playlist[]) {
     const playlistsToAdd = (<Playlist[]>[]).concat(playlists)
-    playlistsToAdd.forEach(this.setupPlaylist)
+    playlistsToAdd.forEach(playlist => this.setupPlaylist(playlist))
     this.all = this.sort(union(this.all, playlistsToAdd))
   },
 
