@@ -6,7 +6,6 @@ jobs:
     strategy:
       matrix:
         node-version: [ 10, 11, 12, 13, 14, 15 ]
-      fail-fast: false
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -19,4 +18,6 @@ jobs:
       - name: Run unit tests
         run: yarn test --forceExit # Jest won't exit in Node 15 for whatever reason
       - name: Collect coverage
-        run: yarn coverage
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
