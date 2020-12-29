@@ -30,11 +30,11 @@ describe('stores/user', () => {
 
   it('sets the current user’s avatar', () => {
     userStore.setAvatar()
-    expect(userStore.current.avatar).toBe('https://www.gravatar.com/avatar/b9611f1bba1aacbe6f5de5856695a202?s=256')
+    expect(userStore.current.avatar).toBe('https://www.gravatar.com/avatar/b9611f1bba1aacbe6f5de5856695a202?s=256&d=mp')
   })
 
   it('sets a user’s avatar', () => {
     userStore.setAvatar(users[1])
-    expect(users[1].avatar).toBe('https://www.gravatar.com/avatar/5024672cfe53f113b746e1923e373058?s=256')
+    expect(users[1].avatar).toBe('https://www.gravatar.com/avatar/5024672cfe53f113b746e1923e373058?s=256&d=mp')
   })
 })
