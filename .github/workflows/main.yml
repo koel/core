@@ -1,11 +1,11 @@
 name: main
-on: [ push ]
+on: [ push, workflow_dispatch ]
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 10, 11, 12, 13, 14 ]
+        node-version: [ 10, 11, 12, 13, 14, 15, 16 ]
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
