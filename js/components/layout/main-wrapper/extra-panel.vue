@@ -74,8 +74,8 @@
         </div>
 
         <div
-          aria-labelledby="extraTabAlbum"
-          id="extraPanelAlbum"
+          aria-labelledby="extraTabYouTube"
+          id="extraPanelYouTube"
           role="tabpanel"
           tabindex="0"
           v-show="currentTab === 'YouTube'"
