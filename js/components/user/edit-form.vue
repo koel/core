@@ -22,6 +22,7 @@
             placeholder="Leave blank for no changes"
             type="password"
             v-model="mutatedUser.password"
+            autocomplete="new-password"
           >
         </div>
         <div class="form-row">

@@ -17,7 +17,13 @@
         </div>
         <div class="form-row">
           <label>Password</label>
-          <input title="Password" type="password" name="password" v-model="newUser.password" autocomplete="off">
+          <input
+            title="Password"
+            type="password"
+            name="password"
+            v-model="newUser.password"
+            autocomplete="new-password"
+          >
         </div>
         <div class="form-row">
           <label>
