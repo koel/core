@@ -14,8 +14,8 @@ exports[`components/screens/profile renders properly 1`] = `
             Otherwise, just leave the next two fields empty.
           </p>
         </div>
-        <div class="form-row"><label for="inputProfilePassword">New Password</label> <input name="password" type="password" id="inputProfilePassword" autocomplete="off" class=""></div>
-        <div class="form-row"><label for="inputProfileConfirmPassword">Confirm Password</label> <input name="confirmPassword" type="password" id="inputProfileConfirmPassword" autocomplete="off" class=""></div>
+        <div class="form-row"><label for="inputProfilePassword">New Password</label> <input name="password" type="password" id="inputProfilePassword" autocomplete="new-password" class=""></div>
+        <div class="form-row"><label for="inputProfileConfirmPassword">Confirm Password</label> <input name="confirmPassword" type="password" id="inputProfileConfirmPassword" autocomplete="new-password" class=""></div>
       </div>
       <div class="form-row">
         <!---->
