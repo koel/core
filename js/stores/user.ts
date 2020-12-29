@@ -52,7 +52,7 @@ export const userStore = {
    */
   setAvatar (user?: User): void {
     user = user || this.current
-    Vue.set(user, 'avatar', `https://www.gravatar.com/avatar/${md5(user.email)}?s=256`)
+    Vue.set(user, 'avatar', `https://www.gravatar.com/avatar/${md5(user.email)}?s=256&d=mp`)
   },
 
   login: async (email: string, password: string): Promise<User> => {
