@@ -204,7 +204,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
         <div aria-labelledby="extraTabAlbum" id="extraPanelAlbum" role="tabpanel" tabindex="0" style="display: none;">
           <!---->
         </div>
-        <div aria-labelledby="extraTabAlbum" id="extraPanelAlbum" role="tabpanel" tabindex="0" style="display: none;">
+        <div aria-labelledby="extraTabYouTube" id="extraPanelYouTube" role="tabpanel" tabindex="0" style="display: none;">
           <!---->
         </div>
       </div>

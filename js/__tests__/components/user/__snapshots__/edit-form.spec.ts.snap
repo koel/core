@@ -9,7 +9,7 @@ exports[`components/user/edit-form opens 1`] = `
     <div>
       <div class="form-row"><label>Name</label> <input title="Name" type="text" name="name" required="required"></div>
       <div class="form-row"><label>Email</label> <input title="Email" type="email" name="email" required="required"></div>
-      <div class="form-row"><label>Password</label> <input name="password" placeholder="Leave blank for no changes" type="password"></div>
+      <div class="form-row"><label>Password</label> <input name="password" placeholder="Leave blank for no changes" type="password" autocomplete="new-password"></div>
       <div class="form-row"><label><input type="checkbox" name="is_admin"> User is an admin
           <i title="Admins can perform administrative tasks like manage users and upload songs." class="fa fa-question-circle help-trigger"></i></label></div>
     </div>
