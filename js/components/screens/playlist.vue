@@ -20,7 +20,7 @@
 
       <template v-slot:controls>
         <song-list-controls
-          v-if="playlist.populated && playlist.songs.length && (!isPhone || showingControls)"
+          v-if="playlist.populated && (!isPhone || showingControls)"
           @playAll="playAll"
           @playSelected="playSelected"
           @deletePlaylist="destroy"
