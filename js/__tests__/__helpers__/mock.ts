@@ -1,12 +1,17 @@
+import FunctionNames = jest.FunctionPropertyNames
 import { noop } from '@/utils'
 
-export const mock = (module: any, method: string, implementation: any = noop) => {
-  const m = jest.spyOn(module, method)
+export const mock = <T extends {}, M extends FunctionNames<Required<T>>>(
+  object: T,
+  method: M,
+  implementation: any = noop
+) => {
+  const m = jest.spyOn(object, method)
 
-  if (!(implementation instanceof Function)) {
-    m.mockImplementation((): any => implementation)
-  } else {
+  if (implementation instanceof Function) {
     m.mockImplementation(implementation)
+  } else {
+    m.mockImplementation((): any => implementation)
   }
 
   return m

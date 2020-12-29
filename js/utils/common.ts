@@ -6,6 +6,7 @@ import { sharedStore } from '@/stores'
 /**
  * Load (display) a main panel (view).
  *
+ * @param view
  * @param {...*} args     Extra data to attach to the view.
  */
 export const loadMainView = (view: MainViewName, ...args: any[]): void => {
@@ -25,8 +26,8 @@ export const forceReloadWindow = (): void => {
   window.location.reload()
 }
 
-export const showOverlay = (message = 'Just a little patience…', type = 'loading', dismissable = false) => {
-  eventBus.emit(events.SHOW_OVERLAY, { message, type, dismissable })
+export const showOverlay = (message = 'Just a little patience…', type = 'loading', dismissible = false) => {
+  eventBus.emit(events.SHOW_OVERLAY, { message, type, dismissible })
 }
 
 export const hideOverlay = (): void => {
@@ -48,7 +49,7 @@ export const copyText = (text: string): void => {
   document.execCommand('copy')
 }
 
-export const getDefaultCover = (): string => `${sharedStore.state.cdnUrl}/public/img/covers/unknown-album.png`
+export const getDefaultCover = (): string => `${sharedStore.state.cdnUrl}/img/covers/unknown-album.png`
 
 const createGhostDragImage = (event: DragEvent, text: string): void => {
   if (!event.dataTransfer) {

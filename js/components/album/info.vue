@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import { sharedStore } from '@/stores'
-import { playback, ls } from '@/services'
+import { playback, auth } from '@/services'
 import Vue, { PropOptions } from 'vue'
 
 export default Vue.extend({
@@ -78,7 +78,7 @@ export default Vue.extend({
     },
 
     iTunesUrl (): string {
-      return `${window.BASE_URL}api/itunes/album/${this.album.id}&jwt-token=${ls.get('jwt-token')}`
+      return `${window.BASE_URL}itunes/album/${this.album.id}&api_token=${auth.getToken()}`
     }
   },
 

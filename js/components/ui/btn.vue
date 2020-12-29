@@ -1,5 +1,5 @@
 <template>
-  <button @click="$emit('click', $event)" v-bind="$attrs">
+  <button @click="$emit('click', $event)">
     <slot>Click me</slot>
   </button>
 </template>
@@ -14,7 +14,7 @@ export default {}
 
 button {
   background: $colorBtnBgr;
-  color: $colorBtnText;
+  color: $colorMainText;
   font-size: 1rem;
   padding: .6rem 1rem;
   cursor: pointer;

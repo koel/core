@@ -34,7 +34,7 @@ import Overlay from '@/components/ui/overlay.vue'
 import { eventBus, showOverlay, hideOverlay, $, app as appUtils } from '@/utils'
 import { events } from '@/config'
 import { sharedStore, favoriteStore, queueStore, preferenceStore as preferences } from '@/stores'
-import { playback, ls, socket, http } from '@/services'
+import { playback, socket, auth } from '@/services'
 import { clickaway, droppable, focus } from '@/directives'
 
 export default Vue.extend({
@@ -58,7 +58,7 @@ export default Vue.extend({
 
   async mounted (): Promise<void> {
     // The app has just been initialized, check if we can get the user data with an already existing token
-    if (ls.get('jwt-token')) {
+    if (auth.hasToken()) {
       this.authenticated = true
       await this.init()
     }
@@ -71,8 +71,7 @@ export default Vue.extend({
   created () {
     eventBus.on(events.CONTEXT_MENU_REQUESTED, (e: MouseEvent, songs: Song[]): void => {
       this.contextMenuSongs = ([] as Song[]).concat(songs)
-      // @ts-ignore because of .open()
-      this.$nextTick((): void => this.$refs.songContextMenu.open(e.pageY, e.pageX))
+      this.$nextTick((): void => (this.$refs.songContextMenu as any).open(e.pageY, e.pageX))
     })
   },
 
@@ -100,10 +99,6 @@ export default Vue.extend({
             e.preventDefault()
             e.returnValue = ''
           })
-
-          // Ping the server everytime the window is focused, so that we don't have those
-          // "suddent" logout.
-          window.addEventListener('focus', () => http.get('/ping'))
 
           this.subscribeToBroadcastedEvents()
 
@@ -161,7 +156,7 @@ Vue.directive('koel-droppable', droppable)
   color: #fff;
   font-family: $fontFamily;
   font-size: 1rem;
-  font-weight: $fontWeight_Thin;
+  font-weight: $fontWeightLight;
   position: fixed;
   top: 0;
   left: 0;

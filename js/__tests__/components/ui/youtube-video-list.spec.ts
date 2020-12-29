@@ -33,10 +33,11 @@ describe('components/ui/youtube', () => {
     const wrapper = mount(Component, {
       propsData: { song }
     })
-    const searchStub = mock(youtubeService, 'searchVideosRelatedToSong').mockReturnValue({
+
+    const searchStub = mock(youtubeService, 'searchVideosRelatedToSong').mockReturnValue(Promise.resolve({
       nextPageToken: 'bar',
       items: factory<YouTubeVideo>('video', 5)
-    })
+    }))
 
     await wrapper.vm.$nextTick()
     wrapper.click('button.more')

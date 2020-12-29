@@ -5,7 +5,7 @@
 import Vue, { VNode } from 'vue'
 import isMobile from 'ismobilejs'
 import router from '@/router'
-import { ls } from '@/services'
+import { auth } from '@/services'
 import { playlistStore, preferenceStore, userStore } from '@/stores'
 import { alerts, eventBus, forceReloadWindow } from '@/utils'
 import { events } from '@/config'
@@ -33,7 +33,7 @@ export default Vue.extend({
        */
       [events.LOG_OUT]: async (): Promise<void> => {
         await userStore.logout()
-        ls.remove('jwt-token')
+        auth.destroy()
         forceReloadWindow()
       },
 

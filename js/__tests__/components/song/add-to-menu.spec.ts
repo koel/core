@@ -71,6 +71,7 @@ describe('components/song/add-to-menu', () => {
   ]).test('queues songs %s when "%s" is clicked', (to, selector, queueFunc) => {
     const wrapper = initComponent()
     const queueMock = mock(queueStore, queueFunc)
+    // @ts-ignore
     const closeMock = mock(wrapper.vm, 'close')
     wrapper.click(`li${selector}`)
     expect(queueMock).toHaveBeenCalledWith(songs)
@@ -80,6 +81,7 @@ describe('components/song/add-to-menu', () => {
   it('add songs to favorite', () => {
     const wrapper = initComponent()
     const likeStub = mock(favoriteStore, 'like')
+    // @ts-ignore
     const closeStub = mock(wrapper.vm, 'close')
     wrapper.click('li.favorites')
     expect(likeStub).toHaveBeenCalledWith(songs)
@@ -91,6 +93,7 @@ describe('components/song/add-to-menu', () => {
     playlistStore.all = playlists
     const wrapper = initComponent()
     const addSongsStub = mock(playlistStore, 'addSongs')
+    // @ts-ignore
     const closeStub = mock(wrapper.vm, 'close')
     wrapper.findAll('li.playlist').at(1).click()
     expect(addSongsStub).toHaveBeenCalledWith(playlists[1], songs)
@@ -100,6 +103,7 @@ describe('components/song/add-to-menu', () => {
   it('creates new playlist from songs', async () => {
     const storeStub = mock(playlistStore, 'store', new Promise(resolve => resolve(factory('playlist'))))
     const wrapper = initComponent()
+    // @ts-ignore
     const closeStub = mock(wrapper.vm, 'close')
     wrapper.setData({ newPlaylistName: 'Foo' })
     wrapper.submit('form.form-new-playlist')

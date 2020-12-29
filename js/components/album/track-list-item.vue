@@ -8,7 +8,7 @@
       target="_blank"
       class="view-on-itunes"
       title="View on iTunes"
-      >
+    >
       iTunes
     </a>
     <span class="length">{{ track.fmtLength }}</span>
@@ -18,7 +18,7 @@
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
 import { songStore, queueStore, sharedStore } from '@/stores'
-import { ls, playback } from '@/services'
+import { auth, playback } from '@/services'
 
 export default Vue.extend({
   props: {
@@ -52,7 +52,7 @@ export default Vue.extend({
     },
 
     iTunesUrl (): string {
-      return `${window.BASE_URL}api/itunes/song/${this.album.id}?q=${encodeURIComponent(this.track.title)}&jwt-token=${ls.get('jwt-token')}`
+      return `${window.BASE_URL}web/itunes/song/${this.album.id}?q=${encodeURIComponent(this.track.title)}&api_token=${auth.getToken()}`
     }
   },
 
@@ -73,7 +73,7 @@ export default Vue.extend({
 [role=button] {
   &:focus {
     span.title {
-      color: $colorHighlight;
+      color: $colorOrange;
     }
   }
 

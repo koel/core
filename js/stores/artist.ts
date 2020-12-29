@@ -3,6 +3,7 @@ import { difference, take, orderBy } from 'lodash'
 
 import { http } from '@/services'
 import stub from '@/stubs/artist'
+import { use } from '@/utils'
 
 const UNKNOWN_ARTIST_ID = 1
 const VARIOUS_ARTISTS_ID = 2
@@ -39,8 +40,14 @@ export const artistStore = {
     this.state.artists = value
   },
 
-  byId (id: number): Artist {
+  byId (id: number): Artist | undefined {
     return this.cache[id]
+  },
+
+  byIds (ids: number[]): Artist[] {
+    const artists = [] as Artist[]
+    ids.forEach(id => use(this.byId(id), artist => artists.push(artist!)))
+    return artists
   },
 
   add (artists: Artist | Artist[]) {

@@ -15,7 +15,7 @@
               </div>
             </div>
           </div>
-          <div class="none" v-else>
+          <div class="none text-light-gray" v-else>
             <p>No song is playing.</p>
           </div>
           <footer>
@@ -49,7 +49,7 @@
           </div>
           <div v-else>
             <p>No active Koel instance found.
-              <a @click.prevent="rescan" class="rescan">Rescan</a>
+              <a @click.prevent="rescan" class="rescan text-orange">Rescan</a>
             </p>
           </div>
         </div>
@@ -65,7 +65,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import nouislider from 'nouislider'
-import { socket, ls } from '@/services'
+import { socket, auth } from '@/services'
 import { userStore, preferenceStore } from '@/stores'
 import { events } from '@/config'
 import LoginForm from '@/components/auth/login-form.vue'
@@ -221,13 +221,12 @@ export default Vue.extend({
   },
 
   created (): void {
-    // @ts-ignore
-    this.inStandaloneMode = window.navigator.standalone
+    this.inStandaloneMode = (window.navigator as any).standalone
   },
 
   mounted (): void {
     // The app has just been initialized, check if we can get the user data with an already existing token
-    if (ls.get('jwt-token')) {
+    if (auth.hasToken()) {
       this.authenticated = true
       this.init()
     }
@@ -288,7 +287,6 @@ body, html {
 
     .rescan {
       margin-left: 5px;
-      color: $colorOrange;
     }
 
     @keyframes pulsate {

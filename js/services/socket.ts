@@ -1,7 +1,7 @@
 import Pusher from 'pusher-js'
 
 import { userStore } from '@/stores'
-import { ls } from '.'
+import { auth } from '.'
 
 export const socket = {
   pusher: null as Pusher.Pusher | null,
@@ -17,7 +17,7 @@ export const socket = {
         authEndpoint: `${window.BASE_URL}api/broadcasting/auth`,
         auth: {
           headers: {
-            Authorization: `Bearer ${ls.get('jwt-token')}`
+            Authorization: `Bearer ${auth.getToken()}`
           }
         },
         cluster: window.PUSHER_APP_CLUSTER,

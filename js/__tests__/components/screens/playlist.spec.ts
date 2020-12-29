@@ -17,7 +17,6 @@ describe('components/screens/playlist', () => {
     const wrapper = mount(Component, { data: () => ({ playlist }) })
 
     await wrapper.vm.$nextTick()
-    expect(wrapper.find('h1.heading').html()).toMatch(playlist.name)
     expect(wrapper.has(SongList)).toBe(true)
   })
 
@@ -43,7 +42,7 @@ describe('components/screens/playlist', () => {
 
   it('emits an event to delete the playlist', () => {
     const playlist = factory('playlist', { populated: true })
-    const wrapper = mount(Component, { data: () => ({ playlist }) })
+    const wrapper = shallow(Component, { data: () => ({ playlist }) })
     const emitMock = mock(eventBus, 'emit')
     wrapper.click('.btn-delete-playlist')
     expect(emitMock).toHaveBeenCalledWith('PLAYLIST_DELETE', playlist)
