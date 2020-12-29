@@ -62,7 +62,7 @@ export default Vue.extend({
 @import "~#/partials/_vars.scss";
 
 footer {
-  background: $color2ndBgr;
+  background: $colorSecondaryBgr;
   height: $footerHeight;
   display: flex;
   position: relative;

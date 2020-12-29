@@ -1,7 +1,7 @@
 <template>
   <div class="song-list-controls">
     <btn-group uppercased>
-      <template v-if="fullConfig.play">
+      <template v-if="mergedConfig.play">
         <template v-if="altPressed">
           <btn
             @click.prevent="playAll"
@@ -80,7 +80,7 @@
 
     <add-to-menu
       @closing="closeAddToMenu"
-      :config="fullConfig.addTo"
+      :config="mergedConfig.addTo"
       :songs="selectedSongs"
       :showing="showingAddToMenu"
       v-koel-clickaway="closeAddToMenu"
@@ -95,7 +95,9 @@ const KEYCODE_ALT = 18
 
 export default Vue.extend({
   props: {
-    config: Object,
+    config: {
+      type: Object
+    } as PropOptions<Partial<SongListControlsConfig>>,
     songs: {
       type: Array,
       default: () => []
@@ -114,17 +116,6 @@ export default Vue.extend({
   },
 
   data: () => ({
-    fullConfig: {
-      play: true,
-      addTo: {
-        queue: true,
-        favorites: true,
-        playlists: true,
-        newPlaylist: true
-      },
-      clearQueue: false,
-      deletePlaylist: false
-    },
     showingAddToMenu: false,
     numberOfQueuedSongs: 0,
     altPressed: false
@@ -132,16 +123,26 @@ export default Vue.extend({
 
   computed: {
     showClearQueueButton (): boolean {
-      return this.fullConfig.clearQueue
+      return this.mergedConfig.clearQueue
     },
 
     showDeletePlaylistButton (): boolean {
-      return this.fullConfig.deletePlaylist
-    }
-  },
+      return this.mergedConfig.deletePlaylist
+    },
 
-  created (): void {
-    this.fullConfig = Object.assign(this.fullConfig, this.config)
+    mergedConfig (): SongListControlsConfig {
+      return Object.assign({
+        play: true,
+        addTo: {
+          queue: true,
+          favorites: true,
+          playlists: true,
+          newPlaylist: true
+        },
+        clearQueue: false,
+        deletePlaylist: false
+      }, this.config)
+    }
   },
 
   methods: {
@@ -201,10 +202,5 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .song-list-controls {
   position: relative;
-  min-width: 196px;
-
-  @media only screen and (max-width: 768px) {
-    min-width: 0;
-  }
 }
 </style>

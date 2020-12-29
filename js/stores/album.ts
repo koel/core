@@ -5,6 +5,7 @@ import { union, difference, take, orderBy } from 'lodash'
 import stub from '@/stubs/album'
 import { artistStore } from '.'
 import { http } from '@/services'
+import { use } from '@/utils'
 
 export const albumStore = {
   stub,
@@ -21,7 +22,7 @@ export const albumStore = {
   },
 
   setupAlbum (album: Album): void {
-    const artist = artistStore.byId(album.artist_id)
+    const artist = artistStore.byId(album.artist_id)!
     artist.albums = union(artist.albums, [album])
 
     Vue.set(album, 'artist', artist)
@@ -40,8 +41,14 @@ export const albumStore = {
     this.state.albums = value
   },
 
-  byId (id: number): Album {
+  byId (id: number): Album | undefined {
     return this.cache[id]
+  },
+
+  byIds (ids: number[]): Album[] {
+    const albums = [] as Album[]
+    ids.forEach(id => use(this.byId(id), album => albums.push(album!)))
+    return albums
   },
 
   add (albums: Album | Album[]): void {
@@ -95,7 +102,7 @@ export const albumStore = {
   /**
    * Get the (blurry) thumbnail-sized version of an album's cover.
    */
-  getThumbnail: async (album: Album): Promise<string|null> => {
+  getThumbnail: async (album: Album): Promise<string | null> => {
     if (album.thumbnail === undefined) {
       const { thumbnailUrl } = await http.get<{ thumbnailUrl: string }>(`album/${album.id}/thumbnail`)
 

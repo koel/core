@@ -71,8 +71,7 @@ export default Vue.extend({
   created () {
     eventBus.on(events.CONTEXT_MENU_REQUESTED, (e: MouseEvent, songs: Song[]): void => {
       this.contextMenuSongs = ([] as Song[]).concat(songs)
-      // @ts-ignore because of .open()
-      this.$nextTick((): void => this.$refs.songContextMenu.open(e.pageY, e.pageX))
+      this.$nextTick((): void => (this.$refs.songContextMenu as any).open(e.pageY, e.pageX))
     })
   },
 
@@ -157,7 +156,7 @@ Vue.directive('koel-droppable', droppable)
   color: #fff;
   font-family: $fontFamily;
   font-size: 1rem;
-  font-weight: $fontWeight_Thin;
+  font-weight: $fontWeightLight;
   position: fixed;
   top: 0;
   left: 0;

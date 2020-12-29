@@ -65,7 +65,7 @@ export default Vue.extend({
 
 #mainHeader {
   height: $headerHeight;
-  background: $color2ndBgr;
+  background: $colorSecondaryBgr;
   display: flex;
   border-bottom: 1px solid $colorMainBgr;
   -webkit-app-region: drag;
@@ -78,7 +78,7 @@ export default Vue.extend({
     flex: 1;
     color: $colorMainText;
     font-size: 1.7rem;
-    font-weight: $fontWeight_UltraThin;
+    font-weight: $fontWeightThin;
     opacity: 0;
     line-height: $headerHeight;
     text-align: center;

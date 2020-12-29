@@ -10,7 +10,6 @@ describe('components/screens/all-songs', () => {
     const wrapper = mount(Component)
 
     await wrapper.vm.$nextTick()
-    expect(wrapper.find('h1.heading').text()).toMatch('All Songs')
     expect(wrapper.has(SongList)).toBe(true)
   })
 })

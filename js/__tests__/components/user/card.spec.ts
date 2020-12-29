@@ -64,15 +64,13 @@ describe('components/user/card', () => {
     wrapper.click('.btn-delete')
     expect(confirmStub).toHaveBeenCalledWith(
       `You’re about to unperson ${user.name}. Are you sure?`,
-      // @ts-ignore
-      wrapper.vm.destroy
+      (wrapper.vm as any).destroy
     )
   })
 
   it('deletes user', () => {
     const destroyStub = mock(userStore, 'destroy')
-    // @ts-ignore
-    shallow(Component, { propsData: { user } }).vm.destroy()
+    ;(shallow(Component, { propsData: { user } }).vm as any).destroy()
     expect(destroyStub).toHaveBeenCalledWith(user)
   })
 })

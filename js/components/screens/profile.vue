@@ -1,8 +1,6 @@
 <template>
   <section id="profileWrapper">
-    <h1 class="heading">
-      <span>Profile &amp; Preferences</span>
-    </h1>
+    <screen-header>Profile &amp; Preferences</screen-header>
 
     <div class="main-scroll-wrap">
       <form @submit.prevent="update">
@@ -26,7 +24,8 @@
 
           <div class="form-row">
             <label for="inputProfilePassword">New Password</label>
-            <input :class="{ error: validation.error }"
+            <input
+              :class="{ error: validation.error }"
               v-model="pwd"
               name="password"
               type="password"
@@ -36,7 +35,8 @@
 
           <div class="form-row">
             <label for="inputProfileConfirmPassword">Confirm Password</label>
-            <input :class="{ error: validation.error }"
+            <input
+              :class="{ error: validation.error }"
               v-model="confirmPwd"
               name="confirmPassword"
               type="password"
@@ -80,7 +80,7 @@
         </div>
       </div>
 
-      <section class="lastfm" >
+      <section class="lastfm text-light-gray">
         <h1>Last.fm Integration</h1>
 
         <div v-if="sharedState.useLastfm">
@@ -94,7 +94,14 @@
           </p>
           <p>
             Connecting Koel and your Last.fm account enables such exciting features as
-            <a href="https://www.last.fm/about/trackmymusic" target="_blank">scrobbling</a>.
+            <a
+              class="text-orange"
+              href="https://www.last.fm/about/trackmymusic"
+              target="_blank"
+              rel="noopener"
+            >
+              scrobbling
+            </a>.
           </p>
           <div class="buttons">
             <btn @click.prevent="connectToLastfm" class="connect">
@@ -134,6 +141,7 @@ import { http, auth } from '@/services'
 
 export default Vue.extend({
   components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
     Btn: () => import('@/components/ui/btn.vue')
   },
 
@@ -205,14 +213,9 @@ export default Vue.extend({
     margin-top: 24px;
   }
 
-  .status {
-    margin-left: 8px;
-    color: $colorGreen;
-  }
-
   .preferences {
     margin-top: 32px;
-    border-top: 1px solid $color2ndBgr;
+    border-top: 1px solid $colorSecondaryBgr;
 
     label {
       font-size: $fontSize;
@@ -220,14 +223,9 @@ export default Vue.extend({
   }
 
   .lastfm {
-    border-top: 1px solid $color2ndBgr;
-    color: $color2ndText;
+    border-top: 1px solid $colorSecondaryBgr;
     margin-top: 16px;
     padding-top: 16px;
-
-    a {
-      color: $colorHighlight;
-    }
 
     h1 {
       font-size: 24px;

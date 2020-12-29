@@ -7,8 +7,8 @@
         <div>
           <h1>
             {{ user.name }}
-            <i v-if="isCurrentUser" class="you fa fa-check-circle" title="This is you!"></i>
-            <i v-if="user.is_admin" class="is-admin fa fa-shield" title="User has admin privileges"></i>
+            <i v-if="isCurrentUser" class="you text-orange fa fa-check-circle" title="This is you!"></i>
+            <i v-if="user.is_admin" class="is-admin text-blue fa fa-shield" title="User has admin privileges"></i>
           </h1>
           <p>{{ user.email }}</p>
         </div>
@@ -101,12 +101,10 @@ export default Vue.extend({
       margin-bottom: 8px;
 
       .you {
-        color: $colorHighlight;
         margin-left: 5px;
       }
 
       .is-admin {
-        color: $colorBlue;
         margin-left: 5px;
       }
     }

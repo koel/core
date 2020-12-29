@@ -2,15 +2,15 @@
   <div id="overlay" v-if="state.showing" class="overlay" :class="state.type">
     <div class="display">
       <sound-bar v-if="state.type === 'loading'"/>
-      <i class="fa fa-exclamation-circle" v-show="state.type === 'error'"></i>
-      <i class="fa fa-exclamation-triangle" v-show="state.type === 'warning'"></i>
-      <i class="fa fa-info-circle" v-show="state.type === 'info'"></i>
-      <i class="fa fa-check-circle" v-show="state.type === 'success'"></i>
+      <i class="fa fa-exclamation-circle" v-if="state.type === 'error'"></i>
+      <i class="fa fa-exclamation-triangle" v-if="state.type === 'warning'"></i>
+      <i class="fa fa-info-circle" v-if="state.type === 'info'"></i>
+      <i class="fa fa-check-circle" v-if="state.type === 'success'"></i>
 
       <span class="message" v-html="state.message"></span>
     </div>
 
-    <button class="btn-dismiss" v-if="state.dismissable" @click.prevent="state.showing = false">Close</button>
+    <button class="btn-dismiss" v-if="state.dismissible" @click.prevent="state.showing = false">Close</button>
   </div>
 </template>
 
@@ -28,7 +28,7 @@ export default Vue.extend({
   data: () => ({
     state: {
       showing: true,
-      dismissable: false,
+      dismissible: false,
       /**
        * Either 'loading', 'success', 'info', 'warning', or 'error'.
        * This dictates the icon as well as possibly other visual appearances.
@@ -91,7 +91,7 @@ export default Vue.extend({
   }
 
   &.loading {
-    color: $color2ndText;
+    color: $colorLightGray;
   }
 
   &.warning {

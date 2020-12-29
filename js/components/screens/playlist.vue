@@ -1,44 +1,48 @@
 <template>
   <section id="playlistWrapper">
-    <template v-if="playlist.populated">
-      <h1 class="heading">
-        <span>{{ playlist.name }}
-          <controls-toggler :showing-controls="showingControls" @toggleControls="toggleControls"/>
+    <screen-header>
+      {{ playlist.name }}
+      <controls-toggler v-if="playlist.populated" :showing-controls="showingControls" @toggleControls="toggleControls"/>
 
-          <span class="meta" v-show="meta.songCount">
-            {{ meta.songCount | pluralize('song') }}
+      <template v-slot:meta>
+        <span class="meta" v-if="playlist.populated && meta.songCount">
+          {{ meta.songCount | pluralize('song') }}
+          •
+          {{ meta.totalLength }}
+          <template v-if="sharedState.allowDownload && playlist.songs.length">
             •
-            {{ meta.totalLength }}
-            <template v-if="sharedState.allowDownload && playlist.songs.length">
-              •
-              <a href @click.prevent="download" title="Download all songs in playlist" role="button">
-                Download All
-              </a>
-            </template>
-          </span>
+            <a href @click.prevent="download" title="Download all songs in playlist" role="button">
+              Download All
+            </a>
+          </template>
         </span>
+      </template>
 
+      <template v-slot:controls>
         <song-list-controls
-          v-show="!isPhone || showingControls"
+          v-if="playlist.populated && playlist.songs.length && (!isPhone || showingControls)"
           @playAll="playAll"
           @playSelected="playSelected"
           @deletePlaylist="destroy"
-          :songs = "playlist.songs"
+          :songs="playlist.songs"
           :config="songListControlConfig"
           :selectedSongs="selectedSongs"
         />
-      </h1>
+      </template>
+    </screen-header>
 
-      <song-list v-show="playlist.songs.length"
+    <template v-if="playlist.populated">
+      <song-list
+        v-show="playlist.songs.length"
         :items="playlist.songs"
         :playlist="playlist"
         type="playlist"
         ref="songList"
       />
 
-      <div v-if="!playlist.songs.length" class="none">
+      <div v-if="!playlist.songs.length" class="none text-light-gray">
         <p v-if="playlist.is_smart">
-          No songs match the playlist's <a href="#" @click.prevent="editSmartPlaylist">criteria</a>.
+          No songs match the playlist's <a href class="text-orange" @click.prevent="editSmartPlaylist">criteria</a>.
         </p>
         <p v-else>
           The playlist is currently empty. You can fill it up by dragging songs into its name in the sidebar,
@@ -58,6 +62,10 @@ import { download } from '@/services'
 import hasSongList from '@/mixins/has-song-list.ts'
 
 export default mixins(hasSongList).extend({
+  components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue')
+  },
+
   filters: { pluralize },
 
   data: () => ({
@@ -87,11 +95,6 @@ export default mixins(hasSongList).extend({
   },
 
   methods: {
-    getSongsToPlay (): Song[] {
-      // @ts-ignore
-      return this.$refs.songList.getAllSongsWithSort()
-    },
-
     destroy (): void {
       eventBus.emit(events.PLAYLIST_DELETE, this.playlist)
     },
@@ -120,19 +123,8 @@ export default mixins(hasSongList).extend({
 @import "~#/partials/_vars.scss";
 
 #playlistWrapper {
-  button.play-shuffle, button.del {
-    i {
-      margin-right: 0 !important;
-    }
-  }
-
   .none {
-    color: $color2ndText;
     padding: 16px 24px;
-
-    a {
-      color: $colorHighlight;
-    }
   }
 }
 </style>

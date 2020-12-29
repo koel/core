@@ -1,5 +1,5 @@
 import each from 'jest-each'
-import Component from '@/components/song/list-controls-toggler.vue'
+import Component from '@/components/ui/screen-controls-toggler.vue'
 import isMobile from 'ismobilejs'
 import { shallow } from '@/__tests__/adapter'
 
@@ -18,7 +18,7 @@ describe('components/song/list-controls-toggler', () => {
 
   it('emits event', () => {
     const wrapper = shallow(Component)
-    wrapper.click('.song-list-controls-toggler')
+    wrapper.click('.controls-toggler')
     expect(wrapper.hasEmitted('toggleControls')).toBe(true)
   })
 })

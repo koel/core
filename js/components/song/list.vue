@@ -39,6 +39,7 @@
             <i class="fa fa-angle-down" v-show="sortKey === 'song.length' && order > 0"></i>
             <i class="fa fa-angle-up" v-show="sortKey === 'song.length' && order < 0"></i>
           </th>
+          <th class="favorite"></th>
           <th class="play"></th>
         </tr>
       </thead>
@@ -47,7 +48,7 @@
     <virtual-scroller
       class="scroller"
       content-tag="table"
-      :items="filteredItems"
+      :items="songProxies"
       item-height="35"
       :renderers="renderers"
       key-field="song.id"
@@ -60,7 +61,7 @@ import isMobile from 'ismobilejs'
 
 import Vue, { PropOptions } from 'vue'
 import { VirtualScroller } from 'vue-virtual-scroller/dist/vue-virtual-scroller'
-import { filterBy, orderBy, eventBus, startDragging, $ } from '@/utils'
+import { orderBy, eventBus, startDragging, $ } from '@/utils'
 import { events } from '@/config'
 import { playlistStore, queueStore, songStore, favoriteStore } from '@/stores'
 import { playback } from '@/services'
@@ -68,7 +69,16 @@ import router from '@/router'
 import { SongListRowComponent } from 'koel/types/ui'
 
 const songItemComponent = () => import('@/components/song/item.vue')
-const VALID_SONG_LIST_TYPES = ['all-songs', 'queue', 'playlist', 'favorites', 'recently-played', 'artist', 'album']
+const VALID_SONG_LIST_TYPES = [
+  'all-songs',
+  'queue',
+  'playlist',
+  'favorites',
+  'recently-played',
+  'artist',
+  'album',
+  'search-results'
+]
 
 interface SongListData {
   renderers: Readonly<{ song: any }>,
@@ -134,17 +144,12 @@ export default Vue.extend({
   },
 
   computed: {
-    filteredItems (): SongProxy[] {
-      const { keywords, fields } = this.extractSearchDataFromQuery(this.q)
-      return keywords ? filterBy(this.songProxies, keywords, ...fields) : this.songProxies
-    },
-
     allowSongReordering (): boolean {
       return this.type === 'queue'
     },
 
     selectedSongs (): Song[] {
-      return this.filteredItems.filter(row => row.selected).map(row => row.song)
+      return this.songProxies.filter(row => row.selected).map(row => row.song)
     }
   },
 
@@ -184,10 +189,10 @@ export default Vue.extend({
     },
 
     /**
-     * @param  {String} key The sort key. Can be 'title', 'album', 'artist', or 'length'
+     * @param  {String|Array<string>} key The sort key. Can be 'title', 'album', 'artist', or 'length'
      */
-    sort (key = '') {
-      // there are certain cirscumstances where sorting is simply disallowed, e.g. in Queue
+    sort (key: string | string[] = '') {
+      // there are certain circumstances where sorting is simply disallowed, e.g. in Queue
       if (this.sortable === false) {
         return
       }
@@ -295,7 +300,7 @@ export default Vue.extend({
      * Select all (filtered) rows in the current list.
      */
     selectAllRows (): void {
-      this.filteredItems.forEach(row => (row.selected = true))
+      this.songProxies.forEach(row => (row.selected = true))
     },
 
     rowClicked (rowVm: SongListRowComponent, event: MouseEvent): void {
@@ -328,19 +333,19 @@ export default Vue.extend({
 
     selectRowsBetween (firstRowVm: SongListRowComponent, secondRowVm: SongListRowComponent): void {
       const indexes = [
-        this.filteredItems.indexOf(firstRowVm.item),
-        this.filteredItems.indexOf(secondRowVm.item)
+        this.songProxies.indexOf(firstRowVm.item),
+        this.songProxies.indexOf(secondRowVm.item)
       ]
 
       indexes.sort((a, b) => a - b)
 
       for (let i = indexes[0]; i <= indexes[1]; ++i) {
-        this.filteredItems[i].selected = true
+        this.songProxies[i].selected = true
       }
     },
 
     clearSelection (): void {
-      this.filteredItems.forEach((row: SongProxy): void => {
+      this.songProxies.forEach((row: SongProxy): void => {
         row.selected = false
       })
     },
@@ -408,29 +413,6 @@ export default Vue.extend({
       })
     },
 
-    extractSearchDataFromQuery: (q: string): { keywords: string, fields: string[] } => {
-      const re = /in:(title|album|artist)/ig
-      const fields = [] as string[]
-      const matches = q.match(re)
-      let keywords = q
-
-      if (matches) {
-        keywords = q.replace(re, '').trim()
-
-        if (keywords) {
-          matches.forEach(match => {
-            const field = match.split(':')[1].toLowerCase()
-            fields.push(field === 'title' ? `song.${field}` : `song.${field}.name`)
-          })
-        }
-      }
-
-      return {
-        keywords,
-        fields: fields.length ? fields : ['song.title', 'song.album.name', 'song.artist.name']
-      }
-    },
-
     getAllSongsWithSort (): Song[] {
       return this.songProxies.map((proxy: SongProxy): Song => proxy.song)
     }
@@ -440,14 +422,6 @@ export default Vue.extend({
     if (this.items) {
       this.render()
     }
-  },
-
-  created (): void {
-    eventBus.on({
-      [events.FILTER_CHANGED]: (q: string): void => {
-        this.q = q
-      }
-    })
   }
 })
 </script>
@@ -507,6 +481,10 @@ export default Vue.extend({
       width: 27%;
     }
 
+    &.favorite {
+      width: 36px;
+    }
+
     &.play {
       display: none;
 
@@ -520,13 +498,13 @@ export default Vue.extend({
   }
 
   th {
-    color: $color2ndText;
+    color: $colorLightGray;
     letter-spacing: 1px;
     text-transform: uppercase;
     cursor: pointer;
 
     i {
-      color: $colorHighlight;
+      color: $colorOrange;
       font-size: 1.2rem;
     }
   }
@@ -584,24 +562,22 @@ export default Vue.extend({
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: $color2ndText;
+      color: $colorLightGray;
       width: 100%;
     }
 
     td {
-      display: inline;
+      display: none;
       padding: 0;
       vertical-align: bottom;
       color: $colorMainText;
 
-      &.album,
-      &.time,
-      &.track-number {
-        display: none;
+      &.artist, &.title {
+        display: inline;
       }
 
       &.artist {
-        color: $color2ndText;
+        color: $colorLightGray;
         font-size: 0.9rem;
         padding: 0 4px;
       }

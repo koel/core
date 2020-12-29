@@ -1,12 +1,14 @@
 <template>
   <section id="artistsWrapper">
-    <h1 class="heading">
-      <span>Artists</span>
-      <view-mode-switch v-model="viewMode"/>
-    </h1>
+    <screen-header>
+      Artists
+      <template v-slot:controls>
+        <view-mode-switch v-model="viewMode"/>
+      </template>
+    </screen-header>
 
     <div ref="scroller" class="artists main-scroll-wrap" :class="`as-${viewMode}`" @scroll="scrolling">
-      <artist-card v-for="item in displayedItems" :artist="item" :key="item.id"/>
+      <artist-card v-for="item in displayedItems" :artist="item" :layout="itemLayout" :key="item.id"/>
       <to-top-button/>
     </div>
   </section>
@@ -14,13 +16,14 @@
 
 <script lang="ts">
 import mixins from 'vue-typed-mixins'
-import { filterBy, limitBy, eventBus } from '@/utils'
+import { limitBy, eventBus } from '@/utils'
 import { events } from '@/config'
 import { artistStore, preferenceStore as preferences } from '@/stores'
 import infiniteScroll from '@/mixins/infinite-scroll.ts'
 
 export default mixins(infiniteScroll).extend({
   components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
     ArtistCard: () => import('@/components/artist/card.vue'),
     ViewModeSwitch: () => import('@/components/ui/view-mode-switch.vue')
   },
@@ -35,11 +38,11 @@ export default mixins(infiniteScroll).extend({
 
   computed: {
     displayedItems (): Artist[] {
-      return limitBy(this.filteredItems, this.displayedItemCount)
+      return limitBy(this.artists, this.displayedItemCount)
     },
 
-    filteredItems (): Artist[] {
-      return filterBy(this.artists, this.q, 'name')
+    itemLayout (): ArtistAlbumCardLayout {
+      return this.viewMode === 'thumbnails' ? 'full' : 'compact'
     }
   },
 
@@ -60,10 +63,6 @@ export default mixins(infiniteScroll).extend({
         if (view === 'Artists') {
           this.$nextTick((): void => this.makeScrollable(this.$refs.scroller as HTMLElement, this.artists.length))
         }
-      },
-
-      [events.FILTER_CHANGED]: (q: string): void => {
-        this.q = q
       }
     })
   }
