@@ -26,8 +26,7 @@ describe('components/ui/context-menu', () => {
 
   it('opens', () => {
     const wrapper = mount(Component)
-    // @ts-ignore
-    wrapper.vm.open(42, 128)
+    ;(wrapper.vm as any).open(42, 128)
     expect(wrapper.find('.menu').element.style.top).toBe('42px')
     expect(wrapper.find('.menu').element.style.left).toBe('128px')
     expect(global.getComputedStyle(wrapper.find('.menu').element).display).toBe('block')
@@ -35,18 +34,15 @@ describe('components/ui/context-menu', () => {
 
   it('closes', () => {
     const wrapper = mount(Component)
-    // @ts-ignore
-    wrapper.vm.open(42, 128)
-    // @ts-ignore
-    wrapper.vm.close()
+    ;(wrapper.vm as any).open(42, 128)
+    ;(wrapper.vm as any).close()
     expect(global.getComputedStyle(wrapper.find('.menu').element).display).toBe('none')
   })
 
   it('notifies other instances to close', () => {
     const m = mock(eventBus, 'emit')
     const wrapper = mount(Component)
-    // @ts-ignore
-    wrapper.vm.open(42, 128)
+    ;(wrapper.vm as any).open(42, 128)
     expect(m).toHaveBeenCalledWith('CONTEXT_MENU_OPENING')
   })
 })

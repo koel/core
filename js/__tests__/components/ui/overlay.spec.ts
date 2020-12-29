@@ -5,8 +5,7 @@ import { mount } from '@/__tests__/adapter'
 describe('components/shared/overlay', () => {
   it('shows with default options', async () => {
     const wrapper = mount(Component)
-    // @ts-ignore
-    wrapper.vm.show()
+    ;(wrapper.vm as any).show()
 
     await wrapper.vm.$nextTick()
     expect(wrapper).toMatchSnapshot()
@@ -14,9 +13,8 @@ describe('components/shared/overlay', () => {
 
   it('allows option overriding', async () => {
     const wrapper = mount(Component)
-    // @ts-ignore
-    wrapper.vm.show({
-      dismissable: true,
+    ;(wrapper.vm as any).show({
+      dismissible: true,
       type: 'warning',
       message: 'Foo'
     })
@@ -27,15 +25,13 @@ describe('components/shared/overlay', () => {
 
   each([['show', true], ['hide', false]]).test('%ss', (methodName) => {
     const wrapper = mount(Component)
-    // @ts-ignore
-    wrapper.vm[methodName]()
+    ;(wrapper.vm as any)[methodName]()
     expect(wrapper).toMatchSnapshot()
   })
 
   it('dismisses', () => {
     const wrapper = mount(Component)
-    // @ts-ignore
-    wrapper.vm.show({ dismissable: true })
+    ;(wrapper.vm as any).show({ dismissible: true })
     expect(wrapper.has('.display')).toBe(true)
     wrapper.click('button.btn-dismiss')
     expect(wrapper.has('.display')).toBe(false)

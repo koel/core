@@ -43,21 +43,21 @@ describe('components/song/list-controls', () => {
 
   it('allows clearing queue', () => {
     expect(shallow(Component, {
-      data: () => ({
-        fullConfig: {
+      propsData: {
+        config: {
           clearQueue: true
         }
-      })
+      }
     }).click('.btn-clear-queue').hasEmitted('clearQueue')).toBe(true)
   })
 
   it('allows deleting current playlist', () => {
     expect(shallow(Component, {
-      data: () => ({
-        fullConfig: {
+      propsData: {
+        config: {
           deletePlaylist: true
         }
-      })
+      }
     }).click('.btn-delete-playlist').hasEmitted('deletePlaylist')).toBe(true)
   })
 })

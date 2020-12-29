@@ -15,7 +15,7 @@
               </div>
             </div>
           </div>
-          <div class="none" v-else>
+          <div class="none text-light-gray" v-else>
             <p>No song is playing.</p>
           </div>
           <footer>
@@ -49,7 +49,7 @@
           </div>
           <div v-else>
             <p>No active Koel instance found.
-              <a @click.prevent="rescan" class="rescan">Rescan</a>
+              <a @click.prevent="rescan" class="rescan text-orange">Rescan</a>
             </p>
           </div>
         </div>
@@ -221,8 +221,7 @@ export default Vue.extend({
   },
 
   created (): void {
-    // @ts-ignore
-    this.inStandaloneMode = window.navigator.standalone
+    this.inStandaloneMode = (window.navigator as any).standalone
   },
 
   mounted (): void {
@@ -288,7 +287,6 @@ body, html {
 
     .rescan {
       margin-left: 5px;
-      color: $colorOrange;
     }
 
     @keyframes pulsate {

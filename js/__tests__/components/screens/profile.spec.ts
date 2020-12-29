@@ -4,6 +4,7 @@ import factory from '@/__tests__/factory'
 import { userStore, preferenceStore as preferences } from '@/stores'
 import { mock } from '@/__tests__/__helpers__'
 import { shallow } from '@/__tests__/adapter'
+import { mount } from '@vue/test-utils'
 
 describe('components/screens/profile', () => {
   beforeEach(() => {
@@ -17,7 +18,7 @@ describe('components/screens/profile', () => {
   })
 
   it('renders properly', () => {
-    expect(shallow(Profile)).toMatchSnapshot()
+    expect(mount(Profile)).toMatchSnapshot()
   })
 
   each([

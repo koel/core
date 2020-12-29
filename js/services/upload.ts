@@ -66,7 +66,7 @@ export const upload = {
       window.setTimeout((): void => this.remove(file), 1000)
       eventBus.emit(events.SONG_UPLOADED)
     } catch (error) {
-      file.message = `Upload failed: ${error.response.data.message}`
+      file.message = `Upload failed: ${ error.response?.data?.message || 'Unknown error' }`
       file.status = 'Errored'
       this.proceed() // upload the next file
     } finally {
@@ -111,8 +111,8 @@ export const upload = {
   },
 
   populateUploadResultIntoStores (uploadResult: SongUploadResult): void {
-    let artist: Artist = artistStore.byId(uploadResult.artist.id)
-    let album: Album = albumStore.byId(uploadResult.album.id)
+    let artist = artistStore.byId(uploadResult.artist.id)!
+    let album = albumStore.byId(uploadResult.album.id)!
 
     if (!artist) {
       artist = Object.assign(uploadResult.artist, {

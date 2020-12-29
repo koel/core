@@ -7,15 +7,7 @@
         <sound-bar v-if="song && song.playbackState === 'Playing'"/>
       </a>
 
-      <i
-        :class="{ liked: song.liked }"
-        @click.prevent="like"
-        class="like control fa fa-heart"
-        v-if="song"
-        role="button"
-        tabindex="0"
-        :title="`${ song.liked ? 'Unlike' : 'Like' } current song`"
-      ></i>
+      <like-button v-if="song" :song="song" class="like"/>
 
       <span
         :class="{ active: prefs.showExtraPanel }"
@@ -86,7 +78,8 @@ export default Vue.extend({
   components: {
     Equalizer: () => import('@/components/ui/equalizer.vue'),
     SoundBar: () => import('@/components/ui/sound-bar.vue'),
-    Volume: () => import('@/components/ui/volume.vue')
+    Volume: () => import('@/components/ui/volume.vue'),
+    LikeButton: () => import('@/components/song/like-button.vue')
   },
 
   data: () => ({
@@ -156,13 +149,12 @@ export default Vue.extend({
 
   .wrapper {
     @include vertical-center();
+    gap: 1rem;
   }
 
   .control {
-    padding: 0 8px;
-
     &.active {
-      color: $colorHighlight;
+      color: $colorOrange;
     }
 
     &:last-child {
@@ -174,7 +166,7 @@ export default Vue.extend({
     position: relative;
 
     &.REPEAT_ALL, &.REPEAT_ONE {
-      color: $colorHighlight;
+      color: $colorOrange;
     }
 
     &.REPEAT_ONE::after {
@@ -186,12 +178,6 @@ export default Vue.extend({
       font-size: .5rem;
       text-align: center;
       width: 100%;
-    }
-  }
-
-  .like {
-    &.liked {
-      color: $colorHeart;
     }
   }
 
@@ -210,8 +196,8 @@ export default Vue.extend({
       display: none;
     }
 
-    .control {
-      padding: 0 8px;
+    .wrapper {
+      gap: 1.5rem;
     }
   }
 }

@@ -1,18 +1,18 @@
 <template>
   <section id="usersWrapper">
-    <h1 class="heading">
-      <span>Users
-        <i class="fa fa-angle-down toggler" v-show="isPhone && !showingControls" @click="showingControls = true"></i>
-        <i class="fa fa-angle-up toggler" v-show="isPhone && showingControls" @click.prevent="showingControls = false"></i>
-      </span>
+    <screen-header>
+      Users
+      <controls-toggler :showing-controls="showingControls" @toggleControls="toggleControls"/>
 
-      <btn-group v-show="!isPhone || showingControls" uppercased>
-        <btn class="btn-add" @click="showAddUserForm" green>
-          <i class="fa fa-plus"></i>
-          Add
-        </btn>
-      </btn-group>
-    </h1>
+      <template v-slot:controls>
+        <btn-group uppercased v-if="showingControls || !isPhone">
+          <btn class="btn-add" @click="showAddUserForm" green>
+            <i class="fa fa-plus"></i>
+            Add
+          </btn>
+        </btn-group>
+      </template>
+    </screen-header>
 
     <div class="main-scroll-wrap">
       <div class="users">
@@ -32,6 +32,8 @@ import { events } from '@/config'
 
 export default Vue.extend({
   components: {
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
+    ControlsToggler: () => import('@/components/ui/screen-controls-toggler.vue'),
     Btn: () => import('@/components/ui/btn.vue'),
     BtnGroup: () => import('@/components/ui/btn-group.vue'),
     UserCard: () => import('@/components/user/card.vue')
@@ -44,6 +46,10 @@ export default Vue.extend({
   }),
 
   methods: {
+    toggleControls (): void {
+      this.showingControls = !this.showingControls
+    },
+
     showAddUserForm: (): void => {
       eventBus.emit(events.MODAL_SHOW_ADD_USER_FORM)
     },
@@ -62,7 +68,7 @@ export default Vue.extend({
   .users {
     display: grid;
     grid-gap: 16px;
-    grid-template-columns: repeat(auto-fit, minmax(320px,1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   }
 
   button {
