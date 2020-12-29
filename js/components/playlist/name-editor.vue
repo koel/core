@@ -1,5 +1,7 @@
 <template>
-  <input type="text"
+  <input
+    type="text"
+    name="name"
     @keyup.esc="cancel"
     @keyup.enter="update"
     @blur="update"

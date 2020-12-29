@@ -9,7 +9,7 @@ describe('componnents/song/track-list-item', () => {
   let song: Song
   const track = {
     title: 'Foo and bar',
-    fmtLenth: '00:42'
+    fmtLength: '00:42'
   }
   const album = factory('album', { id: 42 })
   window.BASE_URL = 'http://koel.local/'

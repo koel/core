@@ -1,5 +1,4 @@
 import Component from '@/components/playlist/sidebar-item.vue'
-import NameEditor from '@/components/playlist/name-editor.vue'
 import factory from '@/__tests__/factory'
 import { shallow, mount } from '@/__tests__/adapter'
 
@@ -14,6 +13,7 @@ describe('components/playlist/sidebar-item', () => {
 
   afterEach(() => {
     jest.resetModules()
+    jest.clearAllMocks()
   })
 
   it('renders a playlist menu item', () => {
@@ -35,19 +35,17 @@ describe('components/playlist/sidebar-item', () => {
     expect(wrapper.find('li.playlist.favorites').text()).toMatch('Favorites')
   })
 
-  // skipping because buggy test utils
-  it.skip('edits a playlist', async () => {
+  it('edits a playlist', async () => {
     const wrapper = mount(Component, {
       propsData: { playlist }
     })
 
-    wrapper.dblclick('li.playlist:last-of-type:not(.favorites):not(.recently-played)')
+    wrapper.dblclick('li.playlist')
     await wrapper.vm.$nextTick()
-    expect(wrapper.has(NameEditor)).toBe(true)
+    expect(wrapper.has('[name=name]')).toBe(true)
   })
 
-  // skipping because buggy test utils
-  it.skip("doesn't allow editing Favorites item", async () => {
+  it("doesn't allow editing Favorites item", async () => {
     const wrapper = shallow(Component, {
       propsData: {
         playlist: { name: 'Favorites' },
@@ -57,6 +55,6 @@ describe('components/playlist/sidebar-item', () => {
 
     wrapper.dblclick('li.favorites')
     await wrapper.vm.$nextTick()
-    expect(wrapper.has(NameEditor)).toBe(false)
+    expect(wrapper.has('[name=name]')).toBe(false)
   })
 })
