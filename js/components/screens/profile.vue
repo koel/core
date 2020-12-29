@@ -30,7 +30,8 @@
               name="password"
               type="password"
               id="inputProfilePassword"
-              autocomplete="off">
+              autocomplete="new-password"
+            >
           </div>
 
           <div class="form-row">
@@ -41,7 +42,8 @@
               name="confirmPassword"
               type="password"
               id="inputProfileConfirmPassword"
-              autocomplete="off">
+              autocomplete="new-password"
+            >
           </div>
         </div>
 
