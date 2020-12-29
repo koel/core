@@ -83,7 +83,7 @@
     "lint": "eslint js --ext=js,vue",
     "type-check": "tsc --noEmit",
     "test": "yarn lint && cross-env NODE_ENV=test && jest --colors",
-    "coverage": "yarn test && codecov"
+    "coverage": "codecov"
   },
   "repository": {
     "type": "git",

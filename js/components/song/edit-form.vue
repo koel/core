@@ -244,11 +244,16 @@ export default Vue.extend({
         if (!this.mutatedSongs[0].infoRetrieved) {
           this.loading = true
 
-          await songInfo.fetch(this.mutatedSongs[0])
-          this.loading = false
-          this.formData.lyrics = br2nl(this.mutatedSongs[0].lyrics)
-          this.formData.track = this.mutatedSongs[0].track || null
-          this.initCompilationStateCheckbox()
+          try {
+            await songInfo.fetch(this.mutatedSongs[0])
+            this.formData.lyrics = br2nl(this.mutatedSongs[0].lyrics)
+            this.formData.track = this.mutatedSongs[0].track || null
+          } catch (e) {
+            console.error(e)
+          } finally {
+            this.loading = false
+            this.initCompilationStateCheckbox()
+          }
         } else {
           this.loading = false
           this.formData.lyrics = br2nl(this.mutatedSongs[0].lyrics)

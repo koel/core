@@ -17,4 +17,6 @@ jobs:
       - name: Run static type checking
         run: yarn type-check
       - name: Run unit tests
+        run: yarn test --forceExit # Jest won't exit in Node 15 for whatever reason
+      - name: Collect coverage
         run: yarn coverage
