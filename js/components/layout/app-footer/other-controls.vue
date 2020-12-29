@@ -154,7 +154,7 @@ export default Vue.extend({
 
   .control {
     &.active {
-      color: $colorHighlight;
+      color: $colorOrange;
     }
 
     &:last-child {
@@ -166,7 +166,7 @@ export default Vue.extend({
     position: relative;
 
     &.REPEAT_ALL, &.REPEAT_ONE {
-      color: $colorHighlight;
+      color: $colorOrange;
     }
 
     &.REPEAT_ONE::after {

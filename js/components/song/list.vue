@@ -498,13 +498,13 @@ export default Vue.extend({
   }
 
   th {
-    color: $color2ndText;
+    color: $colorLightGray;
     letter-spacing: 1px;
     text-transform: uppercase;
     cursor: pointer;
 
     i {
-      color: $colorHighlight;
+      color: $colorOrange;
       font-size: 1.2rem;
     }
   }
@@ -562,7 +562,7 @@ export default Vue.extend({
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: $color2ndText;
+      color: $colorLightGray;
       width: 100%;
     }
 
@@ -577,7 +577,7 @@ export default Vue.extend({
       }
 
       &.artist {
-        color: $color2ndText;
+        color: $colorLightGray;
         font-size: 0.9rem;
         padding: 0 4px;
       }

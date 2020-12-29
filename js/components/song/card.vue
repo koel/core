@@ -17,7 +17,7 @@
     <span class="details">
       <span v-if="showPlayCount" :style="{ width: `${song.playCount*100/topPlayCount}%` }" class="play-count"></span>
       {{ song.title }}
-      <span class="by">
+      <span class="by text-light-gray">
         <a :href="`#!/artist/${song.artist.id}`">{{ song.artist.name }}</a>
         <template v-if="showPlayCount">- {{ song.playCount | pluralize('play') }}</template>
       </span>
@@ -88,7 +88,7 @@ export default Vue.extend({
   display: flex;
 
   &.playing {
-    color: $colorHighlight;
+    color: $colorOrange;
   }
 
   &:hover .cover, &:focus .cover {
@@ -165,14 +165,13 @@ export default Vue.extend({
       display: block;
       font-size: .9rem;
       margin-top: 2px;
-      color: $color2ndText;
       opacity: .8;
 
       a {
         color: #fff;
 
         &:hover {
-          color: $colorHighlight;
+          color: $colorOrange;
         }
       }
     }

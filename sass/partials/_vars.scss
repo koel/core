@@ -1,46 +1,40 @@
-$colorMainBgr: #181818;
-$color2ndBgr: #282828;
-$colorMainText: #fff;
-$color2ndText: #a0a0a0;
-$colorBtnBgr: #0191f7;
-$colorBtnText: #fff;
-$colorDirtyInputBgr: #fff5b0;
-$colorMenuBgr: $color2ndBgr;
-
-$colorHeart: #bf2043;
+$colorMaroon: #bf2043;
 $colorGreen: #56a052;
 $colorBlue: #4c769a;
 $colorRed: #c34848;
 $colorOrange: #ff7d2e;
 $colorGrey: #3c3c3c;
+$colorLightGray: #a0a0a0;
+
+$colorMainBgr: #181818;
+$colorSecondaryBgr: #282828;
+$colorMainText: #fff;
+$colorBtnBgr: #0191f7;
+$colorDirtyInputBgr: #fff5b0;
 
 $colorSidebarBgr: #212121;
 $colorExtraBgr: #212121;
-$colorSearchFormBgr: transparent;
 $colorPlayerControlsBgr: transparent;
 
 $colorLink: #aaa;
 $colorLinkHovered: #fff;
 
-$colorHighlight: $colorOrange;
-
 $fontFamily: system, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 $fontSize: 13px;
 
-$fontWeight_UltraThin: 100;
-$fontWeight_Thin: 300;
-$fontWeight_Normal: 500;
+$fontWeightThin: 100;
+$fontWeightLight: 300;
+$fontWeightNormal: 500;
 
 $headerHeight: 48px;
 $footerHeight: 64px;
 $footerHeightMobile: 74px;
 $mainHeadingHeight: 64px;
-
 $extraPanelWidth: 334px;
 
-$plyr-blue: $colorHighlight;
-$plyr-control-color: $colorHighlight;
-$plyr-control-color-hover: $colorHighlight;
-$plyr-control-bg-hover: $colorHighlight;
+$plyr-blue: $colorOrange;
+$plyr-control-color: $colorOrange;
+$plyr-control-color-hover: $colorOrange;
+$plyr-control-bg-hover: $colorOrange;
 $plyr-volume-track-height: 6px;
 $plyr-control-spacing: 6px;

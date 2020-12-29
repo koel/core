@@ -187,7 +187,7 @@ export default Vue.extend({
 
   &.favorites a::before {
     content: "\f004";
-    color: $colorHeart;
+    color: $colorMaroon;
   }
 
   &.recently-played a::before {

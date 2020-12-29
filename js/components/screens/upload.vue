@@ -39,7 +39,7 @@
         </div>
       </div>
 
-      <p class="none" v-else>No media path set.</p>
+      <p class="text-light-gray" v-else>No media path set.</p>
     </div>
   </section>
 </template>

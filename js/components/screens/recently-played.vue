@@ -22,7 +22,7 @@
 
     <song-list v-if="state.songs.length" :items="state.songs" type="recently-played" :sortable="false"/>
 
-    <div v-if="!state.songs.length" class="none">
+    <div v-if="!state.songs.length" class="none text-light-gray">
       This playlist is automatically populated with the songs you most recently played, so start playing!
     </div>
   </section>
@@ -69,12 +69,7 @@ export default mixins(hasSongList).extend({
 
 #recentlyPlayedWrapper {
   .none {
-    color: $color2ndText;
     padding: 16px 24px;
-
-    a {
-      color: $colorHighlight;
-    }
   }
 }
 </style>

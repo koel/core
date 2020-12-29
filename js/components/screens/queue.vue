@@ -23,11 +23,11 @@
 
     <song-list v-show="state.songs.length" :items="state.songs" type="queue" ref="songList"/>
 
-    <div v-show="!state.songs.length" class="none">
+    <div v-show="!state.songs.length" class="none text-light-gray">
       <p>Empty spaces. Abandoned places.</p>
 
       <p v-if="shouldShowShufflingAllLink">How about
-        <a class="start" @click.prevent="shuffleAll">shuffling all songs</a>?
+        <a class="start text-orange" @click.prevent="shuffleAll">shuffling all songs</a>?
       </p>
     </div>
   </section>
@@ -77,12 +77,7 @@ export default mixins(hasSongList).extend({
 
 #queueWrapper {
   .none {
-    color: $color2ndText;
     padding: 16px 24px;
-
-    a {
-      color: $colorHighlight;
-    }
   }
 
   button.play-shuffle {

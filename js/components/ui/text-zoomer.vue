@@ -50,6 +50,7 @@ export default Vue.extend({
     border: 1px solid $colorGrey;
     color: rgba(255, 255, 255, .5);
     transition: background .2s;
+    padding: .5rem .75rem;
 
     &:hover {
       background: $colorGrey;

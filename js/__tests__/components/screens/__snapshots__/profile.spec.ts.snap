@@ -36,7 +36,7 @@ exports[`components/screens/profile renders properly 1`] = `
           Show a translucent, blurred overlay of the current album’s art (may be CPU intensive)
         </label></div>
     </div>
-    <section class="lastfm">
+    <section class="lastfm text-light-gray">
       <h1>Last.fm Integration</h1>
       <div>
         <p>This installation of Koel has no Last.fm integration.

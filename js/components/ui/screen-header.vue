@@ -8,7 +8,7 @@
       <h1>
         <slot></slot>
       </h1>
-      <span class="meta">
+      <span class="meta text-light-gray">
         <slot name="meta"></slot>
       </span>
     </div>
@@ -38,10 +38,10 @@ export default Vue.extend({
 header {
   display: flex;
   gap: 1rem;
-  font-weight: $fontWeight_UltraThin;
+  font-weight: $fontWeightThin;
   font-size: 2.76rem;
   padding: 1rem 1.8rem;
-  border-bottom: 1px solid $color2ndBgr;
+  border-bottom: 1px solid $colorSecondaryBgr;
   min-height: 96px;
   position: relative;
   align-items: center;
@@ -73,14 +73,13 @@ header {
     display: block;
     font-size: .9rem;
     line-height: 2;
-    color: $color2ndText;
-    font-weight: $fontWeight_Thin;
+    font-weight: $fontWeightLight;
 
     a {
       color: #fff;
 
       &:hover {
-        color: $colorHighlight;
+        color: $colorOrange;
       }
     }
   }

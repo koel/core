@@ -32,7 +32,7 @@
 
     <song-list v-show="state.songs.length" :items="state.songs" type="favorites" ref="songList"/>
 
-    <div v-if="!state.songs.length" class="none">
+    <div v-if="!state.songs.length" class="text-light-gray none">
       Start loving!
       Click the <i style="margin: 0 5px" class="fa fa-heart"></i> icon when a song is playing to add it
       to this list.
@@ -70,12 +70,7 @@ export default mixins(hasSongList).extend({
 
 #favoritesWrapper {
   .none {
-    color: $color2ndText;
     padding: 16px 24px;
-
-    a {
-      color: $colorHighlight;
-    }
   }
 }
 </style>

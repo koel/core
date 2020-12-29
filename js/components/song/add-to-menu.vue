@@ -156,11 +156,11 @@ export default mixins(songMenuMethods).extend({
     overflow: hidden;
     text-overflow: ellipsis;
     border-radius: 3px;
-    background: lighten($colorMenuBgr, 8%);
+    background: lighten($colorSecondaryBgr, 8%);
     cursor: pointer;
 
     &:hover {
-      background: $colorHighlight;
+      background: $colorOrange;
       color: #fff;
     }
   }
@@ -172,7 +172,7 @@ export default mixins(songMenuMethods).extend({
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-bottom: 10px solid $colorMenuBgr;
+    border-bottom: 10px solid $colorSecondaryBgr;
     position: absolute;
     top: -7px;
     left: calc(50% - 10px);

@@ -81,7 +81,7 @@ export const playlistStore = {
    */
   add (playlists: Playlist | Playlist[]) {
     const playlistsToAdd = (<Playlist[]>[]).concat(playlists)
-    playlistsToAdd.forEach(this.setupPlaylist)
+    playlistsToAdd.forEach(playlist => this.setupPlaylist(playlist))
     this.all = this.sort(union(this.all, playlistsToAdd))
   },
 

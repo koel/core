@@ -2,10 +2,10 @@
   <div id="overlay" v-if="state.showing" class="overlay" :class="state.type">
     <div class="display">
       <sound-bar v-if="state.type === 'loading'"/>
-      <i class="fa fa-exclamation-circle" v-show="state.type === 'error'"></i>
-      <i class="fa fa-exclamation-triangle" v-show="state.type === 'warning'"></i>
-      <i class="fa fa-info-circle" v-show="state.type === 'info'"></i>
-      <i class="fa fa-check-circle" v-show="state.type === 'success'"></i>
+      <i class="fa fa-exclamation-circle" v-if="state.type === 'error'"></i>
+      <i class="fa fa-exclamation-triangle" v-if="state.type === 'warning'"></i>
+      <i class="fa fa-info-circle" v-if="state.type === 'info'"></i>
+      <i class="fa fa-check-circle" v-if="state.type === 'success'"></i>
 
       <span class="message" v-html="state.message"></span>
     </div>
@@ -91,7 +91,7 @@ export default Vue.extend({
   }
 
   &.loading {
-    color: $color2ndText;
+    color: $colorLightGray;
   }
 
   &.warning {

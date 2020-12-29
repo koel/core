@@ -33,7 +33,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
               <!---->
             </h1>
             <!---->
-            <p class="none">
+            <p class="text-light-gray">
               Your recently played songs will be displayed here.<br>
               Start listening!
             </p>
@@ -78,7 +78,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
           <div data-v-c7b3205a="" data-v-303cd025="" tabindex="-1" class="resize-observer"><object style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;" type="text/html" data="about:blank"></object></div>
         </div>
       </div>
-      <div class="none">
+      <div class="none text-light-gray">
         <p>Empty spaces. Abandoned places.</p>
         <!---->
       </div>
@@ -166,7 +166,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
           <div data-v-c7b3205a="" data-v-303cd025="" tabindex="-1" class="resize-observer"><object style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;" type="text/html" data="about:blank"></object></div>
         </div>
       </div>
-      <div class="none">
+      <div class="text-light-gray none">
         Start loving!
         Click the <i class="fa fa-heart" style="margin: 0px 5px;"></i> icon when a song is playing to add it
         to this list.
@@ -183,7 +183,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
     <!---->
     <!---->
   </section>
-  <section id="extra" class="showing">
+  <section id="extra" class="text-light-gray showing">
     <div class="tabs">
       <div role="tablist" class="clear"><button aria-selected="true" aria-controls="extraPanelLyrics" id="extraTabLyrics" role="tab">
           Lyrics

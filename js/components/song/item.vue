@@ -12,11 +12,11 @@
     @contextmenu.prevent="contextMenu"
     :class="{ playing, selected: item.selected }"
   >
-    <td class="track-number">{{ song.track || '' }}</td>
+    <td class="track-number text-light-gray">{{ song.track || '' }}</td>
     <td class="title">{{ song.title }}</td>
     <td class="artist">{{ song.artist.name }}</td>
     <td class="album">{{ song.album.name }}</td>
-    <td class="time">{{ song.fmtLength }}</td>
+    <td class="time text-light-gray">{{ song.fmtLength }}</td>
     <td class="favorite">
       <like-button :song="song"/>
     </td>
@@ -121,16 +121,12 @@ export default Vue.extend({
 @import "~#/partials/_vars.scss";
 
 .song-item {
-  border-bottom: 1px solid $color2ndBgr;
+  border-bottom: 1px solid $colorSecondaryBgr;
   max-width: 100% !important; // overriding .item
   height: 35px;
 
   html.no-touchevents &:hover {
     background: rgba(255, 255, 255, .05);
-  }
-
-  .time, .track-number {
-    color: $color2ndText;
   }
 
   .play {
@@ -140,7 +136,7 @@ export default Vue.extend({
   }
 
   .favorite .fa-heart, .favorite:hover .fa-heart-o {
-    color: $colorHeart;
+    color: $colorMaroon;
   }
 
   &.selected {
@@ -148,7 +144,7 @@ export default Vue.extend({
   }
 
   &.playing td {
-    color: $colorHighlight;
+    color: $colorOrange;
   }
 }
 </style>
