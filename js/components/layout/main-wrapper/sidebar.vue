@@ -125,10 +125,14 @@ export default Vue.extend({
 #sidebar {
   flex: 0 0 256px;
   background-color: $colorSidebarBgr;
-  padding: 22px 0 0;
+  padding: 1.75rem 0;
   overflow: auto;
   overflow-x: hidden;
   -ms-overflow-style: -ms-autohiding-scrollbar;
+
+  > * + * {
+    margin-top: 2.25rem;
+  }
 
   html.touchevents & {
     // Enable scroll with momentum on touch devices
@@ -146,8 +150,6 @@ export default Vue.extend({
   }
 
   section {
-    margin-bottom: 32px;
-
     h1 {
       text-transform: uppercase;
       letter-spacing: 1px;

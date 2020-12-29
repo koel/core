@@ -209,24 +209,23 @@ export default Vue.extend({
     }
   }
 
+  .main-scroll-wrap > * + * {
+    margin-top: 1.75rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid $colorSecondaryBgr;
+  }
+
   .change-pwd {
-    margin-top: 24px;
+    padding: 1.75rem 0;
   }
 
   .preferences {
-    margin-top: 32px;
-    border-top: 1px solid $colorSecondaryBgr;
-
     label {
       font-size: $fontSize;
     }
   }
 
   .lastfm {
-    border-top: 1px solid $colorSecondaryBgr;
-    margin-top: 16px;
-    padding-top: 16px;
-
     h1 {
       font-size: 24px;
       margin-bottom: 16px;

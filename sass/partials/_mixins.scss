@@ -10,7 +10,7 @@
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 
   &.as-list {
-    grid-gap: 8px;
+    grid-gap: 0.7em 1em;;
     align-content: start;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr))
   }

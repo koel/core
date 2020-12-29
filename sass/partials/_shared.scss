@@ -129,10 +129,6 @@ a {
   }
 }
 
-.side {
-  width: 256px;
-}
-
 .ir {
   color: transparent;
   font: 0/0 serif;
@@ -175,10 +171,11 @@ label {
   [role=tablist] {
     $tabColor: #5c5c5c;
     border-bottom: 1px solid $tabColor;
+    display: flex;
 
     [role=tab] {
+      margin-left: .3rem;
       padding: .6rem 1rem;
-      margin-left: 4px;
       border-radius: 4px 4px 0 0;
       background: transparent;
       text-transform: uppercase;
@@ -186,7 +183,6 @@ label {
       opacity: .4;
       border: 1px solid $tabColor;
       margin-bottom: -1px;
-      float: left;
 
       &[aria-selected=true] {
         border-bottom: 1px solid $colorExtraBgr;
@@ -215,8 +211,8 @@ label {
   }
 }
 
-.form-row {
-  margin-top: 16px;
+.form-row + .form-row {
+  margin-top: 1.125rem;
   position: relative;
 }
 
@@ -243,10 +239,6 @@ label {
 
     input[type="checkbox"] {
       border: 1px solid #ccc;
-    }
-
-    .form-row:first-child {
-      margin-top: 0;
     }
 
     > header, > div, > footer {
