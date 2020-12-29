@@ -37,9 +37,8 @@ export default Vue.extend({
 
 header {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   font-weight: $fontWeightThin;
-  font-size: 2.76rem;
   padding: 1rem 1.8rem;
   border-bottom: 1px solid $colorSecondaryBgr;
   min-height: 96px;
@@ -59,6 +58,7 @@ header {
   }
 
   h1 {
+    font-size: 2.75rem;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
