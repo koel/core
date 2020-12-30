@@ -1,5 +1,5 @@
 <template>
-  <article
+  <li
     :title="`${album.name} by ${album.artist.name}`"
     @dragstart="dragStart"
     class="item"
@@ -54,7 +54,7 @@
         </span>
       </p>
     </footer>
-  </article>
+  </li>
 </template>
 
 <script lang="ts">

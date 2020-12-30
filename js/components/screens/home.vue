@@ -21,7 +21,15 @@
         <section class="recent">
           <h1>
             Recently Played
-            <btn @click.prevent="goToRecentlyPlayedScreen" rounded small orange>View All</btn>
+            <btn
+              data-testid="home-view-all-recently-played-btn"
+              @click.prevent="goToRecentlyPlayedScreen"
+              rounded
+              small
+              orange
+            >
+              View All
+            </btn>
           </h1>
 
           <ol class="recent-song-list" v-if="recentSongs.length">
@@ -41,10 +49,10 @@
         </section>
       </div>
 
-      <section class="recently-added" v-if="showRecentlyAddedSection">
+      <section v-if="showRecentlyAddedSection">
         <h1>Recently Added</h1>
         <div class="two-cols">
-          <ol>
+          <ol class="recently-added-album-list">
             <li v-for="album in recentlyAdded.albums" :album="album" :key="album.id" layout="compact" is="album-card"/>
           </ol>
           <ol class="recently-added-song-list" v-show="recentlyAdded.songs.length">
@@ -53,16 +61,16 @@
         </div>
       </section>
 
-      <section class="top-artists" v-if="top.artists.length">
+      <section v-if="top.artists.length">
         <h1>Top Artists</h1>
-        <ol class="two-cols">
+        <ol class="two-cols top-artist-list">
           <li v-for="artist in top.artists" :artist="artist" :key="artist.id" layout="compact" is="artist-card"/>
         </ol>
       </section>
 
-      <section class="top-albums" v-if="top.albums.length">
+      <section v-if="top.albums.length">
         <h1>Top Albums</h1>
-        <ol class="two-cols">
+        <ol class="two-cols top-album-list">
           <li v-for="album in top.albums" :album="album" :key="album.id" layout="compact" is="album-card"/>
         </ol>
       </section>
