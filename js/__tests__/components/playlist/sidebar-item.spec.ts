@@ -16,25 +16,6 @@ describe('components/playlist/sidebar-item', () => {
     jest.clearAllMocks()
   })
 
-  it('renders a playlist menu item', () => {
-    const wrapper = shallow(Component, {
-      propsData: { playlist }
-    })
-    expect(wrapper).toMatchSnapshot()
-  })
-
-  it('renders the Favorites menu item', () => {
-    const wrapper = shallow(Component, {
-      propsData: {
-        playlist: {
-          name: 'Favorites'
-        },
-        type: 'favorites'
-      }
-    })
-    expect(wrapper.find('li.playlist.favorites').text()).toMatch('Favorites')
-  })
-
   it('edits a playlist', async () => {
     const wrapper = mount(Component, {
       propsData: { playlist }
