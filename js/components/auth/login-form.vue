@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="login" :class="{ error: failed }" data-cy="loginForm">
+  <form @submit.prevent="login" :class="{ error: failed }" data-testid="login-form">
     <div class="logo">
       <img src="@/../img/logo.svg" width="156" height="auto">
     </div>
@@ -112,6 +112,10 @@ form {
   border: 1px solid #333;
   transition: .5s;
 
+  > * + * {
+    margin-top: 1rem;
+  }
+
   &.error {
     border-color: #8e4947;
     animation: shake .5s;
@@ -129,7 +133,6 @@ form {
 
 input {
   display: block;
-  margin-top: 12px;
   border: 0;
   background: #fff;
   outline: none;
