@@ -1,16 +1,9 @@
 import Component from '@/components/layout/main-wrapper/sidebar.vue'
 import { sharedStore } from '@/stores'
 import factory from '@/__tests__/factory'
-import { mount, shallow } from '@/__tests__/adapter'
+import { shallow } from '@/__tests__/adapter'
 
-describe('compoponents/layout/main-wrapper/sidebar', () => {
-  it('renders properly', async () => {
-    const wrapper = mount(Component)
-
-    await wrapper.vm.$nextTick()
-    expect(wrapper).toMatchSnapshot()
-  })
-
+describe('components/layout/main-wrapper/sidebar', () => {
   it('displays YouTube menu item if using YouTube', () => {
     sharedStore.state.useYouTube = true
     expect(shallow(Component)).toMatchSnapshot()

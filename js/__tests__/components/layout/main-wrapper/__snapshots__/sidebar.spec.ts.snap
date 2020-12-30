@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`compoponents/layout/main-wrapper/sidebar displays YouTube menu item if using YouTube 1`] = `
+exports[`components/layout/main-wrapper/sidebar displays YouTube menu item if using YouTube 1`] = `
 <nav id="sidebar" class="side side-nav showing">
   <section class="music">
     <h1>Your Music</h1>
@@ -22,7 +22,7 @@ exports[`compoponents/layout/main-wrapper/sidebar displays YouTube menu item if 
 </nav>
 `;
 
-exports[`compoponents/layout/main-wrapper/sidebar displays management menu items for admin 1`] = `
+exports[`components/layout/main-wrapper/sidebar displays management menu items for admin 1`] = `
 <nav id="sidebar" class="side side-nav showing">
   <section class="music">
     <h1>Your Music</h1>
@@ -51,7 +51,7 @@ exports[`compoponents/layout/main-wrapper/sidebar displays management menu items
 </nav>
 `;
 
-exports[`compoponents/layout/main-wrapper/sidebar displays new version info 1`] = `
+exports[`components/layout/main-wrapper/sidebar displays new version info 1`] = `
 <nav id="sidebar" class="side side-nav showing">
   <section class="music">
     <h1>Your Music</h1>
@@ -77,34 +77,5 @@ exports[`compoponents/layout/main-wrapper/sidebar displays new version info 1`] 
       <li><a href="#!/users" class="users">Users</a></li>
     </ul>
   </section>
-</nav>
-`;
-
-exports[`compoponents/layout/main-wrapper/sidebar renders properly 1`] = `
-<nav id="sidebar" class="side side-nav showing">
-  <section class="music">
-    <h1>Your Music</h1>
-    <ul class="menu">
-      <li><a href="#!/home" class="home active">Home</a></li>
-      <li><a href="#!/queue" class="queue">Current Queue</a></li>
-      <li><a href="#!/songs" class="songs">All Songs</a></li>
-      <li><a href="#!/albums" class="albums">Albums</a></li>
-      <li><a href="#!/artists" class="artists">
-          Artists
-        </a></li>
-      <!---->
-    </ul>
-  </section>
-  <section id="playlists" current-view="Home">
-    <h1>Playlists
-      <i role="button" title="Create a new playlist" class="fa fa-plus-circle control create"></i></h1>
-    <!---->
-    <ul>
-      <!---->
-      <!---->
-    </ul>
-    <!---->
-  </section>
-  <!---->
 </nav>
 `;

@@ -9,10 +9,6 @@ describe('components/ui/search-form', () => {
     jest.clearAllMocks()
   })
 
-  it('renders properly', () => {
-    expect(shallow(Component)).toMatchSnapshot()
-  })
-
   it('emits an event to filter', async done => {
     const emitStub = mock(eventBus, 'emit')
     const wrapper = shallow(Component)

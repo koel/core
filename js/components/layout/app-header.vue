@@ -1,5 +1,5 @@
 <template>
-  <header id="mainHeader" @dblclick="triggerMaximize" data-cy="appHeader">
+  <header id="mainHeader" @dblclick="triggerMaximize">
     <h1 class="brand" v-once>{{ appName }}</h1>
     <span class="hamburger" @click="toggleSidebar" role="button" title="Show or hide the sidebar">
       <i class="fa fa-bars"></i>
