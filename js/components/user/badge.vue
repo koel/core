@@ -9,7 +9,7 @@
       :title="`Log ${state.current.name} out`"
       @click.prevent="logout"
       class="logout control"
-      data-cy="btnLogOut"
+      data-testid="btn-logout"
       href
       role="button"
     >
