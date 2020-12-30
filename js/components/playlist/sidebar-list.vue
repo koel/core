@@ -4,16 +4,18 @@
       <i
         :class="{ creating }"
         @click="toggleContextMenu"
-        class="fa fa-plus-circle control create"
+        class="fa fa-plus-circle create"
         role="button"
         title="Create a new playlist"
+        data-testid="sidebar-create-playlist-btn"
       ></i>
     </h1>
 
-    <form v-if="creating" @submit.prevent="createPlaylist" class="create">
+    <form v-if="creating" @submit.prevent="createPlaylist" name="create-simple-playlist-form" class="create">
       <input
         @keyup.esc.prevent="creating = false"
         placeholder="↵ to save"
+        name="name"
         required
         type="text"
         v-koel-focus

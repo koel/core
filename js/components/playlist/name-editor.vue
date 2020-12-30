@@ -8,6 +8,7 @@
     v-model="mutatedPlaylist.name"
     v-koel-focus
     required
+    data-testid="inline-playlist-name-input"
   >
 </template>
 
