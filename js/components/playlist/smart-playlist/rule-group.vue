@@ -1,8 +1,16 @@
 <template>
-  <div class="rule-group">
+  <div class="rule-group" data-test="smart-playlist-rule-group">
     <div class="group-banner">
-      <span v-if="isFirstGroup">Include songs that match <strong>all</strong> of these criteria</span>
-      <span v-else><strong>or</strong> <strong>all</strong> of these criteria</span>
+      <span v-if="isFirstGroup">
+        Include songs that match
+        <strong>all</strong>
+        of these criteria
+      </span>
+      <span v-else>
+        or
+        <strong>all</strong>
+        of these criteria
+      </span>
     </div>
 
     <rule
@@ -13,7 +21,10 @@
       v-for="rule in mutatedGroup.rules"
     />
 
-    <btn @click.prevent="addRule" green small><i class="fa fa-plus"></i> RULE</btn>
+    <btn @click.prevent="addRule" class="btn-add-rule" green small uppercase>
+      <i class="fa fa-plus"></i>
+      Rule
+    </btn>
   </div>
 </template>
 
@@ -63,12 +74,16 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .rule-group {
-  margin-bottom: 16px;
-  padding-bottom: 16px;
+  margin-bottom: 1rem;
+  padding-bottom: .5rem;
   border-bottom: 1px solid #ddd;
+
+  > * + * {
+    margin-bottom: .5rem;
+  }
 }
 
 .group-banner {
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
 }
 </style>

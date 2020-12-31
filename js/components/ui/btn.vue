@@ -93,6 +93,10 @@ button {
     }
   }
 
+  &[uppercase] {
+    text-transform: uppercase;
+  }
+
   i {
     margin-right: 4px;
   }

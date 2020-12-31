@@ -1,24 +1,26 @@
 <template>
-  <div class="row">
+  <div class="row" data-test="smart-playlist-rule-row">
     <btn @click.prevent="removeRule" class="remove-rule" red><i class="fa fa-times"></i></btn>
 
-    <select v-model="selectedModel">
+    <select v-model="selectedModel" name="model[]">
       <option v-for="model in models" :key="model.name" :value="model">{{ model.label }}</option>
     </select>
 
-    <select v-model="selectedOperator">
+    <select v-model="selectedOperator" name="operator[]">
       <option v-for="option in options" :value="option" :key="option.operator">{{ option.label }}</option>
     </select>
 
-    <rule-input
-      v-for="input in availableInputs"
-      :key="input.id"
-      :type="selectedOperator.type || selectedModel.type"
-      v-model="input.value"
-      @input="onInput"
-    />
+    <span class="value-wrapper">
+      <rule-input
+        v-for="input in availableInputs"
+        :key="input.id"
+        :type="selectedOperator.type || selectedModel.type"
+        v-model="input.value"
+        @input="onInput"
+      />
 
-    <span class="suffix">{{ selectedOperator.unit || selectedModel.unit }}</span>
+      <span class="suffix" v-if="valueSuffix">{{ valueSuffix }}</span>
+    </span>
   </div>
 </template>
 
@@ -85,6 +87,10 @@ export default Vue.extend({
     isOriginalOperatorSelected (): boolean {
       return this.selectedModel.name === this.mutatedRule.model.name &&
         this.selectedOperator.operator === this.mutatedRule.operator
+    },
+
+    valueSuffix (): string | undefined {
+      return this.selectedOperator.unit || this.selectedModel.unit
     }
   },
 
@@ -130,15 +136,22 @@ export default Vue.extend({
 @import "~#/partials/_mixins.scss";
 
 .row {
-  display: block;
-  padding-bottom: 8px;
-}
-
-select {
-  width: auto !important;
+  display: flex;
+  gap: .5rem;
 }
 
 button.remove-rule i {
   margin-right: 0;
+}
+
+.value-wrapper {
+  flex: 1;
+  display: inline-flex;
+  place-items: center;
+  column-gap: .5rem;
+
+  input {
+    flex: 1;
+  }
 }
 </style>
