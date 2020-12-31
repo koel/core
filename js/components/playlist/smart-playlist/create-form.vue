@@ -1,7 +1,7 @@
 <template>
   <form-base>
     <template slot="default">
-      <div class="create-smart-playlist">
+      <div>
         <sound-bar v-if="meta.loading"/>
         <form @submit.prevent="submit" v-else  data-testid="create-smart-playlist-form">
           <header>

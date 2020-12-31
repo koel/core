@@ -1,8 +1,8 @@
 <template>
   <form-base>
-    <div class="create-smart-playlist">
+    <div>
       <sound-bar v-if="meta.loading"/>
-      <form @submit.prevent="submit" v-else>
+      <form @submit.prevent="submit" v-else data-testid="edit-smart-playlist-form">
         <header>
           <h1>Edit Smart Playlist</h1>
         </header>
@@ -10,7 +10,7 @@
         <div>
           <div class="form-row">
             <label>Name</label>
-            <input type="text" v-model="mutatedPlaylist.name" required>
+            <input type="text" v-model="mutatedPlaylist.name" name="name" v-koel-focus required>
           </div>
 
           <div class="form-row rules">
@@ -21,12 +21,14 @@
               :group="group"
               @input="onGroupChanged"
             />
-            <a @click.prevent="addGroup" class="btn btn-small"><i class="fa fa-plus"></i> GROUP</a>
+            <btn @click.prevent="addGroup" class="btn-add-group" green small uppercase>
+              <i class="fa fa-plus"></i> Group
+            </btn>
           </div>
         </div>
 
         <footer>
-          <btn green type="submit">Save</btn>
+          <btn type="submit">Save</btn>
           <btn white class="btn-cancel" @click.prevent="close">Cancel</btn>
         </footer>
       </form>

@@ -16,7 +16,13 @@
       v-if="nameEditable && editing"
     />
 
-    <context-menu :playlist="playlist" ref="contextMenu" @edit="makeEditable" />
+    <context-menu
+      v-if="hasContextMenu"
+      v-show="showingContextMenu"
+      :playlist="playlist"
+      ref="contextMenu"
+      @edit="makeEditable"
+    />
   </li>
 </template>
 
@@ -51,7 +57,8 @@ export default Vue.extend({
 
   data: () => ({
     editing: false,
-    active: false
+    active: false,
+    showingContextMenu: false
   }),
 
   computed: {
@@ -124,8 +131,10 @@ export default Vue.extend({
       return false
     },
 
-    openContextMenu (event: MouseEvent): void {
+    async openContextMenu (event: MouseEvent) {
       if (this.hasContextMenu) {
+        this.showingContextMenu = true
+        await this.$nextTick()
         router.go(`/playlist/${this.playlist.id}`)
         ;(this.$refs.contextMenu as BaseContextMenu).open(event.pageY, event.pageX)
       }
