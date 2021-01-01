@@ -1,4 +1,3 @@
-import each from 'jest-each'
 import Component from '@/components/ui/overlay.vue'
 import { mount } from '@/__tests__/adapter'
 
@@ -23,7 +22,7 @@ describe('components/shared/overlay', () => {
     expect(wrapper).toMatchSnapshot()
   })
 
-  each([['show', true], ['hide', false]]).test('%ss', (methodName) => {
+  it.each([['show', true], ['hide', false]])('%ss', (methodName) => {
     const wrapper = mount(Component)
     ;(wrapper.vm as any)[methodName]()
     expect(wrapper).toMatchSnapshot()

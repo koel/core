@@ -1,4 +1,3 @@
-import each from 'jest-each'
 import plyr from 'plyr'
 import { shuffle, orderBy } from 'lodash'
 import { playback, socket } from '@/services'
@@ -55,14 +54,13 @@ describe('services/playback', () => {
   })
 
   describe('listens to media events', () => {
-    const playRegisterData = [
+    it.each<[boolean, boolean, number, number, number]>([
       /* playCountRegistered, isTranscoding, current media time, media duration, number of registerPlay()'s calls */
       [false, false, 100, 400, 1],
       [true, false, 100, 400, 0],
       [false, true, 100, 400, 0],
       [false, false, 100, 500, 0]
-    ]
-    each(playRegisterData).test(
+    ])(
       'when playCountRegistered is %s, isTranscoding is %s, current media time is %d, media duration is %d, then registerPlay() should be call %d times',
       (playCountRegistered, isTranscoding, currentTime, duration, numberOfCalls) => {
         queueStore.current = factory<Song>('song', { playCountRegistered })
@@ -108,7 +106,7 @@ describe('services/playback', () => {
       expect(scrobbleMock).toHaveBeenCalled()
     })
 
-    each([['REPEAT_ONE', 1, 0], ['NO_REPEAT', 0, 1], ['REPEAT_ALL', 0, 1]]).test(
+    it.each([['REPEAT_ONE', 1, 0], ['NO_REPEAT', 0, 1], ['REPEAT_ALL', 0, 1]])(
       'when song ends, if repeat mode is %s then restart() is called %d times and playNext() is called %d times',
       (repeatMode, restartCalls, playNextCalls) => {
         sharedStore.state.useLastfm = false // so that no scrobbling is made unnecessarily
@@ -121,13 +119,12 @@ describe('services/playback', () => {
         expect(playNextMock).toHaveBeenCalledTimes(playNextCalls)
       })
 
-    const preloadData = [
+    it.each([
       [false, true, 300, 310, 0],
       [true, false, 300, 310, 0],
       [false, false, 300, 400, 0],
       [false, false, 300, 310, 1]
-    ]
-    each(preloadData).test(
+    ])(
       'when next song preloaded is %s, isTrancoding is %s, current media time is %d, media duration is %d, then preload() should be called %d times',
       (preloaded, isTranscoding, currentTime, duration, numberOfCalls) => {
         queueStore.current = factory<Song>('song', { playCountRegistered: true }) // avoid triggering play count logic
@@ -211,7 +208,7 @@ describe('services/playback', () => {
     expect(playMock).toHaveBeenCalled()
   })
 
-  each([['NO_REPEAT', 'REPEAT_ALL'], ['REPEAT_ALL', 'REPEAT_ONE'], ['REPEAT_ONE', 'NO_REPEAT']]).test(
+  it.each([['NO_REPEAT', 'REPEAT_ALL'], ['REPEAT_ALL', 'REPEAT_ONE'], ['REPEAT_ONE', 'NO_REPEAT']])(
     'it switches from repeat mode %s to repeat mode %s',
     (fromMode, toMode) => {
       preferences.repeatMode = fromMode
@@ -350,8 +347,8 @@ describe('services/playback', () => {
     expect(playFirstInQueueMock).toHaveBeenCalled()
   })
 
-  each([['resume', 'Stopped'], ['resume', 'Paused'], ['pause', 'Playing']])
-    .test('%ss playback if toggled when current song playback state is %s', (action, playbackState) => {
+  it.each<[any, PlaybackState]>([['resume', 'Stopped'], ['resume', 'Paused'], ['pause', 'Playing']])
+    ('%ss playback if toggled when current song playback state is %s', (action, playbackState) => {
       const actionMock = mock(playback, action)
       Object.defineProperty(queueStore, 'current', {
         get: () => factory('song', { playbackState })

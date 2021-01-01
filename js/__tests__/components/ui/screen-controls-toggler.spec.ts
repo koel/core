@@ -1,4 +1,3 @@
-import each from 'jest-each'
 import Component from '@/components/ui/screen-controls-toggler.vue'
 import isMobile from 'ismobilejs'
 import { shallow } from '@/__tests__/adapter'
@@ -11,7 +10,7 @@ describe('components/song/list-controls-toggler', () => {
     expect(shallow(Component)).toMatchSnapshot()
   })
 
-  each([[true], [false]]).test('shows/hides properly', shouldShow => {
+  it.each([[true], [false]])('shows/hides properly', shouldShow => {
     const wrapper = shallow(Component, { propsData: { showingControls: shouldShow } })
     expect(wrapper.has('.toggler.fa-angle-up')).toBe(shouldShow)
   })

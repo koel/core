@@ -1,4 +1,3 @@
-import each from 'jest-each'
 import { download } from '@/services'
 import { favoriteStore } from '@/stores'
 import factory from '@/__tests__/factory'
@@ -32,7 +31,8 @@ describe('services/download', () => {
     expect(triggerMock).toHaveBeenCalledWith('album/42')
   })
 
-  each([[[], false], [factory('song', 5), true]]).test('downloads playlist if available', (songs, triggered) => {
+  it.each<[Song[], boolean]>([[[], false], [factory<Song>('song', 5), true]])
+  ('downloads playlist if available', (songs, triggered) => {
     const triggerMock = mock(download, 'trigger')
     download.fromPlaylist(factory<Playlist>('playlist', { id: 42, songs }))
 
@@ -41,7 +41,8 @@ describe('services/download', () => {
       : expect(triggerMock).not.toHaveBeenCalled()
   })
 
-  each([[[], false], [factory('song', 5), true]]).test('downloads favorites if available', (songs, triggered) => {
+  it.each<[Song[], boolean]>([[[], false], [factory<Song>('song', 5), true]])
+  ('downloads favorites if available', (songs, triggered) => {
     const triggerMock = mock(download, 'trigger')
     favoriteStore.all = songs
     download.fromFavorites()

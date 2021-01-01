@@ -1,4 +1,3 @@
-import each from 'jest-each'
 import Component from '@/components/song/card.vue'
 import factory from '@/__tests__/factory'
 import { queueStore } from '@/stores'
@@ -37,7 +36,7 @@ describe('components/song/home-item', () => {
     expect(wrapper).toMatchSnapshot()
   })
 
-  each([[true, false], [false, true]]).test('queuing and playing behavior', (shouldQueue, queued) => {
+  it.each([[true, false], [false, true]])('queuing and playing behavior', (shouldQueue, queued) => {
     const containsStub = mock(queueStore, 'contains', queued)
     const queueStub = mock(queueStore, 'queueAfterCurrent')
     const playStub = mock(playback, 'play')
@@ -51,11 +50,11 @@ describe('components/song/home-item', () => {
     expect(playStub).toHaveBeenCalledWith(song)
   })
 
-  each([
+  it.each<[PlaybackState, any]>([
     ['Stopped', 'play'],
     ['Playing', 'pause'],
     ['Paused', 'resume']
-  ]).test('if state is currently "%s", %s', (state, action) => {
+  ])('if state is currently "%s", %s', (state, action) => {
     const m = mock(playback, action)
     song.playbackState = state
     wrapper.click('.cover .control')

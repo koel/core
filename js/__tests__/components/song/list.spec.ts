@@ -1,4 +1,3 @@
-import each from 'jest-each'
 import router from '@/router'
 import Component from '@/components/song/list.vue'
 import factory from '@/__tests__/factory'
@@ -6,7 +5,7 @@ import { eventBus } from '@/utils'
 import { songStore, queueStore } from '@/stores'
 import { playback } from '@/services'
 import { mock } from '@/__tests__/__helpers__'
-import { mount, shallow } from '@/__tests__/adapter'
+import { mount } from '@/__tests__/adapter'
 
 describe('components/song/list', () => {
   let songs: Song[]
@@ -34,13 +33,13 @@ describe('components/song/list', () => {
     expect(emitStub).toHaveBeenCalled()
   })
 
-  each([
+  it.each([
     ['.track-number', 'song.track'],
     ['.title', 'song.title'],
     ['.artist', ['song.album.artist.name', 'song.album.name', 'song.track']],
     ['.album', ['song.album.name', 'song.track']],
     ['.time', 'song.length']
-  ]).test('sorts when "%s" is clicked', (selector, criteria) => {
+  ])('sorts when "%s" is clicked', (selector, criteria) => {
     const wrapper = mount(Component, {
       propsData: {
         items: songs,

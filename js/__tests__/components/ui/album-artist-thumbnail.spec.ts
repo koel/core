@@ -1,4 +1,3 @@
-import each from 'jest-each'
 import Component from '@/components/ui/album-artist-thumbnail.vue'
 import factory from '@/__tests__/factory'
 import { playback } from '@/services'
@@ -30,7 +29,7 @@ describe('components/ui/album-artist-thumbnail(album)', () => {
     expect(m).toHaveBeenCalledWith(album, false)
   })
 
-  each([['metaKey'], ['ctrlKey']]).test('queues if %s is clicked', key => {
+  it.each([['metaKey'], ['ctrlKey']])('queues if %s is clicked', key => {
     const m = mock(queueStore, 'queue')
     wrapper.click('.control-play', { [key]: true })
     expect(m).toHaveBeenCalled()
@@ -63,7 +62,7 @@ describe('components/ui/album-artist-thumbnail(artist)', () => {
     expect(m).toHaveBeenCalledWith(artist, false)
   })
 
-  each([['metaKey'], ['ctrlKey']]).test('queues if %s is clicked', key => {
+  it.each([['metaKey'], ['ctrlKey']])('queues if %s is clicked', key => {
     const m = mock(queueStore, 'queue')
     wrapper.click('.control-play', { [key]: true })
     expect(m).toHaveBeenCalled()

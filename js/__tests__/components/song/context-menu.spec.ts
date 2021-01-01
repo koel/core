@@ -1,4 +1,3 @@
-import each from 'jest-each'
 import Component from '@/components/song/context-menu.vue'
 import { download } from '@/services'
 import { songStore, playlistStore, queueStore, favoriteStore, sharedStore, userStore } from '@/stores'
@@ -39,11 +38,11 @@ describe('components/song/context-menu', () => {
     expect(shallow(Component, { propsData: { songs } }).hasAll(...selectors)).toBe(true)
   })
 
-  each([
+  it.each<[string, string, any]>([
     ['after current', '.after-current', 'queueAfterCurrent'],
     ['to bottom', '.bottom-queue', 'queue'],
     ['to top', '.top-queue', 'queueToTop']
-  ]).test('queues songs %s when "%s" is clicked', (to, selector, queueFunc) => {
+  ])('queues songs %s when "%s" is clicked', (to, selector, queueFunc) => {
     const m = mock(queueStore, queueFunc)
     wrapper.click(selector)
     expect(m).toHaveBeenCalledWith(songs)

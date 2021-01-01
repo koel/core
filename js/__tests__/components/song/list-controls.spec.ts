@@ -1,4 +1,3 @@
-import each from 'jest-each'
 import Component from '@/components/song/list-controls.vue'
 import factory from '@/__tests__/factory'
 import { take } from 'lodash'
@@ -9,7 +8,7 @@ describe('components/song/list-controls', () => {
     expect(shallow(Component)).toMatchSnapshot()
   })
 
-  each([[factory('song', 5), 0], [factory('song', 5), 1]]).test(
+  it.each<[Song[], number]>([[factory<Song>('song', 5), 0], [factory<Song>('song', 5), 1]])(
     'allows shuffling all if less than 2 songs are selected',
     async (songs, selectedSongCount) => {
       const selectedSongs = take(songs, selectedSongCount)

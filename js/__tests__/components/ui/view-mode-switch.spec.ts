@@ -1,4 +1,3 @@
-import each from 'jest-each'
 import Component from '@/components/ui/view-mode-switch.vue'
 import { shallow } from '@/__tests__/adapter'
 
@@ -11,7 +10,7 @@ describe('components/ui/view-mode-switch', () => {
     })).toMatchSnapshot()
   })
 
-  each([['thumbnails'], ['list']]).test('emits the "%s" mode value', mode => {
+  it.each([['thumbnails'], ['list']])('emits the "%s" mode value', mode => {
     const wrapper = shallow(Component, {
       propsData: {
         value: 'list'

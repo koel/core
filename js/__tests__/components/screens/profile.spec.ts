@@ -1,4 +1,3 @@
-import each from 'jest-each'
 import Profile from '@/components/screens/profile.vue'
 import factory from '@/__tests__/factory'
 import { userStore, preferenceStore as preferences } from '@/stores'
@@ -21,11 +20,11 @@ describe('components/screens/profile', () => {
     expect(mount(Profile)).toMatchSnapshot()
   })
 
-  each([
+  it.each([
     ['foo', 'foo'],
     ['foo', 'bar'],
     ['', '']
-  ]).test('correctly handles passwords "%s" and "%s"', (pwd, confirmPwd) => {
+  ])('correctly handles passwords "%s" and "%s"', (pwd, confirmPwd) => {
     const wrapper = shallow(Profile, {
       data: () => ({ pwd, confirmPwd })
     })
@@ -38,11 +37,11 @@ describe('components/screens/profile', () => {
     }
   })
 
-  each([
+  it.each([
     ['notify'],
     ['confirmClosing'],
     ['transcodeOnMobile']
-  ]).test('updates preference "%s"', key => {
+  ])('updates preference "%s"', key => {
     const m = mock(preferences, 'save')
     shallow(Profile).change(`input[name=${key}]`)
     expect(m).toHaveBeenCalled()

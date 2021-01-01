@@ -1,4 +1,3 @@
-import each from 'jest-each'
 import Component from '@/components/song/item.vue'
 import factory from '@/__tests__/factory'
 import { playback } from '@/services'
@@ -42,7 +41,7 @@ describe('components/song/item', () => {
     expect(html).toMatch('04:56')
   })
 
-  each([[true, false], [false, true]]).test('queuing and playing behavior', (shouldQueue, queued) => {
+  it.each([[true, false], [false, true]])('queuing and playing behavior', (shouldQueue, queued) => {
     const containsStub = mock(queueStore, 'contains', queued)
     const queueStub = mock(queueStore, 'queueAfterCurrent')
     const playStub = mock(playback, 'play')
@@ -56,11 +55,11 @@ describe('components/song/item', () => {
     expect(playStub).toHaveBeenCalledWith(song)
   })
 
-  each([
+  it.each<[PlaybackState, any]>([
     ['Stopped', 'play'],
     ['Playing', 'pause'],
     ['Paused', 'resume']
-  ]).test('if state is currently "%s", %s', (state, action) => {
+  ])('if state is currently "%s", %s', (state, action) => {
     const m = mock(playback, action)
     song.playbackState = state
     wrapper.click('.play')

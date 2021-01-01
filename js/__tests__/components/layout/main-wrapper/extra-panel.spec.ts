@@ -1,4 +1,3 @@
-import each from 'jest-each'
 import Component from '@/components/layout/main-wrapper/extra-panel.vue'
 import factory from '@/__tests__/factory'
 import { eventBus } from '@/utils'
@@ -41,10 +40,10 @@ describe('components/layout/extra-panel', () => {
     expect(wrapper.has('#extraTabYouTube')).toBe(true)
   })
 
-  each([['#extraTabLyrics'], ['#extraTabAlbum'], ['#extraTabArtist']])
-    .test('switches to "%s" tab', selector => {
-      expect(shallowComponent().click(selector).find('[aria-selected=true]').is(selector)).toBe(true)
-    })
+  it.each<[string]>([['#extraTabLyrics'], ['#extraTabAlbum'], ['#extraTabArtist']])
+  ('switches to "%s" tab', selector => {
+    expect(shallowComponent().click(selector).find('[aria-selected=true]').is(selector)).toBe(true)
+  })
 
   it('fetch song info when a new song is played', () => {
     shallowComponent()

@@ -1,4 +1,3 @@
-import each from 'jest-each'
 import _ from 'lodash'
 import Component from '@/components/song/add-to-menu.vue'
 import factory from '@/__tests__/factory'
@@ -64,11 +63,11 @@ describe('components/song/add-to-menu', () => {
     expect(wrapper.has('form.form-new-playlist')).toBe(false)
   })
 
-  each([
+  it.each<[string, string, any]>([
     ['after current', '.after-current', 'queueAfterCurrent'],
     ['to bottom', '.bottom-queue', 'queue'],
     ['to top', '.top-queue', 'queueToTop']
-  ]).test('queues songs %s when "%s" is clicked', (to, selector, queueFunc) => {
+  ])('queues songs %s when "%s" is clicked', (to, selector, queueFunc) => {
     const wrapper = initComponent()
     const queueMock = mock(queueStore, queueFunc)
     // @ts-ignore
