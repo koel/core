@@ -1,5 +1,5 @@
 <template>
-  <div class="add-to" v-show="showing" v-koel-clickaway="close">
+  <div class="add-to" v-show="showing" v-koel-clickaway="close" data-test="add-to-menu">
     <section class="existing-playlists">
       <p>Add {{ songs.length | pluralize('song') }} to</p>
 
