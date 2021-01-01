@@ -45,6 +45,7 @@
           type="text"
           placeholder="Playlist name"
           v-model="newPlaylistName"
+          data-test="new-playlist-name"
         >
         <btn type="submit" title="Save">⏎</btn>
       </form>
