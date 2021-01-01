@@ -125,7 +125,7 @@ export const songStore = {
 
   byIds (ids: string[]): Song[] {
     const songs = [] as Song[]
-    ids.forEach(id => use(this.byId(id), song => songs.push(song!)))
+    ([] as string[]).concat(ids).forEach(id => use(this.byId(id), song => songs.push(song!)))
     return songs
   },
 
@@ -200,10 +200,9 @@ export const songStore = {
   },
 
   getSourceUrl: (song: Song): string => {
-    if (isMobile.any && preferenceStore.transcodeOnMobile) {
-      return `${sharedStore.state.cdnUrl}play/${song.id}/1/128?api_token=${auth.getToken()}`
-    }
-    return `${sharedStore.state.cdnUrl}play/${song.id}?api_token=${auth.getToken()}`
+    return isMobile.any && preferenceStore.transcodeOnMobile
+      ? `${sharedStore.state.cdnUrl}play/${song.id}/1/128?api_token=${auth.getToken()}`
+      : `${sharedStore.state.cdnUrl}play/${song.id}?api_token=${auth.getToken()}`
   },
 
   getShareableUrl: (song: Song): string => {

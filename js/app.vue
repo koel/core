@@ -36,6 +36,7 @@ import { events } from '@/config'
 import { sharedStore, favoriteStore, queueStore, preferenceStore as preferences } from '@/stores'
 import { playback, socket, auth } from '@/services'
 import { clickaway, droppable, focus } from '@/directives'
+import { BaseContextMenu } from 'koel/types/ui'
 
 export default Vue.extend({
   components: {
@@ -69,9 +70,10 @@ export default Vue.extend({
   },
 
   created () {
-    eventBus.on(events.CONTEXT_MENU_REQUESTED, (e: MouseEvent, songs: Song[]): void => {
+    eventBus.on(events.CONTEXT_MENU_REQUESTED, async (e: MouseEvent, songs: Song[]) => {
       this.contextMenuSongs = ([] as Song[]).concat(songs)
-      this.$nextTick((): void => (this.$refs.songContextMenu as any).open(e.pageY, e.pageX))
+      await this.$nextTick()
+      ;(this.$refs.songContextMenu as BaseContextMenu).open(e.pageY, e.pageX)
     })
   },
 

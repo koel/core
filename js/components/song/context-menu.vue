@@ -1,39 +1,40 @@
 <template>
-  <base-context-menu extra-class="song-menu" ref="base">
-    <template>
-      <template v-show="onlyOneSongSelected">
-        <li class="playback" @click.stop.prevent="doPlayback">
-          <span v-if="firstSongPlaying">Pause</span>
-          <span v-else>Play</span>
-        </li>
-        <li class="go-to-album" @click="viewAlbumDetails(songs[0].album)">Go to Album</li>
-        <li class="go-to-artist" @click="viewArtistDetails(songs[0].artist)">Go to Artist</li>
-      </template>
-      <li class="has-sub">
-        Add To
-        <ul class="menu submenu menu-add-to">
-          <li class="after-current" @click="queueSongsAfterCurrent">After Current Song</li>
-          <li class="bottom-queue" @click="queueSongsToBottom">Bottom of Queue</li>
-          <li class="top-queue" @click="queueSongsToTop">Top of Queue</li>
-          <li class="separator"></li>
-          <li class="favorite" @click="addSongsToFavorite">Favorites</li>
-          <li class="separator" v-if="normalPlaylists.length"></li>
-          <li
-            class="playlist"
-            v-for="p in normalPlaylists"
-            :key="p.id"
-            @click="addSongsToExistingPlaylist(p)"
-          >{{ p.name }}</li>
-        </ul>
+  <base-context-menu extra-class="song-menu" ref="base" data-testid="song-context-menu">
+    <template v-show="onlyOneSongSelected">
+      <li class="playback" @click.stop.prevent="doPlayback">
+        <span v-if="firstSongPlaying">Pause</span>
+        <span v-else>Play</span>
       </li>
-      <li class="open-edit-form" v-if="isAdmin" @click="openEditForm">Edit</li>
-      <li class="download" v-if="sharedState.allowDownload" @click="download">Download</li>
-      <li
-        class="copy-url"
-        v-if="copyable && onlyOneSongSelected"
-        @click="copyUrl"
-      >Copy Shareable URL</li>
+      <li class="go-to-album" @click="viewAlbumDetails(songs[0].album)">Go to Album</li>
+      <li class="go-to-artist" @click="viewArtistDetails(songs[0].artist)">Go to Artist</li>
     </template>
+    <li class="has-sub">
+      Add To
+      <ul class="menu submenu menu-add-to">
+        <li class="after-current" @click="queueSongsAfterCurrent">After Current Song</li>
+        <li class="bottom-queue" @click="queueSongsToBottom">Bottom of Queue</li>
+        <li class="top-queue" @click="queueSongsToTop">Top of Queue</li>
+        <li class="separator"></li>
+        <li class="favorite" @click="addSongsToFavorite">Favorites</li>
+        <li class="separator" v-if="normalPlaylists.length"></li>
+        <li
+          class="playlist"
+          v-for="p in normalPlaylists"
+          :key="p.id"
+          @click="addSongsToExistingPlaylist(p)"
+        >{{ p.name }}
+        </li>
+      </ul>
+    </li>
+    <li class="open-edit-form" v-if="isAdmin" @click="openEditForm">Edit</li>
+    <li class="download" v-if="sharedState.allowDownload" @click="download">Download</li>
+    <li
+      class="copy-url"
+      v-if="copyable && onlyOneSongSelected"
+      @click="copyUrl"
+    >
+      Copy Shareable URL
+    </li>
   </base-context-menu>
 </template>
 

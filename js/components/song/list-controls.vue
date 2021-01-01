@@ -1,5 +1,5 @@
 <template>
-  <div class="song-list-controls">
+  <div class="song-list-controls" data-test="song-list-controls">
     <btn-group uppercased>
       <template v-if="mergedConfig.play">
         <template v-if="altPressed">
@@ -9,6 +9,7 @@
             orange
             title="Play all songs"
             v-if="selectedSongs.length < 2 && songs.length"
+            data-test="btn-play-all"
           >
             <i class="fa fa-play"></i> All
           </btn>
@@ -19,6 +20,7 @@
             orange
             title="Play selected songs"
             v-if="selectedSongs.length > 1"
+            data-test="btn-play-selected"
           >
             <i class="fa fa-play"></i> Selected
           </btn>
@@ -31,6 +33,7 @@
             orange
             title="Shuffle all songs"
             v-if="selectedSongs.length < 2 && songs.length"
+            data-test="btn-shuffle-all"
           >
             <i class="fa fa-random"></i> All
           </btn>
@@ -41,6 +44,7 @@
             orange
             title="Shuffle selected songs"
             v-if="selectedSongs.length > 1"
+            data-test="btn-shuffle-selected"
           >
             <i class="fa fa-random"></i> Selected
           </btn>
