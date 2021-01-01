@@ -111,6 +111,10 @@ export const playlistStore = {
   },
 
   async addSongs (playlist: Playlist, songs: Song[]): Promise<Playlist> {
+    if (playlist.is_smart) {
+      return playlist
+    }
+
     if (!playlist.populated) {
       await this.fetchSongs(playlist)
     }
