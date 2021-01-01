@@ -1,39 +1,41 @@
 <template>
   <div class="add-to" v-show="showing" v-koel-clickaway="close">
-    <p>Add {{ songs.length | pluralize('song') }} to</p>
+    <section class="existing-playlists">
+      <p>Add {{ songs.length | pluralize('song') }} to</p>
 
-    <ul>
-      <template v-if="config.queue">
-        <li class="after-current" @click="queueSongsAfterCurrent" role="button" tabindex="0">After Current Song</li>
-        <li class="bottom-queue" @click="queueSongsToBottom" role="button" tabindex="0">Bottom of Queue</li>
-        <li class="top-queue" @click="queueSongsToTop" role="button" tabindex="0">Top of Queue</li>
-      </template>
+      <ul>
+        <template v-if="config.queue">
+          <li class="after-current" @click="queueSongsAfterCurrent" role="button" tabindex="0">After Current Song</li>
+          <li class="bottom-queue" @click="queueSongsToBottom" role="button" tabindex="0">Bottom of Queue</li>
+          <li class="top-queue" @click="queueSongsToTop" role="button" tabindex="0">Top of Queue</li>
+        </template>
 
-      <li
-        @click="addSongsToFavorite"
-        class="favorites"
-        role="button"
-        tabindex="0"
-        v-if="config.favorites"
-      >
-        Favorites
-      </li>
-
-      <template v-if="config.playlists">
         <li
-          :key="playlist.id"
-          @click="addSongsToExistingPlaylist(playlist)"
-          class="playlist"
+          @click="addSongsToFavorite"
+          class="favorites"
           role="button"
           tabindex="0"
-          v-for="playlist in playlistState.playlists"
+          v-if="config.favorites"
         >
-          {{ playlist.name }}
+          Favorites
         </li>
-      </template>
-    </ul>
 
-    <template v-if="config.newPlaylist">
+        <template v-if="config.playlists">
+          <li
+            :key="playlist.id"
+            @click="addSongsToExistingPlaylist(playlist)"
+            class="playlist"
+            role="button"
+            tabindex="0"
+            v-for="playlist in playlistState.playlists"
+          >
+            {{ playlist.name }}
+          </li>
+        </template>
+      </ul>
+    </section>
+
+    <section class="new-playlist" v-if="config.newPlaylist">
       <p>or create a new playlist</p>
 
       <form class="form-save form-simple form-new-playlist" @submit.prevent="createNewPlaylistFromSongs">
@@ -46,7 +48,7 @@
         >
         <btn type="submit" title="Save">⏎</btn>
       </form>
-    </template>
+    </section>
   </div>
 </template>
 
@@ -124,39 +126,40 @@ export default mixins(songMenuMethods).extend({
 
   width: 100%;
   max-width: 225px;
-  position: absolute;
-  padding: 8px;
-  top: 39px;
-  left: 0;
+  padding: .75rem;
+
+  > * + * {
+    margin-top: 1rem;
+  }
 
   p {
-    margin: 4px 0;
+    margin-bottom: .5rem;
     font-size: .9rem;
+  }
 
-    &::first-of-type {
-      margin-top: 0;
+  .new-playlist {
+    margin-top: .5rem;
+  }
+
+  ul {
+    max-height: 12rem;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+
+    > li + li {
+      margin-top: .3rem;
     }
   }
 
-  $itemHeight: 28px;
-  $itemMargin: 2px;
-
-  ul {
-    max-height: 5 * ($itemHeight + $itemMargin);
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
-
   li {
-    height: $itemHeight;
-    line-height: $itemHeight;
-    padding: 0 8px;
-    margin: $itemMargin 0;
+    height: 2.25rem;
+    line-height: 2.25rem;
+    padding: 0 .75rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     border-radius: 3px;
-    background: lighten($colorSecondaryBgr, 8%);
+    background: rgba(255, 255, 255, .05);
     cursor: pointer;
 
     &:hover {

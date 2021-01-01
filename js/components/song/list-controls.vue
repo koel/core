@@ -23,6 +23,7 @@
             <i class="fa fa-play"></i> Selected
           </btn>
         </template>
+
         <template v-else>
           <btn
             @click.prevent="shuffle"
@@ -48,10 +49,11 @@
 
       <btn
         :title="`${showingAddToMenu ? 'Cancel' : 'Add selected songs to…'}`"
-        @click.prevent.stop="showingAddToMenu = !showingAddToMenu"
+        @click.prevent.stop="toggleAddToMenu"
         class="btn-add-to"
         green
         v-if="selectedSongs.length"
+        data-test="add-to-btn"
       >
         {{ showingAddToMenu ? 'Cancel' : 'Add To…' }}
       </btn>
@@ -184,6 +186,23 @@ export default Vue.extend({
       if (event.keyCode === KEYCODE_ALT) {
         this.altPressed = false
       }
+    },
+
+    toggleAddToMenu () {
+      this.showingAddToMenu = !this.showingAddToMenu
+
+      if (!this.showingAddToMenu) {
+        return
+      }
+
+      this.$nextTick(() => {
+        const btnAddTo = this.$el.querySelector<HTMLButtonElement>('.btn-add-to')!
+        const { left: btnLeft, bottom: btnBottom, width: btnWidth } = btnAddTo.getBoundingClientRect()
+        const contextMenu = this.$el.querySelector<HTMLElement>('.add-to')!
+        const menuWidth = contextMenu.getBoundingClientRect().width
+        contextMenu.style.top = `${btnBottom + 10}px`
+        contextMenu.style.left = `${btnLeft + btnWidth/2 - menuWidth/2}px`
+      })
     }
   },
 
