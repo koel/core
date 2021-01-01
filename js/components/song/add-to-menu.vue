@@ -27,7 +27,7 @@
             class="playlist"
             role="button"
             tabindex="0"
-            v-for="playlist in playlistState.playlists"
+            v-for="playlist in playlists"
           >
             {{ playlist.name }}
           </li>
@@ -87,6 +87,12 @@ export default mixins(songMenuMethods).extend({
       if (!this.songs.length) {
         this.close()
       }
+    }
+  },
+
+  computed: {
+    playlists (): Playlist[] {
+      return this.playlistState.playlists.filter(playlist => !playlist.is_smart)
     }
   },
 
