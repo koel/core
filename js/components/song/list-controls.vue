@@ -201,7 +201,7 @@ export default Vue.extend({
         const contextMenu = this.$el.querySelector<HTMLElement>('.add-to')!
         const menuWidth = contextMenu.getBoundingClientRect().width
         contextMenu.style.top = `${btnBottom + 10}px`
-        contextMenu.style.left = `${btnLeft + btnWidth/2 - menuWidth/2}px`
+        contextMenu.style.left = `${btnLeft + btnWidth / 2 - menuWidth / 2}px`
       })
     }
   },
