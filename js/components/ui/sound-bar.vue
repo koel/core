@@ -1,4 +1,4 @@
-<template functional>
+<template>
   <div class="bars">
     <img src="@/../img/bars.gif" alt="Sound bars" height="13" width="auto">
   </div>

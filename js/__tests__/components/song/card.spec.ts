@@ -5,7 +5,7 @@ import { playback } from '@/services'
 import { mock } from '@/__tests__/__helpers__'
 import { Wrapper, shallow } from '@/__tests__/adapter'
 
-describe('components/song/home-item', () => {
+describe('components/song/card', () => {
   let propsData, song: Song, wrapper: Wrapper
 
   beforeEach(() => {
@@ -40,7 +40,7 @@ describe('components/song/home-item', () => {
     const containsStub = mock(queueStore, 'contains', queued)
     const queueStub = mock(queueStore, 'queueAfterCurrent')
     const playStub = mock(playback, 'play')
-    wrapper.dblclick('.song-item-home')
+    wrapper.dblclick('[data-test=song-card]')
     expect(containsStub).toHaveBeenCalledWith(song)
     if (queued) {
       expect(queueStub).not.toHaveBeenCalled()

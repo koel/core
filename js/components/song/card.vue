@@ -5,7 +5,7 @@
     @dblclick.prevent="play"
     @dragstart="dragStart"
     draggable="true"
-    class="song-item-home"
+    data-test="song-card"
     tabindex="0"
   >
     <span class="cover" :style="{ backgroundImage: `url(${song.album.cover})` }">
@@ -84,7 +84,7 @@ export default Vue.extend({
 @import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
-.song-item-home {
+li {
   display: flex;
 
   &.playing {

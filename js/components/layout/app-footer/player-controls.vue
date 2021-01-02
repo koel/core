@@ -12,15 +12,24 @@
       <span :style="{ backgroundImage: `url('${cover}')` }" class="album-thumb"></span>
       <span
         @click.prevent="toggle"
-        class="play control"
+        class="play"
         role="button"
         tabindex="0"
         title="Play or resume"
+        data-testid="play-btn"
         v-if="song && song.playbackState !== 'Playing'"
       >
         <i class="fa fa-play"></i>
       </span>
-      <span @click.prevent="toggle" class="pause control" role="button" tabindex="0" title="Pause" v-else>
+      <span
+        @click.prevent="toggle"
+        class="pause"
+        role="button"
+        tabindex="0"
+        title="Pause"
+        data-testid="pause-btn"
+        v-else
+      >
         <i class="fa fa-pause"></i>
       </span>
     </span>

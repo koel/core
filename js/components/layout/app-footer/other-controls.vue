@@ -4,7 +4,7 @@
       <equalizer v-show="showEqualizer" v-if="useEqualizer"/>
 
       <a @click.prevent="toggleVisualizer" title="Click for a marvelous visualizer!" role="button" tabindex="0">
-        <sound-bar v-if="song && song.playbackState === 'Playing'"/>
+        <sound-bar v-if="song && song.playbackState === 'Playing'" data-testid="sound-bar-play"/>
       </a>
 
       <like-button v-if="song" :song="song" class="like"/>
