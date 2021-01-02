@@ -88,5 +88,9 @@ export default Vue.extend({
 
 .artist-info {
   @include artist-album-info();
+
+  .none {
+    margin-top: 1rem;
+  }
 }
 </style>
