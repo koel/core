@@ -125,7 +125,7 @@ export default Vue.extend({
 #sidebar {
   flex: 0 0 256px;
   background-color: $colorSidebarBgr;
-  padding: 1.75rem 0;
+  padding: 2.05rem 0;
   overflow: auto;
   overflow-x: hidden;
   -ms-overflow-style: -ms-autohiding-scrollbar;

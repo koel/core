@@ -30,6 +30,7 @@
               aria-controls="editSongPanelLyrics"
               id="editSongTabLyrics"
               role="tab"
+              data-testid="edit-song-lyrics-tab"
             >
               Lyrics
             </button>
@@ -66,12 +67,17 @@
 
               <div class="form-row">
                 <label class="small">
-                  <input type="checkbox" @change="changeCompilationState" ref="compilationStateChk" />
+                  <input
+                    type="checkbox"
+                    name="is_compilation"
+                    @change="changeCompilationState"
+                    ref="compilationStateChk"
+                  />
                   Album is a compilation of songs by various artists
                 </label>
               </div>
 
-              <div class="form-row" v-show="editingOnlyOneSong">
+              <div class="form-row" v-if="editingOnlyOneSong">
                 <label>Track</label>
                 <input name="track" type="text" pattern="\d*" v-model="formData.track"
                 title="Empty or a number">
