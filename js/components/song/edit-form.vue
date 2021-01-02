@@ -1,5 +1,5 @@
 <template>
-  <div class="edit-song">
+  <div class="edit-song" data-testid="edit-song-form">
     <sound-bar v-if="loading"/>
     <form v-else @submit.prevent="submit">
       <header>
