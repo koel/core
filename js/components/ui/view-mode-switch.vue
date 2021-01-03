@@ -1,12 +1,22 @@
 <template>
   <span class="view-modes">
-    <label class="thumbnails" :class="{ active: mutatedValue === 'thumbnails' }" title="View as thumbnails">
+    <label
+      class="thumbnails"
+      :class="{ active: mutatedValue === 'thumbnails' }"
+      title="View as thumbnails"
+      data-test="view-mode-thumbnail"
+    >
       <input class="hidden" type="radio" value="thumbnails" v-model="mutatedValue" @input="onInput">
       <i class="fa fa-th-large"></i>
       <span class="hidden">View as thumbnails</span>
     </label>
 
-    <label class="list" :class="{ active: mutatedValue === 'list' }" title="View as list">
+    <label
+      class="list"
+      :class="{ active: mutatedValue === 'list' }"
+      title="View as list"
+      data-test="view-mode-list"
+    >
       <input class="hidden" type="radio" value="list" v-model="mutatedValue" @input="onInput">
       <i class="fa fa-list"></i>
       <span class="hidden">View as list</span>

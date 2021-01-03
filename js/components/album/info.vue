@@ -1,5 +1,5 @@
 <template>
-  <article class="album-info" :class="mode">
+  <article class="album-info" :class="mode" data-test="album-info">
     <h1 class="name">
       <span>{{ album.name }}</span>
       <a
@@ -25,7 +25,7 @@
           </button>
         </div>
 
-        <track-list :album="album" v-if="album.info.tracks && album.info.tracks.length"/>
+        <track-list :album="album" v-if="album.info.tracks && album.info.tracks.length" data-test="album-info-tracks"/>
 
         <footer>Data &copy; <a target="_blank" :href="album.info.url">Last.fm</a></footer>
       </template>
