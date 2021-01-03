@@ -17,6 +17,7 @@
           id="inputSettingsPath"
           type="text"
           v-model="state.settings.media_path"
+          name="media_path"
         >
       </div>
 
@@ -89,12 +90,10 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-
 #settingsWrapper {
   input[type="text"] {
-    width: 384px;
-    margin-top: 12px;
+    width: 50%;
+    margin-top: 1rem;
   }
 
   @media only screen and (max-width : 667px) {

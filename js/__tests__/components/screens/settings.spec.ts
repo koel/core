@@ -18,10 +18,6 @@ describe('components/screens/settings', () => {
     jest.clearAllMocks()
   })
 
-  it('renders properly', () => {
-    expect(shallow(Component)).toMatchSnapshot()
-  })
-
   it('warns if changing a non-empty media path', () => {
     sharedStore.state.originalMediaPath = '/bar'
     const m = mock(alerts, 'confirm')
