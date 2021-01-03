@@ -1,7 +1,7 @@
 <template>
   <section id="uploadWrapper">
     <screen-header>
-      Upload <sup>Beta</sup>
+      Upload Media <sup>Beta</sup>
 
       <template v-slot:controls>
         <btn-group uppercased v-if="hasUploadFailures">
@@ -31,10 +31,16 @@
           <upload-item v-for="file in uploadState.files" :key="file.id" :file="file"/>
         </div>
 
-        <div class="instruction" v-else>
+        <div class="instruction" v-else @change="onFileInputChange">
           <div>
             <i class="fa fa-upload"></i>
-            <p>{{ instructionText }}</p>
+            <p>
+              {{ instructionText }}<br/>
+              <a class="or-click" role="button">
+                or click here to select songs
+                <input type="file" name="file[]" multiple/>
+              </a>
+            </p>
           </div>
         </div>
       </div>
@@ -99,6 +105,16 @@ export default Vue.extend({
       this.droppable = false
     },
 
+    onFileInputChange (event: InputEvent): void {
+      const selectedFileList = (event.target as HTMLInputElement).files
+
+      if (!selectedFileList) {
+        return
+      }
+
+      this.handleFiles(Array.from(selectedFileList))
+    },
+
     async onDrop (e: DragEvent): Promise<void> {
       this.droppable = false
 
@@ -108,7 +124,10 @@ export default Vue.extend({
 
       const fileEntries = await getAllFileEntries(e.dataTransfer.items)
       const files = await Promise.all(fileEntries.map(async entry => await this.fileEntryToFile(entry)))
+      this.handleFiles(files)
+    },
 
+    handleFiles: (files: Array<File>) => {
       const uploadCandidates = files
         .filter(file => validMediaMimeTypes.includes(file.type))
         .map((file: File): UploadFile => ({
@@ -146,8 +165,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-
 #uploadWrapper {
   sup {
     vertical-align: super;
@@ -162,10 +179,30 @@ export default Vue.extend({
   }
 
   .upload-files {
-    padding-bottom: 16px;
+    padding-bottom: 1rem;
   }
 
   .instruction {
+    display: flex;
+    place-content: center;
+    place-items: center;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, .2);
+    position: relative;
+
+    input[type=file] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      cursor: pointer;
+    }
+
     i {
       display: block;
       font-size: 6em;
@@ -176,15 +213,18 @@ export default Vue.extend({
     p {
       font-size: 2em;
       font-weight: 200;
-    }
 
-    display: flex;
-    pointer-events: none;
-    place-content: center;
-    place-items: center;
-    height: 100%;
-    text-align: center;
-    opacity: .2;
+      a.or-click {
+        font-size: 1.5rem;
+        display: block;
+        margin-top: .75rem;
+        position: relative;
+
+        &:hover {
+          color: rgba(255, 255, 255, .7);
+        }
+      }
+    }
   }
 
   .instruction {
