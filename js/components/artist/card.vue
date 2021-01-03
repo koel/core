@@ -6,6 +6,7 @@
     :class="layout"
     draggable="true"
     tabindex="0"
+    data-test="artist-card"
     v-if="showing"
   >
     <span class="thumbnail-wrapper">

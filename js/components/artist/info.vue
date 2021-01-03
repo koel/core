@@ -1,5 +1,5 @@
 <template>
-  <article class="artist-info" :class="mode">
+  <article class="artist-info" :class="mode" data-test="artist-info">
     <h1 class="name">
       <span>{{ artist.name }}</span>
       <a
