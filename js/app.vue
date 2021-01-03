@@ -106,7 +106,7 @@ export default Vue.extend({
 
           // Let all other components know we're ready.
           eventBus.emit(events.KOEL_READY)
-        }, 0)
+        }, 100)
       } catch (err) {
         this.authenticated = false
         throw err
