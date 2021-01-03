@@ -1,6 +1,10 @@
-*, *:before, *:after {
+*, *::before, *::after {
   box-sizing: border-box;
   outline: none;
+}
+
+*::marker {
+  display: none !important;
 }
 
 body, html {

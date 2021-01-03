@@ -32,10 +32,6 @@ describe('components/song/card', () => {
     jest.clearAllMocks()
   })
 
-  it('renders properly', () => {
-    expect(wrapper).toMatchSnapshot()
-  })
-
   it.each([[true, false], [false, true]])('queuing and playing behavior', (shouldQueue, queued) => {
     const containsStub = mock(queueStore, 'contains', queued)
     const queueStub = mock(queueStore, 'queueAfterCurrent')

@@ -1,11 +1,12 @@
 <template>
-  <li
+  <article
     :title="`${album.name} by ${album.artist.name}`"
     @dragstart="dragStart"
     class="item"
     :class="layout"
     draggable="true"
     tabindex="0"
+    data-test="album-card"
     v-if="album.songs.length"
   >
     <span class="thumbnail-wrapper">
@@ -54,7 +55,7 @@
         </span>
       </p>
     </footer>
-  </li>
+  </article>
 </template>
 
 <script lang="ts">

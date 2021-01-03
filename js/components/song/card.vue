@@ -1,5 +1,5 @@
 <template>
-  <li
+  <article
     :class="{ playing: song.playbackState === 'Playing' || song.playbackState === 'Paused' }"
     @contextmenu.prevent="requestContextMenu"
     @dblclick.prevent="play"
@@ -22,7 +22,7 @@
         <template v-if="showPlayCount">- {{ song.playCount | pluralize('play') }}</template>
       </span>
     </span>
-  </li>
+  </article>
 </template>
 
 <script lang="ts">
@@ -84,7 +84,7 @@ export default Vue.extend({
 @import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
-li {
+article {
   display: flex;
 
   &.playing {

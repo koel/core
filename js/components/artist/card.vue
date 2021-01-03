@@ -1,5 +1,5 @@
 <template>
-  <li
+  <article
     :title="artist.name"
     @dragstart="dragStart"
     class="item"
@@ -49,7 +49,7 @@
         </span>
       </p>
     </footer>
-  </li>
+  </article>
 </template>
 
 <script lang="ts">

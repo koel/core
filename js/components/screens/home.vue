@@ -8,13 +8,9 @@
           <h1>Most Played</h1>
 
           <ol class="top-song-list">
-            <li
-              v-for="song in top.songs"
-              :top-play-count="top.songs.length ? top.songs[0].playCount : 0"
-              :song="song"
-              :key="song.id"
-              is="song-card"
-            />
+            <li v-for="song in top.songs" :key="song.id">
+              <song-card :song="song" :top-play-count="top.songs.length ? top.songs[0].playCount : 0"/>
+            </li>
           </ol>
         </section>
 
@@ -33,13 +29,9 @@
           </h1>
 
           <ol class="recent-song-list" v-if="recentSongs.length">
-            <li
-              v-for="song in recentSongs"
-              :top-play-count="top.songs.length ? top.songs[0].playCount : 0"
-              :song="song"
-              :key="song.id"
-              is="song-card"
-            />
+            <li v-for="song in recentSongs" :key="song.id">
+              <song-card :song="song" :top-play-count="top.songs.length ? top.songs[0].playCount : 0"/>
+            </li>
           </ol>
 
           <p class="text-light-gray" v-show="!recentSongs.length">
@@ -53,10 +45,14 @@
         <h1>Recently Added</h1>
         <div class="two-cols">
           <ol class="recently-added-album-list">
-            <li v-for="album in recentlyAdded.albums" :album="album" :key="album.id" layout="compact" is="album-card"/>
+            <li v-for="album in recentlyAdded.albums" :key="album.id">
+              <album-card :album="album" layout="compact"/>
+            </li>
           </ol>
           <ol class="recently-added-song-list" v-show="recentlyAdded.songs.length">
-            <li v-for="song in recentlyAdded.songs" :song="song" :key="song.id" is="song-card"></li>
+            <li v-for="song in recentlyAdded.songs" :key="song.id">
+              <song-card :song="song"/>
+            </li>
           </ol>
         </div>
       </section>
@@ -64,14 +60,18 @@
       <section v-if="top.artists.length">
         <h1>Top Artists</h1>
         <ol class="two-cols top-artist-list">
-          <li v-for="artist in top.artists" :artist="artist" :key="artist.id" layout="compact" is="artist-card"/>
+          <li v-for="artist in top.artists" :key="artist.id">
+            <artist-card :artist="artist" layout="compact"/>
+          </li>
         </ol>
       </section>
 
       <section v-if="top.albums.length">
         <h1>Top Albums</h1>
         <ol class="two-cols top-album-list">
-          <li v-for="album in top.albums" :album="album" :key="album.id" layout="compact" is="album-card"/>
+          <li v-for="album in top.albums" :key="album.id">
+            <album-card :album="album" layout="compact"/>
+          </li>
         </ol>
       </section>
 
