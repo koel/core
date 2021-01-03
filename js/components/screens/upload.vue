@@ -5,11 +5,11 @@
 
       <template v-slot:controls>
         <btn-group uppercased v-if="hasUploadFailures">
-          <btn @click="retryAll" green>
+          <btn @click="retryAll" green data-testid="upload-retry-all-btn">
             <i class="fa fa-repeat"></i>
             Retry All
           </btn>
-          <btn @click="removeFailedEntries" orange>
+          <btn @click="removeFailedEntries" orange data-testid="upload-remove-all-btn">
             <i class="fa fa-times"></i>
             Remove Failed
           </btn>
@@ -28,7 +28,7 @@
         v-if="mediaPath"
       >
         <div class="upload-files" v-if="uploadState.files.length">
-          <upload-item v-for="file in uploadState.files" :key="file.id" :file="file"/>
+          <upload-item v-for="file in uploadState.files" :key="file.id" :file="file" data-test="upload-item"/>
         </div>
 
         <div class="instruction" v-else @change="onFileInputChange">

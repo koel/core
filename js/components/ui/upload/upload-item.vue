@@ -4,10 +4,26 @@
     <span class="details">
       <span class="name">{{ file.name }}</span>
       <span class="controls">
-        <Btn @click="retry" title="Retry upload" transparent unrounded icon-only v-if="canRetry">
+        <Btn
+          @click="retry"
+          title="Retry upload"
+          transparent
+          unrounded
+          icon-only
+          v-if="canRetry"
+          data-test="retry-upload-btn"
+        >
           <i class="fa fa-repeat"></i>
         </Btn>
-        <Btn @click="remove" title="Remove" transparent unrounded icon-only v-if="canRemove">
+        <Btn
+          @click="remove"
+          title="Remove"
+          transparent
+          unrounded
+          icon-only
+          v-if="canRemove"
+          data-test="remove-upload-btn"
+        >
           <i class="fa fa-times"></i>
         </Btn>
       </span>
