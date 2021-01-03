@@ -8,6 +8,7 @@
         class="video"
         role="button"
         v-for="video in videos"
+        data-test="youtube-search-result"
       >
         <div class="thumb">
           <img :src="video.snippet.thumbnails.default.url" width="90">
@@ -17,7 +18,9 @@
           <p class="desc">{{ video.snippet.description }}</p>
         </div>
       </a>
-      <btn @click.prevent="loadMore" blue v-if="!loading" class="more">Load More</btn>
+      <btn @click.prevent="loadMore" blue v-if="!loading" class="more" data-testid="youtube-search-more-btn">
+        Load More
+      </btn>
     </template>
 
     <p class="nope" v-else>Play a song to retrieve related YouTube videos.</p>

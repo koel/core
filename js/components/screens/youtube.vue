@@ -3,10 +3,12 @@
     <screen-header>{{ title }}</screen-header>
 
     <div id="player">
-      <p class="none text-light-gray">Your YouTube video will be played here.<br/>
-      You can start a video playback from the right sidebar. When a song is playing, that is.<br>
-      It might also be worth noting that video’s volume, progress and such are controlled from within
-      the video itself, and not via Koel’s controls.</p>
+      <p class="none text-light-gray" data-testid="youtube-placeholder">
+        Your YouTube video will be played here.<br/>
+        You can start a video playback from the right sidebar. When a song is playing, that is.<br>
+        It might also be worth noting that video’s volume, progress and such are controlled from within
+        the video itself, and not via Koel’s controls.
+      </p>
     </div>
   </section>
 </template>
