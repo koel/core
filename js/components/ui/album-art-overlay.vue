@@ -22,7 +22,11 @@ export default Vue.extend({
       immediate: true,
       async handler (): Promise<void> {
         if (this.song) {
-          this.thumbnailUrl = await albumStore.getThumbnail(this.song.album)
+          try {
+            this.thumbnailUrl = await albumStore.getThumbnail(this.song.album)
+          } catch (e) {
+            this.thumbnailUrl = null
+          }
         }
       }
     }
