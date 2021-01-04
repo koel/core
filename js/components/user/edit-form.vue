@@ -48,7 +48,8 @@ import Vue, { PropOptions } from 'vue'
 export default Vue.extend({
   components: {
     Btn: () => import('@/components/ui/btn.vue'),
-    SoundBar: () => import('@/components/ui/sound-bar.vue')
+    SoundBar: () => import('@/components/ui/sound-bar.vue'),
+    TooltipIcon: () => import('@/components/ui/tooltip-icon.vue')
   },
 
   props: {

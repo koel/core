@@ -99,21 +99,23 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
-
-.user-item {
+.user-card {
   width: 100%;
 
   .info {
     display: flex;
 
     img {
-      flex: 0 0 128px;
+      flex: 0 0 96px;
+    }
+
+    .email {
+      opacity: .5;
     }
 
     .right {
       flex: 1;
-      padding: 16px;
+      padding: 1rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -123,20 +125,16 @@ export default Vue.extend({
 
     h1 {
       font-size: 1.4rem;
-      margin-bottom: 8px;
+      margin-bottom: .25rem;
 
-      .you {
-        margin-left: 5px;
-      }
-
-      .is-admin {
-        margin-left: 5px;
+      > * + * {
+        margin-left: .5rem
       }
     }
 
     .buttons {
       display: none;
-      margin-top: 16px;
+      margin-top: .5rem;
     }
 
     &:hover, html.touchevents & {

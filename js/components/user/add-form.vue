@@ -28,16 +28,13 @@
         <div class="form-row">
           <label>
             <input type="checkbox" name="is_admin" v-model="newUser.is_admin"> User is an admin
-            <i
-              class="fa fa-question-circle help-trigger text-blue"
-              title="Admins can perform administrative tasks like manage users and upload songs.">
-            </i>
+            <tooltip-icon title="Admins can perform administrative tasks like managing users and uploading songs."/>
           </label>
         </div>
       </div>
 
       <footer>
-        <btn class="btn-add">Save</btn>
+        <btn class="btn-add" type="submit">Save</btn>
         <btn class="btn-cancel" @click.prevent="close" white>Cancel</btn>
       </footer>
     </form>
@@ -52,7 +49,8 @@ import { userStore } from '@/stores'
 export default Vue.extend({
   components: {
     Btn: () => import('@/components/ui/btn.vue'),
-    SoundBar: () => import('@/components/ui/sound-bar.vue')
+    SoundBar: () => import('@/components/ui/sound-bar.vue'),
+    TooltipIcon: () => import('@/components/ui/tooltip-icon.vue')
   },
 
   data: () => ({
@@ -74,12 +72,3 @@ export default Vue.extend({
   }
 })
 </script>
-
-<style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
-
-.help-trigger {
-  margin-left: 4px;
-  display: inline-block;
-}
-</style>

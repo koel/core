@@ -10,11 +10,6 @@ describe('components/user/add-form', () => {
     jest.clearAllMocks()
   })
 
-  it('opens', () => {
-    const wrapper = shallow(Component)
-    expect(wrapper).toMatchSnapshot()
-  })
-
   it('adds a new user', () => {
     const newUser = factory<User>('user', { is_admin: false })
     const storeStub = mock(userStore, 'store')

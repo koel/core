@@ -10,19 +10,6 @@ describe('components/user/edit-form', () => {
     jest.clearAllMocks()
   })
 
-  it('opens', () => {
-    const user = factory('user', {
-      name: 'Bob Dylan',
-      email: 'knocking@heaven.door'
-    })
-    const wrapper = shallow(Component, {
-      propsData: {
-        user
-      }
-    })
-    expect(wrapper).toMatchSnapshot()
-  })
-
   it('saves', () => {
     const user = factory<User>('user', { is_admin: true })
     const updateMock = mock(userStore, 'update')

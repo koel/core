@@ -62,26 +62,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-
 #usersWrapper {
   .users {
     display: grid;
-    grid-gap: 16px;
+    grid-gap: .7rem 1rem;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  }
-
-  button {
-    margin-right: 3px;
-  }
-
-  @media only screen and (max-width: 768px) {
-    .users {
-      .buttons {
-        margin-top: 12px;
-        display: block;
-      }
-    }
   }
 }
 </style>
