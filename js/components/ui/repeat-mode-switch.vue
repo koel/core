@@ -1,5 +1,6 @@
 <template>
   <button
+    class="control"
     :class="preferences.repeatMode"
     @click.prevent="changeRepeatMode"
     :title="`Change repeat mode (current mode: ${readableRepeatMode})`"
