@@ -6,7 +6,7 @@
       For those that don't need to maintain their own UI state, we use v-if and enjoy some codesplitting juice.
     -->
     <visualizer v-if="showingVisualizer"/>
-    <album-art-overlay v-if="preferences.showAlbumArtOverlay"/>
+    <album-art-overlay :song="currentSong" v-if="preferences.showAlbumArtOverlay"/>
 
     <home-screen v-show="view === 'Home'"/>
     <queue-screen v-show="view === 'Queue'"/>
@@ -61,7 +61,7 @@ export default Vue.extend({
     YoutubeScreen: () => import('@/components/screens/youtube.vue'),
     UploadScreen: () => import('@/components/screens/upload.vue'),
     SearchExcerptsScreen: () => import('@/components/screens/search/excerpts.vue'),
-    SearchSongResultsScreen: () => import('@/components/screens/search/song-results'),
+    SearchSongResultsScreen: () => import('@/components/screens/search/song-results.vue'),
     Visualizer: () => import('@/components/ui/visualizer.vue')
   },
 
@@ -70,7 +70,8 @@ export default Vue.extend({
     sharedState: sharedStore.state,
     showingVisualizer: false,
     screenProps: null,
-    view: 'Home' as MainViewName
+    view: 'Home' as MainViewName,
+    currentSong: null as Song | null
   }),
 
   created (): void {
@@ -82,6 +83,10 @@ export default Vue.extend({
 
       [events.TOGGLE_VISUALIZER]: (): void => {
         this.showingVisualizer = !this.showingVisualizer
+      },
+
+      [events.SONG_STARTED]: (song: Song): void => {
+        this.currentSong = song
       }
     })
   }

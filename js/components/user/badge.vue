@@ -1,6 +1,6 @@
 <template>
   <span class="profile" id="userBadge">
-    <a class="view-profile control" href="#!/profile" title="View/edit user profile">
+    <a class="view-profile" href="/#!/profile" title="View/edit user profile" data-testid="view-profile-link">
       <img class="avatar" :src="state.current.avatar" :alt="`Avatar of ${state.current.name}`"/>
       <span class="name">{{ state.current.name }}</span>
     </a>
@@ -43,6 +43,7 @@ export default Vue.extend({
 
 #userBadge {
   @include vertical-center();
+
   justify-content: flex-end;
   flex: 0 0 $extraPanelWidth;
   text-align: right;
@@ -53,7 +54,7 @@ export default Vue.extend({
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    margin-right: 8px;
+    margin-right: .5rem;
   }
 
   .view-profile {
@@ -63,7 +64,7 @@ export default Vue.extend({
 
   .logout {
     height: 100%;
-    padding: 0 16px;
+    padding: 0 1.25rem;
     @include vertical-center();
   }
 

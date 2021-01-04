@@ -3,7 +3,6 @@ import factory from '@/__tests__/factory'
 import { userStore, preferenceStore as preferences } from '@/stores'
 import { mock } from '@/__tests__/__helpers__'
 import { shallow } from '@/__tests__/adapter'
-import { mount } from '@vue/test-utils'
 
 describe('components/screens/profile', () => {
   beforeEach(() => {
@@ -16,21 +15,19 @@ describe('components/screens/profile', () => {
     jest.clearAllMocks()
   })
 
-  it('renders properly', () => {
-    expect(mount(Profile)).toMatchSnapshot()
-  })
-
   it.each([
     ['foo', 'foo'],
     ['foo', 'bar'],
     ['', '']
-  ])('correctly handles passwords "%s" and "%s"', (pwd, confirmPwd) => {
+  ])('correctly handles passwords "%s" and "%s"', (password, confirmPassword) => {
     const wrapper = shallow(Profile, {
-      data: () => ({ pwd, confirmPwd })
+      data: () => ({ password, confirmPassword })
     })
+
     const m = mock(userStore, 'updateProfile')
     wrapper.submit('form')
-    if (pwd === confirmPwd) {
+
+    if (password === confirmPassword) {
       expect(m).toHaveBeenCalled()
     } else {
       expect(m).not.toHaveBeenCalled()
@@ -39,8 +36,8 @@ describe('components/screens/profile', () => {
 
   it.each([
     ['notify'],
-    ['confirmClosing'],
-    ['transcodeOnMobile']
+    ['confirm_closing'],
+    ['transcode_on_mobile']
   ])('updates preference "%s"', key => {
     const m = mock(preferences, 'save')
     shallow(Profile).change(`input[name=${key}]`)

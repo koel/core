@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/ui/album-art-overlay requests album thumbnail when a song starts playing 1`] = `<div style="background-image: url(http://localhost/foo_thumb.jpg);"></div>`;
+exports[`components/ui/album-art-overlay requests album thumbnail 1`] = `<div data-testid="album-art-overlay" style="background-image: none;"></div>`;

@@ -3,7 +3,7 @@
     <screen-header>Profile &amp; Preferences</screen-header>
 
     <div class="main-scroll-wrap">
-      <form @submit.prevent="update">
+      <form @submit.prevent="update" data-testid="update-profile-form">
         <div class="form-row">
           <label for="inputProfileName">Name</label>
           <input type="text" name="name" id="inputProfileName" v-model="state.current.name">
@@ -14,10 +14,10 @@
           <input type="email" name="email" id="inputProfileEmail" v-model="state.current.email">
         </div>
 
-        <div class="change-pwd">
+        <div class="change-password">
           <div class="form-row">
             <p class="help">
-              If you want to change your password, enter it below. <br>
+              If you want to change your password, enter it below.<br>
               Otherwise, just leave the next two fields empty.
             </p>
           </div>
@@ -26,7 +26,7 @@
             <label for="inputProfilePassword">New Password</label>
             <input
               :class="{ error: validation.error }"
-              v-model="pwd"
+              v-model="password"
               name="password"
               type="password"
               id="inputProfilePassword"
@@ -38,8 +38,8 @@
             <label for="inputProfileConfirmPassword">Confirm Password</label>
             <input
               :class="{ error: validation.error }"
-              v-model="confirmPwd"
-              name="confirmPassword"
+              v-model="confirmPassword"
+              name="confirm_password"
               type="password"
               id="inputProfileConfirmPassword"
               autocomplete="new-password"
@@ -64,19 +64,19 @@
         </div>
         <div class="form-row">
           <label>
-            <input type="checkbox" name="confirmClosing" v-model="preferences.confirmClosing">
+            <input type="checkbox" name="confirm_closing" v-model="preferences.confirmClosing">
             Confirm before closing Koel
           </label>
         </div>
         <div class="form-row">
           <label>
-            <input type="checkbox" name="transcodeOnMobile" v-model="preferences.transcodeOnMobile">
+            <input type="checkbox" name="transcode_on_mobile" v-model="preferences.transcodeOnMobile">
             Convert and play media at 128kbps on mobile
           </label>
         </div>
         <div class="form-row">
           <label>
-            <input type="checkbox" name="showAlbumArtOverlay" v-model="preferences.showAlbumArtOverlay">
+            <input type="checkbox" name="show_album_art_overlay" v-model="preferences.showAlbumArtOverlay">
             Show a translucent, blurred overlay of the current album’s art (may be CPU intensive)
           </label>
         </div>
@@ -85,8 +85,9 @@
       <section class="lastfm text-light-gray">
         <h1>Last.fm Integration</h1>
 
-        <div v-if="sharedState.useLastfm">
-          <p>This installation of Koel integrates with Last.fm.
+        <div v-if="sharedState.useLastfm" data-testid="lastfm-integrated">
+          <p>
+            This installation of Koel integrates with Last.fm.
             <span v-if="state.current.preferences.lastfm_session_key">
               It appears that you have connected your Last.fm account as well – Perfect!
             </span>
@@ -121,13 +122,17 @@
           </div>
         </div>
 
-        <div v-else>
-          <p>This installation of Koel has no Last.fm integration.
-            <span v-if="state.current.is_admin">Visit
-              <a href="https://docs.koel.dev/3rd-party.html#last-fm" target="_blank">Koel’s Wiki</a>
+        <div v-else data-testid="lastfm-not-integrated">
+          <p>
+            This installation of Koel has no Last.fm integration.
+            <span v-if="state.current.is_admin" data-testid="lastfm-admin-instruction">
+              Visit
+              <a href="https://docs.koel.dev/3rd-party.html#last-fm" class="text-orange" target="_blank">Koel’s Wiki</a>
               for a quick how-to.
             </span>
-            <span v-else>Try politely asking your administrator to enable it.</span>
+            <span v-else data-testid="lastfm-user-instruction">
+              Try politely asking an administrator to enable it.
+            </span>
           </p>
         </div>
       </section>
@@ -152,8 +157,8 @@ export default Vue.extend({
     demo: NODE_ENV === 'demo',
     state: userStore.state,
     cache: userStore.stub,
-    pwd: '',
-    confirmPwd: '',
+    password: '',
+    confirmPassword: '',
     sharedState: sharedStore.state,
     validation: {
       error: false
@@ -162,15 +167,15 @@ export default Vue.extend({
 
   methods: {
     async update (): Promise<void> {
-      this.validation.error = Boolean((this.pwd || this.confirmPwd) && this.pwd !== this.confirmPwd)
+      this.validation.error = Boolean((this.password || this.confirmPassword) && this.password !== this.confirmPassword)
 
       if (this.validation.error) {
         return
       }
 
-      await userStore.updateProfile(this.pwd)
-      this.pwd = ''
-      this.confirmPwd = ''
+      await userStore.updateProfile(this.password)
+      this.password = ''
+      this.confirmPassword = ''
     },
 
     /**
@@ -202,7 +207,7 @@ export default Vue.extend({
 #profileWrapper {
   input {
     &[type="text"], &[type="email"], &[type="password"] {
-      width: 192px;
+      width: 33%;
     }
 
     &.error {
@@ -217,7 +222,7 @@ export default Vue.extend({
     border-top: 1px solid $colorSecondaryBgr;
   }
 
-  .change-pwd {
+  .change-password {
     padding: 1.75rem 0;
   }
 
