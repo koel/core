@@ -34,17 +34,7 @@
         <i class="fa fa-list-ol"></i>
       </a>
 
-      <span
-        :class="prefs.repeatMode"
-        @click.prevent="changeRepeatMode"
-        class="repeat control"
-        role="button"
-        tabindex="0"
-        :title="`Change repeat mode (current mode: ${prefs.repeatMode})`"
-      >
-        <i class="fa fa-repeat"></i>
-      </span>
-
+      <repeat-mode-switch/>
       <volume/>
 
       <span
@@ -63,7 +53,7 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
-import { download, playback, socket } from '@/services'
+import { download, socket } from '@/services'
 import { eventBus, isAudioContextSupported } from '@/utils'
 import { events } from '@/config'
 import { favoriteStore, preferenceStore, sharedStore, songStore } from '@/stores'
@@ -79,7 +69,8 @@ export default Vue.extend({
     Equalizer: () => import('@/components/ui/equalizer.vue'),
     SoundBar: () => import('@/components/ui/sound-bar.vue'),
     Volume: () => import('@/components/ui/volume.vue'),
-    LikeButton: () => import('@/components/song/like-button.vue')
+    LikeButton: () => import('@/components/song/like-button.vue'),
+    RepeatModeSwitch: () => import('@/components/ui/repeat-mode-switch.vue')
   },
 
   data: () => ({
@@ -97,8 +88,6 @@ export default Vue.extend({
   },
 
   methods: {
-    changeRepeatMode: (): void => playback.changeRepeatMode(),
-
     like (): void {
       if (this.song.id) {
         favoriteStore.toggleOne(this.song)
@@ -159,25 +148,6 @@ export default Vue.extend({
 
     &:last-child {
       padding-right: 0;
-    }
-  }
-
-  .repeat {
-    position: relative;
-
-    &.REPEAT_ALL, &.REPEAT_ONE {
-      color: $colorOrange;
-    }
-
-    &.REPEAT_ONE::after {
-      content: "1";
-      position: absolute;
-      top: 0;
-      left: 0;
-      font-weight: 700;
-      font-size: .5rem;
-      text-align: center;
-      width: 100%;
     }
   }
 
