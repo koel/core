@@ -73,9 +73,7 @@ footer {
     display: flex;
   }
 
-  position: relative;
-
-  // Add a reverse gradient here to elimate the "hard cut" feel.
+  // Add a reverse gradient here to eliminate the "hard cut" feel.
   &::before {
     $gradientHeight: 2 * $footerHeight / 3;
     content: " ";

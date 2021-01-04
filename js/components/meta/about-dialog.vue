@@ -86,19 +86,19 @@ export default Vue.extend({
   background: $colorMainBgr;
   max-width: 480px;
   width: 90%;
-  border-radius: 8px;
+  border-radius: .6rem;
   overflow: hidden;
 
   main {
-    padding: 24px;
+    padding: 2rem;
 
     p {
-      margin: 12px 0;
+      margin: 1rem 0;
     }
   }
 
   header, footer {
-    padding: 12px;
+    padding: 1rem;
     background: rgba(255, 255, 255, .05);
   }
 
