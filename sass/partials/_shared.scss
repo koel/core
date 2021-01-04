@@ -317,4 +317,8 @@ label {
   &blue {
     color: $colorBlue !important;
   }
+
+  &uppercase {
+    text-transform: uppercase !important;
+  }
 }

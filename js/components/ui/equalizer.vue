@@ -1,5 +1,5 @@
 <template>
-  <div id="equalizer">
+  <div id="equalizer" data-testid="equalizer">
     <div class="presets">
       <label class="select-wrapper">
         <select v-model="selectedPresetIndex">

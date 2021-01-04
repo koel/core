@@ -183,7 +183,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
     <!---->
     <!---->
   </section>
-  <section id="extra" class="text-light-gray showing">
+  <section id="extra" data-testid="extra-panel" class="text-light-gray showing">
     <div class="tabs">
       <div role="tablist" class="clear"><button aria-selected="true" aria-controls="extraPanelLyrics" id="extraTabLyrics" role="tab">
           Lyrics

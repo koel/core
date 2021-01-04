@@ -1,34 +1,39 @@
 <template>
-  <div class="other-controls">
+  <div class="other-controls" data-testid="other-controls">
     <div class="wrapper" v-koel-clickaway="closeEqualizer">
       <equalizer v-show="showEqualizer" v-if="useEqualizer"/>
 
-      <a @click.prevent="toggleVisualizer" title="Click for a marvelous visualizer!" role="button" tabindex="0">
-        <sound-bar v-if="song && song.playbackState === 'Playing'" data-testid="sound-bar-play"/>
-      </a>
+      <button
+        v-if="song && song.playbackState === 'Playing'"
+        @click.prevent="toggleVisualizer"
+        title="Click for a marvelous visualizer!"
+        data-testid="toggle-visualizer-btn"
+      >
+        <sound-bar data-testid="sound-bar-play"/>
+      </button>
 
       <like-button v-if="song" :song="song" class="like"/>
 
-      <span
+      <button
         :class="{ active: prefs.showExtraPanel }"
         @click.prevent="toggleExtraPanel"
-        class="control info"
-        role="button"
-        tabindex="0"
+        class="control text-uppercase"
         title="View song information"
+        data-testid="toggle-extra-panel-btn"
       >
         Info
-      </span>
+      </button>
 
-      <i
-        :class="{ active: showEqualizer }"
-        @click="toggleEqualizer"
-        class="fa fa-sliders control equalizer"
+      <button
+        @click.prevent="toggleEqualizer"
         v-if="useEqualizer"
-        role="button"
-        tabindex="0"
+        class="control equalizer"
         :title="`${ showEqualizer ? 'Hide' : 'Show'} equalizer`"
-      ></i>
+        :class="{ active: showEqualizer }"
+        data-testid="toggle-equalizer-btn"
+      >
+        <i class="fa fa-sliders"></i>
+      </button>
 
       <a v-else class="queue control" :class="{ active: viewingQueue }" href="#!/queue">
         <i class="fa fa-list-ol"></i>
@@ -37,16 +42,15 @@
       <repeat-mode-switch/>
       <volume/>
 
-      <span
+      <button
         @click.prevent="downloadCurrentSong"
         class="download control"
-        role="button"
-        tabindex="0"
         title="Download the current song"
         v-if="downloadable"
+        data-test="download-btn"
       >
         <i class="fa fa-download"></i>
-      </span>
+      </button>
     </div>
   </div>
 </template>
@@ -132,7 +136,6 @@ export default Vue.extend({
   @include vertical-center();
 
   position: relative;
-  text-transform: uppercase;
   flex: 0 0 $extraPanelWidth;
   color: $colorLink;
 

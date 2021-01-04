@@ -4,6 +4,7 @@
     @dblclick="toggleFullscreen"
     id="vizContainer"
     ref="visualizerContainer"
+    data-testid="visualizer"
   >
     <close-modal-btn class="close" @click="hide"/>
   </div>

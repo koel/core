@@ -1,5 +1,5 @@
 <template>
-  <section id="extra" :class="{ showing: state.showExtraPanel }" class="text-light-gray">
+  <section id="extra" :class="{ showing: state.showExtraPanel }" class="text-light-gray" data-testid="extra-panel">
     <div class="tabs">
       <div class="clear" role="tablist">
         <button
