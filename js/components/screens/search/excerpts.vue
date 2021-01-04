@@ -1,5 +1,5 @@
 <template>
-  <section id="searchWrapper">
+  <section id="searchExcerptsWrapper">
     <screen-header>
       <span v-if="q">Search Results for <strong>{{ q }}</strong></span>
       <span v-else>Search</span>
@@ -7,10 +7,19 @@
 
     <div class="main-scroll-wrap" ref="wrapper">
       <div class="results" v-if="q">
-        <section class="songs">
+        <section class="songs" data-testid="song-excerpts">
           <h1>
             Songs
-            <btn @click.prevent="goToSongResults" rounded small orange>View All</btn>
+            <btn
+              v-if="searchState.excerpt.songs.length"
+              @click.prevent="goToSongResults"
+              rounded
+              small
+              orange
+              data-test="view-all-songs-btn"
+            >
+              View All
+            </btn>
           </h1>
           <ul v-if="searchState.excerpt.songs.length">
             <li v-for="song in searchState.excerpt.songs" :key="song.id" :song="song" is="song-card"/>
@@ -18,35 +27,27 @@
           <p v-else>None found.</p>
         </section>
 
-        <section class="artists">
+        <section class="artists" data-testid="artist-excerpts">
           <h1>Artists</h1>
           <ul v-if="searchState.excerpt.artists.length">
-            <li
-              v-for="artist in searchState.excerpt.artists"
-              :key="artist.id"
-              :artist="artist"
-              is="artist-card"
-              layout="compact"
-            />
+            <li v-for="artist in searchState.excerpt.artists" :key="artist.id">
+              <artist-card :artist="artist" layout="compact"/>
+            </li>
           </ul>
           <p v-else>None found.</p>
         </section>
 
-        <section class="albums">
+        <section class="albums" data-testid="album-excerpts">
           <h1>Albums</h1>
           <ul v-if="searchState.excerpt.albums.length">
-            <li
-              v-for="album in searchState.excerpt.albums"
-              :key="album.id"
-              :album="album"
-              is="album-card"
-              layout="compact"
-            />
+            <li v-for="album in searchState.excerpt.albums" :key="album.id">
+              <album-card :album="album" layout="compact"/>
+            </li>
           </ul>
           <p v-else>None found.</p>
         </section>
       </div>
-      <div class="screen-placeholder" v-else>
+      <div class="screen-placeholder" v-else data-test="placeholder">
         <div>
           <i class="fa fa-search"></i>
           <p>Find songs, artists, and albums</p>

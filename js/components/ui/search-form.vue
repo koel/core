@@ -9,6 +9,7 @@
       placeholder="Press F to search"
       ref="input"
       spellcheck="false"
+      name="q"
       v-model="q"
     >
   </div>
