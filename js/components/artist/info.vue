@@ -2,14 +2,9 @@
   <article class="artist-info" :class="mode" data-test="artist-info">
     <h1 class="name">
       <span>{{ artist.name }}</span>
-      <a
-        :title="`Shuffle all songs by ${artist.name}`"
-        @click.prevent="shuffleAll"
-        class="shuffle"
-        role="button"
-      >
+      <button :title="`Shuffle all songs by ${artist.name}`" @click.prevent="shuffleAll" class="shuffle control">
         <i class="fa fa-random"></i>
-      </a>
+      </button>
     </h1>
 
     <main v-if="artist.info">
@@ -17,16 +12,16 @@
 
       <template v-if="artist.info">
         <div class="bio" v-if="artist.info.bio && artist.info.bio.summary">
-          <div class="summary" v-show="showSummary" v-html="artist.info.bio.summary"></div>
-          <div class="full" v-show="showFull" v-html="artist.info.bio.full"></div>
+          <div class="summary" v-if="showSummary" v-html="artist.info.bio.summary"></div>
+          <div class="full" v-if="showFull" v-html="artist.info.bio.full"></div>
 
-          <button class="more" v-show="showSummary" @click.prevent="showingFullBio = true">
+          <button class="more" v-show="showSummary" @click.prevent="showingFullBio = true" data-test="more-btn">
             Full Bio
           </button>
         </div>
         <p class="text-light-gray" v-else>This artist has no Last.fm biography – yet.</p>
 
-        <footer>Data &copy; <a target="_blank" :href="artist.info.url">Last.fm</a></footer>
+        <footer>Data &copy; <a target="_blank" rel="openener" :href="artist.info.url">Last.fm</a></footer>
       </template>
     </main>
   </article>

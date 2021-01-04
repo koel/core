@@ -2,14 +2,9 @@
   <article class="album-info" :class="mode" data-test="album-info">
     <h1 class="name">
       <span>{{ album.name }}</span>
-      <a
-        :title="`Shuffle all songs in ${album.name}`"
-        @click.prevent="shuffleAll"
-        class="shuffle"
-        role="button"
-      >
+      <button :title="`Shuffle all songs in ${album.name}`" @click.prevent="shuffleAll" class="shuffle control">
         <i class="fa fa-random"></i>
-      </a>
+      </button>
     </h1>
 
     <main>
@@ -17,17 +12,17 @@
 
       <template v-if="album.info">
         <div class="wiki" v-if="album.info.wiki && album.info.wiki.summary">
-          <div class="summary" v-show="showSummary" v-html="album.info.wiki.summary"></div>
-          <div class="full" v-show="showFull" v-html="album.info.wiki.full"></div>
+          <div class="summary" v-if="showSummary" v-html="album.info.wiki.summary"></div>
+          <div class="full" v-if="showFull" v-html="album.info.wiki.full"></div>
 
-          <button class="more" v-if="showSummary" @click.prevent="showingFullWiki = true">
+          <button class="more" v-if="showSummary" @click.prevent="showingFullWiki = true" data-test="more-btn">
             Full Wiki
           </button>
         </div>
 
         <track-list :album="album" v-if="album.info.tracks && album.info.tracks.length" data-test="album-info-tracks"/>
 
-        <footer>Data &copy; <a target="_blank" :href="album.info.url">Last.fm</a></footer>
+        <footer>Data &copy; <a target="_blank" rel="noopener" :href="album.info.url">Last.fm</a></footer>
       </template>
     </main>
 

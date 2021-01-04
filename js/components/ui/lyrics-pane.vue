@@ -9,7 +9,14 @@
         <p class="none text-light-gray" v-if="song.id && !song.lyrics">
           <template v-if="isAdmin">
             No lyrics found.
-            <a href class="text-orange" @click.prevent="showEditSongForm">Click here</a> to add lyrics.
+            <button
+              class="text-orange"
+              @click.prevent="showEditSongForm"
+              data-test="add-lyrics-btn"
+            >
+              Click here
+            </button>
+            to add lyrics.
           </template>
           <span v-else>No lyrics available. Are you listening to Bach?</span>
         </p>
