@@ -1,11 +1,11 @@
 <template>
-  <div class="middle-pane">
+  <div class="middle-pane" data-testid="footer-middle-pane">
     <div class="progress" id="progressPane">
       <template v-if="song">
         <h3 class="title">{{ song.title }}</h3>
         <p class="meta">
-          <a class="artist" :href="`#!/artist/${song.artist.id}`">{{ song.artist.name }}</a> –
-          <a class="album" :href="`#!/album/${song.album.id}`">{{ song.album.name }}</a>
+          <a class="artist" :href="`/#!/artist/${song.artist.id}`">{{ song.artist.name }}</a> –
+          <a class="album" :href="`/#!/album/${song.album.id}`">{{ song.album.name }}</a>
         </p>
       </template>
 
