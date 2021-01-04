@@ -6,7 +6,8 @@
       role="button"
       tabindex="0"
       title="Play previous song"
-    ></i>
+      data-testid="play-prev-btn"
+    />
 
     <span class="album-thumb-wrapper">
       <span :style="{ backgroundImage: `url('${cover}')` }" class="album-thumb"></span>
@@ -40,7 +41,8 @@
       role="button"
       tabindex="0"
       title="Play next song"
-    ></i>
+      data-testid="play-next-btn"
+    />
   </div>
 </template>
 
@@ -82,8 +84,8 @@ export default Vue.extend({
 
   &:hover {
     .album-thumb-wrapper {
-      margin-left: 12px;
-      margin-right: 12px;
+      margin-left: 1rem;
+      margin-right: 1rem;
     }
 
     .album-thumb {
@@ -107,12 +109,12 @@ export default Vue.extend({
     overflow: hidden;
     border-radius: 50%;
     box-shadow: 0 0 20px rgba(0, 0, 0, .2);
-    margin-left: -40px;
-    margin-right: -40px;
+    margin-left: -3rem;
+    margin-right: -3rem;
 
     @media (hover: none) {
-      margin-left: 12px;
-      margin-right: 12px;
+      margin-left: 1rem;
+      margin-right: 1rem;
     }
 
     @include vertical-center();
@@ -159,8 +161,8 @@ export default Vue.extend({
   .prev, .next {
     transition: .4s ease-out;
     opacity: 0;
-    padding: 12px;
-    margin: -10px;
+    padding: 1rem;
+    margin: -.75rem;
   }
 
   .play, .pause {
