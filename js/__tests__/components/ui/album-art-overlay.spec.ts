@@ -1,4 +1,3 @@
-import flushPromises from 'flush-promises'
 import factory from '@/__tests__/factory'
 import Component from '@/components/ui/album-art-overlay.vue'
 import { albumStore } from '@/stores/album'
