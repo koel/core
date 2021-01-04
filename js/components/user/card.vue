@@ -1,23 +1,40 @@
 <template>
-  <article class="user-item" :class="{ me: isCurrentUser }">
+  <article class="user-card" :class="{ me: isCurrentUser }" data-test="user-card">
     <div class="info">
-      <img :src="user.avatar" width="128" height="128">
+      <img :src="user.avatar" width="96" height="96" :alt="`${user.name}'s avatar`">
 
       <div class="right">
         <div>
           <h1>
-            {{ user.name }}
-            <i v-if="isCurrentUser" class="you text-orange fa fa-check-circle" title="This is you!"></i>
-            <i v-if="user.is_admin" class="is-admin text-blue fa fa-shield" title="User has admin privileges"></i>
+            <span class="name">{{ user.name }}</span>
+            <i
+              v-if="isCurrentUser"
+              class="you text-orange fa fa-check-circle"
+              title="This is you!"
+              data-test="current-user-indicator"
+            />
+            <i
+              v-if="user.is_admin"
+              class="is-admin text-blue fa fa-shield"
+              title="User has admin privileges"
+              data-test="admin-indicator"
+            />
           </h1>
-          <p>{{ user.email }}</p>
+          <p class="email" data-test="user-email">{{ user.email }}</p>
         </div>
 
         <div class="buttons">
-          <btn class="btn-edit" @click="edit">
-            {{ isCurrentUser ? 'Update Profile' : 'Edit' }}
+          <btn class="btn-edit" @click="edit" small data-test="edit-user-btn">{{ editButtonLabel }}</btn>
+          <btn
+            v-if="!isCurrentUser"
+            class="btn-delete"
+            red
+            @click="confirmDelete"
+            small
+            data-test="delete-user-btn"
+          >
+            Delete
           </btn>
-          <btn v-if="!isCurrentUser" class="btn-delete" red @click="confirmDelete">Delete</btn>
         </div>
       </div>
     </div>
@@ -49,6 +66,10 @@ export default Vue.extend({
   computed: {
     isCurrentUser (): boolean {
       return this.user.id === userStore.current.id
+    },
+
+    editButtonLabel (): string {
+      return this.isCurrentUser ? 'Update Profile' : 'Edit'
     }
   },
 
@@ -58,7 +79,11 @@ export default Vue.extend({
      * If the user is the current logged-in user, redirect to the profile screen instead.
      */
     edit (): void {
-      this.isCurrentUser ? router.go('profile') : this.$emit('editUser', this.user)
+      if (this.isCurrentUser) {
+        router.go('profile')
+      } else {
+        this.$emit('editUser', this.user)
+      }
     },
 
     confirmDelete (): void {

@@ -1,7 +1,7 @@
 <template>
   <div class="add-user">
     <sound-bar v-if="loading"/>
-    <form class="user-add" @submit.prevent="submit" v-else>
+    <form class="user-add" @submit.prevent="submit" v-else data-testid="add-user-form">
       <header>
         <h1>Add New User</h1>
       </header>

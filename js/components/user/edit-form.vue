@@ -1,7 +1,7 @@
 <template>
   <div class="edit-user">
     <sound-bar v-if="loading"/>
-    <form class="user-edit" @submit.prevent="submit" v-else>
+    <form class="user-edit" @submit.prevent="submit" v-else data-testid="edit-user-form">
       <header>
         <h1>Edit User</h1>
       </header>
@@ -28,17 +28,14 @@
         <div class="form-row">
           <label>
             <input type="checkbox" name="is_admin" v-model="mutatedUser.is_admin"> User is an admin
-            <i
-              class="fa fa-question-circle help-trigger"
-              title="Admins can perform administrative tasks like manage users and upload songs.">
-            </i>
+            <tooltip-icon title="Admins can perform administrative tasks like managing users and uploading songs."/>
           </label>
         </div>
       </div>
 
       <footer>
         <btn class="btn-update" type="submit">Update</btn>
-        <btn class="btn-cancel" @click.prevent="close" white>Cancel</btn>
+        <btn class="btn-cancel" @click.prevent="close" white data-test="cancel-btn">Cancel</btn>
       </footer>
     </form>
   </div>
