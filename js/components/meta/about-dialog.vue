@@ -1,12 +1,12 @@
 <template>
-  <div class="about text-light-gray">
+  <div class="about text-light-gray" data-testid="about-modal">
     <header>
       <h1 class="text-white">About Koel</h1>
     </header>
 
     <main>
       <div class="logo">
-        <img src="@/../img/logo.svg" width="128" height="auto">
+        <img src="@/../img/logo.svg" width="128" height="auto" alt="Koel's logo">
       </div>
 
       <p class="current-version">{{ sharedState.currentVersion }}</p>
@@ -18,24 +18,28 @@
       </p>
 
       <p class="author">
-        Made with ❤️ by <a href="https://github.com/phanan" target="_blank">Phan An</a>
-        and quite a few <a href="https://github.com/koel/core/graphs/contributors" target="_blank">awesome</a>
-        <a href="https://github.com/koel/koel/graphs/contributors" target="_blank">contributors</a>.
+        Made with ❤️ by
+        <a href="https://github.com/phanan" target="_blank" rel="noopener">Phan An</a>
+        and quite a few
+        <a href="https://github.com/koel/core/graphs/contributors" target="_blank" rel="noopener">awesome</a>
+        <a href="https://github.com/koel/koel/graphs/contributors" target="_blank" rel="noopener">contributors</a>.
       </p>
 
       <p class="demo-credits" v-if="demo">
-        Demo music provided by <a href="https://www.bensound.com" target="_blank">Bensound</a>.
+        Demo music provided by
+        <a href="https://www.bensound.com" target="_blank" rel="noopener">Bensound</a>.
       </p>
 
       <p>
         Loving Koel? Please consider supporting its development via
-        <a href="https://github.com/users/phanan/sponsorship" target="_blank">GitHub Sponsors</a> and/or
-        <a href="https://opencollective.com/koel" target="_blank">OpenCollective</a>.
+        <a href="https://github.com/users/phanan/sponsorship" target="_blank" rel="noopener">GitHub Sponsors</a>
+        and/or
+        <a href="https://opencollective.com/koel" target="_blank" rel="noopener">OpenCollective</a>.
       </p>
     </main>
 
     <footer>
-      <btn @click.prevent="close" red rounded>Close</btn>
+      <btn @click.prevent="close" red rounded data-test="close-modal-btn">Close</btn>
     </footer>
   </div>
 </template>

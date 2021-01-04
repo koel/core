@@ -10,15 +10,9 @@
     <search-form/>
     <div class="header-right">
       <user-badge/>
-      <a
-        @click.prevent="showAboutDialog"
-        class="about control"
-        href
-        title="About Koel"
-        role="button"
-      >
-        <i class="fa fa-info-circle"/>
-      </a>
+      <button @click.prevent="showAboutDialog" class="about control" title="About Koel" data-testid="about-btn">
+        <i class="fa fa-info-circle"></i>
+      </button>
     </div>
   </header>
 
