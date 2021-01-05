@@ -39,7 +39,7 @@ button {
 
   &[white] {
     background-color: var(--color-white);
-    color: #333;
+    color: var(--color-black);
 
     &:hover {
       background-color: var(--color-white-darker);

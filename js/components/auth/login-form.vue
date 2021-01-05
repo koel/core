@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="login" :class="{ error: failed }" data-testid="login-form">
     <div class="logo">
-      <img src="@/../img/logo.svg" width="156" height="auto">
+      <img src="@/../img/logo.svg" width="156" height="auto" alt="Koel's logo">
     </div>
     <input v-if="isDesktopApp" v-model="url" type="text" placeholder="Koel's Host" autofocus required>
     <input v-model="email" type="email" placeholder="Email Address" autofocus required>
@@ -109,7 +109,7 @@ form {
   padding: 1.8rem;
   background: rgba(255, 255, 255, .08);
   border-radius: .6rem;
-  border: 1px solid #333;
+  border: 1px solid var(--color-border);
   transition: .5s;
 
   > * + * {
@@ -117,7 +117,7 @@ form {
   }
 
   &.error {
-    border-color: #8e4947;
+    border-color: var(--color-red-darker);
     animation: shake .5s;
   }
 

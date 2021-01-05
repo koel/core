@@ -69,7 +69,7 @@ export default Vue.extend({
 
     &.active {
       background: var(--color-white);
-      color: #111;
+      color: var(--color-black);
     }
   }
 

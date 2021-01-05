@@ -258,7 +258,7 @@ export default Vue.extend({
       text-transform: none;
 
       option {
-        color: #333;
+        color: var(--color-black);
       }
     }
   }
@@ -319,7 +319,7 @@ export default Vue.extend({
         position: absolute;
         width: 2px;
         height: 100%;
-        background: #333;
+        background: var(--color-border);
         top: 0;
         left: 7px;
       }
@@ -337,7 +337,7 @@ export default Vue.extend({
         position: absolute;
         width: 2px;
         height: 100%;
-        background: linear-gradient(to bottom, #d13838 0%,#f74245 36%,#529929 100%);
+        background: linear-gradient(to bottom, var(--color-orange-darker) 0%, var(--color-orange) 36%, var(--color-green) 100%);
         background-size: 2px;
         top: 0;
         left: 7px;

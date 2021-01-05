@@ -436,7 +436,7 @@ export default Vue.extend({
     top: 0;
     left: 0;
     right: 0;
-    background: #1b1b1b;
+    background: var(--color-song-list-header-background);
     z-index: 1;
     width: 100%;
   }

@@ -336,7 +336,7 @@ body, html {
       border: 2px solid var(--color-white);
       background-position: center center;
       background-size: cover;
-      background-color: #2d2f2f;
+      background-color: var(--color-background-secondary);
     }
 
     .text {
@@ -386,7 +386,7 @@ body, html {
 
     .favorite {
       .yep {
-        color: #bf2043;
+        color: var(--color-maroon);
       }
     }
 

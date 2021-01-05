@@ -1,6 +1,8 @@
 <template>
   <div>
-    <input type="text" :name="config.name"
+    <input
+      type="text"
+      :name="config.name"
       :placeholder="config.placeholder || 'No change'"
       v-model="mutatedValue"
       @keydown.down.prevent="down"
@@ -14,7 +16,8 @@
       <li
         v-for="(item, index) in displayedItems"
         :key="index"
-        @click.prevent="resultClick">
+        @click.prevent="resultClick"
+      >
         {{ item[config.displayKey] }}
       </li>
     </ul>
@@ -170,7 +173,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .result {
   position: absolute;
-  background: #f2f2f2;
+  background: var(--color-grey-lightest);
   max-height: 96px;
   border-radius: 0 0 3px 3px;
   width: 100%;

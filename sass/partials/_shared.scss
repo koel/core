@@ -51,11 +51,9 @@ button, [role=button] {
 }
 
 select {
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAYAAABX5MJvAAAA4UlEQVRYhe3WMQ6CMABA0Y9xcHDVlBM5OXsC4xXcvImzg/EQTNykHZx0JcHFxkKQtpQGhv5OtCG8pElLVlMzdYupAZAQvxJClxC6WSCW5kMu8jNwAVYRvlUBV6nkqb2QmSdmLvI3sI4AMNtIJZ/mRHs77pEBRRvQhTgCj0iAEth3LTQQUskKOESAlMBOKvmyIiJBegGdiJEhVsBfxEgQJ0AvIhDiDLAiBkK8AE4IT4g3wBnhCBkE8EJYIIMB3ogW5PadKkIAANQBQwixDXlfj8YtOlWz+KlJCF1C6BJCNwvEB8RnttABpb3tAAAAAElFTkSuQmCC);
   background-size: 12px;
-  background-position: calc(100% - 8px) 50%;
   padding-right: 26px;
-  background-repeat: no-repeat;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAYAAABX5MJvAAAA4UlEQVRYhe3WMQ6CMABA0Y9xcHDVlBM5OXsC4xXcvImzg/EQTNykHZx0JcHFxkKQtpQGhv5OtCG8pElLVlMzdYupAZAQvxJClxC6WSCW5kMu8jNwAVYRvlUBV6nkqb2QmSdmLvI3sI4AMNtIJZ/mRHs77pEBRRvQhTgCj0iAEth3LTQQUskKOESAlMBOKvmyIiJBegGdiJEhVsBfxEgQJ0AvIhDiDLAiBkK8AE4IT4g3wBnhCBkE8EJYIIMB3ogW5PadKkIAANQBQwixDXlfj8YtOlWz+KlJCF1C6BJCNwvEB8RnttABpb3tAAAAAElFTkSuQmCC) no-repeat calc(100% - 8px) 50%;
 }
 
 strong {
@@ -169,8 +167,7 @@ label {
 
 .tabs {
   [role=tablist] {
-    $tabColor: #5c5c5c;
-    border-bottom: 1px solid $tabColor;
+    border-bottom: 1px solid var(--color-tab-border-dark);
     display: flex;
 
     [role=tab] {
@@ -179,9 +176,9 @@ label {
       border-radius: 4px 4px 0 0;
       background: transparent;
       text-transform: uppercase;
-      color: lighten($tabColor, 50%);
+      color: var(--color-white-darker);
       opacity: .4;
-      border: 1px solid $tabColor;
+      border: 1px solid var(--color-tab-border-dark);
       margin-bottom: -1px;
 
       &[aria-selected=true] {
@@ -197,11 +194,11 @@ label {
 
   &.tabs-white {
     [role=tablist] {
-      border-bottom-color: #aaa;
+      border-bottom-color: var(--color-tab-border-light);
 
       [role=tab] {
-        color: #333;
-        border-color: #aaa;
+        color: var(--color-black);
+        border-color: var(--color-tab-border-light);
 
         &[aria-selected=true] {
           border-bottom-color: var(--color-white);
@@ -229,16 +226,14 @@ label {
   @include vertical-center();
 
   form {
-    $borderRadius: 5px;
-
     position: relative;
     width: 460px;
     background: var(--color-white);
-    border-radius: $borderRadius;
-    color: #333;
+    border-radius: 4px;
+    color: var(--color-black);
 
     input[type="checkbox"] {
-      border: 1px solid #ccc;
+      border: 1px solid var(--color-input-border);
     }
 
     > header, > div, > footer {
@@ -251,7 +246,7 @@ label {
 
     input[type="text"], input[type="number"], input[type="email"], input[type="password"],
     input[type="url"], input[type="date"], textarea, select {
-      border: 1px solid #ccc;
+      border: 1px solid var(--color-input-border);
       width: 100%;
       max-width: 100%;
       height: 32px;
@@ -271,8 +266,8 @@ label {
 
     > header {
       display: flex;
-      background: #eee;
-      border-radius: $borderRadius $borderRadius 0 0;
+      background: var(--color-grey-lightest);
+      border-radius: 4px 4px 0 0;
 
       h1 {
         font-size: 1.8rem;

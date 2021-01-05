@@ -60,7 +60,7 @@
 
     footer {
       padding: 16px;
-      background: #333;
+      background: var(--color-card-background);
       flex: 1;
       overflow: hidden;
     }
@@ -131,10 +131,9 @@
     z-index: 2;
 
     .inner {
-      padding: 24px;
       overflow: auto;
       height: 100%;
-      padding-bottom: 48px;
+      padding: 24px 24px 48px;
 
       @media only screen and (max-width: 768px) {
         padding: 16px;
@@ -252,7 +251,7 @@
       font-weight: var(--font-weight-normal);
 
       &:hover {
-        color: #b90000;
+        color: var(--color-white-darker);
       }
     }
   }

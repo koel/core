@@ -1,6 +1,7 @@
 :root {
   --color-white: #fff;
   --color-white-darker: #f7f7f7;
+  --color-black: #181818;
   --color-maroon: #bf2043;
   --color-green: #56a052;
   --color-green-darker: #447e41;
@@ -13,13 +14,23 @@
   --color-grey: #3c3c3c;
   --color-grey-darker: #232323;
   --color-grey-lighter: #a0a0a0;
+  --color-grey-lightest: #eee;
 
-  --color-background-main: #181818;
+  --color-background-main: var(--color-black);
   --color-background-secondary: #282828;
   --color-background-panes: #212121;
 
   --color-context-menu-background: #282828;
   --color-context-menu-border: #444;
+
+  --color-song-list-header-background: #1b1b1b;
+
+  --color-card-background: rgba(255, 255, 255, .075);
+  --color-border: #333;
+  --color-input-border: #ccc;
+
+  --color-tab-border-light: #aaa;
+  --color-tab-border-dark: #5c5c5c;
 
   --font-family: system, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 

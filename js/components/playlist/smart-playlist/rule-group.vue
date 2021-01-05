@@ -76,7 +76,7 @@ export default Vue.extend({
 .rule-group {
   margin-bottom: 1rem;
   padding-bottom: .5rem;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid rgba(0, 0, 0, .15);
 
   > * + * {
     margin-bottom: .5rem;

@@ -16,7 +16,7 @@ form {
 }
 
 .rules {
-  background: #f2f2f2;
+  background: rgba(0, 0, 0, .05);
   padding: 12px;
   border-radius: 5px;
 
