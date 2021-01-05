@@ -1,9 +1,9 @@
 <template>
   <form-base>
     <template slot="default">
-      <div>
+      <div @keydown.esc="maybeClose">
         <sound-bar v-if="meta.loading"/>
-        <form @submit.prevent="submit" v-else  data-testid="create-smart-playlist-form">
+        <form @submit.prevent="submit" v-else data-testid="create-smart-playlist-form">
           <header>
             <h1>New Smart Playlist</h1>
           </header>
@@ -30,7 +30,7 @@
 
           <footer>
             <btn type="submit">Save</btn>
-            <btn class="btn-cancel" @click.prevent="close" white>Cancel</btn>
+            <btn class="btn-cancel" @click.prevent="maybeClose" white>Cancel</btn>
           </footer>
         </form>
       </div>
@@ -41,6 +41,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { playlistStore } from '@/stores'
+import { alerts } from '@/utils'
 import router from '@/router'
 
 export default Vue.extend({
@@ -75,6 +76,15 @@ export default Vue.extend({
 
     close (): void {
       this.$emit('close')
+    },
+
+    maybeClose (): void {
+      if (!this.name && !this.ruleGroups.length) {
+        this.close()
+        return
+      }
+
+      alerts.confirm('Discard all changes?', () => this.close())
     },
 
     async submit (): Promise<void> {

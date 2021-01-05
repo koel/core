@@ -1,6 +1,6 @@
 <template>
   <form-base>
-    <div>
+    <div @keydown.esc="maybeClose">
       <sound-bar v-if="meta.loading"/>
       <form @submit.prevent="submit" v-else data-testid="edit-smart-playlist-form">
         <header>
@@ -29,7 +29,7 @@
 
         <footer>
           <btn type="submit">Save</btn>
-          <btn white class="btn-cancel" @click.prevent="close">Cancel</btn>
+          <btn white class="btn-cancel" @click.prevent="maybeClose">Cancel</btn>
         </footer>
       </form>
     </div>
@@ -38,8 +38,9 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, isEqual } from 'lodash'
 import { playlistStore } from '@/stores'
+import { alerts } from '@/utils'
 
 export default Vue.extend({
   components: {
@@ -79,6 +80,15 @@ export default Vue.extend({
 
     close (): void {
       this.$emit('close')
+    },
+
+    maybeClose (): void {
+      if (isEqual(this.playlist, this.mutatedPlaylist)) {
+        this.close()
+        return
+      }
+
+      alerts.confirm('Discard all changes?', () => this.close())
     },
 
     async submit (): Promise<void> {

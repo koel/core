@@ -1,5 +1,5 @@
 <template>
-  <div class="add-user">
+  <div class="add-user" @keydown.esc="maybeClose">
     <sound-bar v-if="loading"/>
     <form class="user-add" @submit.prevent="submit" v-else data-testid="add-user-form">
       <header>
@@ -35,7 +35,7 @@
 
       <footer>
         <btn class="btn-add" type="submit">Save</btn>
-        <btn class="btn-cancel" @click.prevent="close" white>Cancel</btn>
+        <btn class="btn-cancel" @click.prevent="maybeClose" white>Cancel</btn>
       </footer>
     </form>
   </div>
@@ -43,8 +43,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { clone } from 'lodash'
+import { clone, isEqual } from 'lodash'
 import { userStore } from '@/stores'
+import { alerts } from '@/utils'
 
 export default Vue.extend({
   components: {
@@ -68,6 +69,15 @@ export default Vue.extend({
 
     close (): void {
       this.$emit('close')
+    },
+
+    maybeClose (): void {
+      if (isEqual(this.newUser, userStore.stub)) {
+        this.close()
+        return
+      }
+
+      alerts.confirm('Discard all changes?', () => this.close())
     }
   }
 })

@@ -1,9 +1,9 @@
 <template>
-  <div class="edit-song" data-testid="edit-song-form">
+  <div class="edit-song" data-testid="edit-song-form" @keydown.esc="maybeClose" tabindex="0" v-koel-focus>
     <sound-bar v-if="loading"/>
     <form v-else @submit.prevent="submit">
       <header>
-        <img :src="coverUrl" width="96" height="96">
+        <img :src="coverUrl" width="96" height="96" alt="Album's cover">
         <hgroup class="meta">
           <h1 :class="{ mixed: !editingOnlyOneSong }">{{ displayedTitle }}</h1>
           <h2 :class="{ mixed: !allSongsAreFromSameArtist && !formData.artistName }">{{ displayedArtistName }}</h2>
@@ -54,7 +54,8 @@
                 <typeahead
                   :items="artistState.artists"
                   :config="artistTypeAheadConfig"
-                  v-model="formData.artistName"/>
+                  v-model="formData.artistName"
+                />
               </div>
 
               <div class="form-row">
@@ -62,7 +63,8 @@
                 <typeahead
                   :items="albumState.albums"
                   :config="albumTypeAheadConfig"
-                  v-model="formData.albumName"/>
+                  v-model="formData.albumName"
+                />
               </div>
 
               <div class="form-row">
@@ -102,16 +104,16 @@
 
       <footer>
         <btn type="submit">Update</btn>
-        <btn @click.prevent="close" class="btn-cancel" white>Cancel</btn>
+        <btn @click.prevent="maybeClose" class="btn-cancel" white>Cancel</btn>
       </footer>
     </form>
   </div>
 </template>
 
 <script lang="ts">
-import { union } from 'lodash'
+import { union, isEqual } from 'lodash'
 
-import { br2nl, getDefaultCover } from '@/utils'
+import { br2nl, getDefaultCover, alerts } from '@/utils'
 import { songInfo } from '@/services/info'
 import { artistStore, albumStore, songStore } from '@/stores'
 
@@ -183,7 +185,9 @@ export default Vue.extend({
       lyrics: '',
       track: null,
       compilationState: 0
-    } as EditFormData
+    } as EditFormData,
+
+    initialFormData: null as unknown as EditFormData
   }),
 
   computed: {
@@ -232,6 +236,10 @@ export default Vue.extend({
       return this.allSongsAreInSameAlbum || this.formData.albumName
         ? this.formData.albumName
         : 'Mixed Albums'
+    },
+
+    isPristine (): boolean {
+      return isEqual(this.formData, this.initialFormData)
     }
   },
 
@@ -314,6 +322,15 @@ export default Vue.extend({
       this.$emit('close')
     },
 
+    maybeClose (): void {
+      if (this.isPristine) {
+        this.close()
+        return
+      }
+
+      alerts.confirm('Discard all changes?', () => this.close())
+    },
+
     async submit (): Promise<void> {
       this.loading = true
 
@@ -328,6 +345,7 @@ export default Vue.extend({
 
   async created (): Promise<void> {
     await this.open()
+    this.initialFormData = Object.assign({}, this.formData)
   }
 })
 </script>

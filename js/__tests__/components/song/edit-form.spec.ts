@@ -120,12 +120,14 @@ describe('components/song/edit-form', () => {
     expect(updateStub).toHaveBeenCalledWith(songs, formData)
   })
 
-  it('closes', () => {
+  it('closes', async () => {
     const wrapper = mount(Component, {
       propsData: {
         songs: factory('song', 3)
       }
     })
+
+    await wrapper.vm.$nextTick()
     wrapper.click('.btn-cancel')
     expect(wrapper.hasEmitted('close')).toBe(true)
   })

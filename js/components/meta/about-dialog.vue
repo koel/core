@@ -1,5 +1,5 @@
 <template>
-  <div class="about text-light-gray" data-testid="about-modal">
+  <div class="about text-light-gray" tabindex="0" v-koel-focus @keydown.esc="close" data-testid="about-modal">
     <header>
       <h1 class="text-white">About Koel</h1>
     </header>

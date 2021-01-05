@@ -3,11 +3,12 @@
     class="menu"
     :class="extraClass"
     :style="{ top: `${top}px`, left: `${left}px` }"
-    ref="menu"
     @contextmenu.prevent
-    tabindex="-1"
+    tabindex="0"
+    v-koel-focus
     v-koel-clickaway="close"
-    v-show="shown"
+    @keydown.esc="close"
+    v-if="shown"
   >
     <ul>
       <slot>Menu items go here.</slot>
@@ -16,8 +17,6 @@
 </template>
 
 <script lang="ts">
-import { eventBus } from '@/utils'
-import { events } from '@/config'
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -35,81 +34,62 @@ export default Vue.extend({
   }),
 
   methods: {
-    open (top = 0, left = 0): void {
-      this.notifyOtherInstancesToClose()
-
+    async open (top = 0, left = 0): Promise<void> {
       this.top = top
       this.left = left
       this.shown = true
 
-      this.preventOffScreen(this.$refs.menu as HTMLElement)
+      await this.$nextTick()
+
+      try {
+        await this.preventOffScreen(this.$el)
+        this.initSubmenus()
+      } catch (e) {
+        // in a non-browser environment (e.g., unit testing), these two functions are broken due to calls to
+        // getBoundingClientRect() and querySelectorAll
+      }
     },
 
     close (): void {
-      if (!this.$refs.menu) {
-        return
-      }
-
-      this.closeAllSubmenus()
-      ;(this.$refs.menu as HTMLElement).style.top = 'auto'
-      ;(this.$refs.menu as HTMLElement).style.bottom = 'auto'
       this.shown = false
     },
 
-    notifyOtherInstancesToClose: (): void => {
-      eventBus.emit(events.CONTEXT_MENU_OPENING)
+    async preventOffScreen (element: HTMLElement, isSubmenu = false): Promise<void> {
+      const { bottom, right } = element.getBoundingClientRect()
+
+      if (bottom > window.innerHeight) {
+        element.style.top = 'auto'
+        element.style.bottom = '0'
+      } else {
+        element.style.bottom = 'auto'
+      }
+
+      if (right > window.innerWidth) {
+        element.style.right = isSubmenu ? `${this.$el.getBoundingClientRect().width}px` : '0'
+        element.style.left = 'auto'
+      }
     },
 
-    preventOffScreen: (element: HTMLElement): void => {
-      Vue.nextTick((): void => {
-        if (element.getBoundingClientRect().bottom > window.innerHeight) {
-          element.style.top = 'auto'
-          element.style.bottom = '0'
-        } else {
-          element.style.bottom = 'auto'
+    initSubmenus (): void {
+      Array.from(this.$el.querySelectorAll('.has-sub') as NodeListOf<HTMLElement>).forEach((item): void => {
+        const submenu = item.querySelector<HTMLElement>('.submenu')
+
+        if (!submenu) {
+          return
         }
-      })
-    },
 
-    closeAllSubmenus (): void {
-      Array.from(this.$el.querySelectorAll('.submenu') as NodeListOf<HTMLElement>).forEach((el: HTMLElement): void => {
-        el.style.display = 'none'
+        item.addEventListener('mouseenter', (): void => {
+          submenu.style.display = 'block'
+          this.preventOffScreen(submenu, true)
+        })
+
+        item.addEventListener('mouseleave', (): void => {
+          submenu.style.top = '0'
+          submenu.style.bottom = 'auto'
+          submenu.style.display = 'none'
+        })
       })
     }
-  },
-
-  /**
-   * On component mounted(), we use some JavaScript to prepare the submenu triggering.
-   * With this, we can catch when the submenus shown or hidden, and can make sure
-   * they don't appear off-screen.
-   */
-  mounted (): void {
-    Array.from(this.$el.querySelectorAll('.has-sub') as NodeListOf<HTMLElement>).forEach((item: HTMLElement): void => {
-      const submenu = item.querySelector('.submenu') as HTMLElement
-
-      if (!submenu) {
-        return
-      }
-
-      item.addEventListener('mouseenter', (): void => {
-        submenu.style.display = 'block'
-        this.preventOffScreen(submenu)
-      })
-
-      item.addEventListener('mouseleave', (): void => {
-        submenu.style.top = '0'
-        submenu.style.bottom = 'auto'
-        submenu.style.display = 'none'
-      })
-    })
-  },
-
-  created (): void {
-    eventBus.on(events.CONTEXT_MENU_OPENING, (): void => {
-      if (this.shown) {
-        this.close()
-      }
-    })
   }
 })
 </script>

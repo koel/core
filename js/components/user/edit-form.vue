@@ -1,5 +1,5 @@
 <template>
-  <div class="edit-user">
+  <div class="edit-user" @keydown.esc="maybeClose">
     <sound-bar v-if="loading"/>
     <form class="user-edit" @submit.prevent="submit" v-else data-testid="edit-user-form">
       <header>
@@ -35,13 +35,15 @@
 
       <footer>
         <btn class="btn-update" type="submit">Update</btn>
-        <btn class="btn-cancel" @click.prevent="close" white data-test="cancel-btn">Cancel</btn>
+        <btn class="btn-cancel" @click.prevent="maybeClose" white data-test="cancel-btn">Cancel</btn>
       </footer>
     </form>
   </div>
 </template>
 
 <script lang="ts">
+import { isEqual } from 'lodash'
+import { alerts } from '@/utils'
 import { userStore } from '@/stores'
 import Vue, { PropOptions } from 'vue'
 
@@ -82,6 +84,15 @@ export default Vue.extend({
 
     close (): void {
       this.$emit('close')
+    },
+
+    maybeClose (): void {
+      if (isEqual(this.user, this.mutatedUser)) {
+        this.close()
+        return
+      }
+
+      alerts.confirm('Discard all changes?', () => this.close())
     }
   },
 
