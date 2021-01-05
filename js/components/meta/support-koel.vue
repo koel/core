@@ -2,11 +2,15 @@
   <div class="support-bar" v-if="shown">
     <p>
       Loving Koel? Please consider supporting its development via
-      <a href="https://github.com/users/phanan/sponsorship" target="_blank">GitHub Sponsors</a> and/or
-      <a href="https://opencollective.com/koel" target="_blank">OpenCollective</a>.
+      <a href="https://github.com/users/phanan/sponsorship" target="_blank" rel="noopener">
+        GitHub Sponsors
+      </a>
+      and/or
+      <a href="https://opencollective.com/koel" target="_blank" rel="noopener">OpenCollective</a>.
     </p>
-    <btn transparent rounded @click.prevent="close">Hide</btn>
-    <btn transparent rounded @click.prevent="stopBugging">Don't bug me again</btn>
+    <button @click.prevent="close">Hide</button>
+    <span class="sep"></span>
+    <button @click.prevent="stopBugging">Don't bug me again</button>
   </div>
 </template>
 
@@ -17,27 +21,26 @@ import { eventBus } from '@/utils'
 import { events } from '@/config'
 import { preferenceStore as preferences } from '@/stores'
 
-const DELAY_UNTIL_SHOWN: number = 30 * 60 * 1000
-let SUPPORT_BAR_TIMEOUT_HANDLE: number = 0
+const DELAY_UNTIL_SHOWN = 30 * 60 * 1000
+let SUPPORT_BAR_TIMEOUT_HANDLE = 0
 
 export default Vue.extend({
-  components: {
-    Btn: () => import('@/components/ui/btn.vue')
-  },
-
   data: () => ({
     shown: false,
-    $SUPPORT_BAR_TIMEOUT_HANDLE: null
   }),
+
+  computed: {
+    canNag (): boolean {
+      return !isMobile.any && !preferences.supportBarNoBugging
+    }
+  },
 
   created (): void {
     eventBus.on({
       [events.KOEL_READY]: (): void => {
-        if (isMobile.any || preferences.supportBarNoBugging) {
-          return
+        if (this.canNag) {
+          this.setUpShowBarTimeout()
         }
-
-        this.setUpShowBarTimeout()
       }
     })
   },
@@ -64,11 +67,12 @@ export default Vue.extend({
 @import "~#/partials/_vars.scss";
 
 .support-bar {
-  background: #a33535;
+  background: $colorMainBgr;
   font-size: .9rem;
-  padding: 4px 16px;
+  padding: .75rem 1rem;
   display: flex;
   color: rgba(255, 255, 255, .6);
+  gap: 1rem;
   z-index: 9;
 
   p {
@@ -78,17 +82,26 @@ export default Vue.extend({
   a {
     color: #fff;
 
-    &:focus, &:hover {
-      color: #fff2bf;
+    &:hover {
+      color: $colorOrange;
+    }
+  }
+
+  .sep {
+    display: block;
+
+    &::after {
+      content: '•';
+      display: block;
     }
   }
 
   button {
-    padding: 4px 8px;
+    color: #fff;
     font-size: .9rem;
 
-    &:focus, &:hover {
-      color: #fff2bf;
+    &:hover {
+      color: $colorOrange;
     }
   }
 }
