@@ -1,5 +1,13 @@
 <template>
-  <div class="add-to" v-show="showing" v-koel-clickaway="close" data-test="add-to-menu">
+  <div
+    class="add-to"
+    v-show="showing"
+    tabindex="0"
+    v-koel-clickaway="close"
+    v-koel-focus
+    @keydown.esc="close"
+    data-test="add-to-menu"
+  >
     <section class="existing-playlists">
       <p>Add {{ songs.length | pluralize('song') }} to</p>
 
@@ -13,7 +21,6 @@
         <li
           @click="addSongsToFavorite"
           class="favorites"
-          role="button"
           tabindex="0"
           v-if="config.favorites"
         >
@@ -25,7 +32,6 @@
             :key="playlist.id"
             @click="addSongsToExistingPlaylist(playlist)"
             class="playlist"
-            role="button"
             tabindex="0"
             v-for="playlist in playlists"
           >

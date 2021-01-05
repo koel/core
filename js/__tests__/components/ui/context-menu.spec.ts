@@ -15,12 +15,13 @@ describe('components/ui/context-menu', () => {
     expect(mount(Component)).toMatchSnapshot()
   })
 
-  it('renders extra CSS classes', () => {
+  it('renders extra CSS classes', async () => {
     const wrapper = mount(Component, {
       propsData: {
         extraClass: 'foo'
       }
     })
+    await (wrapper.vm as any).open(0, 0)
     expect(wrapper.find('.menu').hasClass('foo')).toBe(true)
   })
 
@@ -32,17 +33,10 @@ describe('components/ui/context-menu', () => {
     expect(global.getComputedStyle(wrapper.find('.menu').element).display).toBe('block')
   })
 
-  it('closes', () => {
+  it('closes', async () => {
     const wrapper = mount(Component)
-    ;(wrapper.vm as any).open(42, 128)
+    await (wrapper.vm as any).open(42, 128)
     ;(wrapper.vm as any).close()
-    expect(global.getComputedStyle(wrapper.find('.menu').element).display).toBe('none')
-  })
-
-  it('notifies other instances to close', () => {
-    const m = mock(eventBus, 'emit')
-    const wrapper = mount(Component)
-    ;(wrapper.vm as any).open(42, 128)
-    expect(m).toHaveBeenCalledWith('CONTEXT_MENU_OPENING')
+    expect(wrapper.html()).toBeUndefined()
   })
 })
