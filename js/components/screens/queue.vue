@@ -21,15 +21,19 @@
       </template>
     </screen-header>
 
-    <song-list v-show="state.songs.length" :items="state.songs" type="queue" ref="songList"/>
+    <song-list v-if="state.songs.length" :items="state.songs" type="queue" ref="songList"/>
 
-    <div v-show="!state.songs.length" class="none text-light-gray">
-      <p>Empty spaces. Abandoned places.</p>
+    <screen-placeholder v-else>
+      <template v-slot:icon>
+        <i class="fa fa-coffee"></i>
+      </template>
 
-      <p v-if="shouldShowShufflingAllLink">How about
-        <a class="start text-orange" @click.prevent="shuffleAll">shuffling all songs</a>?
-      </p>
-    </div>
+      No songs queued.
+      <span class="secondary d-block" v-if="shouldShowShufflingAllLink">
+        How about
+        <a class="start" @click.prevent="shuffleAll">shuffling all songs</a>?
+      </span>
+    </screen-placeholder>
   </section>
 </template>
 
@@ -42,7 +46,8 @@ import hasSongList from '@/mixins/has-song-list.ts'
 
 export default mixins(hasSongList).extend({
   components: {
-    ScreenHeader: () => import('@/components/ui/screen-header.vue')
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
+    ScreenPlaceholder: () => import('@/components/ui/screen-placeholder.vue')
   },
 
   filters: { pluralize },
@@ -71,17 +76,3 @@ export default mixins(hasSongList).extend({
   }
 })
 </script>
-
-<style lang="scss">
-#queueWrapper {
-  .none {
-    padding: 16px 24px;
-  }
-
-  button.play-shuffle {
-    i {
-      margin-right: 0 !important;
-    }
-  }
-}
-</style>

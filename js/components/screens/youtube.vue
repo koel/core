@@ -3,12 +3,15 @@
     <screen-header>{{ title }}</screen-header>
 
     <div id="player">
-      <p class="none text-light-gray" data-testid="youtube-placeholder">
-        Your YouTube video will be played here.<br/>
-        You can start a video playback from the right sidebar. When a song is playing, that is.<br>
-        It might also be worth noting that video’s volume, progress and such are controlled from within
-        the video itself, and not via Koel’s controls.
-      </p>
+      <screen-placeholder data-testid="youtube-placeholder">
+        <template v-slot:icon>
+          <i class="fa fa-youtube-play"></i>
+        </template>
+        YouTube videos will be played here.
+        <span class="d-block instruction">
+          Start a video playback from the right sidebar.
+        </span>
+      </screen-placeholder>
     </div>
   </section>
 </template>
@@ -25,7 +28,8 @@ let player: YouTubePlayer
 
 export default Vue.extend({
   components: {
-    ScreenHeader: () => import('@/components/ui/screen-header.vue')
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
+    ScreenPlaceholder: () => import('@/components/ui/screen-placeholder.vue')
   },
 
   data: () => ({
@@ -76,7 +80,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.none {
-  padding: 16px 24px;
+#player {
+  height: 100%;
+
+  .instruction {
+    font-size: 1.5rem;
+  }
 }
 </style>

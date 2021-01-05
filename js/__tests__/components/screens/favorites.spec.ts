@@ -26,8 +26,8 @@ describe('components/screens/favorites', () => {
     expect(wrapper.findAll('div.none')).toHaveLength(0)
   })
 
-  it('displays a fallback message if there are no favorites', () => {
-    const wrapper = shallow(Component, {
+  it('displays a fallback message if there are no favorites', async () => {
+    const wrapper = mount(Component, {
       data: () => ({
         state: {
           songs: []
@@ -35,7 +35,8 @@ describe('components/screens/favorites', () => {
       })
     })
 
-    expect(wrapper.findAll('div.none')).toHaveLength(1)
+    await wrapper.vm.$nextTick()
+    expect(wrapper.has('[data-test=screen-placeholder]')).toBe(true)
   })
 
   it('allows downloading', () => {

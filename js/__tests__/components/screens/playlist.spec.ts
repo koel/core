@@ -29,15 +29,17 @@ describe('components/screens/playlist', () => {
     expect(m).toHaveBeenCalledWith(playlist)
   })
 
-  it('displays a fallback message if the playlist is empty', () => {
-    expect(shallow(Component, {
+  it('displays a fallback message if the playlist is empty', async () => {
+    const wrapper = mount(Component, {
       data: () => ({
         playlist: factory('playlist', {
           populated: true,
           songs: []
         })
       })
-    }).has('div.none')).toBe(true)
+    })
+    await wrapper.vm.$nextTick()
+    expect(wrapper.has('[data-test=screen-placeholder]')).toBe(true)
   })
 
   it('emits an event to delete the playlist', () => {

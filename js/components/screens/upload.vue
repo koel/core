@@ -31,21 +31,27 @@
           <upload-item v-for="file in uploadState.files" :key="file.id" :file="file" data-test="upload-item"/>
         </div>
 
-        <div class="instruction" v-else @change="onFileInputChange">
-          <div>
+        <screen-placeholder v-else>
+          <template v-slot:icon>
             <i class="fa fa-upload"></i>
-            <p>
-              {{ instructionText }}<br/>
-              <a class="or-click" role="button">
-                or click here to select songs
-                <input type="file" name="file[]" multiple/>
-              </a>
-            </p>
-          </div>
-        </div>
+          </template>
+
+          {{ instructionText }}
+          <span class="secondary d-block">
+            <a class="or-click d-block" role="button">
+              or click here to select songs
+              <input type="file" name="file[]" multiple  @change="onFileInputChange"/>
+            </a>
+          </span>
+        </screen-placeholder>
       </div>
 
-      <p class="text-light-gray" v-else>No media path set.</p>
+      <screen-placeholder v-else>
+        <template v-slot:icon>
+          <i class="fa fa-exclamation-triangle"></i>
+        </template>
+        No media path set.
+      </screen-placeholder>
     </div>
   </section>
 </template>
@@ -67,6 +73,7 @@ import Btn from '@/components/ui/btn.vue'
 export default Vue.extend({
   components: {
     ScreenHeader: () => import('@/components/ui/screen-header.vue'),
+    ScreenPlaceholder: () => import('@/components/ui/screen-placeholder.vue'),
     UploadItem,
     BtnGroup,
     Btn
@@ -182,53 +189,19 @@ export default Vue.extend({
     padding-bottom: 1rem;
   }
 
-  .instruction {
-    display: flex;
-    place-content: center;
-    place-items: center;
-    height: 100%;
+  input[type=file] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
     width: 100%;
-    text-align: center;
-    color: rgba(255, 255, 255, .2);
-    position: relative;
-
-    input[type=file] {
-      position: absolute;
-      top: 0;
-      left: 0;
-      opacity: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-      cursor: pointer;
-    }
-
-    i {
-      display: block;
-      font-size: 6em;
-      margin-bottom: 1.5rem;
-      opacity: .8;
-    }
-
-    p {
-      font-size: 2em;
-      font-weight: 200;
-
-      a.or-click {
-        font-size: 1.5rem;
-        display: block;
-        margin-top: .75rem;
-        position: relative;
-
-        &:hover {
-          color: rgba(255, 255, 255, .7);
-        }
-      }
-    }
+    height: 100%;
+    z-index: 2;
+    cursor: pointer;
   }
 
-  .instruction {
-    user-select: none;
+  a.or-click {
+    position: relative;
   }
 }
 </style>

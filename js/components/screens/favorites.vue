@@ -30,13 +30,19 @@
       </template>
     </screen-header>
 
-    <song-list v-show="state.songs.length" :items="state.songs" type="favorites" ref="songList"/>
+    <song-list v-if="state.songs.length" :items="state.songs" type="favorites" ref="songList"/>
 
-    <div v-if="!state.songs.length" class="text-light-gray none">
-      Start loving!
-      Click the <i style="margin: 0 5px" class="fa fa-heart"></i> icon when a song is playing to add it
-      to this list.
-    </div>
+    <screen-placeholder v-else>
+      <template v-slot:icon>
+        <i class="fa fa-frown-o"></i>
+      </template>
+      No favorites yet.
+      <span class="secondary d-block">
+        Click the
+        <i class="fa fa-heart-o"></i>
+        icon to mark a song as favorite.
+      </span>
+    </screen-placeholder>
   </section>
 </template>
 
@@ -49,7 +55,8 @@ import hasSongList from '@/mixins/has-song-list.ts'
 
 export default mixins(hasSongList).extend({
   components: {
-    ScreenHeader: () => import('@/components/ui/screen-header.vue')
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
+    ScreenPlaceholder: () => import('@/components/ui/screen-placeholder.vue')
   },
 
   filters: { pluralize },
@@ -64,11 +71,3 @@ export default mixins(hasSongList).extend({
   }
 })
 </script>
-
-<style lang="scss">
-#favoritesWrapper {
-  .none {
-    padding: 16px 24px;
-  }
-}
-</style>

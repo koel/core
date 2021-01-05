@@ -22,9 +22,15 @@
 
     <song-list v-if="state.songs.length" :items="state.songs" type="recently-played" :sortable="false"/>
 
-    <div v-if="!state.songs.length" class="none text-light-gray">
-      This playlist is automatically populated with the songs you most recently played, so start playing!
-    </div>
+    <screen-placeholder v-else>
+      <template v-slot:icon>
+        <i class="fa fa-clock-o"></i>
+      </template>
+      No songs recently played.
+      <span class="secondary d-block">
+        Start playing to populate this playlist.
+      </span>
+    </screen-placeholder>
   </section>
 </template>
 
@@ -37,7 +43,8 @@ import mixins from 'vue-typed-mixins'
 
 export default mixins(hasSongList).extend({
   components: {
-    ScreenHeader: () => import('@/components/ui/screen-header.vue')
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
+    ScreenPlaceholder: () => import('@/components/ui/screen-placeholder.vue')
   },
 
   filters: { pluralize },

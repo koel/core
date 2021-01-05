@@ -25,24 +25,28 @@ describe('components/screens/queue', () => {
     expect(wrapper.has(SongList)).toBe(true)
   })
 
-  it('prompts to shuffle all songs if there are songs and current queue is empty', () => {
+  it('prompts to shuffle all songs if there are songs and current queue is empty', async () => {
     songStore.state.songs = factory<Song>('song', 10)
-    expect(shallow(Component, {
+    const wrapper = mount(Component, {
       data: () => ({
         state: { songs: [] }
       })
-    }).find('a.start').text()).toMatch('shuffling all songs')
+    })
+
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('a.start').text()).toMatch('shuffling all songs')
   })
 
-  it("doesn't prompt to shuffle all songs if there is no song", () => {
+  it('doesn\'t prompt to shuffle all songs if there is no song', async () => {
     songStore.state.songs = []
-    expect(shallow(Component, {
+    const wrapper = mount(Component, {
       data: () => ({
-        state: {
-          songs: []
-        }
+        state: { songs: [] }
       })
-    }).has('a.start')).toBe(false)
+    })
+
+    await wrapper.vm.$nextTick()
+    expect(wrapper.has('a.start')).toBe(false)
   })
 
   it('shuffles all songs in the queue if any', () => {

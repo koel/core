@@ -33,22 +33,30 @@
 
     <template v-if="playlist.populated">
       <song-list
-        v-show="playlist.songs.length"
+        v-if="playlist.songs.length"
         :items="playlist.songs"
         :playlist="playlist"
         type="playlist"
         ref="songList"
       />
 
-      <div v-if="!playlist.songs.length" class="none text-light-gray">
-        <p v-if="playlist.is_smart">
-          No songs match the playlist's <a href class="text-orange" @click.prevent="editSmartPlaylist">criteria</a>.
-        </p>
-        <p v-else>
-          The playlist is currently empty. You can fill it up by dragging songs into its name in the sidebar,
-          or use the &quot;Add To…&quot; button.
-        </p>
-      </div>
+      <screen-placeholder v-else>
+        <template v-slot:icon>
+          <i class="fa fa-file-o"></i>
+        </template>
+
+        <template v-if="playlist.is_smart">
+          No songs match the playlist's
+          <a @click.prevent="editSmartPlaylist">criteria</a>.
+        </template>
+        <template v-else>
+          The playlist is currently empty.
+          <span class="d-block secondary">
+            Drag songs into its name in the sidebar
+            or use the &quot;Add To…&quot; button to fill it up.
+          </span>
+        </template>
+      </screen-placeholder>
     </template>
   </section>
 </template>
@@ -63,7 +71,8 @@ import hasSongList from '@/mixins/has-song-list.ts'
 
 export default mixins(hasSongList).extend({
   components: {
-    ScreenHeader: () => import('@/components/ui/screen-header.vue')
+    ScreenHeader: () => import('@/components/ui/screen-header.vue'),
+    ScreenPlaceholder: () => import('@/components/ui/screen-placeholder.vue')
   },
 
   filters: { pluralize },

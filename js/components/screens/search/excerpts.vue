@@ -47,12 +47,14 @@
           <p v-else>None found.</p>
         </section>
       </div>
-      <div class="screen-placeholder" v-else data-test="placeholder">
-        <div>
+
+      <screen-placeholder v-else>
+        <template v-slot:icon>
           <i class="fa fa-search"></i>
-          <p>Find songs, artists, and albums</p>
-        </div>
-      </div>
+        </template>
+        Find songs, artists, and albums,
+        <span class="secondary d-block">all in one place.</span>
+      </screen-placeholder>
     </div>
   </section>
 </template>
@@ -67,6 +69,7 @@ import router from '@/router'
 export default Vue.extend({
   components: {
     ScreenHeader: () => import('@/components/ui/screen-header.vue'),
+    ScreenPlaceholder: () => import('@/components/ui/screen-placeholder.vue'),
     SongCard: () => import('@/components/song/card.vue'),
     ArtistCard: () => import('@/components/artist/card.vue'),
     AlbumCard: () => import('@/components/album/card.vue'),
@@ -112,28 +115,5 @@ section ul {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   grid-gap: .7em 1em;
-}
-
-.screen-placeholder {
-  @include vertical-center();
-  position: relative;
-  height: 100%;
-  opacity: .2;
-
-  i {
-    display: block;
-    font-size: 6em;
-    margin-bottom: 1.5rem;
-    opacity: 0.8;
-  }
-
-  p {
-    font-size: 2em;
-    font-weight: 200;
-  }
-
-  div {
-    text-align: center;
-  }
 }
 </style>
