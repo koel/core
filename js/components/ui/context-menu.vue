@@ -67,6 +67,8 @@ export default Vue.extend({
       if (right > window.innerWidth) {
         element.style.right = isSubmenu ? `${this.$el.getBoundingClientRect().width}px` : '0'
         element.style.left = 'auto'
+      } else {
+        element.style.right = 'auto'
       }
     },
 
