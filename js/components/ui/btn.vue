@@ -9,15 +9,18 @@ export default {}
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
 button {
-  background: $colorBtnBgr;
-  color: $colorMainText;
+  background: var(--color-blue);
+  color: var(--color-white);
   font-size: 1rem;
   padding: .6rem 1rem;
   cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-blue-darker);
+  }
 
   &[small] {
     font-size: .9rem;
@@ -27,51 +30,43 @@ button {
   @include inset-when-pressed();
 
   &[green] {
-    background-color: $colorGreen;
+    background-color: var(--color-green);
 
     &:hover {
-      background-color: darken($colorGreen, 10%);
+      background-color: var(--color-green-darker)
     }
   }
 
   &[white] {
-    background-color: #fff;
+    background-color: var(--color-white);
     color: #333;
 
     &:hover {
-      background-color: darken(#fff, 10%);
+      background-color: var(--color-white-darker);
     }
   }
 
   &[red] {
-    background-color: $colorRed;
+    background-color: var(--color-red);
 
     &:hover {
-      background-color: darken($colorRed, 10%);
-    }
-  }
-
-  &[blue] {
-    background-color: $colorBlue;
-
-    &:hover {
-      background-color: darken($colorBlue, 10%);
+      background-color: var(--color-red-darker);
     }
   }
 
   &[grey], &[gray] {
-    background-color: $colorGrey;
+    background-color: var(--color-grey);
 
     &:hover {
-      background-color: darken($colorGrey, 10%);
+      background-color: var(--color-grey-darker)
     }
   }
 
   &[orange] {
-    background-color: $colorOrange;
+    background-color: var(--color-orange);
 
     &:hover {
-      background-color: darken($colorOrange, 10%);
+      background-color: var(--color-orange-darker);
     }
   }
 

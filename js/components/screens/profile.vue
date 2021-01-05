@@ -202,8 +202,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-
 #profileWrapper {
   input {
     &[type="text"], &[type="email"], &[type="password"] {
@@ -219,7 +217,7 @@ export default Vue.extend({
   .main-scroll-wrap > * + * {
     margin-top: 1.75rem;
     padding-top: 1.75rem;
-    border-top: 1px solid $colorSecondaryBgr;
+    border-top: 1px solid var(--color-background-secondary);
   }
 
   .change-password {
@@ -228,25 +226,25 @@ export default Vue.extend({
 
   .preferences {
     label {
-      font-size: $fontSize;
+      font-size: 1rem;
     }
   }
 
   .lastfm {
     h1 {
-      font-size: 24px;
-      margin-bottom: 16px;
+      font-size: 1.85rem;
+      margin-bottom: 1.25rem;
     }
 
     .buttons {
-      margin-top: 16px;
+      margin-top: 1.25rem;
 
       .connect {
         background: #d31f27; // Last.fm color yo!
       }
 
       .disconnect {
-        background: $colorGrey; // Our color yo!
+        background: var(--color-grey); // Our color yo!
       }
     }
   }

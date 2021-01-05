@@ -36,13 +36,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
-
 button {
   position: relative;
 
   &.REPEAT_ALL, &.REPEAT_ONE {
-    color: $colorOrange;
+    color: var(--color-orange);
   }
 
   &.REPEAT_ONE::after {

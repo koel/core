@@ -33,14 +33,12 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
-
 header {
   display: flex;
   gap: 1.5rem;
-  font-weight: $fontWeightThin;
+  font-weight: var(--font-weight-thin);
   padding: 1rem 1.8rem;
-  border-bottom: 1px solid $colorSecondaryBgr;
+  border-bottom: 1px solid var(--color-background-secondary);
   min-height: 96px;
   position: relative;
   align-items: center;
@@ -73,13 +71,13 @@ header {
     display: block;
     font-size: .9rem;
     line-height: 2;
-    font-weight: $fontWeightLight;
+    font-weight: var(--font-weight-light);
 
     a {
-      color: #fff;
+      color: var(--color-white);
 
       &:hover {
-        color: $colorOrange;
+        color: var(--color-orange);
       }
     }
   }

@@ -24,7 +24,7 @@ html.non-mac {
     height: 0px;
   }
   ::-webkit-scrollbar-thumb {
-    background: $colorMainBgr;
+    background: var(--color-background-main);
     border: 1px solid rgba(255, 255, 255, .2);
     border-radius: 50px;
   }
@@ -32,15 +32,15 @@ html.non-mac {
     background: #303030;
   }
   ::-webkit-scrollbar-thumb:active {
-    background: $colorMainBgr;
+    background: var(--color-background-main);
   }
   ::-webkit-scrollbar-track {
-    background: $colorMainBgr;
-    border: 0px none #ffffff;
+    background: var(--color-background-main);
+    border: 0px none var(---color-white);
     border-radius: 50px;
   }
   ::-webkit-scrollbar-track:hover {
-    background: $colorMainBgr;
+    background: var(--color-background-main);
   }
   ::-webkit-scrollbar-track:active {
     background: #333333;

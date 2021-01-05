@@ -83,11 +83,9 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
-
 .about {
   text-align: center;
-  background: $colorMainBgr;
+  background: var(--color-background-main);
   max-width: 480px;
   width: 90%;
   border-radius: .6rem;
@@ -113,10 +111,10 @@ export default Vue.extend({
   }
 
   a {
-    color: $colorMainText;
+    color: var(--color-white);
 
     &:hover {
-      color: $colorOrange;
+      color: var(--color-orange);
     }
   }
 }

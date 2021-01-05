@@ -8,12 +8,12 @@
 }
 
 body, html {
-  background: $colorMainBgr;
-  color: $colorMainText;
-  font-family: $fontFamily;
-  font-size: $fontSize;
+  background: var(--color-background-main);
+  color: var(--color-white);
+  font-family: var(--font-family);
+  font-size: 13px;
   line-height: 1.5rem;
-  font-weight: $fontWeightLight;
+  font-weight: var(--font-weight-light);
   overflow: hidden;
 }
 
@@ -21,19 +21,15 @@ input, select, button, textarea, .btn {
   -webkit-appearance: none;
   border: 0;
   outline: 0;
-  font-family: $fontFamily;
+  font-family: var(--font-family);
   font-size: 1rem;
-  font-weight: $fontWeightLight;
+  font-weight: var(--font-weight-light);
   padding: .5rem .6rem;
   border-radius: .2rem;
   margin: 0;
 
   &:required, &:invalid {
     box-shadow: none;
-  }
-
-  &.dirty {
-    background: $colorDirtyInputBgr;
   }
 
   &[type="search"] {
@@ -63,7 +59,7 @@ select {
 }
 
 strong {
-  font-weight: $fontWeightNormal;
+  font-weight: var(--font-weight-normal);
 }
 
 .hidden {
@@ -86,11 +82,11 @@ input[type="checkbox"] {
   width: 16px;
   min-width: 16px;
   box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
-  background: #fff;
+  background: var(--color-white);
 
   &:before {
     font-family: FontAwesome;
-    color: $colorOrange;
+    color: var(--color-orange);
     display: inline-block;
     vertical-align: middle;
     width: 14px;
@@ -117,11 +113,11 @@ a {
   cursor: pointer;
 
   &:link, &:visited {
-    color: $colorLink;
+    color: var(--color-grey-lighter);
   }
 
   &:hover, &:focus {
-    color: $colorOrange;
+    color: var(--color-orange);
   }
 }
 
@@ -140,10 +136,10 @@ a {
 
 .control {
   cursor: pointer;
-  color: $colorLink;
+  color: var(--color-grey-lighter);
 
   &:hover {
-    color: $colorLinkHovered;
+    color: var(--color-white);
   }
 }
 
@@ -189,7 +185,7 @@ label {
       margin-bottom: -1px;
 
       &[aria-selected=true] {
-        border-bottom: 1px solid $colorExtraBgr;
+        border-bottom: 1px solid var(--color-background-panes);
         opacity: 1;
       }
     }
@@ -208,7 +204,7 @@ label {
         border-color: #aaa;
 
         &[aria-selected=true] {
-          border-bottom-color: #fff;
+          border-bottom-color: var(--color-white);
         }
       }
     }
@@ -237,7 +233,7 @@ label {
 
     position: relative;
     width: 460px;
-    background: #fff;
+    background: var(--color-white);
     border-radius: $borderRadius;
     color: #333;
 
@@ -261,12 +257,12 @@ label {
       height: 32px;
 
       &:focus {
-        border-color: $colorOrange;
+        border-color: var(--color-orange);
       }
     }
 
     .warning {
-      color: #f00;
+      color: var(--color-red);
     }
 
     textarea {
@@ -295,27 +291,27 @@ label {
 
 .text- {
   &white {
-    color: #fff !important;
+    color: var(--color-white) !important;
   }
 
   &light-gray {
-    color: $colorLightGray !important;
+    color: var(--color-grey-lighter) !important;
   }
 
   &orange {
-    color: $colorOrange !important;
+    color: var(--color-orange) !important;
   }
 
   &maroon {
-    color: $colorMaroon !important;
+    color: var(--color-maroon) !important;
   }
 
   &red {
-    color: $colorRed !important;
+    color: var(--color-red) !important;
   }
 
   &blue {
-    color: $colorBlue !important;
+    color: var(--color-blue) !important;
   }
 
   &uppercase {

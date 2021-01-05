@@ -34,12 +34,10 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-
 .to-top-btn-wrapper {
   position: fixed;
   width: 100%;
-  bottom: $footerHeightMobile + 26px;
+  bottom: calc(var(--footer-height-mobile) + 26px);
   left: 0;
   text-align: center;
   z-index: 20;
@@ -54,8 +52,8 @@ export default Vue.extend({
     border-radius: 18px;
     padding: 8px 16px;
     background: rgba(0, 0, 0, .5);
-    border: 1px solid $colorMainText;
-    color: $colorMainText;
+    border: 1px solid var(--color-white);
+    color: var(--color-white);
 
     i {
       margin-right: 4px;

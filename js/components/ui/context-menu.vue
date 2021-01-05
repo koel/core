@@ -97,7 +97,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
 .menu {
@@ -111,14 +110,14 @@ export default Vue.extend({
     white-space: nowrap;
 
     &:hover {
-      background: $colorOrange;
-      color: #fff;
+      background: var(--color-orange);
+      color: var(--color-white);
     }
 
     &.separator {
       pointer-events: none;
       padding: 1px 0;
-      background: lighten($colorSecondaryBgr, 10%);
+      border-bottom: 1px solid rgba(255, 255, 255, .1);
     }
 
     &.has-sub {

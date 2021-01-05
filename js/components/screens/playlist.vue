@@ -120,8 +120,6 @@ export default mixins(hasSongList).extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-
 #playlistWrapper {
   .none {
     padding: 16px 24px;

@@ -118,10 +118,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-
 .song-item {
-  border-bottom: 1px solid $colorSecondaryBgr;
+  border-bottom: 1px solid var(--color-background-secondary);
   max-width: 100% !important; // overriding .item
   height: 35px;
 
@@ -136,7 +134,7 @@ export default Vue.extend({
   }
 
   .favorite .fa-heart, .favorite:hover .fa-heart-o {
-    color: $colorMaroon;
+    color: var(--color-maroon);
   }
 
   &.selected {
@@ -144,7 +142,7 @@ export default Vue.extend({
   }
 
   &.playing td {
-    color: $colorOrange;
+    color: var(--color-orange);
   }
 }
 </style>

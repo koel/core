@@ -76,8 +76,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
-
 .none {
   padding: 16px 24px;
 }

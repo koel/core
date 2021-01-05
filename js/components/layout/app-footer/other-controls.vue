@@ -129,15 +129,14 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
 .other-controls {
   @include vertical-center();
 
   position: relative;
-  flex: 0 0 $extraPanelWidth;
-  color: $colorLink;
+  flex: 0 0 var(--extra-panel-width);
+  color: var(--color-grey-lighter);
 
   .wrapper {
     @include vertical-center();
@@ -146,7 +145,7 @@ export default Vue.extend({
 
   .control {
     &.active {
-      color: $colorOrange;
+      color: var(--color-orange);
     }
 
     &:last-child {

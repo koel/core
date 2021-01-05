@@ -38,14 +38,13 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
 #userBadge {
   @include vertical-center();
 
   justify-content: flex-end;
-  flex: 0 0 $extraPanelWidth;
+  flex: 0 0 var(--extra-panel-width);
   text-align: right;
   height: 100%;
   position: relative;

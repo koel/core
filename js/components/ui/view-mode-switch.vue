@@ -68,7 +68,7 @@ export default Vue.extend({
     cursor: pointer;
 
     &.active {
-      background: #fff;
+      background: var(--color-white);
       color: #111;
     }
   }

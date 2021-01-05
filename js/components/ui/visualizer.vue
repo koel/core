@@ -48,14 +48,12 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
-
 #vizContainer {
   position: relative;
 
   &.fullscreen {
     // :fullscreen pseudo support is kind of buggy, so we use a class instead.
-    background: $colorMainBgr;
+    background: var(--color-background-main);
 
     .close {
       opacity: 0 !important;

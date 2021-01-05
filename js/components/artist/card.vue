@@ -102,7 +102,6 @@ export default mixins(artistAttributes).extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
 @include artist-album-card();

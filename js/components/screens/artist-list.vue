@@ -70,7 +70,6 @@ export default mixins(infiniteScroll).extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
 #artistsWrapper {

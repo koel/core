@@ -81,14 +81,13 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
 article {
   display: flex;
 
   &.playing {
-    color: $colorOrange;
+    color: var(--color-orange);
   }
 
   &:hover .cover, &:focus .cover {
@@ -135,7 +134,7 @@ article {
       text-align: center;
       z-index: 1;
       display: none;
-      color: #fff;
+      color: var(--color-white);
       transition: .3s;
 
       html.touchevents & {
@@ -168,10 +167,10 @@ article {
       opacity: .8;
 
       a {
-        color: #fff;
+        color: var(--color-white);
 
         &:hover {
-          color: $colorOrange;
+          color: var(--color-orange);
         }
       }
     }

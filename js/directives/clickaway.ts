@@ -13,5 +13,6 @@ export const clickaway: DirectiveOptions = {
     }
 
     document.addEventListener('click', (e: MouseEvent): void => el.contains(e.target as Node) || value())
+    document.addEventListener('contextmenu', (e: MouseEvent): void => el.contains(e.target as Node) || value())
   }
 }

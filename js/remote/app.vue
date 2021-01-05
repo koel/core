@@ -235,9 +235,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
-@import "~#/partials/_shared.scss";
 
 body, html {
   height: 100vh;
@@ -245,7 +243,7 @@ body, html {
 
 #app {
   height: 100vh;
-  background: $colorMainBgr;
+  background: var(--color-background-main);
 
   .login-wrapper {
     display: flex;
@@ -275,7 +273,7 @@ body, html {
     }
 
     .signal {
-      border: 1px solid $colorOrange;
+      border: 1px solid var(--color-orange);
       border-radius: 50%;
       height: 0;
       opacity: 0;
@@ -335,7 +333,7 @@ body, html {
       width: calc(70vw + 4px);
       height: calc(70vw + 4px);
       border-radius: 50%;
-      border: 2px solid #fff;
+      border: 2px solid var(--color-white);
       background-position: center center;
       background-size: cover;
       background-color: #2d2f2f;
@@ -379,7 +377,7 @@ body, html {
     font-size: 5vmin;
 
     a {
-      color: #fff;
+      color: var(--color-white);
 
       &:active {
         opacity: .8;
@@ -400,7 +398,7 @@ body, html {
       display: inline-block;
       width: 16vmin;
       height: 16vmin;
-      border: 1px solid #fff;
+      border: 1px solid var(--color-white);
       border-radius: 50%;
       line-height: 16vmin;
       font-size: 7vmin;
@@ -446,7 +444,7 @@ body, html {
 }
 
 .noUi-target {
-  background: #fff;
+  background: var(--color-white);
   border-radius: 4px;
   border: 0;
   box-shadow: none;

@@ -152,13 +152,13 @@ Vue.directive('koel-droppable', droppable)
 
 #dragGhost {
   display: inline-block;
-  background: $colorGreen;
+  background: var(--color-green);
   padding: .8rem;
   border-radius: .2rem;
-  color: #fff;
-  font-family: $fontFamily;
+  color: var(--color-white);
+  font-family: var(--font-family);
   font-size: 1rem;
-  font-weight: $fontWeightLight;
+  font-weight: var(--font-weight-light);
   position: fixed;
   top: 0;
   left: 0;

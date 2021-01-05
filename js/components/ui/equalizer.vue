@@ -208,12 +208,10 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-
 #equalizer {
   user-select: none;
   position: absolute;
-  bottom: $footerHeight;
+  bottom: var(--footer-height);
   width: 100%;
   background: rgba(0, 0, 0, 0.9);
   display: flex;
@@ -243,7 +241,7 @@ export default Vue.extend({
       &::after {
         content: '\f107';
         font-family: FontAwesome;
-        color: $colorOrange;
+        color: var(--color-orange);
         display: inline-block;
         position: absolute;
         right: 8px;
@@ -254,7 +252,7 @@ export default Vue.extend({
 
     select {
       background: none;
-      color: $colorMainText;
+      color: var(--color-white);
       padding-left: 0;
       width: 100px;
       text-transform: none;
@@ -372,7 +370,7 @@ export default Vue.extend({
     max-width: 414px;
     left: auto;
     right: 0;
-    bottom: $footerHeightMobile + 14px;
+    bottom: calc(var(--footer-heigh-mobile) + 14px);
     display: block;
     height: auto;
 

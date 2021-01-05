@@ -54,14 +54,13 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
 #mainHeader {
-  height: $headerHeight;
-  background: $colorSecondaryBgr;
+  height: var(--header-height);
+  background: var(--color-background-secondary);
   display: flex;
-  border-bottom: 1px solid $colorMainBgr;
+  border-bottom: 1px solid var(--color-background-main);
   -webkit-app-region: drag;
 
   input, a {
@@ -70,11 +69,11 @@ export default Vue.extend({
 
   h1.brand {
     flex: 1;
-    color: $colorMainText;
+    color: var(--color-white);
     font-size: 1.7rem;
-    font-weight: $fontWeightThin;
+    font-weight: var(--font-weight-thin);
     opacity: 0;
-    line-height: $headerHeight;
+    line-height: var(--header-height);
     text-align: center;
   }
 
@@ -82,7 +81,7 @@ export default Vue.extend({
     font-size: 1.4rem;
     flex: 0 0 48px;
     order: -1;
-    line-height: $headerHeight;
+    line-height: var(--header-height);
     text-align: center;
     display: none;
   }

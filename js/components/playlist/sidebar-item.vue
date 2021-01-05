@@ -175,8 +175,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
-
 .playlist {
   user-select: none;
 
@@ -196,12 +194,12 @@ export default Vue.extend({
 
   &.favorites a::before {
     content: "\f004";
-    color: $colorMaroon;
+    color: var(--color-maroon);
   }
 
   &.recently-played a::before {
     content: "\f1da";
-    color: $colorGreen;
+    color: var(--color-green);
   }
 
   &.smart a::before {

@@ -168,8 +168,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import   "~#/partials/_vars.scss";
-
 .result {
   position: absolute;
   background: #f2f2f2;
@@ -183,8 +181,8 @@ export default Vue.extend({
     padding: 2px 8px;
 
     &.selected, &:hover {
-    background: $colorOrange;
-    color: #fff;
+    background: var(--color-orange);
+    color: var(--color-white);
     }
   }
 }

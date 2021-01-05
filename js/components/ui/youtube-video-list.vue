@@ -18,7 +18,7 @@
           <p class="desc">{{ video.snippet.description }}</p>
         </div>
       </a>
-      <btn @click.prevent="loadMore" blue v-if="!loading" class="more" data-testid="youtube-search-more-btn">
+      <btn @click.prevent="loadMore" v-if="!loading" class="more" data-testid="youtube-search-more-btn">
         Load More
       </btn>
     </template>
@@ -81,8 +81,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
-
 .youtube-extra-wrapper {
   overflow-x: hidden;
 
@@ -105,7 +103,7 @@ export default Vue.extend({
     }
 
     &:hover, &:active, &:focus {
-      color: #fff;
+      color: var(--color-white);
     }
 
     &:last-of-type {

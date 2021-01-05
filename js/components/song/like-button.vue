@@ -32,15 +32,13 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-
 button {
   background: transparent;
   padding: 0;
   border: 0;
 
   &:hover .fa-heart-o {
-    color: $colorMaroon;
+    color: var(--color-maroon);
   }
 }
 </style>

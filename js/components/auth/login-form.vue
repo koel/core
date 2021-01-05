@@ -134,7 +134,7 @@ form {
 input {
   display: block;
   border: 0;
-  background: #fff;
+  background: var(--color-white);
   outline: none;
   width: 100%;
 }

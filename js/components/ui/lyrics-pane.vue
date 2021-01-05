@@ -67,8 +67,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
-
 .content {
   line-height: 1.6;
   position: relative;

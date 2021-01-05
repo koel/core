@@ -72,28 +72,26 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
-
 .upload-item {
   position: relative;
   margin-bottom: 5px;
   border-radius: 3px;
   min-height: 32px;
   overflow: hidden;
-  background: $colorGrey;
+  background: var(--color-grey);
 
   .progress {
     position: absolute;
     height: 100%;
     top: 0;
     left: 0;
-    background: $colorOrange;
+    background: var(--color-orange);
     z-index: 0;
     transition: .3s ease-out;
   }
 
   &.Uploaded {
-    background: $colorGreen;
+    background: var(--color-green);
 
     .progress {
       background: transparent;
@@ -101,7 +99,7 @@ export default Vue.extend({
   }
 
   &.Errored {
-    background: $colorRed;
+    background: var(--color-red);
 
     .progress {
       background: transparent;

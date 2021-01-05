@@ -73,14 +73,12 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
 .player-controls {
   @include vertical-center();
   flex: 0 0 256px;
   font-size: 1.8rem;
-  background: $colorPlayerControlsBgr;
 
   &:hover {
     .album-thumb-wrapper {
@@ -102,8 +100,8 @@ export default Vue.extend({
   }
 
   .album-thumb-wrapper {
-    flex: 0 0 $footerHeight + 30px;
-    height: $footerHeight + 30px;
+    flex: 0 0 calc(var(--footer-height) + 30px);
+    height: calc(var(--footer-height) + 30px);
     transition: .2s ease-out;
     position: relative;
     overflow: hidden;
@@ -136,7 +134,7 @@ export default Vue.extend({
 
   .album-thumb {
     position: relative;
-    background-color: $colorPlayerControlsBgr;
+    background-color: transparent;
     height: 100%;
     width: 100%;
     left: 0;
@@ -177,10 +175,10 @@ export default Vue.extend({
     display: inline-block;
     width: 100%;
     height: 100%;
-    line-height: $footerHeight + 30px;
+    line-height: calc(var(--footer-height) + 30px);
     text-align: center;
     text-indent: 2px;
-    color: #fff;
+    color: var(--color-white);
     opacity: 0;
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
   }
@@ -204,7 +202,7 @@ export default Vue.extend({
     .album-thumb-wrapper {
       flex: 0 0 48px;
       height: 48px;
-      box-shadow: 0 0 0 1px $colorLink;
+      box-shadow: 0 0 0 1px var(--color-grey-lighter);
     }
 
     .album-thumb {
@@ -222,7 +220,7 @@ export default Vue.extend({
     .prev, .next, .play, .pause {
       opacity: 1;
       font-size: 2rem;
-      color: $colorLink;
+      color: var(--color-grey-lighter);
     }
   }
 }

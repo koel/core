@@ -159,8 +159,6 @@ export default mixins(infiniteScroll).extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-
 #homeWrapper {
   .two-cols {
     display: grid;
@@ -194,7 +192,7 @@ export default mixins(infiniteScroll).extend({
     h1 {
       font-size: 1.4rem;
       margin: 0 0 1.8rem;
-      font-weight: $fontWeightThin;
+      font-weight: var(--font-weight-thin);
     }
   }
 

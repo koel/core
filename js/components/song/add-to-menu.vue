@@ -131,7 +131,6 @@ export default mixins(songMenuMethods).extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
 .add-to {
@@ -176,8 +175,8 @@ export default mixins(songMenuMethods).extend({
     cursor: pointer;
 
     &:hover {
-      background: $colorOrange;
-      color: #fff;
+      background: var(--color-orange);
+      color: var(--color-white);
     }
   }
 
@@ -188,7 +187,7 @@ export default mixins(songMenuMethods).extend({
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-bottom: 10px solid $colorSecondaryBgr;
+    border-bottom: 10px solid var(--color-background-secondary);
     position: absolute;
     top: -7px;
     left: calc(50% - 10px);

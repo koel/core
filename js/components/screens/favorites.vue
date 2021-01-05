@@ -66,8 +66,6 @@ export default mixins(hasSongList).extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-
 #favoritesWrapper {
   .none {
     padding: 16px 24px;

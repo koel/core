@@ -59,7 +59,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
 #overlay {
@@ -79,23 +78,23 @@ export default Vue.extend({
   }
 
   &.error {
-    color: $colorRed;
+    color: var(--color-red);
   }
 
   &.success {
-    color: $colorGreen;
+    color: var(--color-green);
   }
 
   &.info {
-    color: $colorBlue;
+    color: var(--color-blue);
   }
 
   &.loading {
-    color: $colorLightGray;
+    color: var(--color-grey-lighter);
   }
 
   &.warning {
-    color: $colorOrange;
+    color: var(--color-orange);
   }
 }
 </style>

@@ -174,12 +174,10 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-
 #extra {
-  flex: 0 0 $extraPanelWidth;
+  flex: 0 0 var(--extra-panel-width);
   padding: 24px 16px;
-  background: $colorExtraBgr;
+  background: var(--color-background-panes);
   display: none;
   overflow: auto;
   -ms-overflow-style: -ms-autohiding-scrollbar;
@@ -195,7 +193,7 @@ export default Vue.extend({
   }
 
   h1 {
-    font-weight: $fontWeightThin;
+    font-weight: var(--font-weight-thin);
     font-size: 2.2rem;
     margin-bottom: 16px;
     line-height: 2.8rem;
@@ -203,10 +201,10 @@ export default Vue.extend({
 
   @media only screen and (max-width : 1024px) {
     position: fixed;
-    height: calc(100vh - #{$headerHeight});
-    width: $extraPanelWidth;
+    height: calc(100vh - var(--header-height));
+    width: var(--extra-panel-width);
     z-index: 5;
-    top: $headerHeight;
+    top: var(--header-height);
     right: -100%;
     transition: right .3s ease-in;
 

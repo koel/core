@@ -26,7 +26,7 @@ let SUPPORT_BAR_TIMEOUT_HANDLE = 0
 
 export default Vue.extend({
   data: () => ({
-    shown: false,
+    shown: false
   }),
 
   computed: {
@@ -64,10 +64,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
-
 .support-bar {
-  background: $colorMainBgr;
+  background: var(--color-background-main);
   font-size: .9rem;
   padding: .75rem 1rem;
   display: flex;
@@ -80,10 +78,10 @@ export default Vue.extend({
   }
 
   a {
-    color: #fff;
+    color: var(--color-white);
 
     &:hover {
-      color: $colorOrange;
+      color: var(--color-orange);
     }
   }
 
@@ -97,11 +95,11 @@ export default Vue.extend({
   }
 
   button {
-    color: #fff;
+    color: var(--color-white);
     font-size: .9rem;
 
     &:hover {
-      color: $colorOrange;
+      color: var(--color-orange);
     }
   }
 }

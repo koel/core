@@ -120,11 +120,9 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-
 #sidebar {
   flex: 0 0 256px;
-  background-color: $colorSidebarBgr;
+  background-color: var(--color-background-panes);
   padding: 2.05rem 0;
   overflow: auto;
   overflow-x: hidden;
@@ -145,7 +143,7 @@ export default Vue.extend({
     transition: .3s;
     transform-origin: center left;
 
-    color: $colorMainText;
+    color: var(--color-white);
     background-color: rgba(0, 0, 0, .3);
   }
 
@@ -169,8 +167,8 @@ export default Vue.extend({
       border-left: 4px solid transparent;
 
       &.active, &:hover {
-        border-left-color: $colorOrange;
-        color: $colorLinkHovered;
+        border-left-color: var(--color-orange);
+        color: var(--color-white);
         background: rgba(255, 255, 255, .05);
         box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
       }
@@ -180,7 +178,7 @@ export default Vue.extend({
       }
 
       &:hover {
-        border-left-color: darken($colorOrange, 20%);
+        border-left-color: var(--color-orange-darker);
       }
 
       &::before {
@@ -231,10 +229,10 @@ export default Vue.extend({
 
   @media only screen and (max-width : 667px) {
     position: fixed;
-    height: calc(100vh - #{$headerHeight + $footerHeight});
+    height: calc(100vh - var(--header-height) + var(--footer-height));
     width: 100%;
     z-index: 99;
-    top: $headerHeight;
+    top: var(--header-height);
     left: -100%;
     transition: left .3s ease-in;
 

@@ -108,7 +108,6 @@ export default mixins(albumAttributes).extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
 .sep {

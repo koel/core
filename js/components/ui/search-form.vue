@@ -58,7 +58,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
 
 #searchForm {
@@ -81,7 +80,7 @@ export default Vue.extend({
     top: 0;
 
     &.showing {
-      top: $headerHeight;
+      top: var(--header-height);
       z-index: 100;
     }
 

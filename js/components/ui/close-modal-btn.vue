@@ -11,8 +11,6 @@ export default Vue.extend({})
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
-
 button {
   display: flex;
   place-content: center;
@@ -20,12 +18,12 @@ button {
   position: absolute;
   right: 0;
   top: 0;
-  background: $colorRed;
+  background: var(--color-red);
   width: 24px;
   height: 24px;
   border-radius: 0;
   padding: 0;
-  color: #fff;
+  color: var(--color-white);
   transition: opacity .3s;
 
   html.touch-events & {

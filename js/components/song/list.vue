@@ -427,8 +427,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_vars.scss";
-
 .song-list-wrap {
   position: relative;
   padding: 8px 24px;
@@ -450,7 +448,7 @@ export default Vue.extend({
 
   tr.droppable {
     border-bottom-width: 3px;
-    border-bottom-color: $colorGreen;
+    border-bottom-color: var(--color-green);
   }
 
   td,
@@ -498,13 +496,13 @@ export default Vue.extend({
   }
 
   th {
-    color: $colorLightGray;
+    color: var(--color-grey-lighter);
     letter-spacing: 1px;
     text-transform: uppercase;
     cursor: pointer;
 
     i {
-      color: $colorOrange;
+      color: var(--color-orange);
       font-size: 1.2rem;
     }
   }
@@ -562,7 +560,7 @@ export default Vue.extend({
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: $colorLightGray;
+      color: var(--color-grey-lighter);
       width: 100%;
     }
 
@@ -570,14 +568,14 @@ export default Vue.extend({
       display: none;
       padding: 0;
       vertical-align: bottom;
-      color: $colorMainText;
+      color: var(--color-white);
 
       &.artist, &.title {
         display: inline;
       }
 
       &.artist {
-        color: $colorLightGray;
+        color: var(--color-grey-lighter);
         font-size: 0.9rem;
         padding: 0 4px;
       }

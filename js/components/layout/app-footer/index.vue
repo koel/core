@@ -59,11 +59,9 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars.scss";
-
 footer {
-  background: $colorSecondaryBgr;
-  height: $footerHeight;
+  background: var(--color-background-secondary);
+  height: var(--footer-height);
   display: flex;
   position: relative;
   z-index: 9;
@@ -75,22 +73,21 @@ footer {
 
   // Add a reverse gradient here to eliminate the "hard cut" feel.
   &::before {
-    $gradientHeight: 2 * $footerHeight / 3;
     content: " ";
     position: absolute;
     width: 100%;
-    height: $gradientHeight;
-    top: -$gradientHeight;
+    height: calc(2 * var(--footer-height) / 3);
+    bottom: var(--footer-height);
     left: 0;
 
     // Safari 8 won't recognize rgba(255, 255, 255, 0) and treat it as black.
-    // rgba($colorMainBgr, 0) is a workaround.
+    // rgba(var(--color-background-main), 0) is a workaround.
     background-image: linear-gradient(to bottom, rgba(#000, 0) 0%, rgba(#000, .2) 100%);
     pointer-events: none; // click-through
   }
 
   @media only screen and (max-width: 768px) {
-    height: $footerHeightMobile;
+    height: var(--footer-height-mobile);
   }
 }
 </style>

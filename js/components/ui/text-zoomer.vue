@@ -36,7 +36,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_vars";
 @import "~#/partials/_mixins";
 
 .text-zoomer {
@@ -46,15 +45,15 @@ export default Vue.extend({
   button {
     @include inset-when-pressed();
 
-    background: $colorExtraBgr;
-    border: 1px solid $colorGrey;
+    background: var(--color-background-panes);
+    border: 1px solid var(--color-grey);
     color: rgba(255, 255, 255, .5);
     transition: background .2s;
     padding: .5rem .75rem;
 
     &:hover {
-      background: $colorGrey;
-      color: #fff;
+      background: var(--color-grey);
+      color: var(--color-white);
     }
 
     &:first-of-type {

@@ -66,11 +66,11 @@
     }
 
     .name {
-      font-weight: $fontWeightNormal;
+      font-weight: var(--font-weight-normal);
     }
 
     .meta {
-      color: $colorLightGray;
+      color: var(--color-grey-lighter);
       margin-top: 4px;
       font-size: .9rem;
       display: flex;
@@ -96,11 +96,11 @@
       text-overflow: ellipsis;
 
       &:link, &:visited {
-        color: $colorMainText;
+        color: var(--color-white);
       }
 
       &:focus, &:hover {
-        color: $colorOrange;
+        color: var(--color-orange);
       }
     }
 
@@ -121,11 +121,11 @@
   }
 
   .info-wrapper {
-    color: $colorLightGray;
+    color: var(--color-grey-lighter);
     position: absolute;
     top: 0;
     left: 0;
-    background: $colorMainBgr;
+    background: var(--color-background-main);
     width: 100%;
     height: 100%;
     z-index: 2;
@@ -145,7 +145,7 @@
 
 @mixin artist-album-info() {
   h1 {
-    font-weight: $fontWeightThin;
+    font-weight: var(--font-weight-thin);
     line-height: 2.8rem;
 
     &.name {
@@ -164,7 +164,7 @@
       font-size: 14px;
 
       &:hover {
-        color: $colorOrange;
+        color: var(--color-orange);
       }
     }
   }
@@ -176,8 +176,8 @@
   .more {
     margin-top: .75rem;
     border-radius: .23rem;
-    background: $colorBlue;
-    color: #fff;
+    background: var(--color-blue);
+    color: var(--color-white);
     padding: .3rem .6rem;
     display: inline-block;
     text-transform: uppercase;
@@ -231,11 +231,11 @@
       }
 
       &.available {
-        color: #fff;
+        color: var(--color-white);
         cursor: pointer;
 
         &:hover {
-          color: $colorOrange;
+          color: var(--color-orange);
         }
       }
     }
@@ -248,8 +248,8 @@
     clear: both;
 
     a {
-      color: #fff;
-      font-weight: $fontWeightNormal;
+      color: var(--color-white);
+      font-weight: var(--font-weight-normal);
 
       &:hover {
         color: #b90000;
@@ -282,14 +282,14 @@
 }
 
 @mixin context-menu() {
-  font-weight: $fontWeightLight;
-  font-size: $fontSize;
-  padding: 4px 0;
+  font-weight: var(--font-weight-light);
+  font-size: 1rem;
+  padding: .4rem 0;
   min-width: 144px;
-  color: $colorMainText;
-  background-color: $colorSecondaryBgr;
+  color: var(--color-white);
+  background-color: var(--color-context-menu-background);
   position: fixed;
-  border-radius: 5px;
+  border-radius: 4px;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -297,13 +297,13 @@
   align-items: stretch;
   text-align: left;
   box-shadow: inset 0 0px 0 rgba(255, 255, 255, 0.6), 0 2px 15px 4px rgba(0,0,0,0.56), 0 0 0 1px rgba(0, 0, 0, 0.3);
-  border: 1px solid lighten($colorSecondaryBgr, 10%);
+  border: 1px solid var(--color-context-menu-border);
 
   input[type="search"], input[type="text"], input[type="email"], input[type="url"] {
-    background: #fff;
+    background: var(--color-white);
 
     &:focus {
-      background: $colorDirtyInputBgr;
+      background: var(--color-white);
     }
   }
 }
