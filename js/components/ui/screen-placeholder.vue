@@ -31,8 +31,13 @@ export default Vue.extend({})
   position: relative;
 
   > div {
-    width: 60%;
+    max-width: 75%;
+    padding: 0 2rem;
     margin: 0 auto;
+
+    @media only screen and (max-width: 768px) {
+      max-width: 100%;
+    }
   }
 
   .jumbo-icon {
