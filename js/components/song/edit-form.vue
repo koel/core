@@ -1,5 +1,5 @@
 <template>
-  <div class="edit-song" data-testid="edit-song-form" @keydown.esc="maybeClose" tabindex="0" v-koel-focus>
+  <div class="edit-song" data-testid="edit-song-form" @keydown.esc="maybeClose" tabindex="0">
     <sound-bar v-if="loading"/>
     <form v-else @submit.prevent="submit">
       <header>
@@ -46,7 +46,7 @@
             >
               <div class="form-row" v-if="editingOnlyOneSong">
                 <label>Title</label>
-                <input title="Title" name="title" type="text" v-model="formData.title">
+                <input title="Title" name="title" type="text" v-model="formData.title" v-koel-focus>
               </div>
 
               <div class="form-row">
