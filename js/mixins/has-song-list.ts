@@ -36,9 +36,16 @@ export default Vue.extend({
   }),
 
   watch: {
-    'state.songs' (): void {
-      this.meta.songCount = this.state.songs.length
-      this.meta.totalLength = songStore.getFormattedLength(this.state.songs)
+    'state.songs': {
+      immediate: true,
+      handler (): void {
+        if (!this.state) {
+          return
+        }
+        
+        this.meta.songCount = this.state.songs.length
+        this.meta.totalLength = songStore.getFormattedLength(this.state.songs)
+      }
     }
   },
 
