@@ -12,6 +12,7 @@ import { events } from '@/config'
 import ControlsToggler from '@/components/ui/screen-controls-toggler.vue'
 import SongList from '@/components/song/list.vue'
 import SongListControls from '@/components/song/list-controls.vue'
+import { songStore } from '@/stores'
 
 export default Vue.extend({
   components: {
@@ -31,6 +32,13 @@ export default Vue.extend({
     songListControlConfig: {} as Partial<SongListControlsConfig>,
     isPhone: isMobile.phone
   }),
+
+  watch: {
+    'state.songs' (): void {
+      this.meta.songCount = this.state.songs.length
+      this.meta.totalLength = songStore.getFormattedLength(this.state.songs)
+    }
+  },
 
   methods: {
     playAll (shuffled: boolean): void {
@@ -52,12 +60,6 @@ export default Vue.extend({
 
   created (): void {
     eventBus.on({
-      [events.UPDATE_META]: (meta: SongListMeta, target: Vue): void => {
-        if (target === this) {
-          Object.assign(this.meta, meta)
-        }
-      },
-
       [events.SET_SELECTED_SONGS]: (songs: Song[], target: Vue): void => {
         if (target === this) {
           this.selectedSongs = songs

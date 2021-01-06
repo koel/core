@@ -63,7 +63,7 @@ import Vue, { PropOptions } from 'vue'
 import { VirtualScroller } from 'vue-virtual-scroller/dist/vue-virtual-scroller'
 import { orderBy, eventBus, startDragging, $ } from '@/utils'
 import { events } from '@/config'
-import { playlistStore, queueStore, songStore, favoriteStore } from '@/stores'
+import { playlistStore, queueStore, favoriteStore } from '@/stores'
 import { playback } from '@/services'
 import router from '@/router'
 import { SongListRowComponent } from 'koel/types/ui'
@@ -155,15 +155,9 @@ export default Vue.extend({
 
   methods: {
     render (): void {
-      if (this.sortable === false) {
+      if (!this.sortable) {
         this.sortKey = ''
       }
-
-      // Update the song count and duration status on parent.
-      eventBus.emit(events.UPDATE_META, {
-        songCount: this.items.length,
-        totalLength: songStore.getFormattedLength(this.items)
-      }, this.$parent)
 
       this.generateSongRows()
     },
@@ -193,7 +187,7 @@ export default Vue.extend({
      */
     sort (key: string | string[] = '') {
       // there are certain circumstances where sorting is simply disallowed, e.g. in Queue
-      if (this.sortable === false) {
+      if (!this.sortable) {
         return
       }
 
