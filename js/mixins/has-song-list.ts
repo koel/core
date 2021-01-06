@@ -22,7 +22,9 @@ export default Vue.extend({
   },
 
   data: () => ({
-    state: null as unknown as SongListState,
+    state: {
+      songs: []
+    } as SongListState,
     meta: {
       songCount: 0,
       totalLength: '00:00'

@@ -122,6 +122,7 @@ export default mixins(hasSongList).extend({
     async populate (playlist: Playlist): Promise<void> {
       await playlistStore.fetchSongs(playlist)
       this.playlist = playlist
+      this.state = playlist
       this.$nextTick(() => this.$refs.songList && (this.$refs.songList as any).sort())
     }
   }
