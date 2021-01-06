@@ -1,8 +1,7 @@
 import router from '@/router'
 import Component from '@/components/song/list.vue'
 import factory from '@/__tests__/factory'
-import { eventBus } from '@/utils'
-import { songStore, queueStore } from '@/stores'
+import { queueStore } from '@/stores'
 import { playback } from '@/services'
 import { mock } from '@/__tests__/__helpers__'
 import { mount } from '@/__tests__/adapter'
@@ -17,20 +16,6 @@ describe('components/song/list', () => {
   afterEach(() => {
     jest.resetModules()
     jest.clearAllMocks()
-  })
-
-  it('informs parent to update meta data', () => {
-    const emitStub = mock(eventBus, 'emit')
-    const getLengthStub = mock(songStore, 'getFormattedLength', '12:34:56')
-    mount(Component, {
-      propsData: {
-        items: songs,
-        type: 'all-songs'
-      }
-    })
-
-    expect(getLengthStub).toHaveBeenCalledWith(songs)
-    expect(emitStub).toHaveBeenCalled()
   })
 
   it.each([
@@ -134,7 +119,6 @@ describe('components/song/list', () => {
       }
     })
     wrapper.find('.song-list-wrap').trigger('keydown.a', { ctrlKey: true })
-    // @ts-ignore
-    wrapper.vm.songProxies.forEach(item => expect(item.selected).toBe(true))
+    ;(wrapper.vm as any).songProxies.forEach((item: SongProxy) => expect(item.selected).toBe(true))
   })
 })
