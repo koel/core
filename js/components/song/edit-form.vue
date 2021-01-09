@@ -11,92 +11,90 @@
         </hgroup>
       </header>
 
-      <div>
-        <div class="tabs tabs-white">
-          <div class="clear" role="tablist">
-            <button
-              :aria-selected="currentView === 'details'"
-              @click.prevent="currentView = 'details'"
-              aria-controls="editSongPanelDetails"
-              id="editSongTabDetails"
-              role="tab"
-            >
-              Details
-            </button>
-            <button
-              @click.prevent="currentView = 'lyrics'"
-              v-if="editingOnlyOneSong"
-              :aria-selected="currentView === 'lyrics'"
-              aria-controls="editSongPanelLyrics"
-              id="editSongTabLyrics"
-              role="tab"
-              data-testid="edit-song-lyrics-tab"
-            >
-              Lyrics
-            </button>
-          </div>
+      <div class="tabs tabs-white">
+        <div class="clear" role="tablist">
+          <button
+            :aria-selected="currentView === 'details'"
+            @click.prevent="currentView = 'details'"
+            aria-controls="editSongPanelDetails"
+            id="editSongTabDetails"
+            role="tab"
+          >
+            Details
+          </button>
+          <button
+            @click.prevent="currentView = 'lyrics'"
+            v-if="editingOnlyOneSong"
+            :aria-selected="currentView === 'lyrics'"
+            aria-controls="editSongPanelLyrics"
+            id="editSongTabLyrics"
+            role="tab"
+            data-testid="edit-song-lyrics-tab"
+          >
+            Lyrics
+          </button>
+        </div>
 
-          <div class="panes">
-            <div
-              aria-labelledby="editSongTabDetails"
-              id="editSongPanelDetails"
-              role="tabpanel"
-              tabindex="0"
-              v-show="currentView === 'details'"
-            >
-              <div class="form-row" v-if="editingOnlyOneSong">
-                <label>Title</label>
-                <input title="Title" name="title" type="text" v-model="formData.title" v-koel-focus>
-              </div>
-
-              <div class="form-row">
-                <label>Artist</label>
-                <typeahead
-                  :items="artistState.artists"
-                  :config="artistTypeAheadConfig"
-                  v-model="formData.artistName"
-                />
-              </div>
-
-              <div class="form-row">
-                <label>Album</label>
-                <typeahead
-                  :items="albumState.albums"
-                  :config="albumTypeAheadConfig"
-                  v-model="formData.albumName"
-                />
-              </div>
-
-              <div class="form-row">
-                <label class="small">
-                  <input
-                    type="checkbox"
-                    name="is_compilation"
-                    @change="changeCompilationState"
-                    ref="compilationStateChk"
-                  />
-                  Album is a compilation of songs by various artists
-                </label>
-              </div>
-
-              <div class="form-row" v-if="editingOnlyOneSong">
-                <label>Track</label>
-                <input name="track" type="text" pattern="\d*" v-model="formData.track"
-                title="Empty or a number">
-              </div>
+        <div class="panes">
+          <div
+            aria-labelledby="editSongTabDetails"
+            id="editSongPanelDetails"
+            role="tabpanel"
+            tabindex="0"
+            v-show="currentView === 'details'"
+          >
+            <div class="form-row" v-if="editingOnlyOneSong">
+              <label>Title</label>
+              <input title="Title" name="title" type="text" v-model="formData.title" v-koel-focus>
             </div>
 
-            <div
-              aria-labelledby="editSongTabLyrics"
-              id="editSongPanelLyrics"
-              role="tabpanel"
-              tabindex="0"
-              v-if="editingOnlyOneSong"
-              v-show="currentView === 'lyrics'"
-            >
-              <div class="form-row">
-                <textarea title="Lyrics" name="lyrics" v-model="formData.lyrics" v-koel-focus></textarea>
-              </div>
+            <div class="form-row">
+              <label>Artist</label>
+              <typeahead
+                :items="artistState.artists"
+                :config="artistTypeAheadConfig"
+                v-model="formData.artistName"
+              />
+            </div>
+
+            <div class="form-row">
+              <label>Album</label>
+              <typeahead
+                :items="albumState.albums"
+                :config="albumTypeAheadConfig"
+                v-model="formData.albumName"
+              />
+            </div>
+
+            <div class="form-row">
+              <label class="small">
+                <input
+                  type="checkbox"
+                  name="is_compilation"
+                  @change="changeCompilationState"
+                  ref="compilationStateChk"
+                />
+                Album is a compilation of songs by various artists
+              </label>
+            </div>
+
+            <div class="form-row" v-if="editingOnlyOneSong">
+              <label>Track</label>
+              <input name="track" type="text" pattern="\d*" v-model="formData.track"
+                     title="Empty or a number">
+            </div>
+          </div>
+
+          <div
+            aria-labelledby="editSongTabLyrics"
+            id="editSongPanelLyrics"
+            role="tabpanel"
+            tabindex="0"
+            v-if="editingOnlyOneSong"
+            v-show="currentView === 'lyrics'"
+          >
+            <div class="form-row">
+              <textarea title="Lyrics" name="lyrics" v-model="formData.lyrics" v-koel-focus></textarea>
             </div>
           </div>
         </div>
@@ -352,6 +350,10 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 form {
+  .tabs {
+    padding: 0;
+  }
+
   > header {
     img {
       flex: 0 0 96px;

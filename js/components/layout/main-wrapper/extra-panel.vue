@@ -176,7 +176,7 @@ export default Vue.extend({
 <style lang="scss">
 #extra {
   flex: 0 0 var(--extra-panel-width);
-  padding: 24px 16px;
+  padding-top: 2rem;
   background: var(--color-background-panes);
   display: none;
   overflow: auto;
@@ -195,7 +195,7 @@ export default Vue.extend({
   h1 {
     font-weight: var(--font-weight-thin);
     font-size: 2.2rem;
-    margin-bottom: 16px;
+    margin-bottom: 1.25rem;
     line-height: 2.8rem;
   }
 

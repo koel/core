@@ -73,10 +73,6 @@ export default Vue.extend({
     }
   }
 
-  button {
-    margin-top: 16px;
-  }
-
   &.error {
     color: var(--color-red);
   }

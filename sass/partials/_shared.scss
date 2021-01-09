@@ -183,6 +183,10 @@ label {
       border: 1px solid var(--color-tab-border-dark);
       margin-bottom: -1px;
 
+      &:first-child {
+        margin-left: 1.25rem;
+      }
+
       &[aria-selected=true] {
         border-bottom: 1px solid var(--color-background-panes);
         opacity: 1;
@@ -191,7 +195,7 @@ label {
   }
 
   .panes {
-    padding: 16px 0;
+    padding: 1.25rem;
   }
 
   &.tabs-white {
@@ -239,11 +243,15 @@ label {
     }
 
     > header, > div, > footer {
-      padding: 16px;
+      padding: 1.2rem;
     }
 
-    > div {
-      padding-bottom: 0;
+    > * + * {
+      margin-top: 1.25rem;
+    }
+
+    > footer {
+      margin-top: 0;
     }
 
     input[type="text"], input[type="number"], input[type="email"], input[type="password"],
