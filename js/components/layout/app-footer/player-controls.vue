@@ -18,7 +18,7 @@
         tabindex="0"
         title="Play or resume"
         data-testid="play-btn"
-        v-if="song && song.playbackState !== 'Playing'"
+        v-if="shouldDisplayPlayButton"
       >
         <i class="fa fa-play"></i>
       </span>
@@ -61,6 +61,10 @@ export default Vue.extend({
   computed: {
     cover (): string {
       return this.song && this.song.album.cover ? this.song.album.cover : getDefaultCover()
+    },
+
+    shouldDisplayPlayButton (): boolean {
+      return !this.song || (this.song && this.song.playbackState === 'Playing')
     }
   },
 
