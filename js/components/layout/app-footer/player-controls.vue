@@ -64,7 +64,7 @@ export default Vue.extend({
     },
 
     shouldDisplayPlayButton (): boolean {
-      return !this.song || (this.song && this.song.playbackState === 'Playing')
+      return !this.song || (this.song && this.song.playbackState !== 'Playing')
     }
   },
 
