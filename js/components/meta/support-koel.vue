@@ -70,8 +70,11 @@ export default Vue.extend({
   padding: .75rem 1rem;
   display: flex;
   color: rgba(255, 255, 255, .6);
-  gap: 1rem;
   z-index: 9;
+
+  > * + * {
+    margin-left: 1rem;
+  }
 
   p {
     flex: 1;

@@ -140,7 +140,10 @@ export default Vue.extend({
 
   .wrapper {
     @include vertical-center();
-    gap: 1rem;
+
+    > * + * {
+      margin-left: 1rem;
+    }
   }
 
   .control {
@@ -168,8 +171,8 @@ export default Vue.extend({
       display: none;
     }
 
-    .wrapper {
-      gap: 1.5rem;
+    > * + * {
+      margin-left: 1.5rem;
     }
   }
 }

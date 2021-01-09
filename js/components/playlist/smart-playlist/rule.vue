@@ -136,7 +136,14 @@ export default Vue.extend({
 
 .row {
   display: flex;
-  gap: .5rem;
+
+  > * + * {
+    margin-left: .5rem;
+  }
+}
+
+.suffix {
+  margin-left: .3rem;
 }
 
 button.remove-rule i {

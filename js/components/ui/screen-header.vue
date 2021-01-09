@@ -35,7 +35,6 @@ export default Vue.extend({
 <style lang="scss" scoped>
 header {
   display: flex;
-  gap: 1.5rem;
   font-weight: var(--font-weight-thin);
   padding: 1rem 1.8rem;
   border-bottom: 1px solid var(--color-background-secondary);
@@ -45,6 +44,10 @@ header {
   align-content: stretch;
   line-height: normal;
   background: rgba(0, 0, 0, .1);
+
+  > * + * {
+    margin-left: 1.5rem;
+  }
 
   .thumbnail-wrapper{
     width: 64px;
