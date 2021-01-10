@@ -132,7 +132,7 @@ export default Vue.extend({
     margin-top: 2.25rem;
   }
 
-  html.touchevents & {
+  @media (hover: none) {
     // Enable scroll with momentum on touch devices
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;

@@ -26,7 +26,7 @@ button {
   color: var(--color-white);
   transition: opacity .3s;
 
-  html.touch-events & {
+  @media (hover: none) {
     opacity: 1;
   }
 }

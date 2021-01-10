@@ -135,12 +135,14 @@ export default Vue.extend({
     .buttons {
       display: none;
       margin-top: .5rem;
-    }
 
-    &:hover, html.touchevents & {
-      .buttons {
+      @media (hover: none) {
         display: block;
       }
+    }
+
+    &:hover .buttons {
+      display: block;
     }
   }
 

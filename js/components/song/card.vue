@@ -119,7 +119,7 @@ article {
       background: #000;
       opacity: 0;
 
-      html.touchevents & {
+      @media (hover: none) {
         opacity: .7;
       }
     }
@@ -137,7 +137,7 @@ article {
       color: var(--color-white);
       transition: .3s;
 
-      html.touchevents & {
+      @media (hover: none) {
         display: block;
       }
     }

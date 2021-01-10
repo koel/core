@@ -123,7 +123,7 @@ export default Vue.extend({
   max-width: 100% !important; // overriding .item
   height: 35px;
 
-  html.no-touchevents &:hover {
+  &:hover {
     background: rgba(255, 255, 255, .05);
   }
 

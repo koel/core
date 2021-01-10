@@ -79,7 +79,7 @@
       .right {
         display: none;
 
-        html.touchevents & {
+        @media (hover: none) {
           display: block;
         }
 

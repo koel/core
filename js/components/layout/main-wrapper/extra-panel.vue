@@ -182,7 +182,7 @@ export default Vue.extend({
   overflow: auto;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 
-  html.touchevents & {
+  @media (hover: none) {
     // Enable scroll with momentum on touch devices
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;

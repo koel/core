@@ -480,7 +480,7 @@ export default Vue.extend({
     &.play {
       display: none;
 
-      html.touchevents & {
+      @media (hover: none) {
         display: block;
         position: absolute;
         top: 8px;
@@ -540,7 +540,6 @@ export default Vue.extend({
 
     .scroller {
       top: 0;
-      bottom: 24px;
 
       .item-container {
         left: 12px;

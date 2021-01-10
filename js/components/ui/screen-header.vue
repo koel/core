@@ -44,10 +44,7 @@ header {
   align-content: stretch;
   line-height: normal;
   background: rgba(0, 0, 0, .1);
-
-  > * + * {
-    margin-left: 1.5rem;
-  }
+  gap: 1.5rem;
 
   .thumbnail-wrapper{
     width: 64px;

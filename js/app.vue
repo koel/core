@@ -164,11 +164,7 @@ Vue.directive('koel-droppable', droppable)
   left: 0;
   z-index: -1;
 
-  /**
-   * We can totally hide this element on touch devices, because there's
-   * no drag and drop support there anyway.
-   */
-  html.touchevents & {
+  @media (hover: none) {
     display: none;
   }
 }
@@ -180,7 +176,7 @@ Vue.directive('koel-droppable', droppable)
   height: 1px;
   bottom: 1px;
 
-  html.touchevents & {
+  @media (hover: none) {
     display: none;
   }
 }
