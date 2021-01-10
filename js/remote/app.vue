@@ -3,10 +3,10 @@
     <template v-if="authenticated">
       <album-art-overlay :album="album" v-if="preferences.showAlbumArtOverlay"/>
 
-      <div id="main" data-cy="main">
+      <main>
         <template v-if="connected">
           <div class="details" v-if="song">
-            <div class="cover" :style="{ backgroundImage: 'url('+song.album.cover+')' }"></div>
+            <div class="cover" :style="{ backgroundImage: 'url('+song.album.cover+')' }"/>
             <div class="info">
               <div class="wrap">
                 <p class="title text">{{ song.title }}</p>
@@ -15,9 +15,7 @@
               </div>
             </div>
           </div>
-          <div class="none text-light-gray" v-else>
-            <p>No song is playing.</p>
-          </div>
+          <p class="none text-light-gray" v-else>No song is playing.</p>
           <footer>
             <a class="favorite" @click.prevent="toggleFavorite">
               <i class="fa fa-heart yep" v-if="song && song.liked"></i>
@@ -27,36 +25,35 @@
               <i class="fa fa-step-backward"></i>
             </a>
             <a class="play-pause" @click.prevent="togglePlayback">
-              <i class="fa fa-pause" v-if="playing"></i>
-              <i class="fa fa-play" v-else></i>
+              <i class="fa fa-pause" v-if="playing"/>
+              <i class="fa fa-play" v-else/>
             </a>
             <a class="next" @click.prevent="playNext">
               <i class="fa fa-step-forward"></i>
             </a>
             <span class="volume">
-              <span id="volumeSlider" v-show="showingVolumeSlider"></span>
-              <span class="icon" @click.prevent="toggleVolumeSlider">
-                <i class="fa fa-volume-off" v-if="muted"></i>
-                <i class="fa fa-volume-up" v-else></i>
+              <span id="volumeSlider" v-show="showingVolumeSlider" v-koel-clickaway="closeVolumeSlider"/>
+              <span class="icon" @click.stop="toggleVolumeSlider">
+                <i class="fa fa-volume-off" v-if="muted"/>
+                <i class="fa fa-volume-up" v-else/>
               </span>
             </span>
           </footer>
         </template>
         <div v-else class="loader">
           <div v-if="!maxRetriesReached">
-            <p><span>Searching for Koel…</span></p>
+            <p>Searching for Koel…</p>
             <div class="signal"></div>
           </div>
-          <div v-else>
-            <p>No active Koel instance found.
-              <a @click.prevent="rescan" class="rescan text-orange">Rescan</a>
-            </p>
-          </div>
+          <p v-else>
+            No active Koel instance found.
+            <a @click.prevent="rescan" class="rescan text-orange">Rescan</a>
+          </p>
         </div>
-      </div>
+      </main>
     </template>
 
-    <div class="login-wrapper" data-cy="loginForm" v-else>
+    <div class="login-wrapper" v-else>
       <login-form @loggedin="onUserLoggedIn"/>
     </div>
   </div>
@@ -70,6 +67,7 @@ import { userStore, preferenceStore } from '@/stores'
 import { events } from '@/config'
 import LoginForm from '@/components/auth/login-form.vue'
 import { SliderElement } from 'koel/types/ui'
+import { clickaway } from '@/directives'
 
 let volumeSlider: SliderElement
 const MAX_RETRIES = 10
@@ -79,6 +77,10 @@ export default Vue.extend({
   components: {
     LoginForm,
     AlbumArtOverlay: () => import('@/components/ui/album-art-overlay.vue')
+  },
+
+  directives: {
+    'koel-clickaway': clickaway
   },
 
   data: () => ({
@@ -119,7 +121,13 @@ export default Vue.extend({
       })
     },
 
-    volume: (value: number): void => volumeSlider.noUiSlider!.set(value || DEFAULT_VOLUME)
+    volume: (value: number): void => {
+      if (!volumeSlider) {
+        return
+      }
+
+      volumeSlider.noUiSlider!.set(value || DEFAULT_VOLUME)
+    }
   },
 
   methods: {
@@ -151,13 +159,16 @@ export default Vue.extend({
 
         this.scan()
       } catch (e) {
-        console.error(e)
         this.authenticated = false
       }
     },
 
     toggleVolumeSlider (): void {
       this.showingVolumeSlider = !this.showingVolumeSlider
+    },
+
+    closeVolumeSlider (): void {
+      this.showingVolumeSlider = false
     },
 
     toggleFavorite (): void {
@@ -292,21 +303,21 @@ body, html {
 
     @keyframes pulsate {
       0% {
-        transform:scale(.1);
+        transform: scale(.1);
         opacity: 0.0;
       }
       50% {
-        opacity:1;
+        opacity: 1;
       }
       100% {
-        transform:scale(1.2);
-        opacity:0;
+        transform: scale(1.2);
+        opacity: 0;
       }
     }
   }
 }
 
-#main {
+main {
   height: 100%;
   display: flex;
   flex-direction: column;
