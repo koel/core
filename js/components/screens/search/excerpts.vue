@@ -115,5 +115,13 @@ section ul {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   grid-gap: .7em 1em;
+
+  @media only screen and (max-width : 667px) {
+    display: block;
+
+    > * + * {
+      margin-top: .7rem;
+    }
+  }
 }
 </style>
