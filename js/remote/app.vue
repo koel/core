@@ -360,13 +360,11 @@ body, html {
     .artist {
       font-size: 5vmin;
       margin: 0 auto 6px;
-      font-weight: 100;
       opacity: .5;
     }
 
     .album {
       font-size: 4vmin;
-      font-weight: 100;
       opacity: .5;
     }
   }
