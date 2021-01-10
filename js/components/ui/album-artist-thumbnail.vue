@@ -191,6 +191,10 @@ export default Vue.extend({
       background-color: #000;
       opacity: 0;
       z-index: 2;
+
+      @media (hover: none) {
+        opacity: .5;
+      }
     }
 
     &:hover, &:focus {
