@@ -76,6 +76,10 @@ export default Vue.extend({
     position: absolute;
     top: 0;
     right: 0;
+
+    @media (hover: none) {
+      opacity: 1;
+    }
   }
 
   &:hover .text-zoomer {

@@ -215,6 +215,10 @@ export default Vue.extend({
 
   @media only screen and (max-width : 667px) {
     width: 100%;
+
+    [role=tabpanel] {
+      padding-bottom: calc(var(--footer-height-mobile) + 1rem)
+    }
   }
 }
 </style>
