@@ -64,7 +64,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import nouislider from 'nouislider'
+import noUISlider from 'nouislider'
 import { socket, auth } from '@/services'
 import { userStore, preferenceStore } from '@/stores'
 import { events } from '@/config'
@@ -73,6 +73,7 @@ import { SliderElement } from 'koel/types/ui'
 
 let volumeSlider: SliderElement
 const MAX_RETRIES = 10
+const DEFAULT_VOLUME = 7
 
 export default Vue.extend({
   components: {
@@ -90,35 +91,35 @@ export default Vue.extend({
     showingVolumeSlider: false,
     retries: 0,
     preferences: preferenceStore.state,
-    volume: 7
+    volume: DEFAULT_VOLUME
   }),
 
   watch: {
-    connected (): void {
-      this.$nextTick((): void => {
-        volumeSlider = document.getElementById('volumeSlider') as SliderElement
+    async connected (): Promise<void> {
+      await this.$nextTick()
 
-        nouislider.create(volumeSlider, {
-          orientation: 'vertical',
-          connect: [true, false],
-          start: this.volume,
-          range: { min: 0, max: 10 },
-          direction: 'rtl'
-        })
+      volumeSlider = document.getElementById('volumeSlider') as SliderElement
 
-        if (!volumeSlider.noUiSlider) {
-          throw new Error('Failed to initialize noUISlider on element #volumeSlider')
-        }
+      noUISlider.create(volumeSlider, {
+        orientation: 'vertical',
+        connect: [true, false],
+        start: this.volume || DEFAULT_VOLUME,
+        range: { min: 0, max: 10 },
+        direction: 'rtl'
+      })
 
-        volumeSlider.noUiSlider.on('change', (values: number[], handle: number): void => {
-          const volume = values[handle]
-          this.muted = !volume
-          socket.broadcast(events.SOCKET_SET_VOLUME, { volume })
-        })
+      if (!volumeSlider.noUiSlider) {
+        throw new Error('Failed to initialize noUISlider on element #volumeSlider')
+      }
+
+      volumeSlider.noUiSlider.on('change', (values: number[], handle: number): void => {
+        const volume = values[handle]
+        this.muted = !volume
+        socket.broadcast(events.SOCKET_SET_VOLUME, { volume })
       })
     },
 
-    volume: (value: number): void => volumeSlider.noUiSlider!.set(value)
+    volume: (value: number): void => volumeSlider.noUiSlider!.set(value || DEFAULT_VOLUME)
   },
 
   methods: {
@@ -144,7 +145,7 @@ export default Vue.extend({
           .listen(events.SOCKET_VOLUME_CHANGED, (volume: number): void => volumeSlider.noUiSlider!.set(volume))
           .listen(events.SOCKET_STATUS, ({ song, volume }: { song: Song, volume: number }): void => {
             this.song = song
-            this.volume = volume
+            this.volume = volume || DEFAULT_VOLUME
             this.connected = true
           })
 
