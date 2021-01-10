@@ -468,6 +468,8 @@ body, html {
   border: 0;
   left: -4px;
   top: 0;
+  background: var(--color-orange);
+  box-shadow: none;
 
   &::after, &::before {
     display: none;
