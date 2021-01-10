@@ -235,7 +235,9 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+@import "~#/partials/_vars.scss";
 @import "~#/partials/_mixins.scss";
+@import "~#/partials/_shared.scss";
 
 body, html {
   height: 100vh;
