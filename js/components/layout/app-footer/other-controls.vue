@@ -61,6 +61,7 @@ import { download, socket } from '@/services'
 import { eventBus, isAudioContextSupported } from '@/utils'
 import { events } from '@/config'
 import { favoriteStore, preferenceStore, sharedStore, songStore } from '@/stores'
+import isMobile from 'ismobilejs'
 
 export default Vue.extend({
   props: {
@@ -112,7 +113,9 @@ export default Vue.extend({
     },
 
     toggleVisualizer: (): void => {
-      eventBus.emit(events.TOGGLE_VISUALIZER)
+      if (!isMobile.any) {
+        eventBus.emit(events.TOGGLE_VISUALIZER)
+      }
     },
 
     downloadCurrentSong (): void {
