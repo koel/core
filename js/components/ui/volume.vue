@@ -67,8 +67,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_mixins.scss";
-
 #volume {
   position: relative;
   z-index: 99;
@@ -80,7 +78,7 @@ export default Vue.extend({
     transform-origin: 0;
     position: absolute;
     bottom: -25px;
-    border: 14px solid var(--color-border);
+    border: 14px solid var(--color-bg-primary);
     border-left-width: 30px;
     z-index: 0;
     width: 140px;

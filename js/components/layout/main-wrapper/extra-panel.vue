@@ -1,5 +1,5 @@
 <template>
-  <section id="extra" :class="{ showing: state.showExtraPanel }" class="text-light-gray" data-testid="extra-panel">
+  <section id="extra" :class="{ showing: state.showExtraPanel }" class="text-secondary" data-testid="extra-panel">
     <div class="tabs">
       <div class="clear" role="tablist">
         <button
@@ -176,8 +176,8 @@ export default Vue.extend({
 <style lang="scss">
 #extra {
   flex: 0 0 var(--extra-panel-width);
-  padding-top: 2rem;
-  background: var(--color-background-panes);
+  padding-top: 2.3rem;
+  background: var(--color-bg-secondary);
   display: none;
   overflow: auto;
   -ms-overflow-style: -ms-autohiding-scrollbar;

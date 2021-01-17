@@ -173,7 +173,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .result {
   position: absolute;
-  background: var(--color-grey-lightest);
+  background: rgba(0, 0, 0, .9);
   max-height: 96px;
   border-radius: 0 0 3px 3px;
   width: 100%;
@@ -184,8 +184,8 @@ export default Vue.extend({
     padding: 2px 8px;
 
     &.selected, &:hover {
-    background: var(--color-orange);
-    color: var(--color-white);
+    background: var(--color-highlight);
+    color: var(--color-text-primary);
     }
   }
 }

@@ -37,7 +37,7 @@ export default Vue.extend({
 <style scoped>
 div {
   position: fixed;
-  opacity: .07;
+  opacity: .1;
   z-index: 10000;
   overflow: hidden;
   background-size: cover;

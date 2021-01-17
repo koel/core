@@ -29,12 +29,9 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">/* no scoping here because we're overriding some plyr classes */
-@import "~#/partials/_mixins.scss";
-
 .middle-pane {
   flex: 1;
   display: flex;
-  background: var(--color-background-panes);
 
   @media only screen and (max-width: 768px) {
     width: 100%;
@@ -58,7 +55,7 @@ export default Vue.extend({
 
     a {
       &:hover {
-        color: var(--color-orange);
+        color: var(--color-highlight);
       }
     }
   }
@@ -73,8 +70,7 @@ export default Vue.extend({
 
   .plyr__progress {
     &--seek {
-      height: 11px;
-      border-bottom: 10px solid var(--color-background-panes); // increase click area
+      height: 11px; // increase click area
     }
   }
 
@@ -97,7 +93,7 @@ export default Vue.extend({
 
     .plyr__progress {
       &--seek {
-        border-bottom-color: var(--color-background-secondary);
+        border-bottom-color: var(--color-bg-primary);
       }
     }
   }

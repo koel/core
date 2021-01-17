@@ -139,7 +139,7 @@ export default Vue.extend({
 
   position: relative;
   flex: 0 0 var(--extra-panel-width);
-  color: var(--color-grey-lighter);
+  color: var(--color-text-secondary);
 
   .wrapper {
     @include vertical-center();
@@ -151,7 +151,7 @@ export default Vue.extend({
 
   .control {
     &.active {
-      color: var(--color-orange);
+      color: var(--color-highlight);
     }
 
     &:last-child {

@@ -33,7 +33,6 @@ $plyr-tooltip-bg: $plyr-controls-bg !default;
 $plyr-tooltip-border-color: transparentize($plyr-gray-dark, .1) !default;
 $plyr-tooltip-border-width: 1px;
 $plyr-tooltip-shadow: 0 0 5px $plyr-tooltip-border-color, 0 0 0 $plyr-tooltip-border-width $plyr-tooltip-border-color;
-$plyr-tooltip-color: $plyr-control-color !default;
 $plyr-tooltip-padding: $plyr-control-spacing !default;
 $plyr-tooltip-arrow-size: 6px !default;
 $plyr-tooltip-radius: 3px !default;
@@ -50,7 +49,7 @@ $plyr-volume-track-height: 6px !default;
 $plyr-volume-track-bg: darken($plyr-controls-bg, 10%) !default;
 $plyr-volume-thumb-height: ($plyr-volume-track-height * 2) !default;
 $plyr-volume-thumb-width: ($plyr-volume-track-height * 2) !default;
-$plyr-volume-thumb-bg: $plyr-control-color !default;
+$plyr-volume-thumb-bg: var(--color-highlight) !default;
 $plyr-volume-thumb-bg-focus: $plyr-control-bg-hover !default;
 
 // Breakpoints
@@ -194,7 +193,7 @@ $plyr-bp-captions-large: 768px !default; // When captions jump to the larger fon
     left: 0;
     width: 100%;
     padding: ($plyr-control-spacing * 2) ($plyr-control-spacing * 2) ($plyr-control-spacing * 3);
-    color: var(--color-white);
+    color: var(--color-text-primary);
     font-size: $plyr-font-size-captions-base;
     text-align: center;
     @include font-smoothing();
@@ -266,7 +265,7 @@ $plyr-bp-captions-large: 768px !default; // When captions jump to the larger fon
       background: transparent;
       border-radius: 3px;
       cursor: pointer;
-      color: $plyr-control-color;
+      color: var(--color-highlight);
       transition: background .3s ease, color .3s ease, opacity .3s ease;
 
       svg {
@@ -281,7 +280,7 @@ $plyr-bp-captions-large: 768px !default; // When captions jump to the larger fon
       &.tab-focus:hover,
       &:hover {
         background: $plyr-control-bg-hover;
-        color: $plyr-control-color-hover;
+        color: var(--color-highlight)-hover;
       }
 
       // Default focus
@@ -302,7 +301,7 @@ $plyr-bp-captions-large: 768px !default; // When captions jump to the larger fon
       display: inline-block;
       vertical-align: middle;
       margin-left: $plyr-control-spacing;
-      color: $plyr-control-color;
+      color: var(--color-highlight);
       font-weight: 600;
       font-size: $plyr-font-size-small;
     }
@@ -336,7 +335,7 @@ $plyr-bp-captions-large: 768px !default; // When captions jump to the larger fon
     background: $plyr-tooltip-bg;
     box-shadow: $plyr-tooltip-shadow;
     border-radius: $plyr-tooltip-radius;
-    color: $plyr-tooltip-color;
+    color: var(--color-highlight);
     font-size: $plyr-font-size-small;
     line-height: 1.5;
     font-weight: 600;
@@ -413,7 +412,7 @@ $plyr-bp-captions-large: 768px !default; // When captions jump to the larger fon
       left: 0;
       top: 0;
       width: 100%;
-      height: $plyr-control-spacing;
+      height: 1px;
       margin: 0;
       padding: 0;
       vertical-align: top;
@@ -445,11 +444,11 @@ $plyr-bp-captions-large: 768px !default; // When captions jump to the larger fon
 
     &--played[value] {
       z-index: 2;
-      color: $plyr-progress-playing-bg;
+      color: var(--color-highlight);
     }
 
     &--buffer[value] {
-      color: $plyr-progress-buffered-bg;
+      color: var(--color-bg-secondary);
     }
 
     // Seek control
@@ -648,7 +647,7 @@ $plyr-bp-captions-large: 768px !default; // When captions jump to the larger fon
   &--audio .plyr__progress {
     bottom: auto;
     top: 0;
-    background: $plyr-off-white;
+    background: transparent;
   }
 
   // Full screen mode

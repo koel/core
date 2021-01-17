@@ -6,7 +6,7 @@
           <div ref="lyricsContainer" v-html="song.lyrics"></div>
           <text-zoomer :target="textZoomTarget"/>
         </div>
-        <p class="none text-light-gray" v-if="song.id && !song.lyrics">
+        <p class="none text-secondary" v-if="song.id && !song.lyrics">
           <template v-if="isAdmin">
             No lyrics found.
             <button

@@ -65,7 +65,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .support-bar {
-  background: var(--color-background-main);
+  background: var(--color-bg-primary);
   font-size: .9rem;
   padding: .75rem 1rem;
   display: flex;
@@ -81,10 +81,10 @@ export default Vue.extend({
   }
 
   a {
-    color: var(--color-white);
+    color: var(--color-text-primary);
 
     &:hover {
-      color: var(--color-orange);
+      color: var(--color-highlight);
     }
   }
 
@@ -98,11 +98,11 @@ export default Vue.extend({
   }
 
   button {
-    color: var(--color-white);
+    color: var(--color-text-primary);
     font-size: .9rem;
 
     &:hover {
-      color: var(--color-orange);
+      color: var(--color-highlight);
     }
   }
 }

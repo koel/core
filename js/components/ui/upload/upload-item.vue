@@ -78,14 +78,14 @@ export default Vue.extend({
   border-radius: 3px;
   min-height: 32px;
   overflow: hidden;
-  background: var(--color-grey);
+  background: var(--color-bg-secondary);
 
   .progress {
     position: absolute;
     height: 100%;
     top: 0;
     left: 0;
-    background: var(--color-orange);
+    background: var(--color-highlight);
     z-index: 0;
     transition: .3s ease-out;
   }

@@ -52,8 +52,8 @@ export default Vue.extend({
     border-radius: 18px;
     padding: 8px 16px;
     background: rgba(0, 0, 0, .5);
-    border: 1px solid var(--color-white);
-    color: var(--color-white);
+    border: 1px solid var(--color-text-primary);
+    color: var(--color-text-primary);
 
     i {
       margin-right: 4px;

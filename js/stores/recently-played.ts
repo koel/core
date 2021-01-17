@@ -1,5 +1,5 @@
 import { songStore } from '.'
-import { http } from '../services'
+import { http } from '@/services'
 import { remove } from 'lodash'
 
 const EXCERPT_COUNT = 7

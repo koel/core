@@ -45,15 +45,15 @@ export default Vue.extend({
   button {
     @include inset-when-pressed();
 
-    background: var(--color-background-panes);
-    border: 1px solid var(--color-grey);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-bg-secondary);
     color: rgba(255, 255, 255, .5);
     transition: background .2s;
     padding: .5rem .75rem;
 
     &:hover {
-      background: var(--color-grey);
-      color: var(--color-white);
+      background: var(--color-bg-secondary);
+      color: var(--color-text-primary);
     }
 
     &:first-of-type {

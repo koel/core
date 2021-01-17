@@ -17,7 +17,7 @@
     <span class="details">
       <span v-if="showPlayCount" :style="{ width: `${song.playCount*100/topPlayCount}%` }" class="play-count"></span>
       {{ song.title }}
-      <span class="by text-light-gray">
+      <span class="by text-secondary">
         <a :href="`#!/artist/${song.artist.id}`">{{ song.artist.name }}</a>
         <template v-if="showPlayCount">- {{ song.playCount | pluralize('play') }}</template>
       </span>
@@ -87,7 +87,7 @@ article {
   display: flex;
 
   &.playing {
-    color: var(--color-orange);
+    color: var(--color-highlight);
   }
 
   &:hover .cover, &:focus .cover {
@@ -134,7 +134,7 @@ article {
       text-align: center;
       z-index: 1;
       display: none;
-      color: var(--color-white);
+      color: var(--color-text-primary);
       transition: .3s;
 
       @media (hover: none) {
@@ -167,10 +167,10 @@ article {
       opacity: .8;
 
       a {
-        color: var(--color-white);
+        color: var(--color-text-primary);
 
         &:hover {
-          color: var(--color-orange);
+          color: var(--color-highlight);
         }
       }
     }

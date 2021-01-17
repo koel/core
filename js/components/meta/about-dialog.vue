@@ -1,5 +1,5 @@
 <template>
-  <div class="about text-light-gray" tabindex="0" v-koel-focus @keydown.esc="close" data-testid="about-modal">
+  <div class="about text-secondary" tabindex="0" v-koel-focus @keydown.esc="close" data-testid="about-modal">
     <header>
       <h1 class="text-white">About Koel</h1>
     </header>
@@ -85,7 +85,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .about {
   text-align: center;
-  background: var(--color-background-main);
+  background: var(--color-bg-primary);
   max-width: 480px;
   width: 90%;
   border-radius: .6rem;
@@ -111,10 +111,10 @@ export default Vue.extend({
   }
 
   a {
-    color: var(--color-white);
+    color: var(--color-text-primary);
 
     &:hover {
-      color: var(--color-orange);
+      color: var(--color-highlight);
     }
   }
 }

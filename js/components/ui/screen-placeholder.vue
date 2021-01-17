@@ -27,7 +27,7 @@ export default Vue.extend({})
   height: 100%;
   width: 100%;
   text-align: center;
-  color: rgba(255, 255, 255, .2);
+  color: rgba(255, 255, 255, .5);
   position: relative;
 
   > div {
@@ -53,10 +53,10 @@ export default Vue.extend({})
     line-height: 1.3;
 
     a {
-      color: rgba(255, 255, 255, .5);
+      color: rgba(255, 255, 255, .8);
 
       &:hover {
-        color: rgba(255, 255, 255, .7);
+        color: rgba(255, 255, 255, 1);
       }
     }
 

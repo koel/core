@@ -62,7 +62,7 @@ export default Vue.extend({
 @import "~#/partials/_mixins.scss";
 
 #overlay {
-  background-color: rgba(0, 0, 0, 1);
+  background-color: var(--color-bg-primary);
   flex-direction: column;
 
   .display {
@@ -86,11 +86,11 @@ export default Vue.extend({
   }
 
   &.loading {
-    color: var(--color-grey-lighter);
+    color: var(--color-text-secondary);
   }
 
   &.warning {
-    color: var(--color-orange);
+    color: var(--color-highlight);
   }
 }
 </style>

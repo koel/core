@@ -34,7 +34,7 @@
             </li>
           </ol>
 
-          <p class="text-light-gray" v-show="!recentSongs.length">
+          <p class="text-secondary" v-show="!recentSongs.length">
             Your recently played songs will be displayed here.<br/>
             Start listening!
           </p>

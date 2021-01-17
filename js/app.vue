@@ -155,7 +155,7 @@ Vue.directive('koel-droppable', droppable)
   background: var(--color-green);
   padding: .8rem;
   border-radius: .2rem;
-  color: var(--color-white);
+  color: var(--color-text-primary);
   font-family: var(--font-family);
   font-size: 1rem;
   font-weight: var(--font-weight-light);

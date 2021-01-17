@@ -182,7 +182,7 @@ export default Vue.extend({
     line-height: calc(var(--footer-height) + 30px);
     text-align: center;
     text-indent: 2px;
-    color: var(--color-white);
+    color: var(--color-text-primary);
     opacity: 0;
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
   }
@@ -206,7 +206,7 @@ export default Vue.extend({
     .album-thumb-wrapper {
       flex: 0 0 48px;
       height: 48px;
-      box-shadow: 0 0 0 1px var(--color-grey-lighter);
+      box-shadow: 0 0 0 1px var(--color-text-secondary);
     }
 
     .album-thumb {
@@ -224,7 +224,7 @@ export default Vue.extend({
     .prev, .next, .play, .pause {
       opacity: 1;
       font-size: 2rem;
-      color: var(--color-grey-lighter);
+      color: var(--color-text-secondary);
     }
   }
 }

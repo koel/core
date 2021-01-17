@@ -122,7 +122,7 @@ export default Vue.extend({
 <style lang="scss">
 #sidebar {
   flex: 0 0 256px;
-  background-color: var(--color-background-panes);
+  background-color: var(--color-bg-secondary);
   padding: 2.05rem 0;
   overflow: auto;
   overflow-x: hidden;
@@ -143,7 +143,7 @@ export default Vue.extend({
     transition: .3s;
     transform-origin: center left;
 
-    color: var(--color-white);
+    color: var(--color-text-primary);
     background-color: rgba(0, 0, 0, .3);
   }
 
@@ -167,8 +167,8 @@ export default Vue.extend({
       border-left: 4px solid transparent;
 
       &.active, &:hover {
-        border-left-color: var(--color-orange);
-        color: var(--color-white);
+        border-left-color: var(--color-highlight);
+        color: var(--color-text-primary);
         background: rgba(255, 255, 255, .05);
         box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
       }
@@ -178,7 +178,7 @@ export default Vue.extend({
       }
 
       &:hover {
-        border-left-color: var(--color-orange-darker);
+        border-left-color: var(--color-highlight);
       }
 
       &::before {

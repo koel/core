@@ -16,7 +16,7 @@
 
     @media only screen and (max-width : 667px) {
       display: block;
-      
+
       > * + * {
         margin-top: .7rem;
       }
@@ -68,7 +68,7 @@
 
     footer {
       padding: 16px;
-      background: var(--color-card-background);
+      background: var(--color-bg-secondary);
       flex: 1;
       overflow: hidden;
     }
@@ -78,7 +78,7 @@
     }
 
     .meta {
-      color: var(--color-grey-lighter);
+      color: var(--color-text-secondary);
       margin-top: 4px;
       font-size: .9rem;
       display: flex;
@@ -104,11 +104,11 @@
       text-overflow: ellipsis;
 
       &:link, &:visited {
-        color: var(--color-white);
+        color: var(--color-text-primary);
       }
 
       &:focus, &:hover {
-        color: var(--color-orange);
+        color: var(--color-highlight);
       }
     }
 
@@ -129,11 +129,11 @@
   }
 
   .info-wrapper {
-    color: var(--color-grey-lighter);
+    color: var(--color-text-secondary);
     position: absolute;
     top: 0;
     left: 0;
-    background: var(--color-background-main);
+    background: var(--color-bg-primary);
     width: 100%;
     height: 100%;
     z-index: 2;
@@ -171,7 +171,7 @@
       font-size: 14px;
 
       &:hover {
-        color: var(--color-orange);
+        color: var(--color-highlight);
       }
     }
   }
@@ -184,7 +184,7 @@
     margin-top: .75rem;
     border-radius: .23rem;
     background: var(--color-blue);
-    color: var(--color-white);
+    color: var(--color-text-primary);
     padding: .3rem .6rem;
     display: inline-block;
     text-transform: uppercase;
@@ -238,11 +238,11 @@
       }
 
       &.available {
-        color: var(--color-white);
+        color: var(--color-text-primary);
         cursor: pointer;
 
         &:hover {
-          color: var(--color-orange);
+          color: var(--color-highlight);
         }
       }
     }
@@ -255,11 +255,11 @@
     clear: both;
 
     a {
-      color: var(--color-white);
+      color: var(--color-text-primary);
       font-weight: var(--font-weight-normal);
 
       &:hover {
-        color: var(--color-white-darker);
+        color: var(--color-text-secondary);
       }
     }
   }
@@ -289,12 +289,9 @@
 }
 
 @mixin context-menu() {
-  font-weight: var(--font-weight-light);
-  font-size: 1rem;
   padding: .4rem 0;
   min-width: 144px;
-  color: var(--color-white);
-  background-color: var(--color-context-menu-background);
+  background-color: var(--color-bg-primary);
   position: fixed;
   border-radius: 4px;
   display: flex;
@@ -303,14 +300,13 @@
   z-index: 1001;
   align-items: stretch;
   text-align: left;
-  box-shadow: inset 0 0px 0 rgba(255, 255, 255, 0.6), 0 2px 15px 4px rgba(0,0,0,0.56), 0 0 0 1px rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--color-context-menu-border);
+  box-shadow: inset 0 0 0 rgba(255, 255, 255, 0.6), 0 2px 15px 4px rgba(0,0,0,0.56), 0 0 0 1px rgba(0, 0, 0, 0.3);
 
   input[type="search"], input[type="text"], input[type="email"], input[type="url"] {
-    background: var(--color-white);
+    background: var(--color-text-primary);
 
     &:focus {
-      background: var(--color-white);
+      background: var(--color-text-primary);
     }
   }
 }

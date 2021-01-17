@@ -188,7 +188,7 @@ export default Vue.extend({
       background-position: 58% 50%;
       background-repeat: no-repeat;
       border-radius: 50%;
-      background-color: #000;
+      background-color: var(--color-bg-primary);
       opacity: 0;
       z-index: 2;
 

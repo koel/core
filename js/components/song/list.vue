@@ -430,7 +430,7 @@ export default Vue.extend({
     top: 0;
     left: 0;
     right: 0;
-    background: var(--color-song-list-header-background);
+    background: var(--color-bg-secondary);
     z-index: 1;
     width: 100%;
   }
@@ -490,13 +490,13 @@ export default Vue.extend({
   }
 
   th {
-    color: var(--color-grey-lighter);
+    color: var(--color-text-secondary);
     letter-spacing: 1px;
     text-transform: uppercase;
     cursor: pointer;
 
     i {
-      color: var(--color-orange);
+      color: var(--color-highlight);
       font-size: 1.2rem;
     }
   }
@@ -553,7 +553,7 @@ export default Vue.extend({
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: var(--color-grey-lighter);
+      color: var(--color-text-secondary);
       width: 100%;
     }
 
@@ -561,14 +561,14 @@ export default Vue.extend({
       display: none;
       padding: 0;
       vertical-align: bottom;
-      color: var(--color-white);
+      color: var(--color-text-primary);
 
       &.artist, &.title {
         display: inline;
       }
 
       &.artist {
-        color: var(--color-grey-lighter);
+        color: var(--color-text-secondary);
         font-size: 0.9rem;
         padding: 0 4px;
       }

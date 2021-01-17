@@ -7,7 +7,7 @@ exports[`components/ui/lyrics displays a fallback message if the song has no lyr
       <div></div>
       <textzoomer-stub></textzoomer-stub>
     </div>
-    <p class="none text-light-gray"><span>No lyrics available. Are you listening to Bach?</span></p>
+    <p class="none text-secondary"><span>No lyrics available. Are you listening to Bach?</span></p>
   </div>
 </article>
 `;

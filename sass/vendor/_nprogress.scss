@@ -8,7 +8,7 @@
   pointer-events: none;
 
   .bar {
-    background: var(--color-orange);
+    background: var(--color-highlight);
 
     position: fixed;
     z-index: 1031;
@@ -26,7 +26,7 @@
     right: 0px;
     width: 100px;
     height: 100%;
-    box-shadow: 0 0 10px var(--color-orange), 0 0 5px var(--color-orange);
+    box-shadow: 0 0 10px var(--color-highlight), 0 0 5px var(--color-highlight);
     opacity: 1.0;
 
     transform: rotate(3deg) translate(0px, -4px);

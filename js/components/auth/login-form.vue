@@ -109,7 +109,7 @@ form {
   padding: 1.8rem;
   background: rgba(255, 255, 255, .08);
   border-radius: .6rem;
-  border: 1px solid var(--color-border);
+  border: 1px solid transparent;
   transition: .5s;
 
   > * + * {
@@ -117,7 +117,7 @@ form {
   }
 
   &.error {
-    border-color: var(--color-red-darker);
+    border-color: var(--color-red);
     animation: shake .5s;
   }
 
@@ -134,7 +134,6 @@ form {
 input {
   display: block;
   border: 0;
-  background: var(--color-white);
   outline: none;
   width: 100%;
 }

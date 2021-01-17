@@ -33,7 +33,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
               <!---->
             </h1>
             <!---->
-            <p class="text-light-gray">
+            <p class="text-secondary">
               Your recently played songs will be displayed here.<br>
               Start listening!
             </p>
@@ -114,7 +114,7 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
     <!---->
     <!---->
   </section>
-  <section id="extra" data-testid="extra-panel" class="text-light-gray showing">
+  <section id="extra" data-testid="extra-panel" class="text-secondary showing">
     <div class="tabs">
       <div role="tablist" class="clear"><button aria-selected="true" aria-controls="extraPanelLyrics" id="extraTabLyrics" role="tab">
           Lyrics

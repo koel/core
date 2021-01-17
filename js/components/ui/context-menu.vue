@@ -110,8 +110,8 @@ export default Vue.extend({
     white-space: nowrap;
 
     &:hover {
-      background: var(--color-orange);
-      color: var(--color-white);
+      background: var(--color-highlight);
+      color: var(--color-text-primary);
     }
 
     &.separator {

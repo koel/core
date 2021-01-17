@@ -102,7 +102,7 @@ export default Vue.extend({
     }
 
     &:hover, &:active, &:focus {
-      color: var(--color-white);
+      color: var(--color-text-primary);
     }
 
     &:last-of-type {

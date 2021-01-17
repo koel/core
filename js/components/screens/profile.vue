@@ -3,259 +3,37 @@
     <screen-header>Profile &amp; Preferences</screen-header>
 
     <div class="main-scroll-wrap">
-      <form @submit.prevent="update" data-testid="update-profile-form">
-        <div class="form-row">
-          <label for="inputProfileName">Name</label>
-          <input type="text" name="name" id="inputProfileName" v-model="state.current.name">
-        </div>
-
-        <div class="form-row">
-          <label for="inputProfileEmail">Email Address</label>
-          <input type="email" name="email" id="inputProfileEmail" v-model="state.current.email">
-        </div>
-
-        <div class="change-password">
-          <div class="form-row">
-            <p class="help">
-              If you want to change your password, enter it below.<br>
-              Otherwise, just leave the next two fields empty.
-            </p>
-          </div>
-
-          <div class="form-row">
-            <label for="inputProfilePassword">New Password</label>
-            <input
-              :class="{ error: validation.error }"
-              v-model="password"
-              name="password"
-              type="password"
-              id="inputProfilePassword"
-              autocomplete="new-password"
-            >
-          </div>
-
-          <div class="form-row">
-            <label for="inputProfileConfirmPassword">Confirm Password</label>
-            <input
-              :class="{ error: validation.error }"
-              v-model="confirmPassword"
-              name="confirm_password"
-              type="password"
-              id="inputProfileConfirmPassword"
-              autocomplete="new-password"
-            >
-          </div>
-        </div>
-
-        <div class="form-row">
-          <btn type="submit" class="btn-submit">Save</btn>
-          <span v-if="demo" style="font-size:.95rem; opacity:.7; margin-left:5px">
-            Changes will not be saved in the demo version.
-          </span>
-        </div>
-      </form>
-
-      <div class="preferences">
-        <div class="form-row">
-          <label>
-            <input type="checkbox" name="notify" v-model="preferences.notify">
-            Show “Now Playing” song notification
-          </label>
-        </div>
-        <div class="form-row">
-          <label>
-            <input type="checkbox" name="confirm_closing" v-model="preferences.confirmClosing">
-            Confirm before closing Koel
-          </label>
-        </div>
-        <div class="form-row">
-          <label>
-            <input type="checkbox" name="transcode_on_mobile" v-model="preferences.transcodeOnMobile">
-            Convert and play media at 128kbps on mobile
-          </label>
-        </div>
-        <div class="form-row">
-          <label>
-            <input type="checkbox" name="show_album_art_overlay" v-model="preferences.showAlbumArtOverlay">
-            Show a translucent, blurred overlay of the current album’s art (may be CPU intensive)
-          </label>
-        </div>
-      </div>
-
-      <section class="lastfm text-light-gray">
-        <h1>Last.fm Integration</h1>
-
-        <div v-if="sharedState.useLastfm" data-testid="lastfm-integrated">
-          <p>
-            This installation of Koel integrates with Last.fm.
-            <span v-if="state.current.preferences.lastfm_session_key">
-              It appears that you have connected your Last.fm account as well – Perfect!
-            </span>
-            <span v-else>
-              It appears that you haven’t connected to your Last.fm account though.
-            </span>
-          </p>
-          <p>
-            Connecting Koel and your Last.fm account enables such exciting features as
-            <a
-              class="text-orange"
-              href="https://www.last.fm/about/trackmymusic"
-              target="_blank"
-              rel="noopener"
-            >
-              scrobbling
-            </a>.
-          </p>
-          <div class="buttons">
-            <btn @click.prevent="connectToLastfm" class="connect">
-              <i class="fa fa-lastfm"></i>
-              {{ state.current.preferences.lastfm_session_key ? 'Reconnect' : 'Connect' }}
-            </btn>
-
-            <btn
-              v-if="state.current.preferences.lastfm_session_key"
-              @click.prevent="disconnectFromLastfm"
-              class="disconnect"
-            >
-              Disconnect
-            </btn>
-          </div>
-        </div>
-
-        <div v-else data-testid="lastfm-not-integrated">
-          <p>
-            This installation of Koel has no Last.fm integration.
-            <span v-if="state.current.is_admin" data-testid="lastfm-admin-instruction">
-              Visit
-              <a href="https://docs.koel.dev/3rd-party.html#last-fm" class="text-orange" target="_blank">Koel’s Wiki</a>
-              for a quick how-to.
-            </span>
-            <span v-else data-testid="lastfm-user-instruction">
-              Try politely asking an administrator to enable it.
-            </span>
-          </p>
-        </div>
-      </section>
+      <profile-form/>
+      <preferences/>
+      <lastfm-integration/>
     </div>
   </section>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { userStore, preferenceStore as preferences, sharedStore } from '@/stores'
-import { forceReloadWindow } from '@/utils'
-import { http, auth } from '@/services'
 
 export default Vue.extend({
   components: {
     ScreenHeader: () => import('@/components/ui/screen-header.vue'),
-    Btn: () => import('@/components/ui/btn.vue')
-  },
-
-  data: () => ({
-    preferences,
-    demo: NODE_ENV === 'demo',
-    state: userStore.state,
-    cache: userStore.stub,
-    password: '',
-    confirmPassword: '',
-    sharedState: sharedStore.state,
-    validation: {
-      error: false
-    }
-  }),
-
-  methods: {
-    async update (): Promise<void> {
-      this.validation.error = Boolean((this.password || this.confirmPassword) && this.password !== this.confirmPassword)
-
-      if (this.validation.error) {
-        return
-      }
-
-      await userStore.updateProfile(this.password)
-      this.password = ''
-      this.confirmPassword = ''
-    },
-
-    /**
-     * Connect the current user to Last.fm.
-     * This method opens a new window.
-     * Koel will reload once the connection is successful.
-     */
-    connectToLastfm: (): void => {
-      window.open(
-        `${window.BASE_URL}web/lastfm/connect?api_token=${auth.getToken()}`,
-        '_blank',
-        'toolbar=no,titlebar=no,location=no,width=1024,height=640'
-      )
-    },
-
-    /**
-     * Disconnect the current user from Last.fm.
-     */
-    disconnectFromLastfm: (): void => {
-      http.delete('lastfm/disconnect').then(forceReloadWindow)
-    }
+    ProfileForm: () => import('@/components/profile-preferences/profile-form.vue'),
+    LastfmIntegration: () => import('@/components/profile-preferences/lastfm-integration.vue'),
+    Preferences: () => import('@/components/profile-preferences/preferences.vue')
   }
 })
 </script>
 
 <style lang="scss">
 #profileWrapper {
-  input {
-    &[type="text"], &[type="email"], &[type="password"] {
-      width: 33%;
-    }
-
-    &.error {
-      // Chrome won't give up its autofill style, so this is kind of a hack.
-      box-shadow: 0 0 0px 1000px #ff867a inset;
-    }
-  }
-
   .main-scroll-wrap > * + * {
     margin-top: 1.75rem;
     padding-top: 1.75rem;
     border-top: 1px solid var(--color-background-secondary);
   }
 
-  .change-password {
-    padding: 1.75rem 0;
-  }
-
-  .preferences {
-    label {
-      font-size: 1rem;
-    }
-  }
-
-  .lastfm {
-    h1 {
-      font-size: 1.85rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .buttons {
-      margin-top: 1.25rem;
-
-      .connect {
-        background: #d31f27; // Last.fm color yo!
-      }
-
-      .disconnect {
-        background: var(--color-grey); // Our color yo!
-      }
-    }
-  }
-
-  @media only screen and (max-width : 667px) {
-    input {
-      &[type="text"], &[type="email"], &[type="password"] {
-        width: 100%;
-        height: 32px;
-      }
-    }
+  .main-scroll-wrap h1 {
+    font-size: 1.85rem;
+    margin-bottom: 1.25rem;
   }
 }
 </style>

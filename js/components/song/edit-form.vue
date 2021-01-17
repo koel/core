@@ -11,7 +11,7 @@
         </hgroup>
       </header>
 
-      <div class="tabs tabs-white">
+      <div class="tabs">
         <div class="clear" role="tablist">
           <button
             :aria-selected="currentView === 'details'"
@@ -361,7 +361,7 @@ form {
 
     .meta {
       flex: 1;
-      padding-left: 8px;
+      padding-left: 1rem;
 
       .mixed {
         opacity: .5;

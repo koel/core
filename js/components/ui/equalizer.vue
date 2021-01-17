@@ -213,7 +213,7 @@ export default Vue.extend({
   position: absolute;
   bottom: var(--footer-height);
   width: 100%;
-  background: rgba(0, 0, 0, 0.9);
+  background: var(--color-bg-primary);
   display: flex;
   flex-direction: column;
   left: 0;
@@ -241,7 +241,7 @@ export default Vue.extend({
       &::after {
         content: '\f107';
         font-family: FontAwesome;
-        color: var(--color-orange);
+        color: var(--color-highlight);
         display: inline-block;
         position: absolute;
         right: 8px;
@@ -252,7 +252,7 @@ export default Vue.extend({
 
     select {
       background: none;
-      color: var(--color-white);
+      color: var(--color-text-primary);
       padding-left: 0;
       width: 100px;
       text-transform: none;
@@ -319,7 +319,6 @@ export default Vue.extend({
         position: absolute;
         width: 2px;
         height: 100%;
-        background: var(--color-border);
         top: 0;
         left: 7px;
       }
@@ -337,7 +336,7 @@ export default Vue.extend({
         position: absolute;
         width: 2px;
         height: 100%;
-        background: linear-gradient(to bottom, var(--color-orange-darker) 0%, var(--color-orange) 36%, var(--color-green) 100%);
+        background: linear-gradient(to bottom, var(--color-highlight) 0%, var(--color-highlight) 36%, var(--color-green) 100%);
         background-size: 2px;
         top: 0;
         left: 7px;

@@ -53,7 +53,7 @@ export default Vue.extend({
 
   &.fullscreen {
     // :fullscreen pseudo support is kind of buggy, so we use a class instead.
-    background: var(--color-background-main);
+    background: var(--color-bg-primary);
 
     .close {
       opacity: 0 !important;

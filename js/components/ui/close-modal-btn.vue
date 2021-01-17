@@ -23,7 +23,7 @@ button {
   height: 24px;
   border-radius: 0;
   padding: 0;
-  color: var(--color-white);
+  color: var(--color-text-primary);
   transition: opacity .3s;
 
   @media (hover: none) {

@@ -68,8 +68,8 @@ export default Vue.extend({
     cursor: pointer;
 
     &.active {
-      background: var(--color-white);
-      color: var(--color-black);
+      background: var(--color-text-primary);
+      color: var(--color-bg-primary);
     }
   }
 

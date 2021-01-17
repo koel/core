@@ -8,7 +8,7 @@
       <h1>
         <slot></slot>
       </h1>
-      <span class="meta text-light-gray">
+      <span class="meta text-secondary">
         <slot name="meta"></slot>
       </span>
     </div>
@@ -37,13 +37,12 @@ header {
   display: flex;
   font-weight: var(--font-weight-thin);
   padding: 1rem 1.8rem;
-  border-bottom: 1px solid var(--color-background-secondary);
+  border-bottom: 1px solid var(--color-bg-secondary);
   min-height: 96px;
   position: relative;
   align-items: center;
   align-content: stretch;
   line-height: normal;
-  background: rgba(0, 0, 0, .1);
   gap: 1.5rem;
 
   .thumbnail-wrapper{
@@ -74,10 +73,10 @@ header {
     font-weight: var(--font-weight-light);
 
     a {
-      color: var(--color-white);
+      color: var(--color-text-primary);
 
       &:hover {
-        color: var(--color-orange);
+        color: var(--color-highlight);
       }
     }
   }

@@ -175,8 +175,8 @@ export default mixins(songMenuMethods).extend({
     cursor: pointer;
 
     &:hover {
-      background: var(--color-orange);
-      color: var(--color-white);
+      background: var(--color-highlight);
+      color: var(--color-text-primary);
     }
   }
 
@@ -187,7 +187,7 @@ export default mixins(songMenuMethods).extend({
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-bottom: 10px solid var(--color-background-secondary);
+    border-bottom: 10px solid var(--color-bg-secondary);
     position: absolute;
     top: -7px;
     left: calc(50% - 10px);

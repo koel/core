@@ -13,13 +13,13 @@ export default {}
 
 button {
   background: var(--color-blue);
-  color: var(--color-white);
+  color: var(--color-text-primary);
   font-size: 1rem;
   padding: .6rem 1rem;
   cursor: pointer;
 
   &:hover {
-    background-color: var(--color-blue-darker);
+    box-shadow: inset 0 0 0 10rem rgba(0, 0, 0, .05);
   }
 
   &[small] {
@@ -31,43 +31,23 @@ button {
 
   &[green] {
     background-color: var(--color-green);
-
-    &:hover {
-      background-color: var(--color-green-darker)
-    }
   }
 
   &[white] {
-    background-color: var(--color-white);
-    color: var(--color-black);
-
-    &:hover {
-      background-color: var(--color-white-darker);
-    }
+    background-color: transparent;
+    color: var(--color-text-secondary);
   }
 
   &[red] {
     background-color: var(--color-red);
-
-    &:hover {
-      background-color: var(--color-red-darker);
-    }
   }
 
   &[grey], &[gray] {
-    background-color: var(--color-grey);
-
-    &:hover {
-      background-color: var(--color-grey-darker)
-    }
+    background-color: var(--color-bg-secondary);
   }
 
   &[orange] {
-    background-color: var(--color-orange);
-
-    &:hover {
-      background-color: var(--color-orange-darker);
-    }
+    background-color: var(--color-highlight);
   }
 
   &[transparent] {

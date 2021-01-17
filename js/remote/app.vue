@@ -15,7 +15,7 @@
               </div>
             </div>
           </div>
-          <p class="none text-light-gray" v-else>No song is playing.</p>
+          <p class="none text-secondary" v-else>No song is playing.</p>
           <footer>
             <a class="favorite" @click.prevent="toggleFavorite">
               <i class="fa fa-heart yep" v-if="song && song.liked"></i>
@@ -257,7 +257,7 @@ body, html {
 
 #app {
   height: 100vh;
-  background: var(--color-background-main);
+  background: var(--color-bg-primary);
 
   .login-wrapper {
     display: flex;
@@ -287,7 +287,7 @@ body, html {
     }
 
     .signal {
-      border: 1px solid var(--color-orange);
+      border: 1px solid var(--color-highlight);
       border-radius: 50%;
       height: 0;
       opacity: 0;
@@ -347,10 +347,10 @@ main {
       width: calc(70vw + 4px);
       height: calc(70vw + 4px);
       border-radius: 50%;
-      border: 2px solid var(--color-white);
+      border: 2px solid var(--color-text-primary);
       background-position: center center;
       background-size: cover;
-      background-color: var(--color-background-secondary);
+      background-color: var(--color-bg-secondary);
     }
 
     .text {
@@ -389,7 +389,7 @@ main {
     font-size: 5vmin;
 
     a {
-      color: var(--color-white);
+      color: var(--color-text-primary);
 
       &:active {
         opacity: .8;
@@ -410,7 +410,7 @@ main {
       display: inline-block;
       width: 16vmin;
       height: 16vmin;
-      border: 1px solid var(--color-white);
+      border: 1px solid var(--color-text-primary);
       border-radius: 50%;
       line-height: 16vmin;
       font-size: 7vmin;
@@ -456,7 +456,7 @@ main {
 }
 
 .noUi-target {
-  background: var(--color-white);
+  background: var(--color-text-primary);
   border-radius: 4px;
   border: 0;
   box-shadow: none;
@@ -479,7 +479,7 @@ main {
   border: 0;
   left: -4px;
   top: 0;
-  background: var(--color-orange);
+  background: var(--color-highlight);
   box-shadow: none;
 
   &::after, &::before {

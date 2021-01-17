@@ -71,7 +71,7 @@ export default Vue.extend({
 [role=button] {
   &:focus {
     span.title {
-      color: var(--color-orange);
+      color: var(--color-highlight);
     }
   }
 
@@ -80,7 +80,7 @@ export default Vue.extend({
     border-radius: 3px;
     font-size: .8rem;
     padding: 0 5px;
-    color: var(--color-white);
+    color: var(--color-text-primary);
     background: rgba(255, 255, 255, .1);
     height: 20px;
     line-height: 20px;
@@ -88,7 +88,7 @@ export default Vue.extend({
 
     &:hover, &:focus {
       background: linear-gradient(27deg, #fe5c52 0%,#c74bd5 50%,#2daaff 100%);
-      color: var(--color-white);
+      color: var(--color-text-primary);
     }
 
     &:active {

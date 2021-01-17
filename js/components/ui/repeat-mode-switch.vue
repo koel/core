@@ -40,7 +40,7 @@ button {
   position: relative;
 
   &.REPEAT_ALL, &.REPEAT_ONE {
-    color: var(--color-orange);
+    color: var(--color-highlight);
   }
 
   &.REPEAT_ONE::after {

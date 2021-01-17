@@ -58,10 +58,10 @@ export default Vue.extend({
 
 #mainHeader {
   height: var(--header-height);
-  background: var(--color-background-secondary);
+  background: var(--color-bg-secondary);
   display: flex;
-  border-bottom: 1px solid var(--color-background-main);
   -webkit-app-region: drag;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, .4);
 
   input, a {
     -webkit-app-region: no-drag;
@@ -69,7 +69,6 @@ export default Vue.extend({
 
   h1.brand {
     flex: 1;
-    color: var(--color-white);
     font-size: 1.7rem;
     font-weight: var(--font-weight-thin);
     opacity: 0;

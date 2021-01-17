@@ -60,7 +60,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 footer {
-  background: var(--color-background-secondary);
+  background: var(--color-bg-secondary);
   height: var(--footer-height);
   display: flex;
   position: relative;
@@ -81,8 +81,8 @@ footer {
     left: 0;
 
     // Safari 8 won't recognize rgba(255, 255, 255, 0) and treat it as black.
-    // rgba(var(--color-background-main), 0) is a workaround.
-    background-image: linear-gradient(to bottom, rgba(#000, 0) 0%, rgba(#000, .2) 100%);
+    // rgba(#000, 0) is a workaround.
+    background-image: linear-gradient(to bottom, rgba(#000, 0) 0%, rgba(#000, .1) 100%);
     pointer-events: none; // click-through
   }
 

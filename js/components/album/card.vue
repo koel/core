@@ -16,7 +16,7 @@
     <footer>
       <div class="info">
         <a class="name" :href="`#!/album/${album.id}`">{{ album.name }}</a>
-        <span class="sep text-light-gray">by</span>
+        <span class="sep text-secondary">by</span>
         <a
           class="artist"
           v-if="isNormalArtist"
