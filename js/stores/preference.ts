@@ -19,7 +19,8 @@ export const preferenceStore = {
     selectedPreset: -1,
     transcodeOnMobile: false,
     supportBarNoBugging: false,
-    showAlbumArtOverlay: true
+    showAlbumArtOverlay: true,
+    theme: null
   } as { [key: string]: any },
 
   init (user?: User): void {

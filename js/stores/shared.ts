@@ -10,7 +10,7 @@ import {
   playlistStore,
   recentlyPlayedStore,
   queueStore,
-  settingStore
+  settingStore, themeStore
 } from '.'
 
 interface SharedState {
@@ -80,6 +80,7 @@ export const sharedStore = {
     playlistStore.init(this.state.playlists)
     queueStore.init()
     settingStore.init(this.state.settings)
+    themeStore.init()
 
     // Keep a copy of the media path. We'll need this to properly warn the user later.
     this.state.originalMediaPath = this.state.settings.media_path!

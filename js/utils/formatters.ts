@@ -27,3 +27,6 @@ export const parseValidationError = (error: any): string[] =>
  * Turn <br> into new line characters.
  */
 export const br2nl = (str: string): string => str ? str.replace(/<br\s*[/]?>/gi, '\n') : ''
+
+export const slugToTitle = (slug: string, separator = '-'): string =>
+  slug.split(separator).map(w => w.charAt(0).toUpperCase() + w.substring(1).toLowerCase()).join(' ')

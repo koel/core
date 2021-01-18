@@ -386,3 +386,11 @@ interface SongListControlsConfig {
   clearQueue: boolean
   deletePlaylist: boolean
 }
+
+type Theme = {
+  id: string
+  name?: string
+  thumbnailColor: string
+  thumbnailUrl?: string
+  selected?: boolean
+}
