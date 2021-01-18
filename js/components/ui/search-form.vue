@@ -74,13 +74,14 @@ export default Vue.extend({
     z-index: -1;
     position: absolute;
     left: 0;
-    background: rgba(0, 0, 0, .8);
+    background: var(--color-bg-primary);
     width: 100%;
     padding: 12px;
     top: 0;
 
     &.showing {
       top: var(--header-height);
+      border-bottom: 1px solid rgba(255, 255, 255, .1);
       z-index: 100;
     }
 

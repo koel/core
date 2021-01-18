@@ -217,7 +217,7 @@ export default Vue.extend({
 
   @media only screen and (max-width : 667px) {
     @include themed-background();
-    
+
     width: 100%;
 
     [role=tabpanel] {
