@@ -4,7 +4,7 @@
 
     <div class="main-scroll-wrap">
       <profile-form/>
-      <themes v-if="!isMobile"/>
+      <themes/>
       <preferences/>
       <lastfm-integration/>
     </div>
@@ -13,7 +13,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import isMobile from 'ismobilejs'
 
 export default Vue.extend({
   components: {
@@ -22,11 +21,7 @@ export default Vue.extend({
     LastfmIntegration: () => import('@/components/profile-preferences/lastfm-integration.vue'),
     Preferences: () => import('@/components/profile-preferences/preferences.vue'),
     Themes: () => import('@/components/profile-preferences/themes.vue')
-  },
-
-  data: () => ({
-    isMobile: isMobile.any
-  })
+  }
 })
 </script>
 

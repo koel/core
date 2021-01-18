@@ -310,3 +310,11 @@
     }
   }
 }
+
+@mixin themed-background() {
+  background-color: var(--color-bg-primary);
+  background-image: var(--bg-image);
+  background-attachment: var(--bg-attachment);
+  background-size: var(--bg-size);
+  background-position: var(--bg-position);
+}

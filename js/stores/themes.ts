@@ -1,4 +1,3 @@
-import isMobile from 'ismobilejs'
 import { preferenceStore as preferences } from '@/stores/preference'
 
 export const themeStore = {
@@ -80,9 +79,7 @@ export const themeStore = {
   },
 
   init () {
-    if (!isMobile.any) {
-      this.applyThemeFromPreference()
-    }
+    this.applyThemeFromPreference()
   },
 
   setTheme (theme: Theme) {

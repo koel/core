@@ -174,6 +174,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+@import "~#/partials/_mixins.scss";
+
 #extra {
   flex: 0 0 var(--extra-panel-width);
   padding-top: 2.3rem;
@@ -214,6 +216,8 @@ export default Vue.extend({
   }
 
   @media only screen and (max-width : 667px) {
+    @include themed-background();
+    
     width: 100%;
 
     [role=tabpanel] {

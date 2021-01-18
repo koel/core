@@ -120,6 +120,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+@import "~#/partials/_mixins.scss";
+
 #sidebar {
   flex: 0 0 256px;
   background-color: var(--color-bg-secondary);
@@ -228,6 +230,8 @@ export default Vue.extend({
   }
 
   @media only screen and (max-width : 667px) {
+    @include themed-background();
+
     position: fixed;
     height: calc(100vh - var(--header-height) + var(--footer-height));
     width: 100%;

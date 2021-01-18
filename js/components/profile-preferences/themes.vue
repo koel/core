@@ -34,5 +34,9 @@ export default Vue.extend({
   grid-auto-rows: 8rem;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   grid-gap: .75rem 1rem;
+
+  @media only screen and (max-width: 667px) {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
