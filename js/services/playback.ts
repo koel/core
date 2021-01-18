@@ -26,7 +26,7 @@ const REPEAT_MODES = ['NO_REPEAT', 'REPEAT_ALL', 'REPEAT_ONE']
 
 export const playback = {
   player: null as Plyr | null,
-  volumeInput: null as HTMLInputElement | null,
+  volumeInput: null as unknown as HTMLInputElement,
   repeatModes: REPEAT_MODES,
   initialized: false,
   mainWin: null as any,
@@ -41,11 +41,11 @@ export const playback = {
       return
     }
 
-    this.player = plyr.setup(<HTMLMediaElement>document.querySelector('.plyr'), {
+    this.player = plyr.setup(document.querySelector<HTMLMediaElement>('.plyr')!, {
       controls: []
     })[0]
 
-    this.volumeInput = document.querySelector(VOLUME_INPUT_SELECTOR)
+    this.volumeInput = document.querySelector<HTMLInputElement>(VOLUME_INPUT_SELECTOR)!
     this.listenToMediaEvents(this.player.media)
 
     if (isAudioContextSupported) {
@@ -75,7 +75,7 @@ export const playback = {
       .listen(events.SOCKET_PLAY_PREV, () => this.playPrev())
       .listen(events.SOCKET_GET_STATUS, () => {
         const data = queueStore.current ? songStore.generateDataToBroadcast(queueStore.current) : {
-          volume: this.volumeInput!.value
+          volume: this.volumeInput.value
         }
         socket.broadcast(events.SOCKET_STATUS, data)
       })
@@ -165,7 +165,7 @@ export const playback = {
     }
 
     document.title = `${song.title} ♫ ${app.name}`
-    document.querySelector('.plyr audio')!.setAttribute('title', `${song.artist.name} - ${song.title}`)
+    this.player!.media.setAttribute('title', `${song.artist.name} - ${song.title}`)
 
     if (queueStore.current) {
       queueStore.current.playbackState = 'Stopped'
@@ -322,7 +322,7 @@ export const playback = {
       preferences.volume = volume
     }
 
-    this.volumeInput!.value = String(volume)
+    this.volumeInput.value = String(volume)
   },
 
   mute (): void {

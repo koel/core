@@ -35,7 +35,7 @@ export const hideOverlay = (): void => {
 }
 
 export const copyText = (text: string): void => {
-  let copyArea = document.querySelector('#copyArea') as HTMLTextAreaElement
+  let copyArea = document.querySelector<HTMLTextAreaElement>('#copyArea')
 
   if (!copyArea) {
     copyArea = document.createElement('textarea')
@@ -49,14 +49,14 @@ export const copyText = (text: string): void => {
   document.execCommand('copy')
 }
 
-export const getDefaultCover = (): string => `${sharedStore.state.cdnUrl}/img/covers/unknown-album.png`
+export const getDefaultCover = (): string => require('@/../img/covers/unknown-album.png')
 
 const createGhostDragImage = (event: DragEvent, text: string): void => {
   if (!event.dataTransfer) {
     return
   }
 
-  let dragGhost = document.querySelector('#dragGhost') as HTMLElement
+  let dragGhost = document.querySelector<HTMLElement>('#dragGhost')
 
   if (!dragGhost) {
     // Create the element to be the ghost drag image.
