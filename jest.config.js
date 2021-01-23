@@ -16,8 +16,9 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/js/$1'
   },
   transform: {
-    '^.+\\.[tj]s$': '<rootDir>/node_modules/ts-jest',
-    '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest'
+    '^.+\\.[tj]s$': 'ts-jest',
+    '.*\\.(vue)$': 'vue-jest',
+    '^.+\\.(svg|gif|jpg|png)$': '<rootDir>/js/__tests__/__transformers__/image.js'
   },
   snapshotSerializers: [
     '<rootDir>/node_modules/jest-serializer-vue'

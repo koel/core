@@ -2,7 +2,7 @@
   <section>
     <h1>Theme</h1>
     <ul class="themes">
-      <li v-for="theme in themes">
+      <li v-for="theme in themes" :key="theme.id">
         <theme-card :theme="theme" :key="theme.id" @selected="setTheme"/>
       </li>
     </ul>

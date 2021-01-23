@@ -27,7 +27,7 @@ export default Vue.extend({
       return this.theme.name ? this.theme.name : slugToTitle(this.theme.id)
     },
 
-    thumbnailStyles(): Record<string, string> {
+    thumbnailStyles (): Record<string, string> {
       const styles = {
         'background-color': this.theme.thumbnailColor
       } as Record<string, string>

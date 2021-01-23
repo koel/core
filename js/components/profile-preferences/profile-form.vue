@@ -46,8 +46,8 @@
     <div class="form-row">
       <btn type="submit" class="btn-submit">Save</btn>
       <span v-if="demo" style="font-size:.95rem; opacity:.7; margin-left:5px">
-            Changes will not be saved in the demo version.
-          </span>
+        Changes will not be saved in the demo version.
+      </span>
     </div>
   </form>
 </template>
@@ -76,6 +76,7 @@ export default Vue.extend({
 
   methods: {
     async update (): Promise<void> {
+      console.log('haha', this.password, this.confirmPassword)
       this.validation.error = Boolean((this.password || this.confirmPassword) && this.password !== this.confirmPassword)
 
       if (this.validation.error) {

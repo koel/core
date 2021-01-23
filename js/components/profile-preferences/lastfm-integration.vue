@@ -60,7 +60,7 @@ export default Vue.extend({
 
   data: () => ({
     userState: userStore.state,
-    sharedState: sharedStore.state,
+    sharedState: sharedStore.state
   }),
 
   computed: {
