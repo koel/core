@@ -12,7 +12,7 @@ describe('profile-preferences/preferences', () => {
     jest.clearAllMocks()
   })
 
-  it.each([['notify'], ['confirm_closing']])('updates preference "%s"', key => {
+  it.each([['notify'], ['confirm_closing'], ['show_album_art_overlay']])('updates preference "%s"', key => {
     const m = mock(preferences, 'save')
     shallow(Component).change(`input[name=${key}]`)
     expect(m).toHaveBeenCalled()
