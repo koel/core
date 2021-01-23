@@ -1,5 +1,11 @@
 <template>
-  <div class="theme" :class="{ selected: theme.selected }" :style="thumbnailStyles" @click="$emit('selected', theme)">
+  <div
+    class="theme"
+    :class="{ selected: theme.selected }"
+    :style="thumbnailStyles"
+    @click="$emit('selected', theme)"
+    :data-testid="`theme-card-${theme.id}`"
+  >
     <div class="name">{{ name }}</div>
   </div>
 </template>

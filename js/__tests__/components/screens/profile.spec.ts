@@ -36,8 +36,7 @@ describe('components/screens/profile', () => {
 
   it.each([
     ['notify'],
-    ['confirm_closing'],
-    ['transcode_on_mobile']
+    ['confirm_closing']
   ])('updates preference "%s"', key => {
     const m = mock(preferences, 'save')
     shallow(Profile).change(`input[name=${key}]`)
