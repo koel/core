@@ -8,6 +8,8 @@
     tabindex="0"
     data-test="album-card"
     v-if="album.songs.length"
+    @contextmenu.prevent="requestContextMenu"
+    @dblclick="shuffle"
   >
     <span class="thumbnail-wrapper">
       <album-thumbnail :entity="album" />
@@ -60,11 +62,12 @@
 
 <script lang="ts">
 import mixins from 'vue-typed-mixins'
-import { pluralize, startDragging } from '@/utils'
+import { eventBus, pluralize, startDragging } from '@/utils'
 import { artistStore, sharedStore } from '@/stores'
 import { playback, download } from '@/services'
 import albumAttributes from '@/mixins/album-attributes.ts'
 import { PropOptions } from 'vue'
+import { events } from '@/config'
 
 export default mixins(albumAttributes).extend({
   props: {
@@ -102,6 +105,10 @@ export default mixins(albumAttributes).extend({
 
     dragStart (event: DragEvent): void {
       startDragging(event, this.album, 'Album')
+    },
+
+    requestContextMenu (e: MouseEvent): void {
+      eventBus.emit(events.ALBUM_CONTEXT_MENU_REQUESTED, e, this.album)
     }
   }
 })

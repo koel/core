@@ -403,7 +403,7 @@ export default Vue.extend({
       }
 
       this.$nextTick((): void => {
-        eventBus.emit(events.CONTEXT_MENU_REQUESTED, e, this.selectedSongs)
+        eventBus.emit(events.SONG_CONTEXT_MENU_REQUESTED, e, this.selectedSongs)
       })
     },
 

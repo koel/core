@@ -7,6 +7,8 @@ import { artistStore } from '.'
 import { http } from '@/services'
 import { use } from '@/utils'
 
+const UNKNOWN_ALBUM_ID = 1
+
 export const albumStore = {
   stub,
   cache: {} as { [key: string]: Album },
@@ -110,5 +112,7 @@ export const albumStore = {
     }
 
     return album.thumbnail
-  }
+  },
+
+  isUnknownAlbum: (album: Album) => album.id === UNKNOWN_ALBUM_ID
 }

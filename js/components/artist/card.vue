@@ -8,6 +8,8 @@
     tabindex="0"
     data-test="artist-card"
     v-if="showing"
+    @contextmenu.prevent="requestContextMenu"
+    @dblclick="shuffle"
   >
     <span class="thumbnail-wrapper">
       <artist-thumbnail :entity="artist" />
@@ -55,11 +57,12 @@
 
 <script lang="ts">
 import mixins from 'vue-typed-mixins'
-import { startDragging, pluralize } from '@/utils'
+import { startDragging, pluralize, eventBus } from '@/utils'
 import { artistStore, sharedStore } from '@/stores'
 import { playback, download } from '@/services'
 import artistAttributes from '@/mixins/artist-attributes.ts'
 import { PropOptions } from 'vue'
+import { events } from '@/config'
 
 export default mixins(artistAttributes).extend({
   props: {
@@ -96,6 +99,10 @@ export default mixins(artistAttributes).extend({
 
     dragStart (event: DragEvent): void {
       startDragging(event, this.artist, 'Artist')
+    },
+
+    requestContextMenu (e: MouseEvent): void {
+      eventBus.emit(events.ARTIST_CONTEXT_MENU_REQUESTED, e, this.artist)
     }
   }
 })

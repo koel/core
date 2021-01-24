@@ -32,7 +32,7 @@ export default Vue.extend({
   methods: {
     requestContextMenu (e: MouseEvent): void {
       if (this.song?.id) {
-        eventBus.emit(events.CONTEXT_MENU_REQUESTED, e, this.song)
+        eventBus.emit(events.SONG_CONTEXT_MENU_REQUESTED, e, this.song)
       }
     }
   },
