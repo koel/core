@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-koel-clickaway="hideResults">
     <input
       type="text"
       :name="config.name"
@@ -9,23 +9,24 @@
       @keydown.up.prevent="up"
       @change="change"
       @keyup="keyup"
-      v-koel-clickaway="hideResults"
       autocomplete="off"
+      @dblclick="showingResult = true"
     >
     <ul class="result" v-show="showingResult">
       <li
         v-for="(item, index) in displayedItems"
         :key="index"
-        @click.prevent="resultClick"
+        @click="resultClick"
       >
         {{ item[config.displayKey] }}
       </li>
     </ul>
-  </div>
+  </div v-koel-clickaway="hideResults">
 </template>
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
+import { uniq } from 'lodash'
 import { filterBy, $ } from '@/utils'
 
 interface TypeAheadItem {
@@ -51,7 +52,7 @@ export default Vue.extend({
 
   computed: {
     displayedItems (): TypeAheadItem[] {
-      return filterBy(this.items, this.filter, this.config.filterKey)
+      return uniq(filterBy(this.items, this.filter, this.config.filterKey))
     }
   },
 
@@ -71,6 +72,7 @@ export default Vue.extend({
           $.addClass(selected.nextElementSibling, 'selected')
         }
 
+        this.apply()
         this.scrollSelectedIntoView(false)
       })
     },
@@ -88,6 +90,7 @@ export default Vue.extend({
           $.addClass(selected.previousElementSibling, 'selected')
         }
 
+        this.apply()
         this.scrollSelectedIntoView(true)
       })
     },
@@ -122,18 +125,20 @@ export default Vue.extend({
 
     change (): void {
       this.apply()
-      this.hideResults()
     },
 
     resultClick (e: MouseEvent): void {
       const selected = this.$el.querySelector('.result li.selected')
       $.removeClass(selected, 'selected')
       $.addClass(e.target as Element, 'selected')
-      this.$nextTick(() => this.apply())
+      this.$nextTick(() => {
+        this.change()
+        this.hideResults()
+      })
     },
 
     apply (): void {
-      const selected = this.$el.querySelector('.result li.selected') as HTMLElement
+      const selected = this.$el.querySelector<HTMLElement>('.result li.selected')
       this.mutatedValue = (selected && selected.innerText.trim()) || this.mutatedValue
       this.lastSelectedValue = this.mutatedValue
       this.$emit('input', this.mutatedValue)
@@ -143,7 +148,7 @@ export default Vue.extend({
      * @param  {boolean} alignTop Whether the item should be aligned to top of its container.
      */
     scrollSelectedIntoView (alignTop: boolean): void {
-      const elem = this.$el.querySelector('.result li.selected') as HTMLElement
+      const elem = this.$el.querySelector<HTMLElement>('.result li.selected')
 
       if (!elem) {
         return
