@@ -15,7 +15,7 @@
       <like-button v-if="song" :song="song" class="like"/>
 
       <button
-        :class="{ active: prefs.showExtraPanel }"
+        :class="{ active: preferences.showExtraPanel }"
         @click.prevent="toggleExtraPanel"
         class="control text-uppercase"
         title="View song information"
@@ -41,23 +41,13 @@
 
       <repeat-mode-switch/>
       <volume/>
-
-      <button
-        @click.prevent="downloadCurrentSong"
-        class="download control"
-        title="Download the current song"
-        v-if="downloadable"
-        data-test="download-btn"
-      >
-        <i class="fa fa-download"></i>
-      </button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
-import { download, socket } from '@/services'
+import { socket } from '@/services'
 import { eventBus, isAudioContextSupported } from '@/utils'
 import { events } from '@/config'
 import { favoriteStore, preferenceStore, sharedStore, songStore } from '@/stores'
@@ -79,18 +69,12 @@ export default Vue.extend({
   },
 
   data: () => ({
-    prefs: preferenceStore.state,
+    preferences: preferenceStore.state,
     showEqualizer: false,
     sharedState: sharedStore.state,
     useEqualizer: isAudioContextSupported,
     viewingQueue: false
   }),
-
-  computed: {
-    downloadable (): boolean {
-      return Boolean(this.sharedState.allowDownload && this.song && this.song.id)
-    }
-  },
 
   methods: {
     like (): void {
@@ -101,7 +85,7 @@ export default Vue.extend({
     },
 
     toggleExtraPanel (): void {
-      preferenceStore.set('showExtraPanel', !this.prefs.showExtraPanel)
+      preferenceStore.set('showExtraPanel', !this.preferences.showExtraPanel)
     },
 
     toggleEqualizer (): void {
@@ -116,10 +100,6 @@ export default Vue.extend({
       if (!isMobile.any) {
         eventBus.emit(events.TOGGLE_VISUALIZER)
       }
-    },
-
-    downloadCurrentSong (): void {
-      download.fromSongs(this.song)
     }
   },
 
