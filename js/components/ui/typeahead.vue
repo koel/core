@@ -21,7 +21,7 @@
         {{ item[config.displayKey] }}
       </li>
     </ul>
-  </div v-koel-clickaway="hideResults">
+  </div>
 </template>
 
 <script lang="ts">
