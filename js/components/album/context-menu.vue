@@ -71,6 +71,7 @@ export default Vue.extend({
 
     download (): void {
       download.fromAlbum(this.album)
+      this.close()
     },
 
     close (): void {

@@ -63,6 +63,7 @@ export default Vue.extend({
 
     download (): void {
       download.fromArtist(this.artist)
+      this.close()
     },
 
     close (): void {
