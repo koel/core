@@ -3,7 +3,7 @@ import factory from '@/__tests__/factory'
 import { playback, download } from '@/services'
 import { sharedStore } from '@/stores'
 import { mock } from '@/__tests__/__helpers__'
-import { shallow } from '@/__tests__/adapter'
+import { shallow, mount } from '@/__tests__/adapter'
 
 describe('components/artist/context-menu', () => {
   let artist: Artist
@@ -21,7 +21,6 @@ describe('components/artist/context-menu', () => {
 
   it('plays all', () => {
     const wrapper = shallow(Component, { propsData: { artist } })
-    console.log(wrapper.html())
     const m = mock(playback, 'playAllByArtist')
 
     wrapper.click('[data-test=play]')
@@ -36,8 +35,10 @@ describe('components/artist/context-menu', () => {
     expect(m).toHaveBeenCalledWith(artist, true)
   })
 
-  it('downloads', () => {
-    const wrapper = shallow(Component, { propsData: { artist } })
+  it('downloads', async () => {
+    const wrapper = mount(Component, { propsData: { artist } })
+    await wrapper.vm.$nextTick()
+    await (wrapper.vm as any).open(0, 0)
     const m = mock(download, 'fromArtist')
 
     wrapper.click('[data-test=download]')

@@ -3,7 +3,7 @@ import factory from '@/__tests__/factory'
 import { playback, download } from '@/services'
 import { sharedStore } from '@/stores'
 import { mock } from '@/__tests__/__helpers__'
-import { shallow } from '@/__tests__/adapter'
+import { shallow, mount } from '@/__tests__/adapter'
 
 describe('components/album/context-menu', () => {
   let album: Album
@@ -35,8 +35,10 @@ describe('components/album/context-menu', () => {
     expect(m).toHaveBeenCalledWith(album, true)
   })
 
-  it('downloads', () => {
-    const wrapper = shallow(Component, { propsData: { album } })
+  it('downloads', async () => {
+    const wrapper = mount(Component, { propsData: { album } })
+    await wrapper.vm.$nextTick()
+    await (wrapper.vm as any).open(0, 0)
     const m = mock(download, 'fromAlbum')
 
     wrapper.click('[data-test=download]')

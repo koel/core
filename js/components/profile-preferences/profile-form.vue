@@ -76,7 +76,6 @@ export default Vue.extend({
 
   methods: {
     async update (): Promise<void> {
-      console.log('haha', this.password, this.confirmPassword)
       this.validation.error = Boolean((this.password || this.confirmPassword) && this.password !== this.confirmPassword)
 
       if (this.validation.error) {
