@@ -65,6 +65,11 @@ export const themeStore = {
         thumbnailUrl: require('@/../img/themes/bg-mountains.jpg')
       },
       {
+        id: 'sherwood-pines',
+        thumbnailColor: '#06090c',
+        thumbnailUrl: require('@/../img/themes/bg-sherwood-pines.jpg')
+      },
+      {
         id: 'nemo',
         thumbnailColor: '#031724',
         thumbnailUrl: require('@/../img/themes/bg-nemo.jpg')

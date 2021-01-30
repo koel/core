@@ -91,6 +91,12 @@
     --color-bg-primary: #0e2656;
   }
 
+  &[data-theme=sherwood-pines] {
+    --bg-image: url("/img/themes/bg-sherwood-pines.jpg");
+    --color-bg-primary: #06090c;
+    --color-highlight: #797979;
+  }
+
   &[data-theme=nemo] {
     --bg-image: url("/img/themes/bg-nemo.jpg");
     --color-bg-primary: #031724;
