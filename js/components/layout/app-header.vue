@@ -11,7 +11,10 @@
     <div class="header-right">
       <user-badge/>
       <button @click.prevent="showAboutDialog" class="about control" title="About Koel" data-testid="about-btn">
-        <i class="fa fa-info-circle"></i>
+        <span v-if="shouldDisplayVersionUpdate && hasNewVersion" class="new-version" data-test="new-version-available">
+          {{ sharedState.latestVersion }} available!
+        </span>
+        <i v-else class="fa fa-info-circle"></i>
       </button>
     </div>
   </header>
@@ -20,8 +23,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import compareVersions from 'compare-versions'
 import { eventBus, app } from '@/utils'
 import { app as appConfig, events } from '@/config'
+import { sharedStore, userStore } from '@/stores'
 
 export default Vue.extend({
   components: {
@@ -30,8 +35,20 @@ export default Vue.extend({
   },
 
   data: () => ({
-    appName: appConfig.name
+    appName: appConfig.name,
+    userState: userStore.state,
+    sharedState: sharedStore.state
   }),
+
+  computed: {
+    shouldDisplayVersionUpdate (): boolean {
+      return this.userState.current.is_admin
+    },
+
+    hasNewVersion (): boolean {
+      return compareVersions.compare(this.sharedState.latestVersion, this.sharedState.currentVersion, '>')
+    }
+  },
 
   methods: {
     toggleSidebar: (): void => {
