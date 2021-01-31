@@ -51,6 +51,9 @@ input, select, button, textarea, .btn {
 
 button, [role=button] {
   cursor: pointer;
+  background: transparent;
+  padding: 0;
+  border: 0;
 }
 
 select {

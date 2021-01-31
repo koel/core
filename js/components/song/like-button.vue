@@ -31,12 +31,8 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 button {
-  background: transparent;
-  padding: 0;
-  border: 0;
-
   &:hover .fa-heart-o {
     color: var(--color-maroon);
   }
