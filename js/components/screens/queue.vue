@@ -23,7 +23,13 @@
       </template>
     </screen-header>
 
-    <song-list v-if="state.songs.length" :items="state.songs" type="queue" ref="songList"/>
+    <song-list
+      v-if="state.songs.length"
+      :items="state.songs"
+      :config="{ sortable: false }"
+      type="queue"
+      ref="songList"
+    />
 
     <screen-placeholder v-else>
       <template v-slot:icon>
