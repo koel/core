@@ -13,13 +13,13 @@
         <tr>
           <th @click="sort('song.track')" class="track-number" v-if="mergedConfig.columns.includes('track')">
             #
-            <i class="fa fa-angle-down" v-show="sortKey === 'song.track' && order > 0"></i>
-            <i class="fa fa-angle-up" v-show="sortKey === 'song.track' && order < 0"></i>
+            <i class="fa fa-angle-down" v-show="primarySortField === 'song.track' && sortOrder > 0"></i>
+            <i class="fa fa-angle-up" v-show="primarySortField === 'song.track' && sortOrder < 0"></i>
           </th>
           <th @click="sort('song.title')" class="title" v-if="mergedConfig.columns.includes('title')">
             Title
-            <i class="fa fa-angle-down" v-show="sortKey === 'song.title' && order > 0"></i>
-            <i class="fa fa-angle-up" v-show="sortKey === 'song.title' && order < 0"></i>
+            <i class="fa fa-angle-down" v-show="primarySortField === 'song.title' && sortOrder > 0"></i>
+            <i class="fa fa-angle-up" v-show="primarySortField === 'song.title' && sortOrder < 0"></i>
           </th>
           <th
             @click="sort(['song.album.artist.name', 'song.album.name', 'song.track'])"
@@ -27,8 +27,8 @@
             v-if="mergedConfig.columns.includes('artist')"
           >
             Artist
-            <i class="fa fa-angle-down" v-show="sortingByArtist && order > 0"></i>
-            <i class="fa fa-angle-up" v-show="sortingByArtist && order < 0"></i>
+            <i class="fa fa-angle-down" v-show="primarySortField === 'song.album.artist.name' && sortOrder > 0"></i>
+            <i class="fa fa-angle-up" v-show="primarySortField === 'song.album.artist.name' && sortOrder < 0"></i>
           </th>
           <th
             @click="sort(['song.album.name', 'song.track'])"
@@ -36,13 +36,13 @@
             v-if="mergedConfig.columns.includes('album')"
           >
             Album
-            <i class="fa fa-angle-down" v-show="sortingByAlbum && order > 0"></i>
-            <i class="fa fa-angle-up" v-show="sortingByAlbum && order < 0"></i>
+            <i class="fa fa-angle-down" v-show="primarySortField === 'song.album.name' && sortOrder > 0"></i>
+            <i class="fa fa-angle-up" v-show="primarySortField === 'song.album.name' && sortOrder < 0"></i>
           </th>
           <th @click="sort('song.length')" class="time" v-if="mergedConfig.columns.includes('length')">
             Time
-            <i class="fa fa-angle-down" v-show="sortKey === 'song.length' && order > 0"></i>
-            <i class="fa fa-angle-up" v-show="sortKey === 'song.length' && order < 0"></i>
+            <i class="fa fa-angle-down" v-show="primarySortField === 'song.length' && sortOrder > 0"></i>
+            <i class="fa fa-angle-up" v-show="primarySortField === 'song.length' && sortOrder < 0"></i>
           </th>
           <th class="favorite"></th>
           <th class="play"></th>
@@ -87,9 +87,22 @@ export type SongListType = 'all-songs'
 
 export type SongListColumn = 'track' | 'title' | 'album' | 'artist' | 'length'
 
+type SortField = 'song.track'
+  | 'song.disc'
+  | 'song.title'
+  | 'song.album.artist.name'
+  | 'song.album.name'
+  | 'song.length'
+
 export interface SongListConfig {
   sortable: boolean
   columns: SongListColumn[]
+}
+
+const enum SortOrder {
+  Asc = 1,
+  Desc = -1,
+  None = 0
 }
 
 export default Vue.extend({
@@ -123,10 +136,8 @@ export default Vue.extend({
 
   data: () => ({
     lastSelectedRow: null as unknown as SongListRowComponent,
-    sortKey: '' as string | string[],
-    order: -1,
-    sortingByAlbum: false,
-    sortingByArtist: false,
+    sortFields: [] as SortField[],
+    sortOrder: SortOrder.None,
     songProxies: [] as SongProxy[]
   }),
 
@@ -154,16 +165,21 @@ export default Vue.extend({
         sortable: true,
         columns: ['track', 'title', 'artist', 'album', 'length']
       }, this.config)
+    },
+
+    primarySortField (): string | null {
+      return this.sortFields.length === 0 ? null : this.sortFields[0]
     }
   },
 
   methods: {
     render (): void {
       if (!this.mergedConfig.sortable) {
-        this.sortKey = ''
+        this.sortFields = []
       }
 
-      this.generateSongProxies()
+      this.songProxies = this.generateSongProxies()
+      this.sort(this.sortFields, this.sortOrder)
     },
 
     /**
@@ -172,48 +188,47 @@ export default Vue.extend({
      * maintain an array of "song proxies," each containing the song itself and the "selected" flag.
      * To comply with virtual-scroller, a "type" attribute also presents.
      */
-    generateSongProxies (): void {
+    generateSongProxies (): SongProxy[] {
       // Since this method re-generates the song wrappers, we need to keep track of  the
       // selected songs manually.
       const selectedSongIds = this.selectedSongs.map((song: Song): string => song.id)
 
-      this.songProxies = this.items.map((song: Song): SongProxy => {
-        return {
-          song,
-          selected: selectedSongIds.includes(song.id)
-        }
-      })
+      return this.items.map((song): SongProxy => ({
+        song,
+        selected: selectedSongIds.includes(song.id)
+      }))
     },
 
-    /**
-     * @param  {String|Array<string>} key The sort key. Can be 'title', 'album', 'artist', or 'length'
-     */
-    sort (key: string | string[] = '') {
+    sort (field: SortField | SortField[] = [], order: SortOrder | null = null) {
       // there are certain circumstances where sorting is simply disallowed, e.g. in Queue
       if (!this.mergedConfig.sortable) {
         return
       }
 
-      if (key) {
-        this.sortKey = key
-        this.order *= -1
+      this.sortFields = ([] as SortField[]).concat(field)
+
+      if (!this.sortFields.length && ['album', 'artist'].includes(this.type)) {
+        // by default, sort Album/Artist by track numbers for a more friendly UX
+        this.sortFields.push('song.track')
+        order = SortOrder.Asc
       }
 
-      // if this is an album's song list, default to sorting by track number
-      // and additionally sort by disc number
-      if (this.type === 'album') {
-        this.sortKey = this.sortKey ? this.sortKey : ['song.track']
-        this.sortKey = ([] as string[]).concat(this.sortKey)
-
-        if (!this.sortKey.includes('song.disc')) {
-          this.sortKey.push('song.disc')
-        }
+      if (this.sortFields.includes('song.track') && !this.sortFields.includes('song.disc')) {
+        // Track numbers should always go in conjunction with disc numbers.
+        this.sortFields.push('song.disc')
       }
 
-      this.sortingByAlbum = this.sortKey![0] === 'song.album.name'
-      this.sortingByArtist = this.sortKey![0] === 'song.album.artist.name'
+      this.sortOrder = order === null ? this.nextSortOrder() : order
 
-      this.songProxies = orderBy(this.songProxies, this.sortKey!, this.order)
+      this.songProxies = this.sortOrder === SortOrder.None
+        ? this.generateSongProxies()
+        : orderBy(this.songProxies, this.sortFields, this.sortOrder)
+    },
+
+    nextSortOrder (): SortOrder {
+      if (this.sortOrder === SortOrder.None) return SortOrder.Asc
+      if (this.sortOrder === SortOrder.Asc) return SortOrder.Desc
+      return SortOrder.None
     },
 
     handleDelete (): void {
@@ -235,7 +250,7 @@ export default Vue.extend({
           break
 
         default:
-          break
+          return
       }
 
       this.clearSelection()
@@ -411,7 +426,7 @@ export default Vue.extend({
     },
 
     getAllSongsWithSort (): Song[] {
-      return this.songProxies.map((proxy: SongProxy): Song => proxy.song)
+      return this.songProxies.map(proxy => proxy.song)
     }
   },
 

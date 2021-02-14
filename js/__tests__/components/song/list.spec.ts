@@ -46,7 +46,7 @@ describe('components/song/list', () => {
     })
 
     ;(wrapper.vm as any).sort()
-    expect((wrapper.vm as any).sortKey).toContain('song.disc')
+    expect((wrapper.vm as any).sortFields).toContain('song.disc')
   })
 
   it('plays when Enter is pressed with one selected song', () => {

@@ -42,7 +42,7 @@ export default Vue.extend({
         if (!this.state) {
           return
         }
-        
+
         this.meta.songCount = this.state.songs.length
         this.meta.totalLength = songStore.getFormattedLength(this.state.songs)
       }

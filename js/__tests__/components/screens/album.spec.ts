@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import Component from '@/components/screens/album.vue'
 import SongList from '@/components/song/list.vue'
 import { download, albumInfo as albumInfoService, playback } from '@/services'
@@ -20,29 +19,6 @@ describe('components/screens/album', () => {
 
     await wrapper.vm.$nextTick()
     expect(wrapper.hasAll(SongList)).toBe(true)
-  })
-
-  it('plays all songs', async () => {
-    const songs = factory<Song>('song', 5)
-    const album = factory<Album>('album', { songs })
-
-    const wrapper = mount(Component, {
-      propsData: { album },
-      mocks: {
-        $refs: {
-          songList: Vue.extend({
-            methods: {
-              getAllSongsWithSort: () => songs
-            }
-          })
-        }
-      }
-    })
-
-    const queueAndPlayMock = mock(playback, 'queueAndPlay')
-    await wrapper.vm.$nextTick()
-    wrapper.click('.btn-shuffle-all')
-    expect(queueAndPlayMock).toHaveBeenCalledWith(songs, true)
   })
 
   it('loads info from Last.fm', async () => {

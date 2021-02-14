@@ -46,7 +46,7 @@ export default Vue.extend({
       return 'artist' in this.entity
     },
 
-    sortKeys (): string[] {
+    sortFields (): string[] {
       return this.forAlbum ? ['disc', 'track'] : ['album_id', 'disc', 'track']
     },
 
@@ -78,7 +78,7 @@ export default Vue.extend({
   methods: {
     playOrQueue (e: KeyboardEvent) {
       if (e.metaKey || e.ctrlKey) {
-        queueStore.queue(orderBy(this.entity.songs, this.sortKeys))
+        queueStore.queue(orderBy(this.entity.songs, this.sortFields))
       } else {
         this.playbackFunc.call(playback, this.entity, false)
       }
