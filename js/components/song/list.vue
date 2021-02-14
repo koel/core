@@ -8,15 +8,15 @@
     @keydown.enter.prevent.stop="handleEnter"
     @keydown.a.prevent="handleA"
   >
-    <table class="song-list-header" :class="sortable ? 'sortable' : 'unsortable'">
+    <table class="song-list-header" :class="mergedConfig.sortable ? 'sortable' : 'unsortable'">
       <thead>
         <tr>
-          <th @click="sort('song.track')" class="track-number">
+          <th @click="sort('song.track')" class="track-number" v-if="mergedConfig.columns.includes('track')">
             #
             <i class="fa fa-angle-down" v-show="sortKey === 'song.track' && order > 0"></i>
             <i class="fa fa-angle-up" v-show="sortKey === 'song.track' && order < 0"></i>
           </th>
-          <th @click="sort('song.title')" class="title">
+          <th @click="sort('song.title')" class="title" v-if="mergedConfig.columns.includes('title')">
             Title
             <i class="fa fa-angle-down" v-show="sortKey === 'song.title' && order > 0"></i>
             <i class="fa fa-angle-up" v-show="sortKey === 'song.title' && order < 0"></i>
@@ -24,17 +24,22 @@
           <th
             @click="sort(['song.album.artist.name', 'song.album.name', 'song.track'])"
             class="artist"
+            v-if="mergedConfig.columns.includes('artist')"
           >
             Artist
             <i class="fa fa-angle-down" v-show="sortingByArtist && order > 0"></i>
             <i class="fa fa-angle-up" v-show="sortingByArtist && order < 0"></i>
           </th>
-          <th @click="sort(['song.album.name', 'song.track'])" class="album">
+          <th
+            @click="sort(['song.album.name', 'song.track'])"
+            class="album"
+            v-if="mergedConfig.columns.includes('album')"
+          >
             Album
             <i class="fa fa-angle-down" v-show="sortingByAlbum && order > 0"></i>
             <i class="fa fa-angle-up" v-show="sortingByAlbum && order < 0"></i>
           </th>
-          <th @click="sort('song.length')" class="time">
+          <th @click="sort('song.length')" class="time" v-if="mergedConfig.columns.includes('length')">
             Time
             <i class="fa fa-angle-down" v-show="sortKey === 'song.length' && order > 0"></i>
             <i class="fa fa-angle-up" v-show="sortKey === 'song.length' && order < 0"></i>
@@ -50,9 +55,12 @@
       content-tag="table"
       :items="songProxies"
       item-height="35"
-      :renderers="renderers"
       key-field="song.id"
-    />
+    >
+      <template slot-scope="props">
+        <song-item :item="props.item" :columns="mergedConfig.columns" />
+      </template>
+    </virtual-scroller>
   </div>
 </template>
 
@@ -60,7 +68,7 @@
 import isMobile from 'ismobilejs'
 
 import Vue, { PropOptions } from 'vue'
-import { VirtualScroller } from 'vue-virtual-scroller/dist/vue-virtual-scroller'
+import { VirtualScroller } from 'vue-virtual-scroller'
 import { orderBy, eventBus, startDragging, $ } from '@/utils'
 import { events } from '@/config'
 import { playlistStore, queueStore, favoriteStore } from '@/stores'
@@ -68,20 +76,23 @@ import { playback } from '@/services'
 import router from '@/router'
 import { SongListRowComponent } from 'koel/types/ui'
 
-const songItemComponent = () => import('@/components/song/item.vue')
-const VALID_SONG_LIST_TYPES = [
-  'all-songs',
-  'queue',
-  'playlist',
-  'favorites',
-  'recently-played',
-  'artist',
-  'album',
-  'search-results'
-]
+export type SongListType = 'all-songs'
+  | 'queue'
+  | 'playlist'
+  | 'favorites'
+  | 'recently-played'
+  | 'artist'
+  | 'album'
+  | 'search-results'
+
+export type SongListColumn = 'track' | 'title' | 'album' | 'artist' | 'length'
+
+export interface SongListConfig {
+  sortable: boolean
+  columns: SongListColumn[]
+}
 
 interface SongListData {
-  renderers: Readonly<{ song: any }>,
   lastSelectedRow: SongListRowComponent | null,
   q: string,
   sortKey: string | string[] | null,
@@ -102,14 +113,13 @@ export default Vue.extend({
 
     type: {
       type: String,
-      default: 'all-songs',
-      validator: value => VALID_SONG_LIST_TYPES.includes(value)
-    },
+      default: 'all-songs'
+    } as PropOptions<SongListType>,
 
-    sortable: {
-      type: Boolean,
-      default: true
-    },
+    config: {
+      type: Object,
+      default: (): Partial<SongListConfig> => ({})
+    } as PropOptions<Partial<SongListConfig>>,
 
     playlist: {
       type: Object
@@ -117,13 +127,11 @@ export default Vue.extend({
   },
 
   components: {
-    VirtualScroller
+    VirtualScroller,
+    SongItem: () => import('@/components/song/item.vue')
   },
 
   data: () => ({
-    renderers: Object.freeze({
-      song: songItemComponent
-    }),
     lastSelectedRow: null,
     q: '',
     sortKey: '',
@@ -150,16 +158,23 @@ export default Vue.extend({
 
     selectedSongs (): Song[] {
       return this.songProxies.filter(row => row.selected).map(row => row.song)
+    },
+
+    mergedConfig (): SongListConfig {
+      return Object.assign({
+        sortable: true,
+        columns: ['track', 'title', 'artist', 'album', 'length']
+      }, this.config)
     }
   },
 
   methods: {
     render (): void {
-      if (!this.sortable) {
+      if (!this.mergedConfig.sortable) {
         this.sortKey = ''
       }
 
-      this.generateSongRows()
+      this.generateSongProxies()
     },
 
     /**
@@ -168,7 +183,7 @@ export default Vue.extend({
      * maintain an array of "song proxies," each containing the song itself and the "selected" flag.
      * To comply with virtual-scroller, a "type" attribute also presents.
      */
-    generateSongRows (): void {
+    generateSongProxies (): void {
       // Since this method re-generates the song wrappers, we need to keep track of  the
       // selected songs manually.
       const selectedSongIds = this.selectedSongs.map((song: Song): string => song.id)
@@ -187,7 +202,7 @@ export default Vue.extend({
      */
     sort (key: string | string[] = '') {
       // there are certain circumstances where sorting is simply disallowed, e.g. in Queue
-      if (!this.sortable) {
+      if (!this.mergedConfig.sortable) {
         return
       }
 

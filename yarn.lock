@@ -8746,6 +8746,11 @@ schema-utils@^2.6.5:
     ajv "^6.12.0"
     ajv-keywords "^3.4.1"
 
+scrollparent@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/scrollparent/-/scrollparent-2.0.1.tgz#715d5b9cc57760fb22bdccc3befb5bfe06b1a317"
+  integrity sha1-cV1bnMV3YPsivczDvvtb/gaxoxc=
+
 scss-tokenizer@^0.2.3:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/scss-tokenizer/-/scss-tokenizer-0.2.3.tgz#8eb06db9a9723333824d3f5530641149847ce5d1"
@@ -10256,15 +10261,15 @@ vue-loader@^13.0.5:
     vue-style-loader "^3.0.0"
     vue-template-es2015-compiler "^1.6.0"
 
-vue-observe-visibility@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/vue-observe-visibility/-/vue-observe-visibility-0.1.3.tgz#c2f0fcb5c86d5ae244f53c7e28fa635a0db8ba36"
-  integrity sha1-wvD8tchtWuJE9Tx+KPpjWg24ujY=
+vue-observe-visibility@^0.4.3:
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/vue-observe-visibility/-/vue-observe-visibility-0.4.6.tgz#878cb8ebcf3078e40807af29774e97105ebd519e"
+  integrity sha512-xo0CEVdkjSjhJoDdLSvoZoQrw/H2BlzB5jrCBKGZNXN2zdZgMuZ9BKrxXDjNP2AxlcCoKc8OahI3F3r3JGLv2Q==
 
-vue-resize@^0.1.2:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/vue-resize/-/vue-resize-0.1.4.tgz#bf1ea68ec6af3114e8d2574676fbee210ee5daec"
-  integrity sha512-PJsVBfr6IthVyDU17zIpxuFiZVRZ9WuLpPY1OpJG3hYR6tzzrAmz5TNCYIDTmmcjCPSPCj0qxuxw20nYFrNbkg==
+vue-resize@^0.4.4:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/vue-resize/-/vue-resize-0.4.5.tgz#4777a23042e3c05620d9cbda01c0b3cc5e32dcea"
+  integrity sha512-bhP7MlgJQ8TIkZJXAfDf78uJO+mEI3CaLABLjv0WNzr4CcGRGPIAItyWYnP6LsPA4Oq0WE+suidNs6dgpO4RHg==
 
 vue-style-loader@^3.0.0:
   version "3.1.2"
@@ -10299,13 +10304,14 @@ vue-typed-mixins@^0.2.0:
   resolved "https://registry.yarnpkg.com/vue-typed-mixins/-/vue-typed-mixins-0.2.0.tgz#d369c186a392780bbbe9f1b28a4cdcf62bec9053"
   integrity sha512-0OxuinandPWv3nm5k/reYkuKtX3jjPZ40Sy9roJz0ih8PUzmI7zSRiXFEJ62LsyRegw9Tqy+qMkajk7ipKP8Vg==
 
-vue-virtual-scroller@^0.5.0:
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/vue-virtual-scroller/-/vue-virtual-scroller-0.5.5.tgz#bab38061cf82f1675c3ed1397be59b424f8386bf"
-  integrity sha1-urOAYc+C8WdcPtE5e+WbQk+Dhr8=
+vue-virtual-scroller@^0.12.0:
+  version "0.12.2"
+  resolved "https://registry.yarnpkg.com/vue-virtual-scroller/-/vue-virtual-scroller-0.12.2.tgz#1f91d1f377a7cb99886217b1ec627c3a0a726e8c"
+  integrity sha512-0VtFpbCtqCGOUzvv4WXAw9OSHpA1tEMCvTkHlULMymPPnjasEyRm20HK1Hsmh0EGfq2Ck9sQ7Y761FjY1LXbrw==
   dependencies:
-    vue-observe-visibility "^0.1.3"
-    vue-resize "^0.1.2"
+    scrollparent "^2.0.1"
+    vue-observe-visibility "^0.4.3"
+    vue-resize "^0.4.4"
 
 vue@^2.5.0:
   version "2.5.13"

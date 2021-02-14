@@ -43,7 +43,7 @@
       </template>
     </screen-header>
 
-    <song-list :items="album.songs" type="album" ref="songList"/>
+    <song-list :items="album.songs" type="album" :config="listConfig" ref="songList"/>
 
     <section class="info-wrapper" v-if="sharedState.useLastfm && meta.showing">
       <close-modal-btn @click="meta.showing = false"/>
@@ -65,6 +65,7 @@ import { download, albumInfo as albumInfoService } from '@/services'
 import router from '@/router'
 import hasSongList from '@/mixins/has-song-list.ts'
 import albumAttributes from '@/mixins/album-attributes.ts'
+import { SongListConfig } from '@/components/song/list.vue'
 
 export default mixins(hasSongList, albumAttributes).extend({
   components: {
@@ -79,6 +80,11 @@ export default mixins(hasSongList, albumAttributes).extend({
 
   data: () => ({
     sharedState: sharedStore.state,
+
+    listConfig: {
+      columns: ['track', 'title', 'length']
+    } as Partial<SongListConfig>,
+
     meta: {
       showing: false,
       loading: true

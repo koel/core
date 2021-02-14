@@ -12,11 +12,11 @@
     @contextmenu.prevent="contextMenu"
     :class="{ playing, selected: item.selected }"
   >
-    <td class="track-number text-secondary">{{ song.track || '' }}</td>
-    <td class="title">{{ song.title }}</td>
-    <td class="artist">{{ song.artist.name }}</td>
-    <td class="album">{{ song.album.name }}</td>
-    <td class="time text-secondary">{{ song.fmtLength }}</td>
+    <td class="track-number text-secondary" v-if="columns.includes('track')">{{ song.track || '' }}</td>
+    <td class="title" v-if="columns.includes('title')">{{ song.title }}</td>
+    <td class="artist" v-if="columns.includes('artist')">{{ song.artist.name }}</td>
+    <td class="album" v-if="columns.includes('album')">{{ song.album.name }}</td>
+    <td class="time text-secondary" v-if="columns.includes('length')">{{ song.fmtLength }}</td>
     <td class="favorite">
       <like-button :song="song"/>
     </td>
@@ -33,6 +33,7 @@ import $, { VueQuery } from 'vuequery'
 import { playback } from '@/services'
 import { queueStore } from '@/stores'
 import { SongListComponent } from 'koel/types/ui'
+import { SongListColumn } from '@/components/song/list.vue'
 
 export default Vue.extend({
   name: 'song-item',
@@ -45,7 +46,12 @@ export default Vue.extend({
     item: {
       type: Object,
       required: true
-    } as PropOptions<SongProxy>
+    } as PropOptions<SongProxy>,
+
+    columns: {
+      type: Array,
+      required: true
+    } as PropOptions<SongListColumn[]>
   },
 
   computed: {

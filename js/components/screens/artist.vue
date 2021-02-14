@@ -48,7 +48,7 @@
       </template>
     </screen-header>
 
-    <song-list :items="artist.songs" type="artist" ref="songList"/>
+    <song-list :items="artist.songs" type="artist" :config="listConfig" ref="songList"/>
 
     <section class="info-wrapper" v-if="sharedState.useLastfm && meta.showing">
       <close-modal-btn @click="meta.showing = false"/>
@@ -70,6 +70,7 @@ import { download, artistInfo as artistInfoService } from '@/services'
 import router from '@/router'
 import hasSongList from '@/mixins/has-song-list.ts'
 import artistAttributes from '@/mixins/artist-attributes.ts'
+import { SongListConfig } from '@/components/song/list.vue'
 
 export default mixins(hasSongList, artistAttributes).extend({
   components: {
@@ -83,7 +84,12 @@ export default mixins(hasSongList, artistAttributes).extend({
   filters: { pluralize },
 
   data: () => ({
+    listConfig: {
+      columns: ['track', 'title', 'album', 'length']
+    } as Partial<SongListConfig>,
+
     sharedState: sharedStore.state,
+
     meta: {
       showing: false,
       loading: true
