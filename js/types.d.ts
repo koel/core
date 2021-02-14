@@ -1,4 +1,4 @@
-declare module 'vue-virtual-scroller/dist/vue-virtual-scroller' {
+declare module 'vue-virtual-scroller' {
   const VirtualScroller: any
   export { VirtualScroller }
 }
@@ -393,3 +393,7 @@ type Theme = {
   thumbnailUrl?: string
   selected?: boolean
 }
+
+type ArtistAlbumViewMode = 'list' | 'thumbnails'
+
+type RepeatMode = 'NO_REPEAT' | 'REPEAT_ALL' | 'REPEAT_ONE'

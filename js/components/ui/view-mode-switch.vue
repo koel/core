@@ -25,14 +25,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { PropOptions } from 'vue'
 
 export default Vue.extend({
   props: {
     value: {
       type: String,
       required: true
-    }
+    } as PropOptions<ArtistAlbumViewMode>
   },
 
   data: () => ({

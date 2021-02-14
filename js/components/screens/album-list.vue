@@ -31,8 +31,7 @@ export default mixins(infiniteScroll).extend({
   data: () => ({
     perPage: 9,
     displayedItemCount: 9,
-    q: '',
-    viewMode: '',
+    viewMode: null as ArtistAlbumViewMode | null,
     albums: [] as Album[]
   }),
 

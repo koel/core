@@ -85,7 +85,7 @@ export default Vue.extend({
     },
 
     toggleExtraPanel (): void {
-      preferenceStore.set('showExtraPanel', !this.preferences.showExtraPanel)
+      preferenceStore.showExtraPanel = !this.preferences.showExtraPanel
     },
 
     toggleEqualizer (): void {

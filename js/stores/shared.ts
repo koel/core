@@ -18,7 +18,7 @@ interface SharedState {
   allowDownload: boolean
   artists: Artist[]
   cdnUrl: string
-  currentUser: User | null
+  currentUser: User | undefined
   currentVersion: string
   favorites: Song[]
   interactions: Interaction[]

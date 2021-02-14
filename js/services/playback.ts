@@ -22,7 +22,7 @@ import router from '@/router'
 const PRELOAD_BUFFER = 30
 const DEFAULT_VOLUME_VALUE = 7
 const VOLUME_INPUT_SELECTOR = '#volumeRange'
-const REPEAT_MODES = ['NO_REPEAT', 'REPEAT_ALL', 'REPEAT_ONE']
+const REPEAT_MODES: RepeatMode[] = ['NO_REPEAT', 'REPEAT_ALL', 'REPEAT_ONE']
 
 export const playback = {
   player: null as Plyr | null,
@@ -91,11 +91,14 @@ export const playback = {
   },
 
   setMediaSessionActionHandlers (): void {
-    // workaround for "TS2339: Property 'mediaSession' does not exist on type 'Navigator'" error
-    ;(<any>navigator).mediaSession.setActionHandler('play', () => this.resume())
-    ;(<any>navigator).mediaSession.setActionHandler('pause', () => this.pause())
-    ;(<any>navigator).mediaSession.setActionHandler('previoustrack', () => this.playPrev())
-    ;(<any>navigator).mediaSession.setActionHandler('nexttrack', () => this.playNext())
+    if (!isMediaSessionSupported) {
+      return
+    }
+
+    navigator.mediaSession!.setActionHandler('play', () => this.resume())
+    navigator.mediaSession!.setActionHandler('pause', () => this.pause())
+    navigator.mediaSession!.setActionHandler('previoustrack', () => this.playPrev())
+    navigator.mediaSession!.setActionHandler('nexttrack', () => this.playNext())
   },
 
   listenToMediaEvents (mediaElement: HTMLMediaElement): void {
@@ -208,7 +211,7 @@ export const playback = {
     }
 
     if (isMediaSessionSupported) {
-      ;(<any>navigator).mediaSession.metadata = new window.MediaMetadata({
+      navigator.mediaSession!.metadata = new MediaMetadata({
         title: song.title,
         artist: song.artist.name,
         album: song.album.name,
@@ -331,7 +334,7 @@ export const playback = {
 
   unmute (): void {
     // If the saved volume is 0, we unmute to the default level (7).
-    if (parseInt(preferences.volume) === 0) {
+    if (preferences.volume === 0) {
       preferences.volume = DEFAULT_VOLUME_VALUE
     }
 

@@ -111,6 +111,11 @@ export const equalizerStore = {
    * @param  {number[]} gains  The band's gain value (dB)
    */
   set: (preamp: number, gains: number[]): void => {
-    preferenceStore.equalizer = { preamp, gains }
+    preferenceStore.equalizer = {
+      id: -1,
+      name: 'Custom',
+      preamp,
+      gains
+    }
   }
 }

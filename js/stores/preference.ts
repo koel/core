@@ -1,7 +1,23 @@
 import { userStore } from '.'
 import { ls } from '@/services'
 
-export const preferenceStore = {
+interface Preferences extends Record<string, any> {
+  volume: number
+  notify: boolean
+  repeatMode: RepeatMode
+  showExtraPanel: boolean
+  confirmClosing: boolean
+  equalizer: EqualizerPreset,
+  artistsViewMode: ArtistAlbumViewMode | null,
+  albumsViewMode: ArtistAlbumViewMode | null,
+  selectedPreset: number
+  transcodeOnMobile: boolean
+  supportBarNoBugging: boolean
+  showAlbumArtOverlay: boolean
+  theme: Theme['id'] | null
+}
+
+const preferenceStore = {
   storeKey: '',
 
   state: {
@@ -21,7 +37,7 @@ export const preferenceStore = {
     supportBarNoBugging: false,
     showAlbumArtOverlay: true,
     theme: null
-  } as { [key: string]: any },
+  } as Preferences,
 
   init (user?: User): void {
     const initUser = user || userStore.current
@@ -34,7 +50,7 @@ export const preferenceStore = {
    * Proxy the state properties, so that each can be directly accessed using the key.
    */
   setupProxy (): void {
-    Object.keys(this.state).forEach((key: string): void => {
+    Object.keys(this.state).forEach(key => {
       Object.defineProperty(this, key, {
         get: (): any => this.get(key),
         set: (value: any): void => this.set(key, value),
@@ -43,7 +59,7 @@ export const preferenceStore = {
     })
   },
 
-  set (key: string, val: any): void {
+  set (key: keyof Preferences, val: any): void {
     this.state[key] = val
     this.save()
   },
@@ -55,4 +71,8 @@ export const preferenceStore = {
   save (): void {
     ls.set(this.storeKey, this.state)
   }
-} as { [key: string]: any }
+}
+
+const exportedPreferenceStore = preferenceStore as unknown as Omit<typeof preferenceStore, 'setupProxy'> & Preferences
+
+export { exportedPreferenceStore as preferenceStore }

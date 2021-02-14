@@ -107,7 +107,7 @@ describe('services/playback', () => {
       expect(scrobbleMock).toHaveBeenCalled()
     })
 
-    it.each([['REPEAT_ONE', 1, 0], ['NO_REPEAT', 0, 1], ['REPEAT_ALL', 0, 1]])(
+    it.each<[RepeatMode, number, number]>([['REPEAT_ONE', 1, 0], ['NO_REPEAT', 0, 1], ['REPEAT_ALL', 0, 1]])(
       'when song ends, if repeat mode is %s then restart() is called %d times and playNext() is called %d times',
       (repeatMode, restartCalls, playNextCalls) => {
         sharedStore.state.useLastfm = false // so that no scrobbling is made unnecessarily
@@ -209,9 +209,11 @@ describe('services/playback', () => {
     expect(playMock).toHaveBeenCalled()
   })
 
-  it.each([['NO_REPEAT', 'REPEAT_ALL'], ['REPEAT_ALL', 'REPEAT_ONE'], ['REPEAT_ONE', 'NO_REPEAT']])(
-    'it switches from repeat mode %s to repeat mode %s',
-    (fromMode, toMode) => {
+  it.each<[RepeatMode, RepeatMode]>([
+    ['NO_REPEAT', 'REPEAT_ALL'],
+    ['REPEAT_ALL', 'REPEAT_ONE'],
+    ['REPEAT_ONE', 'NO_REPEAT']
+  ])('it switches from repeat mode %s to repeat mode %s', (fromMode, toMode) => {
       preferences.repeatMode = fromMode
 
       playback.changeRepeatMode()
@@ -353,13 +355,13 @@ describe('services/playback', () => {
     ['resume', 'Paused'],
     ['pause', 'Playing']
   ])('%ss playback if toggled when current song playback state is %s', (action, playbackState) => {
-      const actionMock = mock(playback, action)
-      Object.defineProperty(queueStore, 'current', {
-        get: () => factory('song', { playbackState })
-      })
-      playback.toggle()
-      expect(actionMock).toHaveBeenCalled()
+    const actionMock = mock(playback, action)
+    Object.defineProperty(queueStore, 'current', {
+      get: () => factory('song', { playbackState })
     })
+    playback.toggle()
+    expect(actionMock).toHaveBeenCalled()
+  })
 
   it('queues and plays all songs shuffled by default', async () => {
     const allSongs = factory<Song>('song', 5)
