@@ -5,6 +5,7 @@ import { eventBus } from '@/utils'
 import factory from '@/__tests__/factory'
 import { mock } from '@/__tests__/__helpers__'
 import { mount, Wrapper } from '@/__tests__/adapter'
+import FunctionPropertyNames = jest.FunctionPropertyNames
 
 describe('components/song/context-menu', () => {
   let songs: Song[], wrapper: Wrapper
@@ -39,7 +40,7 @@ describe('components/song/context-menu', () => {
     expect(wrapper.hasAll(...selectors)).toBe(true)
   })
 
-  it.each<[string, string, any]>([
+  it.each<[string, string, FunctionPropertyNames<typeof queueStore>]>([
     ['after current', '.after-current', 'queueAfterCurrent'],
     ['to bottom', '.bottom-queue', 'queue'],
     ['to top', '.top-queue', 'queueToTop']

@@ -14,6 +14,7 @@ import {
 import router from '@/router'
 import factory from '@/__tests__/factory'
 import Vue from 'vue'
+import FunctionPropertyNames = jest.FunctionPropertyNames
 
 const prepareForTests = () => {
   document.body.innerHTML = `
@@ -347,8 +348,11 @@ describe('services/playback', () => {
     expect(playFirstInQueueMock).toHaveBeenCalled()
   })
 
-  it.each<[any, PlaybackState]>([['resume', 'Stopped'], ['resume', 'Paused'], ['pause', 'Playing']])
-    ('%ss playback if toggled when current song playback state is %s', (action, playbackState) => {
+  it.each<[FunctionPropertyNames<typeof playback>, PlaybackState]>([
+    ['resume', 'Stopped'],
+    ['resume', 'Paused'],
+    ['pause', 'Playing']
+  ])('%ss playback if toggled when current song playback state is %s', (action, playbackState) => {
       const actionMock = mock(playback, action)
       Object.defineProperty(queueStore, 'current', {
         get: () => factory('song', { playbackState })

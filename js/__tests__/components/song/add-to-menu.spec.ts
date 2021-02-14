@@ -4,6 +4,7 @@ import factory from '@/__tests__/factory'
 import { playlistStore, queueStore, favoriteStore } from '@/stores'
 import { mock } from '@/__tests__/__helpers__'
 import { shallow } from '@/__tests__/adapter'
+import FunctionPropertyNames = jest.FunctionPropertyNames
 
 describe('components/song/add-to-menu', () => {
   const config = {
@@ -63,7 +64,7 @@ describe('components/song/add-to-menu', () => {
     expect(wrapper.has('form.form-new-playlist')).toBe(false)
   })
 
-  it.each<[string, string, any]>([
+  it.each<[string, string, FunctionPropertyNames<typeof queueStore>]>([
     ['after current', '.after-current', 'queueAfterCurrent'],
     ['to bottom', '.bottom-queue', 'queue'],
     ['to top', '.top-queue', 'queueToTop']

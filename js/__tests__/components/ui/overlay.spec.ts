@@ -22,7 +22,7 @@ describe('components/shared/overlay', () => {
     expect(wrapper).toMatchSnapshot()
   })
 
-  it.each([['show', true], ['hide', false]])('%ss', (methodName) => {
+  it.each([['show'], ['hide']])('%ss', methodName => {
     const wrapper = mount(Component)
     ;(wrapper.vm as any)[methodName]()
     expect(wrapper).toMatchSnapshot()

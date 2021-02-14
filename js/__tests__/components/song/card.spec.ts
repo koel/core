@@ -4,6 +4,7 @@ import { queueStore } from '@/stores'
 import { playback } from '@/services'
 import { mock } from '@/__tests__/__helpers__'
 import { Wrapper, shallow } from '@/__tests__/adapter'
+import FunctionPropertyNames = jest.FunctionPropertyNames
 
 describe('components/song/card', () => {
   let propsData, song: Song, wrapper: Wrapper
@@ -46,7 +47,7 @@ describe('components/song/card', () => {
     expect(playStub).toHaveBeenCalledWith(song)
   })
 
-  it.each<[PlaybackState, any]>([
+  it.each<[PlaybackState, FunctionPropertyNames<typeof playback>]>([
     ['Stopped', 'play'],
     ['Playing', 'pause'],
     ['Paused', 'resume']
