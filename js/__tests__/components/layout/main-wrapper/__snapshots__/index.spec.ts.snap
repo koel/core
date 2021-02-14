@@ -75,11 +75,11 @@ exports[`component/layout/main-wrapper/index renders properly 1`] = `
             </tr>
           </thead>
         </table>
-        <div data-v-303cd025="" class="virtual-scroller scroller">
-          <div data-v-303cd025="" class="item-container">
-            <table data-v-303cd025="" class="items"></table>
+        <div data-v-3eef485a="" class="virtual-scroller scroller">
+          <div data-v-3eef485a="" class="item-container">
+            <table data-v-3eef485a="" class="items"></table>
           </div>
-          <div data-v-c7b3205a="" data-v-303cd025="" tabindex="-1" class="resize-observer"><object style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;" type="text/html" data="about:blank"></object></div>
+          <div data-v-b329ee4c="" data-v-3eef485a="" tabindex="-1" class="resize-observer"><object style="display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;" aria-hidden="true" tabindex="-1" type="text/html" data="about:blank"></object></div>
         </div>
       </div>
     </section>

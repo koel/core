@@ -92,16 +92,6 @@ export interface SongListConfig {
   columns: SongListColumn[]
 }
 
-interface SongListData {
-  lastSelectedRow: SongListRowComponent | null,
-  q: string,
-  sortKey: string | string[] | null,
-  order: number,
-  sortingByAlbum: boolean,
-  sortingByArtist: boolean,
-  songProxies: SongProxy[]
-}
-
 export default Vue.extend({
   name: 'song-list',
 
@@ -132,14 +122,13 @@ export default Vue.extend({
   },
 
   data: () => ({
-    lastSelectedRow: null,
-    q: '',
-    sortKey: '',
+    lastSelectedRow: null as unknown as SongListRowComponent,
+    sortKey: '' as string | string[],
     order: -1,
     sortingByAlbum: false,
     sortingByArtist: false,
-    songProxies: []
-  } as SongListData),
+    songProxies: [] as SongProxy[]
+  }),
 
   watch: {
     items (): void {
@@ -191,8 +180,7 @@ export default Vue.extend({
       this.songProxies = this.items.map((song: Song): SongProxy => {
         return {
           song,
-          selected: selectedSongIds.includes(song.id),
-          type: 'song'
+          selected: selectedSongIds.includes(song.id)
         }
       })
     },

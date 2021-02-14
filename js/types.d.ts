@@ -318,7 +318,6 @@ declare module 'koel/types/ui' {
 interface SongProxy {
   song: Song
   selected: boolean
-  type: string
 }
 
 interface EqualizerPreset {
