@@ -1,4 +1,4 @@
-import { secondsToHis, parseValidationError } from '@/utils'
+import { secondsToHis, parseValidationError, ServerValidationError } from '@/utils'
 
 describe('services/utils', () => {
   describe('#secondsToHis', () => {
@@ -12,21 +12,25 @@ describe('services/utils', () => {
   })
 
   describe('#parseValidationError', () => {
-    it('parses single-level validation error', () => {
-      const error = {
-        err_1: ['Foo']
+    it('parses validation error', () => {
+      const error: ServerValidationError = {
+        message: 'The given data was invalid',
+        errors: {
+          email: [
+            'The email has already been taken',
+            'The domain is blacklisted'
+          ],
+          name: [
+            'The name is required'
+          ]
+        }
       }
 
-      expect(parseValidationError(error)).toEqual(['Foo'])
-    })
-
-    it('parses multi-level validation error', () => {
-      const error = {
-        err_1: ['Foo', 'Bar'],
-        err_2: ['Baz', 'Qux']
-      }
-
-      expect(parseValidationError(error)).toEqual(['Foo', 'Bar', 'Baz', 'Qux'])
+      expect(parseValidationError(error)).toEqual([
+        'The email has already been taken',
+        'The domain is blacklisted',
+        'The name is required'
+      ])
     })
   })
 })

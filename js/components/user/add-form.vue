@@ -45,7 +45,7 @@
 import Vue from 'vue'
 import { clone, isEqual } from 'lodash'
 import { userStore } from '@/stores'
-import { alerts } from '@/utils'
+import { alerts, parseValidationError } from '@/utils'
 
 export default Vue.extend({
   components: {
@@ -62,9 +62,16 @@ export default Vue.extend({
   methods: {
     async submit (): Promise<void> {
       this.loading = true
-      await userStore.store(this.newUser.name, this.newUser.email, this.newUser.password, this.newUser.is_admin)
-      this.loading = false
-      this.close()
+
+      try {
+        await userStore.store(this.newUser.name, this.newUser.email, this.newUser.password, this.newUser.is_admin)
+        this.close()
+      } catch (err) {
+        const msg = err.response.status === 422 ? parseValidationError(err.response.data)[0] : 'Unknown error.'
+        alerts.error(msg)
+      } finally {
+        this.loading = false
+      }
     },
 
     close (): void {

@@ -13,6 +13,7 @@
 .alertify-logs {
   font-family: var(--font-family);
   font-weight: var(--font-weight-thin);
+  z-index: 9999;
 
   .show {
     border-radius: 3px;
