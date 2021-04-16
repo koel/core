@@ -71,7 +71,6 @@ const createGhostDragImage = (event: DragEvent, text: string): void => {
 
 /**
  * Handle song/album/artist drag start event.
- * @param {Song|Song[]} dragged Either an array of songs or a song/album/artist object
  */
 export const startDragging = (event: DragEvent, dragged: Song | Song[] | Album | Artist, type: DragType): void => {
   if (!event.dataTransfer) {
