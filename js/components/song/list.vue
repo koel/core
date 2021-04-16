@@ -562,6 +562,7 @@ export default Vue.extend({
       .item-container {
         left: 12px;
         right: 12px;
+        width: calc(100vw - 24px);
       }
     }
 
