@@ -34,7 +34,7 @@ describe('services/download', () => {
   it.each<[Song[], boolean]>([[[], false], [factory<Song>('song', 5), true]])
   ('downloads playlist if available', (songs, triggered) => {
     const triggerMock = mock(download, 'trigger')
-    download.fromPlaylist(factory<Playlist>('playlist', { id: 42, songs }))
+    download.fromPlaylist(factory<Playlist>('playlist', { id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479', songs }))
 
     triggered
       ? expect(triggerMock).toHaveBeenCalledWith('playlist/42')

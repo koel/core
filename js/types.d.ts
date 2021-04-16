@@ -219,7 +219,7 @@ interface SmartPlaylistOperator {
 }
 
 interface Playlist {
-  readonly id: number
+  readonly id: string
   name: string
   songs: Song[]
   populated?: boolean

@@ -5,6 +5,8 @@ import { artistStore, albumStore, songStore, queueStore, playlistStore, userStor
 import { playback } from './services'
 import { use } from '@/utils'
 
+const UUID_REGEX = '[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}'
+
 const router = {
   routes: {
     '/home': (): void => loadMainView('Home'),
@@ -47,7 +49,7 @@ const router = {
       loadMainView('Artist', artist)
     }),
 
-    '/playlist/(\\d+)': (id: number) => use(playlistStore.byId(~~id)!, (playlist: Playlist): void => {
+    [`/playlist/(${UUID_REGEX})`]: (id: string) => use(playlistStore.byId(id)!, (playlist: Playlist): void => {
       loadMainView('Playlist', playlist)
     }),
 

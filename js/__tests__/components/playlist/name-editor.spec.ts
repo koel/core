@@ -8,7 +8,7 @@ describe('components/playlist/name-editor', () => {
   let playlist: Playlist
   beforeEach(() => {
     playlist = factory<Playlist>('playlist', {
-      id: 99,
+      id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
       name: 'Foo'
     })
   })
