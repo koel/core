@@ -2,13 +2,8 @@ import { secondsToHis, parseValidationError, ServerValidationError } from '@/uti
 
 describe('services/utils', () => {
   describe('#secondsToHis', () => {
-    it('formats a duration to H:i:s', () => {
-      expect(secondsToHis(7547)).toBe('02:05:47')
-    })
-
-    it('ommits hours from short duration when formats to H:i:s', () => {
-      expect(secondsToHis(314)).toBe('05:14')
-    })
+    it('formats a duration to H:i:s', () => expect(secondsToHis(7547)).toBe('02:05:47'))
+    it('omits hours from short duration when formats to H:i:s', () => expect(secondsToHis(314)).toBe('05:14'))
   })
 
   describe('#parseValidationError', () => {
