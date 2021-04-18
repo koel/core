@@ -37,7 +37,7 @@ describe('services/download', () => {
     download.fromPlaylist(factory<Playlist>('playlist', { id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479', songs }))
 
     triggered
-      ? expect(triggerMock).toHaveBeenCalledWith('playlist/42')
+      ? expect(triggerMock).toHaveBeenCalledWith('playlist/f47ac10b-58cc-4372-a567-0e02b2c3d479')
       : expect(triggerMock).not.toHaveBeenCalled()
   })
 

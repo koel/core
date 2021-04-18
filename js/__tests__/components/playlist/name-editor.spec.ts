@@ -24,6 +24,9 @@ describe('components/playlist/name-editor', () => {
       propsData: { playlist }
     })
     wrapper.find('[type=text]').setValue('Bar').input().blur()
-    expect(updateStub).toHaveBeenCalledWith(expect.objectContaining({ id: 99, name: 'Bar' }))
+    expect(updateStub).toHaveBeenCalledWith(expect.objectContaining({
+      id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+      name: 'Bar'
+    }))
   })
 })
