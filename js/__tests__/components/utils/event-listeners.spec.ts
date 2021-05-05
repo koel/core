@@ -24,7 +24,7 @@ describe('utils/event-listeners', () => {
       songs: factory('song', 3)
     }))
 
-    expect(confirmMock).toHaveBeenCalledWith(`Delete the playlist &quot;Foo&quot?`, expect.any(Function))
+    expect(confirmMock).toHaveBeenCalledWith(`Delete the playlist "Foo"?`, expect.any(Function))
   })
 
   it("doesn't confirm deleting a playlist if the playlist is empty", () => {

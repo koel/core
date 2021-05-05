@@ -100,7 +100,7 @@ export const playlistStore = {
     playlist.songs = songs
     this.populateContent(playlist)
     this.add(playlist)
-    alerts.success(`Created playlist &quot;${playlist.name}&quot;.`)
+    alerts.success(`Created playlist "${playlist.name}."`)
 
     return playlist
   },
@@ -127,7 +127,7 @@ export const playlistStore = {
     }
 
     await http.put(`playlist/${playlist.id}/sync`, { songs: playlist.songs.map(song => song.id) })
-    alerts.success(`Added ${pluralize(songs.length, 'song')} into &quot;${playlist.name}&quot;.`)
+    alerts.success(`Added ${pluralize(songs.length, 'song')} into "${playlist.name}."`)
 
     return playlist
   },
@@ -139,7 +139,7 @@ export const playlistStore = {
 
     playlist.songs = difference(playlist.songs, songs)
     await http.put(`playlist/${playlist.id}/sync`, { songs: playlist.songs.map(song => song.id) })
-    alerts.success(`Removed ${pluralize(songs.length, 'song')} from &quot;${playlist.name}&quot;.`)
+    alerts.success(`Removed ${pluralize(songs.length, 'song')} from "${playlist.name}."`)
 
     return playlist
   },
@@ -148,7 +148,7 @@ export const playlistStore = {
     const serializedRules = this.serializeSmartPlaylistRulesForStorage(playlist.rules)
 
     await http.put(`playlist/${playlist.id}`, { name: playlist.name, rules: serializedRules })
-    alerts.success(`Updated playlist &quot;${playlist.name}&quot;.`)
+    alerts.success(`Updated playlist "${playlist.name}."`)
 
     return playlist
   },
