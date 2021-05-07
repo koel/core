@@ -82,7 +82,7 @@ export const userStore = {
     const user = await http.post<User>('user', { name, email, password, is_admin })
     this.setAvatar(user)
     this.all.unshift(user)
-    alerts.success(`New user &quot;${name}&quot; created.`)
+    alerts.success(`New user "${name}" created.`)
 
     return user
   },
@@ -97,7 +97,7 @@ export const userStore = {
   async destroy (user: User): Promise<void> {
     await http.delete(`user/${user.id}`)
     this.all = without(this.all, user)
-    alerts.success(`User &quot;${user.name}&quot; deleted.`)
+    alerts.success(`User "${user.name}" deleted.`)
 
     // Mama, just killed a man
     // Put a gun against his head

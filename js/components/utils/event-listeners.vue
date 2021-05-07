@@ -17,14 +17,14 @@ export default Vue.extend({
       [events.PLAYLIST_DELETE]: (playlist: Playlist): void => {
         const destroy = async (): Promise<void> => {
           await playlistStore.delete(playlist)
-          alerts.success(`Deleted playlist &quot;${playlist.name}&quot;.`)
+          alerts.success(`Deleted playlist "${playlist.name}."`)
           router.go('home')
         }
 
         if (!playlist.songs.length) {
           destroy()
         } else {
-          alerts.confirm(`Delete the playlist &quot;${playlist.name}&quot?`, destroy)
+          alerts.confirm(`Delete the playlist "${playlist.name}"?`, destroy)
         }
       },
 

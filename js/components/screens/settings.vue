@@ -75,13 +75,9 @@ export default Vue.extend({
         router.go('home')
         forceReloadWindow()
       } catch (err) {
-        let msg = 'Unknown error.'
-
-        if (err.response.status === 422) {
-          msg = parseValidationError(err.response.data)[0]
-        }
-
         hideOverlay()
+
+        const msg = err.response.status === 422 ? parseValidationError(err.response.data)[0] : 'Unknown error.'
         alerts.error(msg)
       }
     }

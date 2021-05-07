@@ -10,16 +10,21 @@
   >
     <span class="cover" :style="{ backgroundImage: `url(${song.album.cover})` }">
       <a class="control" @click.prevent="changeSongState">
-        <i class="fa fa-play" v-if="song.playbackState !== 'Playing'"></i>
-        <i class="fa fa-pause" v-else></i>
+        <i class="fa fa-play" v-if="song.playbackState !== 'Playing'"/>
+        <i class="fa fa-pause" v-else/>
       </a>
     </span>
-    <span class="details">
-      <span v-if="showPlayCount" :style="{ width: `${song.playCount*100/topPlayCount}%` }" class="play-count"></span>
-      {{ song.title }}
-      <span class="by text-secondary">
-        <a :href="`#!/artist/${song.artist.id}`">{{ song.artist.name }}</a>
-        <template v-if="showPlayCount">- {{ song.playCount | pluralize('play') }}</template>
+    <span class="main">
+      <span class="details">
+        <span v-if="showPlayCount" :style="{ width: `${song.playCount*100/topPlayCount}%` }" class="play-count"/>
+        {{ song.title }}
+        <span class="by text-secondary">
+          <a :href="`#!/artist/${song.artist.id}`">{{ song.artist.name }}</a>
+          <template v-if="showPlayCount">- {{ song.playCount | pluralize('play') }}</template>
+        </span>
+      </span>
+      <span class="favorite">
+        <like-button :song="song"/>
       </span>
     </span>
   </article>
@@ -33,6 +38,10 @@ import { playback } from '@/services'
 import Vue, { PropOptions } from 'vue'
 
 export default Vue.extend({
+  components: {
+    LikeButton: () => import('@/components/song/like-button.vue')
+  },
+
   props: {
     song: {
       type: Object,
@@ -143,13 +152,11 @@ article {
     }
   }
 
-  .details {
+  .main {
     flex: 1;
     padding: 4px 8px;
     position: relative;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
 
     .play-count {
       background: rgba(255, 255, 255, 0.08);
@@ -173,6 +180,10 @@ article {
           color: var(--color-highlight);
         }
       }
+    }
+
+    .details {
+      flex: 1;
     }
   }
 }

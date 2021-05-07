@@ -1,6 +1,6 @@
 /**
  * Convert a duration in seconds into H:i:s format.
- * If H is 0, it will be ommited.
+ * If H is 0, it will be omitted.
  */
 export const secondsToHis = (d: number): string => {
   d = ~~d
@@ -17,11 +17,22 @@ export const secondsToHis = (d: number): string => {
   return (hString === '00' ? '' : `${hString}:`) + iString + ':' + sString
 }
 
+export type ServerValidationError = {
+  message: string
+  errors: Record<string, string[]>
+}
 /**
  * Parse the validation error from the server into a flattened array of messages.
  */
-export const parseValidationError = (error: any): string[] =>
-  Object.keys(error).reduce((messages, field) => messages.concat(error[field]), [])
+export const parseValidationError = (serverError: ServerValidationError): string[] => {
+  let messages = [] as string[]
+
+  Object.keys(serverError.errors).forEach(key => {
+    messages = messages.concat(...serverError.errors[key])
+  })
+
+  return messages
+}
 
 /**
  * Turn <br> into new line characters.
