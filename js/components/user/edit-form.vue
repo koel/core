@@ -9,11 +9,11 @@
       <div>
         <div class="form-row">
           <label>Name</label>
-          <input title="Name" type="text" name="name" v-model="mutatedUser.name" required v-koel-focus>
+          <input title="Name" type="text" name="name" v-model="updateData.name" required v-koel-focus>
         </div>
         <div class="form-row">
           <label>Email</label>
-          <input title="Email" type="email" name="email" v-model="mutatedUser.email" required>
+          <input title="Email" type="email" name="email" v-model="updateData.email" required>
         </div>
         <div class="form-row">
           <label>Password</label>
@@ -21,13 +21,14 @@
             name="password"
             placeholder="Leave blank for no changes"
             type="password"
-            v-model="mutatedUser.password"
+            v-model="updateData.password"
             autocomplete="new-password"
           >
+          <p class="help">Min. 10 characters. Must be a mix of characters, numbers, and symbols.</p>
         </div>
         <div class="form-row">
           <label>
-            <input type="checkbox" name="is_admin" v-model="mutatedUser.is_admin"> User is an admin
+            <input type="checkbox" name="is_admin" v-model="updateData.is_admin"> User is an admin
             <tooltip-icon title="Admins can perform administrative tasks like managing users and uploading songs."/>
           </label>
         </div>
@@ -43,8 +44,8 @@
 
 <script lang="ts">
 import { isEqual } from 'lodash'
-import { alerts } from '@/utils'
-import { userStore } from '@/stores'
+import { alerts, parseValidationError } from '@/utils'
+import { UpdateUserData, userStore } from '@/stores'
 import Vue, { PropOptions } from 'vue'
 
 export default Vue.extend({
@@ -63,23 +64,23 @@ export default Vue.extend({
 
   data: () => ({
     loading: false,
-    mutatedUser: null as unknown as User
+    updateData: {} as UpdateUserData,
+    originalData: {} as UpdateUserData
   }),
 
   methods: {
     async submit (): Promise<void> {
       this.loading = true
 
-      await userStore.update(
-        this.user,
-        this.mutatedUser.name,
-        this.mutatedUser.email,
-        this.mutatedUser.password,
-        this.mutatedUser.is_admin
-      )
-
-      this.loading = false
-      this.close()
+      try {
+        await userStore.update(this.user, this.updateData)
+        this.close()
+      } catch (err) {
+        const msg = err.response.status === 422 ? parseValidationError(err.response.data)[0] : 'Unknown error.'
+        alerts.error(msg)
+      } finally {
+        this.loading = false
+      }
     },
 
     close (): void {
@@ -87,7 +88,7 @@ export default Vue.extend({
     },
 
     maybeClose (): void {
-      if (isEqual(this.user, this.mutatedUser)) {
+      if (isEqual(this.originalData, this.updateData)) {
         this.close()
         return
       }
@@ -97,7 +98,19 @@ export default Vue.extend({
   },
 
   created (): void {
-    this.mutatedUser = Object.assign({}, this.user)
+    this.updateData = {
+      name: this.user.name,
+      email: this.user.email,
+      is_admin: this.user.is_admin
+    }
+
+    Object.assign(this.originalData, this.updateData)
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.help {
+  margin-top: .75rem;
+}
+</style>

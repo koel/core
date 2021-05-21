@@ -1,45 +1,41 @@
 <template>
   <form @submit.prevent="update" data-testid="update-profile-form">
     <div class="form-row">
+      <label for="inputProfileCurrentPassword">Current Password</label>
+      <input
+        v-model="profile.current_password"
+        name="current_password"
+        type="password"
+        id="inputProfileCurrentPassword"
+        v-koel-focus
+        required
+      >
+    </div>
+
+    <div class="form-row">
       <label for="inputProfileName">Name</label>
-      <input type="text" name="name" id="inputProfileName" v-model="state.current.name">
+      <input type="text" name="name" id="inputProfileName" v-model="profile.name" required>
     </div>
 
     <div class="form-row">
       <label for="inputProfileEmail">Email Address</label>
-      <input type="email" name="email" id="inputProfileEmail" v-model="state.current.email">
+      <input type="email" name="email" id="inputProfileEmail" v-model="profile.email" required>
     </div>
 
     <div class="change-password">
       <div class="form-row">
-        <p class="help">
-          If you want to change your password, enter it below.<br>
-          Otherwise, just leave the next two fields empty.
+        <label for="inputProfileNewPassword">New Password</label>
+        <input
+          v-model="profile.new_password"
+          name="new_password"
+          type="password"
+          id="inputProfileNewPassword"
+          autocomplete="new-password"
+        >
+        <p class="password-rules help">
+          Min. 10 characters. Must be a mix of characters, numbers, and symbols.<br>
+          Leave this empty to keep the current password.
         </p>
-      </div>
-
-      <div class="form-row">
-        <label for="inputProfilePassword">New Password</label>
-        <input
-          :class="{ error: validation.error }"
-          v-model="password"
-          name="password"
-          type="password"
-          id="inputProfilePassword"
-          autocomplete="new-password"
-        >
-      </div>
-
-      <div class="form-row">
-        <label for="inputProfileConfirmPassword">Confirm Password</label>
-        <input
-          :class="{ error: validation.error }"
-          v-model="confirmPassword"
-          name="confirm_password"
-          type="password"
-          id="inputProfileConfirmPassword"
-          autocomplete="new-password"
-        >
       </div>
     </div>
 
@@ -54,7 +50,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { preferenceStore as preferences, sharedStore, userStore } from '@/stores'
+import { preferenceStore as preferences, sharedStore, UpdateCurrentProfileData, userStore } from '@/stores'
+import { alerts, parseValidationError } from '@/utils'
 
 export default Vue.extend({
   components: {
@@ -65,26 +62,28 @@ export default Vue.extend({
     preferences,
     demo: NODE_ENV === 'demo',
     state: userStore.state,
-    cache: userStore.stub,
-    password: '',
-    confirmPassword: '',
     sharedState: sharedStore.state,
-    validation: {
-      error: false
-    }
+    profile: {} as UpdateCurrentProfileData
   }),
 
   methods: {
     async update (): Promise<void> {
-      this.validation.error = Boolean((this.password || this.confirmPassword) && this.password !== this.confirmPassword)
-
-      if (this.validation.error) {
-        return
+      try {
+        await userStore.updateProfile(this.profile)
+        this.profile.current_password = null
+        delete this.profile.new_password
+      } catch (err) {
+        const msg = err.response.status === 422 ? parseValidationError(err.response.data)[0] : 'Unknown error.'
+        alerts.error(msg)
       }
+    }
+  },
 
-      await userStore.updateProfile(this.password)
-      this.password = ''
-      this.confirmPassword = ''
+  mounted () {
+    this.profile = {
+      name: userStore.current.name,
+      email: userStore.current.email,
+      current_password: null
     }
   }
 })
@@ -95,15 +94,14 @@ input {
   &[type="text"], &[type="email"], &[type="password"] {
     width: 33%;
   }
-
-  &.error {
-    // Chrome won't give up its autofill style, so this is kind of a hack.
-    box-shadow: 0 0 0 1000px #ff867a inset;
-  }
 }
 
 .change-password {
   padding: 1.75rem 0;
+}
+
+.password-rules {
+  margin-top: .75rem;
 }
 
 @media only screen and (max-width : 667px) {

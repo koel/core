@@ -23,7 +23,9 @@
             name="password"
             v-model="newUser.password"
             autocomplete="new-password"
+            required
           >
+          <p class="help">Min. 10 characters. Must be a mix of characters, numbers, and symbols.</p>
         </div>
         <div class="form-row">
           <label>
@@ -43,8 +45,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { clone, isEqual } from 'lodash'
-import { userStore } from '@/stores'
+import { isEqual } from 'lodash'
+import { CreateUserData, userStore } from '@/stores'
 import { alerts, parseValidationError } from '@/utils'
 
 export default Vue.extend({
@@ -56,7 +58,13 @@ export default Vue.extend({
 
   data: () => ({
     loading: false,
-    newUser: clone(userStore.stub)
+    emptyUserData: {
+      name: '',
+      email: '',
+      password: '',
+      is_admin: false
+    } as CreateUserData,
+    newUser: {} as CreateUserData
   }),
 
   methods: {
@@ -64,7 +72,7 @@ export default Vue.extend({
       this.loading = true
 
       try {
-        await userStore.store(this.newUser.name, this.newUser.email, this.newUser.password, this.newUser.is_admin)
+        await userStore.store(this.newUser)
         this.close()
       } catch (err) {
         const msg = err.response.status === 422 ? parseValidationError(err.response.data)[0] : 'Unknown error.'
@@ -79,13 +87,23 @@ export default Vue.extend({
     },
 
     maybeClose (): void {
-      if (isEqual(this.newUser, userStore.stub)) {
+      if (isEqual(this.newUser, this.emptyUserData)) {
         this.close()
         return
       }
 
       alerts.confirm('Discard all changes?', () => this.close())
     }
+  },
+
+  created () {
+    Object.assign(this.newUser, this.emptyUserData)
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.help {
+  margin-top: .75rem;
+}
+</style>

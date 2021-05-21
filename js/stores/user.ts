@@ -6,6 +6,27 @@ import { http } from '@/services'
 import { alerts } from '@/utils'
 import stub from '@/stubs/user'
 
+export interface UpdateCurrentProfileData {
+  current_password: string|null
+  name: string
+  email: string
+  new_password?: string
+}
+
+interface UserFormData {
+  name: string
+  email: string
+  is_admin: boolean
+}
+
+export interface CreateUserData extends UserFormData {
+  password: string
+}
+
+export interface UpdateUserData extends UserFormData {
+  password?: string
+}
+
 export const userStore = {
   stub,
 
@@ -67,30 +88,29 @@ export const userStore = {
     return await http.get<User>('me')
   },
 
-  async updateProfile (password: string): Promise<void> {
-    await http.put('me', {
-      password,
-      name: this.current.name,
-      email: this.current.email
-    })
+  async updateProfile (data: UpdateCurrentProfileData): Promise<void> {
+    await http.put('me', data)
 
+    this.current.name = data.name
+    this.current.email = data.email
     this.setAvatar()
+
     alerts.success('Profile updated.')
   },
 
-  async store (name: string, email: string, password: string, is_admin: boolean): Promise<User> {
-    const user = await http.post<User>('user', { name, email, password, is_admin })
+  async store (data: CreateUserData): Promise<User> {
+    const user = await http.post<User>('user', data)
     this.setAvatar(user)
     this.all.unshift(user)
-    alerts.success(`New user "${name}" created.`)
+    alerts.success(`New user "${data.name}" created.`)
 
     return user
   },
 
-  async update (user: User, name: string, email: string, password: string, is_admin: boolean): Promise<void> {
-    await http.put(`user/${user.id}`, { name, email, password, is_admin })
-    this.setAvatar(user);
-    [user.name, user.email, user.password, user.is_admin] = [name, email, '', is_admin]
+  async update (user: User, data: UpdateUserData): Promise<void> {
+    await http.put(`user/${user.id}`, data)
+    this.setAvatar(user)
+    ;[user.name, user.email, user.is_admin] = [data.name, data.email, data.is_admin]
     alerts.success('User profile updated.')
   },
 

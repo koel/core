@@ -19,7 +19,12 @@ describe('components/user/edit-form', () => {
       }
     })
     wrapper.submit('form')
-    expect(updateMock).toHaveBeenCalledWith(user, user.name, user.email, user.password, true)
+    expect(updateMock).toHaveBeenCalledWith(user, {
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      is_admin: true
+    })
   })
 
   it('cancels', async () => {

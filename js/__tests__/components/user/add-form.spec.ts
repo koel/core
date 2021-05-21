@@ -1,5 +1,4 @@
 import Component from '@/components/user/add-form.vue'
-import factory from '@/__tests__/factory'
 import { userStore } from '@/stores'
 import { mock } from '@/__tests__/__helpers__'
 import { shallow, mount } from '@/__tests__/adapter'
@@ -11,12 +10,19 @@ describe('components/user/add-form', () => {
   })
 
   it('adds a new user', () => {
-    const newUser = factory<User>('user', { is_admin: false })
     const storeStub = mock(userStore, 'store')
     const wrapper = shallow(Component)
-    wrapper.setData({ newUser })
+    wrapper.find('[name=name]').setValue('Super User').input()
+    wrapper.find('[name=email]').setValue('su@koel.dev').input()
+    wrapper.find('[name=password]').setValue('VerySecure').input()
     wrapper.submit('form.user-add')
-    expect(storeStub).toHaveBeenCalledWith(newUser.name, newUser.email, newUser.password, false)
+
+    expect(storeStub).toHaveBeenCalledWith({
+      name: 'Super User',
+      email: 'su@koel.dev',
+      password: 'VerySecure',
+      is_admin: false
+    })
   })
 
   it('cancels', async () => {
