@@ -69,9 +69,9 @@ export default Vue.extend({
   },
 
   methods: {
-    playPrev: (): void => playback.playPrev(),
-    playNext: (): void => playback.playNext(),
-    toggle: (): void => playback.toggle()
+    playPrev: async () => await playback.playPrev(),
+    playNext: async () => await playback.playNext(),
+    toggle: async () => await playback.toggle()
   }
 })
 </script>

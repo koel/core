@@ -162,7 +162,7 @@ export const playback = {
    * So many dreams swinging out of the blue
    * We'll let them come true
    */
-  play (song: Song | undefined): void {
+  async play (song: Song | undefined) {
     if (!song) {
       return
     }
@@ -184,10 +184,10 @@ export const playback = {
     // We'll just "restart" playing the song, which will handle notification, scrobbling etc.
     // Fixes #898
     if (isAudioContextSupported) {
-      audioService.getContext().resume().then((): void => this.restart())
-    } else {
-      this.restart()
+      await audioService.getContext().resume()
     }
+
+    await this.restart()
   },
 
   showNotification (song: Song): void {
@@ -222,7 +222,7 @@ export const playback = {
     }
   },
 
-  restart () {
+  async restart () {
     const song = queueStore.current!
 
     this.showNotification(song)
@@ -237,7 +237,13 @@ export const playback = {
     socket.broadcast(events.SOCKET_SONG, songStore.generateDataToBroadcast(song))
 
     this.getPlayer().restart()
-    this.getPlayer().play()
+
+    try {
+      await this.getPlayer().media.play()
+    } catch (error) {
+      // convert this into a warning, as an error will cause Cypress to fail the tests entirely
+      console.warn(error)
+    }
   },
 
   /**
@@ -286,7 +292,7 @@ export const playback = {
    * Play the prev song in the queue, if one is found.
    * If the prev song is not found and the current mode is NO_REPEAT, we stop completely.
    */
-  playPrev (): void {
+  async playPrev () {
     // If the song's duration is greater than 5 seconds and we've passed 5 seconds into it,
     // restart playing instead.
     if (this.getPlayer().media.currentTime > 5 && queueStore.current!.length > 5) {
@@ -298,7 +304,7 @@ export const playback = {
     if (!this.previous && preferences.repeatMode === 'NO_REPEAT') {
       this.stop()
     } else {
-      this.play(this.previous)
+      await this.play(this.previous)
     }
   },
 
@@ -306,11 +312,11 @@ export const playback = {
    * Play the next song in the queue, if one is found.
    * If the next song is not found and the current mode is NO_REPEAT, we stop completely.
    */
-  playNext (): void {
+  async playNext () {
     if (!this.next && preferences.repeatMode === 'NO_REPEAT') {
       this.stop() //  Nothing lasts forever, even cold November rain.
     } else {
-      this.play(this.next)
+      await this.play(this.next)
     }
   },
 
@@ -359,21 +365,26 @@ export const playback = {
     socket.broadcast(events.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current!))
   },
 
-  resume () {
-    this.getPlayer().play()
+  async resume () {
+    try {
+      await this.getPlayer().media.play()
+    } catch (error) {
+      console.warn(error)
+    }
+
     queueStore.current!.playbackState = 'Playing'
     eventBus.emit(events.SONG_STARTED, queueStore.current)
     socket.broadcast(events.SOCKET_SONG, songStore.generateDataToBroadcast(queueStore.current!))
   },
 
-  toggle () {
+  async toggle () {
     if (!queueStore.current) {
-      this.playFirstInQueue()
+      await this.playFirstInQueue()
       return
     }
 
     if (queueStore.current.playbackState !== 'Playing') {
-      this.resume()
+      await this.resume()
       return
     }
 
@@ -386,7 +397,7 @@ export const playback = {
    * @param {?Song[]} songs  An array of song objects. Defaults to all songs if null.
    * @param {Boolean=false}   shuffled Whether to shuffle the songs before playing.
    */
-  queueAndPlay (songs?: Song[], shuffled: boolean = false): void {
+  async queueAndPlay (songs?: Song[], shuffled: boolean = false) {
     if (!songs) {
       songs = shuffle(songStore.all)
     }
@@ -403,10 +414,9 @@ export const playback = {
 
     // Wrap this inside a nextTick() to wait for the DOM to complete updating
     // and then play the first song in the queue.
-    Vue.nextTick((): void => {
-      router.go('queue')
-      this.play(queueStore.first)
-    })
+    await Vue.nextTick()
+    router.go('queue')
+    await this.play(queueStore.first)
   },
 
   getPlayer (): Plyr {
@@ -417,19 +427,19 @@ export const playback = {
    * Play the first song in the queue.
    * If the current queue is empty, try creating it by shuffling all songs.
    */
-  playFirstInQueue (): void {
-    queueStore.all.length ? this.play(queueStore.first) : this.queueAndPlay()
+  async playFirstInQueue () {
+    queueStore.all.length ? await this.play(queueStore.first) : await this.queueAndPlay()
   },
 
-  playAllByArtist ({ songs }: { songs: Song[] }, shuffled = true): void {
+  async playAllByArtist ({ songs }: { songs: Song[] }, shuffled = true) {
     shuffled
-      ? this.queueAndPlay(songs, true /* shuffled */)
-      : this.queueAndPlay(orderBy(songs, ['album_id', 'disc', 'track']))
+      ? await this.queueAndPlay(songs, true /* shuffled */)
+      : await this.queueAndPlay(orderBy(songs, ['album_id', 'disc', 'track']))
   },
 
-  playAllInAlbum ({ songs }: { songs: Song[]}, shuffled = true): void {
+  async playAllInAlbum ({ songs }: { songs: Song[]}, shuffled = true) {
     shuffled
-      ? this.queueAndPlay(songs, true /* shuffled */)
-      : this.queueAndPlay(orderBy(songs, ['disc', 'track']))
+      ? await this.queueAndPlay(songs, true /* shuffled */)
+      : await this.queueAndPlay(orderBy(songs, ['disc', 'track']))
   }
 }

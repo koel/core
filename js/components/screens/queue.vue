@@ -79,7 +79,7 @@ export default mixins(hasSongList).extend({
       return this.state.songs.length ? (this.$refs.songList as any).getAllSongsWithSort() : songStore.all
     },
 
-    shuffleAll: (): void => playback.queueAndPlay(songStore.all, true),
+    shuffleAll: async () => await playback.queueAndPlay(songStore.all, true),
     clearQueue: (): void => queueStore.clear()
   }
 })
