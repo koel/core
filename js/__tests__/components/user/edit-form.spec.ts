@@ -11,19 +11,24 @@ describe('components/user/edit-form', () => {
   })
 
   it('saves', () => {
-    const user = factory<User>('user', { is_admin: true })
+    const user = factory<User>('user')
     const updateMock = mock(userStore, 'update')
     const wrapper = shallow(Component, {
       propsData: {
         user
       }
     })
+
+    wrapper.find('[name=name]').setValue('Super User').input()
+    wrapper.find('[name=email]').setValue('su@koel.dev').input()
+    wrapper.find('[name=password]').setValue('SuperSecure').input()
     wrapper.submit('form')
+
     expect(updateMock).toHaveBeenCalledWith(user, {
-      name: user.name,
-      email: user.email,
-      password: user.password,
-      is_admin: true
+      name: 'Super User',
+      email: 'su@koel.dev',
+      password: 'SuperSecure',
+      is_admin: false
     })
   })
 

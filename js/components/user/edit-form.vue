@@ -97,7 +97,7 @@ export default Vue.extend({
     }
   },
 
-  created (): void {
+  mounted (): void {
     this.updateData = {
       name: this.user.name,
       email: this.user.email,
