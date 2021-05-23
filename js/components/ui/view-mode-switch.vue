@@ -35,17 +35,22 @@ export default Vue.extend({
   },
 
   data: () => ({
-    mutatedValue: ''
+    mutatedValue: null as ArtistAlbumViewMode | null
   }),
+
+  watch: {
+    value: {
+      handler (mode: ArtistAlbumViewMode) {
+        this.mutatedValue = mode
+      },
+      immediate: true
+    }
+  },
 
   methods: {
     onInput (e: InputEvent): void {
       this.$emit('input', (e.target as HTMLInputElement).value)
     }
-  },
-
-  created (): void {
-    this.mutatedValue = this.value
   }
 })
 </script>
