@@ -185,7 +185,7 @@ describe('services/playback', () => {
     expect(song.preloaded).toBe(true)
   })
 
-  it('restarts a song', () => {
+  it('restarts a song', async () => {
     const song = factory<Song>('song')
     Object.defineProperty(queueStore, 'current', {
       get: () => song
@@ -197,9 +197,9 @@ describe('services/playback', () => {
     const dataToBroadcast = {}
     mock(songStore, 'generateDataToBroadcast', dataToBroadcast)
     const restartMock = mock(playback.player!, 'restart')
-    const playMock = mock(playback.player!, 'play')
+    const playMock = mock(window.HTMLMediaElement.prototype, 'play')
 
-    playback.restart()
+    await playback.restart()
     expect(song.playStartTime).toEqual(1000)
     expect(song.playCountRegistered).toBe(false)
     expect(emitMock).toHaveBeenCalledWith('SONG_STARTED', song)
@@ -221,7 +221,7 @@ describe('services/playback', () => {
     }
   )
 
-  it('restarts song if playPrev is triggered after 5 seconds', () => {
+  it('restarts song if playPrev is triggered after 5 seconds', async () => {
     const restartMock = mock(playback.player!, 'restart')
     Object.defineProperty(playback.player!.media, 'currentTime', {
       get: () => 6
@@ -230,11 +230,11 @@ describe('services/playback', () => {
       get: () => factory('song', { length: 120 })
     })
 
-    playback.playPrev()
+    await playback.playPrev()
     expect(restartMock).toHaveBeenCalled()
   })
 
-  it('stops if playPrev is triggered when there is no prev song and repeat mode is NO_REPEAT', () => {
+  it('stops if playPrev is triggered when there is no prev song and repeat mode is NO_REPEAT', async () => {
     const stopMock = mock(playback, 'stop')
     Object.defineProperty(playback.player!.media, 'currentTime', {
       get: () => 4
@@ -247,11 +247,11 @@ describe('services/playback', () => {
     })
     preferences.repeatMode = 'NO_REPEAT'
 
-    playback.playPrev()
+    await playback.playPrev()
     expect(stopMock).toHaveBeenCalled()
   })
 
-  it('plays the previous song', () => {
+  it('plays the previous song', async () => {
     const previousSong = factory('song')
     Object.defineProperty(playback, 'previous', {
       get: () => previousSong
@@ -264,29 +264,29 @@ describe('services/playback', () => {
     })
     const playMock = mock(playback, 'play')
 
-    playback.playPrev()
+    await playback.playPrev()
     expect(playMock).toHaveBeenCalledWith(previousSong)
   })
 
-  it('stops if playNext is triggered when there is no next song and repeat mode is NO_REPEAT', () => {
+  it('stops if playNext is triggered when there is no next song and repeat mode is NO_REPEAT', async () => {
     Object.defineProperty(playback, 'next', {
       get: () => null
     })
     preferences.repeatMode = 'NO_REPEAT'
     const stopMock = mock(playback, 'stop')
 
-    playback.playNext()
+    await playback.playNext()
     expect(stopMock).toHaveBeenCalled()
   })
 
-  it('plays the next song', () => {
+  it('plays the next song', async () => {
     const nextSong = factory('song')
     Object.defineProperty(playback, 'next', {
       get: () => nextSong
     })
     const playMock = mock(playback, 'play')
 
-    playback.playNext()
+    await playback.playNext()
     expect(playMock).toHaveBeenCalledWith(nextSong)
   })
 
@@ -323,30 +323,31 @@ describe('services/playback', () => {
     expect(pauseMock).toHaveBeenCalled()
   })
 
-  it('resumes playback', () => {
+  it('resumes playback', async () => {
     const currentSong = factory<Song>('song')
     Object.defineProperty(queueStore, 'current', {
       get: () => currentSong
     })
     const dataToBroadcast = {}
     mock(songStore, 'generateDataToBroadcast', dataToBroadcast)
-    const playMock = mock(playback.player!, 'play')
+    const playMock = mock(window.HTMLMediaElement.prototype, 'play')
     const broadcastMock = mock(socket, 'broadcast')
     const emitMock = mock(eventBus, 'emit')
 
-    playback.resume()
-    expect(currentSong.playbackState).toEqual('Playing')
+    playback.init()
+    await playback.resume()
+    expect(queueStore.current?.playbackState).toEqual('Playing')
     expect(broadcastMock).toHaveBeenCalledWith('SOCKET_SONG', dataToBroadcast)
     expect(playMock).toHaveBeenCalled()
     expect(emitMock).toHaveBeenCalledWith('SONG_STARTED', currentSong)
   })
 
-  it('plays first in queue if toggled when there is no current song', () => {
+  it('plays first in queue if toggled when there is no current song', async () => {
     const playFirstInQueueMock = mock(playback, 'playFirstInQueue')
     Object.defineProperty(queueStore, 'current', {
       get: () => null
     })
-    playback.toggle()
+    await playback.toggle()
     expect(playFirstInQueueMock).toHaveBeenCalled()
   })
 
@@ -354,12 +355,12 @@ describe('services/playback', () => {
     ['resume', 'Stopped'],
     ['resume', 'Paused'],
     ['pause', 'Playing']
-  ])('%ss playback if toggled when current song playback state is %s', (action, playbackState) => {
+  ])('%ss playback if toggled when current song playback state is %s', async (action, playbackState) => {
     const actionMock = mock(playback, action)
     Object.defineProperty(queueStore, 'current', {
       get: () => factory('song', { playbackState })
     })
-    playback.toggle()
+    await playback.toggle()
     expect(actionMock).toHaveBeenCalled()
   })
 
@@ -380,7 +381,7 @@ describe('services/playback', () => {
     const playMock = mock(playback, 'play')
     ;(shuffle as jest.Mock).mockReturnValue(shuffledSongs)
 
-    playback.queueAndPlay()
+    await playback.queueAndPlay()
     await Vue.nextTick()
     expect(shuffle).toHaveBeenCalledWith(allSongs)
     expect(replaceQueueMock).toHaveBeenCalledWith(shuffledSongs)
@@ -398,7 +399,7 @@ describe('services/playback', () => {
       get: () => firstSongInQueue
     })
 
-    playback.queueAndPlay(songs)
+    await playback.queueAndPlay(songs)
     await Vue.nextTick()
     expect(shuffle).not.toHaveBeenCalled()
     expect(replaceQueueMock).toHaveBeenCalledWith(songs)
@@ -418,7 +419,7 @@ describe('services/playback', () => {
     })
     ;(shuffle as jest.Mock).mockReturnValue(shuffledSongs)
 
-    playback.queueAndPlay(songs, true)
+    await playback.queueAndPlay(songs, true)
     await Vue.nextTick()
     expect(shuffle).toHaveBeenCalledWith(songs)
     expect(replaceQueueMock).toHaveBeenCalledWith(shuffledSongs)
@@ -426,7 +427,7 @@ describe('services/playback', () => {
     expect(playMock).toHaveBeenCalledWith(firstSongInQueue)
   })
 
-  it('plays first song in queue', () => {
+  it('plays first song in queue', async () => {
     const songs = factory<Song>('song', 5)
     queueStore.all = songs
     Object.defineProperty(queueStore, 'first', {
@@ -434,29 +435,29 @@ describe('services/playback', () => {
     })
     const playMock = mock(playback, 'play')
 
-    playback.playFirstInQueue()
+    await playback.playFirstInQueue()
     expect(playMock).toHaveBeenCalledWith(songs[0])
   })
 
-  it('playFirstInQueue triggers queueAndPlay if queue is empty', () => {
+  it('playFirstInQueue triggers queueAndPlay if queue is empty', async () => {
     queueStore.all = []
     const queueAndPlayMock = mock(playback, 'queueAndPlay')
 
-    playback.playFirstInQueue()
+    await playback.playFirstInQueue()
     expect(queueAndPlayMock).toHaveBeenCalled()
   })
 
-  it('plays all songs by an artist, shuffled', () => {
+  it('plays all songs by an artist, shuffled', async () => {
     const artist = factory<Artist>('artist', {
       songs: factory<Song>('song', 5)
     })
     const queueAndPlayMock = mock(playback, 'queueAndPlay')
 
-    playback.playAllByArtist(artist)
+    await playback.playAllByArtist(artist)
     expect(queueAndPlayMock).toHaveBeenCalledWith(artist.songs, true)
   })
 
-  it('plays all songs by an artist in proper order', () => {
+  it('plays all songs by an artist in proper order', async () => {
     const artist = factory<Artist>('artist', {
       songs: factory<Song>('song', 5)
     })
@@ -464,22 +465,22 @@ describe('services/playback', () => {
     ;(orderBy as jest.Mock).mockReturnValue(orderedSongs)
 
     const queueAndPlayMock = mock(playback, 'queueAndPlay')
-    playback.playAllByArtist(artist, false)
+    await playback.playAllByArtist(artist, false)
     expect(orderBy).toHaveBeenCalledWith(artist.songs, ['album_id', 'disc', 'track'])
     expect(queueAndPlayMock).toHaveBeenCalledWith(orderedSongs)
   })
 
-  it('plays all songs in an album, shuffled', () => {
+  it('plays all songs in an album, shuffled', async () => {
     const album = factory<Album>('album', {
       songs: factory<Song>('song', 5)
     })
     const queueAndPlayMock = mock(playback, 'queueAndPlay')
 
-    playback.playAllInAlbum(album)
+    await playback.playAllInAlbum(album)
     expect(queueAndPlayMock).toHaveBeenCalledWith(album.songs, true)
   })
 
-  it('plays all songs in an album in proper order', () => {
+  it('plays all songs in an album in proper order', async () => {
     const album = factory<Album>('album', {
       songs: factory<Song>('song', 5)
     })
@@ -487,7 +488,7 @@ describe('services/playback', () => {
     ;(orderBy as jest.Mock).mockReturnValue(orderedSongs)
 
     const queueAndPlayMock = mock(playback, 'queueAndPlay')
-    playback.playAllInAlbum(album, false)
+    await playback.playAllInAlbum(album, false)
     expect(orderBy).toHaveBeenCalledWith(album.songs, ['disc', 'track'])
     expect(queueAndPlayMock).toHaveBeenCalledWith(orderedSongs)
   })
