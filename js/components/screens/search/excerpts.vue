@@ -97,8 +97,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_mixins.scss";
-
 .results > section {
   margin-bottom: 3em;
 }

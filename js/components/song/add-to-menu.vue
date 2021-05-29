@@ -131,8 +131,6 @@ export default mixins(songMenuMethods).extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_mixins.scss";
-
 .add-to {
   @include context-menu();
 

@@ -112,8 +112,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_mixins.scss";
-
 .other-controls {
   @include vertical-center();
 

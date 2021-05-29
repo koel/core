@@ -97,8 +97,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_mixins.scss";
-
 .menu {
   @include context-menu();
   position: fixed;

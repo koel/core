@@ -69,8 +69,6 @@ export default mixins(infiniteScroll).extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_mixins.scss";
-
 #artistsWrapper {
   .artists {
     @include artist-album-wrapper();

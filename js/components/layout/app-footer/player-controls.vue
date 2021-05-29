@@ -77,8 +77,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_mixins.scss";
-
 .player-controls {
   @include vertical-center();
   flex: 0 0 256px;

@@ -144,8 +144,6 @@ export default mixins(hasSongList, artistAttributes).extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_mixins.scss";
-
 #artistWrapper {
   @include artist-album-info-wrapper();
 }

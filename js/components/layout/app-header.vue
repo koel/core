@@ -71,8 +71,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_mixins.scss";
-
 #mainHeader {
   height: var(--header-height);
   background: var(--color-bg-secondary);

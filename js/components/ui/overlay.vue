@@ -59,8 +59,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_mixins.scss";
-
 #overlay {
   background-color: var(--color-bg-primary);
   flex-direction: column;

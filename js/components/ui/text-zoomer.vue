@@ -36,8 +36,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_mixins";
-
 .text-zoomer {
   display: flex;
   transition: .2s;

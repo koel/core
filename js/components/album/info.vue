@@ -86,8 +86,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_mixins.scss";
-
 .album-info {
   @include artist-album-info();
 }

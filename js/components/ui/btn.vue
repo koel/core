@@ -9,8 +9,6 @@ export default {}
 </script>
 
 <style lang="scss" scoped>
-@import "~#/partials/_mixins.scss";
-
 button {
   background: var(--color-blue);
   color: var(--color-text-primary);

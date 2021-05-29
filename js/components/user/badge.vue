@@ -38,8 +38,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_mixins.scss";
-
 #userBadge {
   @include vertical-center();
 

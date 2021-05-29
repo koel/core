@@ -174,8 +174,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_mixins.scss";
-
 #extra {
   flex: 0 0 var(--extra-panel-width);
   padding-top: 2.3rem;

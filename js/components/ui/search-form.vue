@@ -58,8 +58,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import "~#/partials/_mixins.scss";
-
 #searchForm {
   @include vertical-center();
   flex: 0 0 256px;
