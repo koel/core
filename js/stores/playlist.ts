@@ -160,10 +160,12 @@ export const playlistStore = {
     value: ['']
   }),
 
-  createEmptySmartPlaylistRuleGroup: (): SmartPlaylistRuleGroup => ({
-    id: (new Date()).getTime(),
-    rules: []
-  }),
+  createEmptySmartPlaylistRuleGroup (): SmartPlaylistRuleGroup {
+    return {
+      id: (new Date()).getTime(),
+      rules: [this.createEmptySmartPlaylistRule()]
+    }
+  },
 
   /**
    * Serialize the rule (groups) to be ready for database.

@@ -17,8 +17,9 @@ form {
 
 .rules {
   background: rgba(0, 0, 0, .1);
-  padding: 12px;
-  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, .1);
+  padding: .75rem;
+  border-radius: .3rem;
 
   input[type=text], input[type=number], input[type=datetime] {
     display: inline-block;
