@@ -54,7 +54,7 @@ export default Vue.extend({
 
   data: () => ({
     name: '',
-    ruleGroups: [] as SmartPlaylistRuleGroup[],
+    ruleGroups: [playlistStore.createEmptySmartPlaylistRuleGroup()] as SmartPlaylistRuleGroup[],
     meta: {
       loading: false
     }

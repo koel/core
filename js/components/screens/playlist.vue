@@ -97,6 +97,7 @@ export default mixins(hasSongList).extend({
 
       if (playlist.populated) {
         this.playlist = playlist
+        this.state = playlist
       } else {
         this.populate(playlist)
       }
