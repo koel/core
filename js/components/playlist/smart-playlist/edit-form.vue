@@ -15,7 +15,7 @@
 
           <div class="form-row rules">
             <rule-group
-              v-for="(group, index) in playlist.rules"
+              v-for="(group, index) in mutatedPlaylist.rules"
               :isFirstGroup="index === 0"
               :key="group.id"
               :group="group"
