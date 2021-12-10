@@ -537,7 +537,7 @@ export default Vue.extend({
       position: absolute;
       left: 0;
       right: 0;
-      overflow: auto;
+      min-height: 100%;
     }
 
     .item {
