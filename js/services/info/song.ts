@@ -13,7 +13,7 @@ interface SongInfoResponse {
 export const songInfo = {
   fetch: async (song: Song): Promise<Song> => {
     if (!song.infoRetrieved) {
-      const { lyrics, artist_info, album_info, youtube } = await http.get<SongInfoResponse>(`${song.id}/info`)
+      const { lyrics, artist_info, album_info, youtube } = await http.get<SongInfoResponse>(`song/${song.id}/info`)
 
       song.lyrics = lyrics
       artist_info && artistInfo.merge(song.artist, artist_info)
