@@ -61,9 +61,6 @@ export const sharedStore = {
   async init (): Promise<SharedState> {
     this.state = Object.assign(this.state, await http.get<SharedState>('data'))
 
-    // Don't allow downloading on mobile devices
-    this.state.allowDownload = this.state.allowDownload && !isMobile.any
-
     // Always disable YouTube integration on mobile.
     this.state.useYouTube = this.state.useYouTube && !isMobile.phone
 
